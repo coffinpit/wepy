@@ -1,0 +1,13 @@
+
+  <view>
+    
+  <view>
+    <wxc-flex cross="{{$nav$cross}}" class="top_nav-container">
+      <block wx:for="{{$nav$topnavigation}}" wx:for-index="$nav$index" wx:for-item="$nav$item" wx:key="$nav$key">
+        <navigator class="top_nav {{$nav$index == $nav$navIndex? 'top_nav_active' : ''}}" url="{{$nav$item.url}}">{{$nav$item.title}}</navigator>
+      </block>
+    </wxc-flex>
+  </view>
+
+    <view>{{page}}</view>
+  </view>

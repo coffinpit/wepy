@@ -1,0 +1,43 @@
+view {
+  box-sizing: border-box;
+}
+.item-box {
+  width: 700rpx;
+  margin: 0 auto;
+  padding: 40rpx 0;
+}
+.items {
+  width: 100%;
+}
+.item-list {
+  position: relative;
+  border-top: 2rpx solid #eee;
+  height: 120rpx;
+  line-height: 120rpx;
+  overflow: hidden;
+}
+.item-list:last-child {
+  border-bottom: 2rpx solid #eee;
+}
+.inner {
+  position: absolute;
+  top: 0;
+}
+.inner.txt {
+  background-color: #fff;
+  width: 100%;
+  z-index: 5;
+  padding: 0 10rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.2s ease-in-out;
+}
+.inner.del {
+  background-color: #e64340;
+  width: 180rpx;
+  text-align: center;
+  z-index: 4;
+  right: 0;
+  color: #fff;
+}

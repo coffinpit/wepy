@@ -1,0 +1,17 @@
+
+  <view class="login-container">
+    <view class="login">
+      <view class="app-info">
+        <image class="app-logo" src="../image/login-bg.jpg" mode="widthFix"/>
+        <text class="app-name">正善小程序</text>
+      </view>
+      <view class="alert">
+        <view class="alert-title">网页由该小程序开发</view>
+        <view class="alert-title">请确认授权以下信息</view>
+        <view class="alert-desc">
+          <view class="alert-text">获得你的公开信息（昵称、头像等）</view>
+        </view>
+        <button class="login-btn" hover-class="login-btn-active" bindtap="login">确认登录</button>
+      </view>
+    </view>
+  </view>

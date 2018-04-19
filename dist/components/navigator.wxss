@@ -1,0 +1,15 @@
+.top_nav-container {
+  width: 100%;
+}
+.top_nav {
+  width: 15%;
+  line-height: 40px;
+  text-align: center;
+  margin: 0 9%;
+  font-size: 14px;
+  display: inline-block;
+}
+.top_nav_active {
+  border-bottom: 2px #f60 solid;
+  color: #f60;
+}

@@ -1,0 +1,84 @@
+
+  <view class="container">
+    <wxc-flex cross="{{cross}}" class="top_nav-container">
+      <block wx:for="{{topnavigation}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="top_nav {{currentPage == index? 'top_nav_active' : ''}}" bindtap="navTab" data-wpynavtab-a="{{index}}">{{item}}</view>
+      </block>
+    </wxc-flex>
+    <swiper current="{{currentPage}}" autoplay="{{pageauto}}" bindchange="changeTab" class="swiper-box" style="height:{{winHeight - 51}}px">
+      <swiper-item>
+        <scroll-view scroll-y style="height:{{winHeight - 51}}px" bindscrolltolower="bindDownLoad" bindscrolltoupper="bindtop" lower-threshold="0">
+        
+  <view id="loading-center" wx:if="{{loaded}}">
+    <view id="loading-center-absolute">
+      <view class="object" id="object_one"/>
+      <view class="object" id="object_two"/>
+      <view class="object" id="object_three"/>
+    </view>
+  </view>
+
+        <view class="content">
+          <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" catchchange="changeBanner">
+            <block wx:for="{{bannerLink}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                <swiper-item>
+                  <image src="{{item.path}}" mode="aspectFill"/>
+                </swiper-item>
+            </block>
+          </swiper>
+          <view class="index-promot">
+            <image class="index-promot-img" src="../image/syvip_bg.png" mode="widthFix"/>
+            <view class="index-promot-content">
+              <view class="index-promot-title">
+                优价会员
+              </view>
+              <view class="index-promot-txt">预计全年可帮您节省￥5690.0</view>
+              <view class="index-promot-txt">会员全场包邮(冷运品类需满两公斤包邮)</view>
+            </view>
+          </view>
+          <wxc-flex cross="{{cross}}" class="index-catogary">
+            <block wx:for="{{catogary}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="index-catogary-list">
+                <view class="index-catogary-list-bg">
+                  <image src="{{item.path}}" mode="aspectFit"/>
+                </view>
+                <view class="index-catogary-list-title">
+                  {{item.title}}
+                </view>
+              </view>
+            </block>
+          </wxc-flex>
+        </view>
+        <view class="content">
+          <view class="goods-title"><image src="../image/sptj_img.png"/></view>
+          
+  <block wx:for="{{$goods$goodsItem}}" wx:for-index="$goods$index" wx:for-item="$goods$item" wx:key="$goods$key">
+    <view class="goods">
+      <view class="goods-image"><image src="{{$goods$item.path}}" mode="aspectFit" lazy-load="true"/></view>
+      <view class="goods-detail">
+        <view class="goods-detail-title">{{$goods$item.title}}</view>
+        <view class="goods-detail-price">
+          会员价:<text class="price">￥{{$goods$item.price}} (优惠￥{{$goods$item.oldprice - $goods$item.price}})</text>
+        </view>
+        <view class="goods-detail-oldprice">原价:{{$goods$item.oldprice}}</view>
+        <view class="goods-promot">
+          <view class="goods-image">
+            <text class="iconfont icon-biaoqing"/>
+          </view>
+          <view class="goods-info">
+            特别非常鲜到没朋友
+            <view class="goods-end">
+              <image src="../image/probq_bg.png" mode="right"/>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+        </view>
+        </scroll-view>
+      </swiper-item>
+      <swiper-item>b</swiper-item>
+      <swiper-item>c</swiper-item>
+    </swiper>
+  </view>
