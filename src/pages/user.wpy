@@ -1,0 +1,31 @@
+<style lang="less">
+
+</style>
+<template>
+  <view>
+    <nav navIndex="0"></nav>
+    <view>{{page}}</view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Nav from '../components/navigator'
+
+  export default class User extends wepy.page {
+    config = {
+      navigationBarTitleText: '用户'
+    }
+    components = {
+      nav: Nav
+    }
+    data = {
+      page: 'main'
+    }
+    methods = {
+    }
+    onload () {
+      this.$apply()
+    }
+  }
+</script>

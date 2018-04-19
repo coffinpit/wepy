@@ -1,0 +1,31 @@
+<style lang="less">
+</style>
+<template>
+  <view>
+    <nav navIndex="1"></nav>
+    <view>热门</view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Nav from '../components/navigator'
+
+  export default class Hot extends wepy.page {
+    config = {
+      navigationBarTitleText: '热门'
+    }
+    components = {
+      nav: Nav
+    }
+    data = {
+      cross: 'stretch',
+      topnavigation: ['首页', '热门', '搜索']
+    }
+    methods = {
+    }
+    onload () {
+      this.$apply()
+    }
+  }
+</script>

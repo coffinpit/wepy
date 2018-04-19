@@ -1,0 +1,93 @@
+<style lang="less">
+#loading-center{
+  width: 100%;
+  height: 30px;
+  position: relative;
+}
+#loading-center-absolute {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 20px;
+  width: 60px;
+  margin-top: -10px;
+  margin-left: -30px;
+}
+.object{
+  width: 10px;
+  height: 10px;
+  background-color: #ccc;
+  float: left;
+  margin-right: 10px;
+  margin-top:6px;
+  -moz-border-radius: 50% 50% 50% 50%;
+  -webkit-border-radius: 50% 50% 50% 50%;
+  border-radius: 50% 50% 50% 50%;
+}
+
+#object_one { 
+  -webkit-animation: object_one 1.5s infinite;
+  animation: object_one 1.5s infinite;
+  }
+#object_two {
+  -webkit-animation: object_two 1.5s infinite;
+  animation: object_two 1.5s infinite;
+  -webkit-animation-delay: 0.25s; 
+    animation-delay: 0.25s;
+  }
+#object_three {
+    -webkit-animation: object_three 1.5s infinite;
+  animation: object_three 1.5s infinite;
+  -webkit-animation-delay: 0.5s;
+    animation-delay: 0.5s;
+  
+  }
+@-webkit-keyframes object_one {
+75% { -webkit-transform: scale(0); }
+}
+
+@keyframes object_one {
+
+  75% { 
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+
+}
+
+@-webkit-keyframes object_two {
+  75% { -webkit-transform: scale(0); }
+}
+
+@keyframes object_two {
+  75% { 
+    transform: scale(0);
+    -webkit-transform:  scale(0);
+  }
+}
+
+@-webkit-keyframes object_three {
+  75% { -webkit-transform: scale(0); }
+}
+@keyframes object_three {
+  75% { 
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+}
+</style>
+<template>
+  <view id="loading-center">
+    <view id="loading-center-absolute">
+      <view class="object" id="object_one"></view>
+      <view class="object" id="object_two"></view>
+      <view class="object" id="object_three"></view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Loading extends wepy.component {
+  }
+</script>

@@ -1,0 +1,54 @@
+<style lang="less">
+  
+</style>
+<template>
+  <view>
+    <nav navIndex="2"></nav>
+  </view>
+  <view>搜索</view>
+  <button @tap="goBack">Back</button>
+  <button @tap="getCurrentId" data-id="testId">Get Id</button>
+  <view>
+    <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"></image>
+    <text class="userinfo-nickname">{{ userInfo.nickName }}</text>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Nav from '../components/navigator'
+
+  export default class Search extends wepy.page {
+    config = {
+      navigationBarTitleText: '搜索'
+    }
+    components = {
+      nav: Nav
+    }
+    data = {
+      userInfo: {}
+    }
+    onShow () {
+
+    }
+    methods = {
+      goBack () {
+        let pageList = this.getCurrentPages()
+        let prePage = pageList[pageList.length - 2]
+        prePage.setData({
+          page: 'search'
+        })
+        wepy.navigateBack({
+          delta: 1
+        })
+      },
+      getCurrentId (e) {
+        console.log(e.currentTarget.dataset.id)
+        this.userInfo = this.$parent.globalData.userInfo
+      }
+    }
+    onload () {
+      this.$apply()
+    }
+  }
+</script>

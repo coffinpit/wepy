@@ -1,0 +1,133 @@
+<style lang="less">
+  .login-container {
+    height: 100%;
+    background: #fff;
+  }
+  .app-info {
+    position: relative;
+    text-align: center;
+    padding-bottom:20px;
+  }
+  .app-info .app-logo {
+    display: block;
+    width: 100%;
+    margin-bottom:20px;
+  }
+
+  .app-info .app-name {
+    font-size: 18px;
+    color: #333;
+  }
+
+  .alert {
+    padding: 20px;
+    text-align: center;
+    border-top:1px #eee solid;
+  }
+
+  .alert .alert-title {
+    font-weight: 400;
+    font-size: 16px;
+    color: #333;
+    margin-bottm:5px;
+  }
+
+  .alert-desc {
+    display: block;
+    list-style: disc inside none;
+    margin-top:10px;
+  }
+
+  .alert .alert-text {
+    display: list-item;
+    text-align: -webkit-match-parent;
+    font-size: 14px;
+    color: #999;
+  }
+  
+  .login-btn{
+    background:#fe5946;
+    border-radius: 0;
+    color:#fff;
+    line-height: 45px;
+    text-align: center;
+    margin-top:20px;
+    font-size:16px;
+  }
+  .login-btn-active{
+    background:#e8412d;
+    color:#f6eceb;
+  }
+  .logged {
+    margin-top: 100px;
+  }
+
+  .logged .logged-icon {
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 20px auto;
+  }
+
+  .logged .logged-text {
+    font-size: 14px;
+    color: #000;
+    text-align: center;
+    margin: 10px 0;
+  }
+</style>
+<template>
+  <view class="login-container">
+    <view class="login">
+      <view class="app-info">
+        <image class="app-logo" src="../image/login-bg.jpg" mode="widthFix"></image>
+        <text class="app-name">正善小程序</text>
+      </view>
+      <view class="alert">
+        <view class="alert-title">网页由该小程序开发</view>
+        <view class="alert-title">请确认授权以下信息</view>
+        <view class="alert-desc">
+          <view class="alert-text">获得你的公开信息（昵称、头像等）</view>
+        </view>
+        <button class="login-btn" hover-class="login-btn-active" @tap="login">确认登录</button>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Login extends wepy.page {
+    config = {
+      navigationBarTitleText: '欢迎'
+    }
+    data = {
+    }
+    methods = {
+      goIndex () {
+        wepy.switchTab({
+          url: './index'
+        })
+      },
+      login () {
+        var _this = this.$parent
+        _this.getUserInfo((data) => {
+          console.log(data)
+          // 修改以下的请求回调
+          _this.HttpRequest.UserLogin(data).then((token) => {
+            wepy.setStorageSync('token', token)
+            this.methods.goIndex()
+          })
+        })
+      }
+    }
+    onload () {
+      this.$apply()
+    }
+    onShow () {
+      const token = wepy.getStorageSync('token')
+      token && setTimeout(this.methods.goIndex, 1500)
+    }
+  }
+</script>

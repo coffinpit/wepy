@@ -1,0 +1,119 @@
+<style type="less">
+  .goods{
+    display:flex;
+    align-items:stretch;
+    width:100%;
+    padding:15px 0;
+    height:100px;
+    border-bottom:1px #eee solid;
+    .goods-image{
+      width:100px;
+      border:1px #eee solid;
+      height:100px;
+      overflow:hidden;
+    }
+    .goods-detail{
+      width:65%;
+      padding-left:5%;
+      color:#333;
+      .goods-detail-title{
+        font-size:16px;
+        line-height:20px;
+        min-height:40px;
+        height:40px;
+        overflow:hidden;
+      }
+      .goods-detail-price{
+        font-size:14px;
+        .price{
+          color:#fc5e42;
+          font-weight:500;
+        }
+      }
+      .goods-detail-oldprice{
+        font-size:12px;
+        color:#999;
+      }
+      .goods-promot{
+        position:relative;
+        margin-top:4px;
+        .goods-image{
+          width:20px;
+          height:20px;
+          border:1px #fc5e44 solid;
+          border-radius:50%;
+          background:#fff;
+          position:absolute;
+          top:0;
+          left:0;
+          z-index:99;
+          .iconfont{
+            color:#fc5e44;
+            float:left;
+            margin-left:2px;
+          }
+        }
+        .goods-info{
+          background:#fc5e44;
+          color:#fff;
+          font-size:24rpx;
+          line-height:18px;
+          height:18px;
+          padding-left:15px;
+          position:absolute;
+          top:2px;
+          left:10px;
+          z-index:1;
+        }
+        .goods-end{
+          position:absolute;
+          right:-15px;
+          top:0;
+          image{
+            width:15px;
+            height:18px;
+          }
+        }
+      }
+      
+    }
+  }
+</style>
+<template>
+  <repeat for="{{goodsItem}}" item="item">
+    <view class="goods">
+      <view class="goods-image"><image src="{{item.path}}" mode="aspectFit" lazy-load="true"></image></view>
+      <view class="goods-detail">
+        <view class="goods-detail-title">{{item.title}}</view>
+        <view class="goods-detail-price">
+          会员价:<text class="price">￥{{item.price}} (优惠￥{{item.oldprice - item.price}})</text>
+        </view>
+        <view class="goods-detail-oldprice">原价:{{item.oldprice}}</view>
+        <view class="goods-promot">
+          <view class="goods-image">
+            <text class="iconfont icon-biaoqing"></text>
+          </view>
+          <view class="goods-info">
+            特别非常鲜到没朋友
+            <view class="goods-end">
+              <image src="../image/probq_bg.png" mode="right"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </repeat>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Goods extends wepy.component {
+    props = {
+      goodsItem: {}
+    }
+    methods = {
+    }
+    onLoad () {
+    }
+  }
+</script>

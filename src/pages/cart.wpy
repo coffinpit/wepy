@@ -1,0 +1,178 @@
+<style lang="less">
+  view{  
+    box-sizing: border-box;  
+  }  
+  .item-box{  
+      width: 700rpx;  
+      margin: 0 auto;  
+      padding:40rpx 0;  
+  }  
+  .items{  
+      width: 100%;  
+  }  
+  .item-list{  
+      position: relative;  
+      border-top: 2rpx solid #eee;  
+      height: 120rpx;  
+      line-height: 120rpx;  
+      overflow: hidden;  
+  }  
+  .item-list:last-child{  
+      border-bottom: 2rpx solid #eee;  
+  }  
+  .inner{  
+      position: absolute;  
+      top:0;  
+  }  
+  .inner.txt{  
+      background-color: #fff;  
+      width: 100%;  
+      z-index: 5;  
+      padding:0 10rpx;  
+      white-space:nowrap;  
+      overflow:hidden;  
+      text-overflow:ellipsis;
+      transition: all 0.2s ease-in-out; 
+  }  
+  .inner.del{  
+      background-color: #e64340;  
+      width: 180rpx;
+      text-align: center;  
+      z-index: 4;  
+      right: 0;  
+      color: #fff  
+  }   
+</style>
+<template>
+  <view class="content">
+    <view>购物车</view>
+    <view class="item-box">  
+      <view class="items">  
+          <repeat for="{{list}}" index="index" item="item" key="index">  
+          <view class="item-list">
+            <view @touchstart.stop="touchS" @touchmove.stop="touchM" @touchend.stop="touchE" data-index="{{index}}" style="{{item.txtStyle}}" class="inner txt">  
+            {{index}}{{item.txt}}</view>  
+            <view data-index="{{index}}" @tap="delItem" class="inner del">删除</view>  
+           </view>
+          </repeat>
+      </view>  
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Cart extends wepy.page {
+    config = {
+      navigationBarTitleText: '购物车'
+    }
+    data = {
+      delBtnWidth: 180,
+      startX: 0,
+      list: [
+        {
+          txtStyle: '',
+          txt: '指尖快递'
+        },
+        {
+          txtStyle: '',
+          txt: '指尖快递'
+        }
+      ]
+    }
+    initdata (that) {
+      let list = that.list
+      for (var i = 0; i < list.length; i++) {
+        list[i].txtStyle = ''
+      }
+      this.setData({
+        list: list
+      })
+    }
+    methods = {
+      touchS (e) {
+        if (e.touches.length === 1) {
+          this.startX = e.touches[0].clientX
+        }
+      },
+      touchM (e) {
+        var that = this
+        this.initdata(that)
+        if (e.touches.length === 1) {
+          var moveX = e.touches[0].clientX
+          var disX = this.startX - moveX
+          var delBtnWidth = this.delBtnWidth
+          var txtStyle = ''
+          if (disX === 0 || disX < 0) {
+            txtStyle = 'transform:translateX(0px)'
+          } else if (disX > 0) {
+            setTimeout(() => {
+              txtStyle = 'transform:translateX(-' + disX + 'px)'
+            }, 500)
+            if (disX >= delBtnWidth) {
+              setTimeout(() => {
+                txtStyle = 'transform:translateX(-' + delBtnWidth + 'px)'
+              }, 500)
+            }
+          }
+          var index = e.target.dataset.index
+          this.list[index].txtStyle = txtStyle
+        }
+      },
+      touchE (e) {
+        if (e.changedTouches.length === 1) {
+          var endX = e.changedTouches[0].clientX
+          var disX = this.startX - endX
+          var delBtnWidth = this.delBtnWidth
+          var txtStyle = disX > delBtnWidth / 2 ? 'transform:translateX(-' + delBtnWidth + 'px)' : 'transform:translateX(0px)'
+          var index = e.target.dataset.index
+          var list = this.list
+          list[index].txtStyle = txtStyle
+          this.list = list
+          console.log(this.list[index].txtStyle)
+        }
+      },
+      delItem (e) {
+        var that = this
+        wepy.showModal({
+          title: '提示',
+          content: '是否删除？',
+          success: function (res) {
+            if (res.confirm) {
+              var index = e.target.dataset.index
+              var list = that.list
+              list.splice(index, 1)
+              that.setData({
+                list: list
+              })
+              console.log(that.list)
+            } else {
+              that.initdata(that)
+            }
+          }
+        })
+      }
+    }
+    onLoad () {
+      this.initEleWidth()
+      this.$apply()
+    }
+    getEleWidth (w) {
+      var real = 0
+      try {
+        var res = wepy.getSystemInfoSync().windowWidth
+        var scale = (750 / 2) / (w / 2)
+        real = Math.floor(res / scale)
+        return real
+      } catch (e) {
+        return false
+      }
+    }
+    initEleWidth () {
+      var delBtnWidth = this.getEleWidth(this.delBtnWidth)
+      this.delBtnWidth = delBtnWidth
+      console.log(this.delBtnWidth, delBtnWidth)
+    }
+  }
+</script>

@@ -1,0 +1,55 @@
+<style lang="less">
+  .start{
+    width:100%;
+    height:100%;
+    position: absolute;
+    overflow: hidden;
+  }
+  .start_bg{
+    width:100%;
+    height:100%;
+  }
+</style>
+<template>
+  <view class="start">
+    <image class="start_bg" src="../image/start.png" mode="aspectFill" @load="getLoad"></image>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Hot extends wepy.page {
+    config = {
+      navigationBarTitleText: '欢迎'
+    }
+    data = {
+
+    }
+    methods = {
+      getLoad () {
+        setTimeout(() => {
+          if (wepy.getStorageSync('token')) {
+            this.methods.goIndex()
+            this.$parent.getUserInfo()
+          } else {
+            this.methods.goLogin()
+          }
+        }, 3000)
+      },
+      goIndex () {
+        wepy.switchTab({
+          url: './index'
+        })
+      },
+      goLogin () {
+        wepy.navigateTo({
+          url: './login'
+        })
+      }
+    }
+    onload () {
+      this.$apply()
+    }
+  }
+</script>
