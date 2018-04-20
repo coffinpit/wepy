@@ -1,0 +1,133 @@
+
+  <view class="container" style="height: {{overflow? winHeight : 'auto'}}">
+    <view class="detail-info">
+      <view class="detail-img">
+        <image src="{{detail.path}}" mode="aspectFill"/>
+      </view>
+      <view class="detail-dots">
+        <view class="detail-dots-gray"/>
+        <view class="detail-solid"/>
+        <view class="detail-dots-orange"/>
+      </view>
+      <view class="detail-txt">
+        <view class="detail-txt-layer">
+          <view class="detail-txt-content">
+            <text>会员价</text>
+            <text>￥{{detail.price}}</text>
+          </view>
+        </view>
+        <view class="detail-txt-price">
+          <text>原价</text>
+          <text>￥{{detail.oldprice}}</text>
+          <navigator url="" class="detail-link">成为会员?</navigator>
+        </view>
+        <view class="detail-txt-price express">
+          <text>快递￥{{detail.express}}</text>
+          <text class="tips">成为会员即享包邮</text>
+          <button class="default-button" hover-class="default-button-active">配送规则</button>
+        </view>
+      </view>
+    </view>
+    <view class="content">
+      <view class="detail-title">
+        <view class="title">{{detail.title}}</view>
+        <view class="goods-promot">
+          <view class="goods-promot-image">
+            <text class="iconfont icon-biaoqing"/>
+          </view>
+          <view class="goods-info">
+            特别非常鲜到没朋友
+            <view class="goods-end">
+              <image src="../image/probq_bg.png" mode="right"/>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="detail-collect">
+        <view class="detail-collect-icon {{collect? 'collected' : ''}}" bindtap="collectTap">
+          <text class="iconfont icon-shoucang"/>
+          <text class="collect-txt">{{collectTxt}}</text>
+        </view>
+        <view class="detail-collect-user">
+          <view class="detail-collect-detail">
+            <text class="section">已有{{collectednum}}人收藏了本商品</text>
+            <text class="iconfont icon-more"/>
+          </view>
+          <view class="detail-collect-list">
+            <block wx:for="{{collectedUser}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view><image src="{{item.path}}" mode="aspectFill"/></view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="content">
+      <view class="detail-title">
+         <text class="title">商品详情</text>
+      </view>
+      <view class="detail-container">
+         <view class="section">关于商品</view>
+         <block wx:for="{{goodsDetail}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+           <view class="detail-goods">
+              <view class="detail-goods-title">{{item.title}}</view>
+              <view class="detail-goods-content">{{item.detail}}</view>
+           </view>
+         </block>
+      </view>
+      <view class="detail-container">
+         <view class="section">关于商品</view>
+         <block wx:for="{{transportDetail}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+           <view class="detail-goods">
+              <view class="detail-goods-title">{{item.title}}</view>
+                <view  wx:if="{{!item.isLink}}" class="detail-goods-content">{{item.detail}}</view>
+                <navigate  wx:else to="" class="detail-goods-content link">{{item.detail}}</navigate>
+           </view>
+         </block>
+      </view>
+      <view class="detail-container">
+        <view class="section">关于</view>
+      </view>
+    </view>
+    
+  <view class="bottombar">
+    <view class="contact">
+      <button open-type="contact" session-from="weapp">
+        <text class="iconfont icon-kefu"/>
+        <text>客服</text>
+      </button>
+    </view>
+    <view class="cart" bindtap="$bottom$addCart">
+      <text>加入购物车</text>
+    </view>
+    <view class="buy" bindtap="$bottom$buyTap">
+      <text>立即购买</text>
+    </view>
+  </view>
+
+    <view class="popup" wx:if="{{overflow}}"/>
+    <view class="popup__content {{overflow? 'active' : ''}}">
+        <view class="popup_close"><text class="title" catchtap="closeBuy">关闭</text></view>
+        <view class="popup_layer">
+          <view class="popup_image">
+            <image src="{{detail.path}}" mode="aspectFit"/>
+          </view>
+          <view class="popup_goods">
+            <text class="title">已选：{{detail.buytitle}} × {{chooseNum}}</text>
+            <text class="title link">价格：￥{{total}}</text>
+            
+  <view class="counter calculate">
+    <view catchtap="$counter$plusTap" class="counter-btn">  +  </view>
+    <view class="counter-btn number"> {{$counter$num}} </view>
+    <view catchtap="$counter$minusTap" class="counter-btn">  -  </view>
+  </view>
+
+          </view>
+        </view>
+        <block wx:for="{{detail.goodList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="popup_layer">
+            <view class="goods-name {{item.num === 0 ? 'none' : ''}}">{{item.name}}</view>
+            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">{{item.num}}</view>
+          </view>
+        </block>
+      </view>
+  </view>

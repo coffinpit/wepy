@@ -58,15 +58,10 @@
       <text class="testcounter">计数组件1: </text>
       <view class="counterview">
         
-  <view class="counter {{$counter1$style}}">
-    <button bindtap="$counter1$plus" size="mini">  +  </button>
-    <button bindtap="$counter1$minus" size="mini">  -  </button>
-    <button bindtap="$counter1$incNum" size="mini">  INCREMENT  </button>
-    <button bindtap="$counter1$decNum" size="mini">  DECREMENT  </button>
-    <button bindtap="$counter1$asyncInc" size="mini">  ASYNC INCREMENT  </button>
-    <text class="count"> {{$counter1$num}} </text>
-    <text class="count"> {{$counter1$stateNum}} </text>
-    <text class="count"> {{$counter1$asyncNum}} </text>
+  <view class="counter">
+    <view catchtap="$counter1$plusTap" class="counter-btn">  +  </view>
+    <view class="counter-btn number"> {{$counter1$num}} </view>
+    <view catchtap="$counter1$minusTap" class="counter-btn">  -  </view>
   </view>
 
       </view>
@@ -75,15 +70,10 @@
 
       <view class="counterview">
         
-  <view class="counter {{$counter2$style}}">
-    <button bindtap="$counter2$plus" size="mini">  +  </button>
-    <button bindtap="$counter2$minus" size="mini">  -  </button>
-    <button bindtap="$counter2$incNum" size="mini">  INCREMENT  </button>
-    <button bindtap="$counter2$decNum" size="mini">  DECREMENT  </button>
-    <button bindtap="$counter2$asyncInc" size="mini">  ASYNC INCREMENT  </button>
-    <text class="count"> {{$counter2$num}} </text>
-    <text class="count"> {{$counter2$stateNum}} </text>
-    <text class="count"> {{$counter2$asyncNum}} </text>
+  <view class="counter">
+    <view catchtap="$counter2$plusTap" class="counter-btn">  +  </view>
+    <view class="counter-btn number"> {{$counter2$num}} </view>
+    <view catchtap="$counter2$minusTap" class="counter-btn">  -  </view>
   </view>
 
       </view>

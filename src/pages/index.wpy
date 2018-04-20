@@ -133,10 +133,10 @@
     }
   }
   ::-webkit-scrollbar{
-  width: 0;
-  height: 0;
-  color: transparent;
-}
+    width: 0;
+    height: 0;
+    color: transparent;
+  }
 </style>
 <template>
   <view class="container">
@@ -182,7 +182,7 @@
         </view>
         <view class="content">
           <view class="goods-title"><image src="../image/sptj_img.png"></image></view>
-          <goods :goodsItem="goods" id="goods"></goods>
+          <goods :goodsItem="goods" @goodsTap.user="goDetail"></goods>
         </view>
         </scroll-view>
       </swiper-item>
@@ -236,12 +236,14 @@
         path: '../image/login-bg.jpg',
         title: '美国自然牛精选后腿小方',
         price: '99.0',
-        oldprice: '160.0'
+        oldprice: '160.0',
+        id: '1231123'
       }, {
         path: '../image/login-bg.jpg',
         title: '美国自然牛精选后腿小方',
         price: '99.0',
-        oldprice: '160.0'
+        oldprice: '160.0',
+        id: '1234321'
       }],
       loaded: false
     }
@@ -275,6 +277,12 @@
         setTimeout(() => {
           this.loaded = false
         }, 3000)
+      },
+      goDetail (id) {
+        wepy.navigateTo({
+          url: './detail',
+          id: id
+        })
       }
     }
     onShow () {

@@ -6,6 +6,9 @@
   height: 100px;
   border-bottom: 1px #eee solid;
 }
+.goods:last-child {
+  border-bottom: none;
+}
 .goods .goods-image {
   width: 100px;
   border: 1px #eee solid;
@@ -34,45 +37,4 @@
 .goods .goods-detail .goods-detail-oldprice {
   font-size: 12px;
   color: #999;
-}
-.goods .goods-detail .goods-promot {
-  position: relative;
-  margin-top: 4px;
-}
-.goods .goods-detail .goods-promot .goods-image {
-  width: 20px;
-  height: 20px;
-  border: 1px #fc5e44 solid;
-  border-radius: 50%;
-  background: #fff;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 99;
-}
-.goods .goods-detail .goods-promot .goods-image .iconfont {
-  color: #fc5e44;
-  float: left;
-  margin-left: 2px;
-}
-.goods .goods-detail .goods-promot .goods-info {
-  background: #fc5e44;
-  color: #fff;
-  font-size: 24rpx;
-  line-height: 18px;
-  height: 18px;
-  padding-left: 15px;
-  position: absolute;
-  top: 2px;
-  left: 10px;
-  z-index: 1;
-}
-.goods .goods-detail .goods-promot .goods-end {
-  position: absolute;
-  right: -15px;
-  top: 0;
-}
-.goods .goods-detail .goods-promot .goods-end image {
-  width: 15px;
-  height: 18px;
 }

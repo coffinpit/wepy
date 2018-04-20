@@ -52,7 +52,7 @@
           <view class="goods-title"><image src="../image/sptj_img.png"/></view>
           
   <block wx:for="{{$goods$goodsItem}}" wx:for-index="$goods$index" wx:for-item="$goods$item" wx:key="$goods$key">
-    <view class="goods">
+    <view class="goods" bindtap="$goods$tap" id="{{$goods$item.id}}" data-wpytap-a="{{$goods$item.id}}">
       <view class="goods-image"><image src="{{$goods$item.path}}" mode="aspectFit" lazy-load="true"/></view>
       <view class="goods-detail">
         <view class="goods-detail-title">{{$goods$item.title}}</view>
@@ -61,7 +61,7 @@
         </view>
         <view class="goods-detail-oldprice">原价:{{$goods$item.oldprice}}</view>
         <view class="goods-promot">
-          <view class="goods-image">
+          <view class="goods-promot-image">
             <text class="iconfont icon-biaoqing"/>
           </view>
           <view class="goods-info">

@@ -1,14 +1,15 @@
 .counter {
-  text-align: left;
-  font-size: 12px;
+  display: flex;
 }
-.count {
-  font-size: 18px;
-  font-weight: bold;
+.counter .counter-btn {
+  border: 1px #eee solid;
+  width: 70rpx;
+  height: 70rpx;
+  font-size: 36rpx;
+  display: inline-block;
+  line-height: 70rpx;
+  text-align: center;
 }
-.count.red {
-  color: red;
-}
-.count.green {
-  color: green;
+.counter .number {
+  color: #fc5e43;
 }

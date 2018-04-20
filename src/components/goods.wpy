@@ -6,6 +6,9 @@
     padding:15px 0;
     height:100px;
     border-bottom:1px #eee solid;
+    &:last-child{
+      border-bottom:none;
+    }
     .goods-image{
       width:100px;
       border:1px #eee solid;
@@ -34,54 +37,12 @@
         font-size:12px;
         color:#999;
       }
-      .goods-promot{
-        position:relative;
-        margin-top:4px;
-        .goods-image{
-          width:20px;
-          height:20px;
-          border:1px #fc5e44 solid;
-          border-radius:50%;
-          background:#fff;
-          position:absolute;
-          top:0;
-          left:0;
-          z-index:99;
-          .iconfont{
-            color:#fc5e44;
-            float:left;
-            margin-left:2px;
-          }
-        }
-        .goods-info{
-          background:#fc5e44;
-          color:#fff;
-          font-size:24rpx;
-          line-height:18px;
-          height:18px;
-          padding-left:15px;
-          position:absolute;
-          top:2px;
-          left:10px;
-          z-index:1;
-        }
-        .goods-end{
-          position:absolute;
-          right:-15px;
-          top:0;
-          image{
-            width:15px;
-            height:18px;
-          }
-        }
-      }
-      
     }
   }
 </style>
 <template>
   <repeat for="{{goodsItem}}" item="item">
-    <view class="goods">
+    <view class="goods" @tap="tap({{item.id}})" id="{{item.id}}">
       <view class="goods-image"><image src="{{item.path}}" mode="aspectFit" lazy-load="true"></image></view>
       <view class="goods-detail">
         <view class="goods-detail-title">{{item.title}}</view>
@@ -90,7 +51,7 @@
         </view>
         <view class="goods-detail-oldprice">原价:{{item.oldprice}}</view>
         <view class="goods-promot">
-          <view class="goods-image">
+          <view class="goods-promot-image">
             <text class="iconfont icon-biaoqing"></text>
           </view>
           <view class="goods-info">
@@ -112,6 +73,9 @@
       goodsItem: {}
     }
     methods = {
+      tap (id) {
+        this.$emit('goodsTap', id)
+      }
     }
     onLoad () {
     }
