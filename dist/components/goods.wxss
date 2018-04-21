@@ -15,6 +15,9 @@
   height: 100px;
   overflow: hidden;
 }
+.goods .goods-image image {
+  height: 100%;
+}
 .goods .goods-detail {
   width: 65%;
   padding-left: 5%;

@@ -1,16 +1,17 @@
 <style lang="less">
-  .container{
-    margin-top:80rpx;
-  }
   swiper, image{
     width:100%;
   }
-  .index-swiper{
-    height:400rpx;
-    border-bottom: 3px #fe5946 solid;
-    image{
-      height:400rpx;
-    }
+  .swiper-box{ 
+    display: block;
+    width: 100%;
+  }  
+  image{
+    height:150px;
+  }
+  .my-scroll{
+    width:100%;
+    overflow:scroll;
   }
   .wrap {
     display: block;
@@ -60,12 +61,13 @@
   .top_nav-container{
     width:100%;
     border-top: 1px #eee solid;
+    margin-bottom:10px;
     background:#fff;
     .top_nav{
-      width:30%;
-      line-height:80rpx;
+      width:15%;
+      line-height:50px;
       text-align:center;
-      margin: 0 10%;
+      margin: 0 9%;
       font-size:14px;
     }
     .top_nav_active{
@@ -74,33 +76,29 @@
     }
   }
   .index-promot{
+    margin:10px 0;
     position: relative;
-    width:100%;
-    height:250rpx;
     .index-promot-img{
-      height:100%;
+      width:100%;
     }
     .index-promot-content{
       position:absolute;
-      left:30%;
+      left:28%;
       top:50%;
-      width:65%;
+      width:68%;
       transform:translateY(-50%);
-      color:#ffd05a;
+      color:#333;
       .index-promot-title{
         font-size:36rpx;
-        border-bottom:1px #ffd05a solid;
-        line-height:80rpx;
-        margin-bottom:20rpx;
+        border-bottom:1px #333 solid;
+        line-height:60rpx;
+        margin-bottom:10rpx;
       }
       .index-promot-txt{
         font-size:28rpx;
         line-height:36rpx;
       }
     }
-  }
-  .catogary{
-    padding:0 10px;
   }
   .index-catogary{
     .index-catogary-list{
@@ -109,7 +107,6 @@
       box-sizing:border-box;
       text-align:center;
       .index-catogary-list-bg{
-        background:#fff;
         border-radius:50%;
         box-shadow: 2px 2px 2px #eee;
         overflow:hidden;
@@ -128,8 +125,8 @@
   }
   .goods-title{
     text-align:center;
+    margin-top:10px;
     height:25px;
-    margin-top:40rpx;
     image{
       width:140px;
       height:25px;
@@ -143,54 +140,60 @@
 </style>
 <template>
   <view class="container">
-    <searchbar></searchbar>
-    <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" @change.stop="changeBanner" class="index-swiper">
-      <repeat for="{{bannerLink}}" index="index" item="item" key="key">
-          <swiper-item>
-            <image src="{{item.path}}" mode="aspectFill"></image>
-          </swiper-item>
-      </repeat>
-    </swiper>
-    <view class="index-promot">
-      <image class="index-promot-img" src="../image/syvip_bg.png" mode="aspectFill"></image>
-      <view class="index-promot-content">
-        <view class="index-promot-title">
-          优价会员
-        </view>
-        <view class="index-promot-txt">预计全年可帮您节省￥5690.0</view>
-        <view class="index-promot-txt">会员全场包邮(冷运品类需满两公斤包邮)</view>
-      </view>
-    </view>
-    <view class="catogary">
-      <wxc-flex cross="{{cross}}" class="index-catogary">
-        <repeat for="{{catogary}}" index="index" item="item">
-          <view class="index-catogary-list">
-            <view class="index-catogary-list-bg">
-              <image src="{{item.path}}" mode="aspectFit"></image>
-            </view>
-            <view class="index-catogary-list-title">
-              {{item.title}}
-            </view>
-          </view>
-        </repeat>
-      </wxc-flex>
-    </view>
     <wxc-flex cross="{{cross}}" class="top_nav-container">
       <repeat for="{{topnavigation}}" index="index" item="item">
         <view class="top_nav {{currentPage == index? 'top_nav_active' : ''}}" @tap="navTab({{index}})">{{item}}</view>
       </repeat>
     </wxc-flex>
-    <view wx:if="{{currentPage === 0}}" class="content">
-        <view class="goods-title"><image src="../image/sptj_img.png"></image></view>
-        <goods :goodsItem="goods" @goodsTap.user="goDetail"></goods>
-    </view>
-    <view wx:elif="{{currentPage === 1}}">b</view>
+    <swiper current="{{currentPage}}" autoplay="{{pageauto}}" @change="changeTab" class="swiper-box" style="height:{{winHeight - 51}}px">
+      <swiper-item>
+        <scroll-view scroll-y style="height:{{winHeight - 51}}px" @scrolltolower="bindDownLoad" @scrolltoupper="bindtop" lower-threshold="0">
+        <load wx:if="{{loaded}}"></load>
+        <view class="content">
+          <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" @change.stop="changeBanner">
+            <repeat for="{{bannerLink}}" index="index" item="item" key="key">
+                <swiper-item>
+                  <image src="{{item.path}}" mode="aspectFill"></image>
+                </swiper-item>
+            </repeat>
+          </swiper>
+          <view class="index-promot">
+            <image class="index-promot-img" src="../image/syvip_bg.png" mode="widthFix"></image>
+            <view class="index-promot-content">
+              <view class="index-promot-title">
+                优价会员
+              </view>
+              <view class="index-promot-txt">预计全年可帮您节省￥5690.0</view>
+              <view class="index-promot-txt">会员全场包邮(冷运品类需满两公斤包邮)</view>
+            </view>
+          </view>
+          <wxc-flex cross="{{cross}}" class="index-catogary">
+            <repeat for="{{catogary}}" index="index" item="item">
+              <view class="index-catogary-list">
+                <view class="index-catogary-list-bg">
+                  <image src="{{item.path}}" mode="aspectFit"></image>
+                </view>
+                <view class="index-catogary-list-title">
+                  {{item.title}}
+                </view>
+              </view>
+            </repeat>
+          </wxc-flex>
+        </view>
+        <view class="content">
+          <view class="goods-title"><image src="../image/sptj_img.png"></image></view>
+          <goods :goodsItem="goods" @goodsTap.user="goDetail"></goods>
+        </view>
+        </scroll-view>
+      </swiper-item>
+      <swiper-item>b</swiper-item>
+      <swiper-item>c</swiper-item>
+    </swiper>
   </view>  
 </template>
 
 <script>
   import wepy from 'wepy'
-  import Search from '../components/searchbar'
   import Goods from '../components/goods'
   import Loading from '../components/loading'
 
@@ -204,14 +207,13 @@
     }
     components = {
       goods: Goods,
-      load: Loading,
-      searchbar: Search
+      load: Loading
     }
     data = {
       winWidth: 0,
       winHeight: 0,
-      bannerLink: [{path: '../image/bg-bannerA@2x.jpg', id: 'png1'}, {path: '../image/bg-bannerB@2x.jpg', id: 'png2'}, {path: '../image/bg-bannerC@2x.jpg', id: 'png3'}, {path: '../image/bg-bannerD@2x.jpg', id: 'png4'}],
-      topnavigation: ['推荐', '热门'],
+      bannerLink: [{path: '../image/bg-bannerA@2x.png', id: 'png1'}, {path: '../image/bg-bannerB@2x.png', id: 'png2'}, {path: '../image/bg-bannerC@2x.png', id: 'png3'}, {path: '../image/bg-bannerD@2x.png', id: 'png4'}],
+      topnavigation: ['推荐', '热门', '搜索'],
       currentPage: 0,
       pageauto: false,
       swiperOpt: {
@@ -256,6 +258,26 @@
       changeBanner (e) {
         this.swiperOpt.currentTab = e.detail.current
       },
+      bindDownLoad () {
+        console.log('到底了')
+        // 显示加载状态
+        wepy.showLoading({
+          title: '加载中',
+          icon: 'loading'
+        })
+        // 发送请求并显示新数据
+        // 请求成功后隐藏loading
+        setTimeout(() => {
+          wepy.hideLoading()
+        }, 1000)
+      },
+      bindtop () {
+        this.loaded = true
+        // 页面初始为第一页 并发送请求
+        setTimeout(() => {
+          this.loaded = false
+        }, 3000)
+      },
       goDetail (id) {
         wepy.navigateTo({
           url: './detail?id=' + id
@@ -265,19 +287,6 @@
     onShow () {
       const token = wepy.getStorageSync('token')
       console.log(token)
-    }
-    onReachBottom () {
-      console.log('到底了')
-      // 显示加载状态
-      wepy.showLoading({
-        title: '加载中',
-        icon: 'loading'
-      })
-      // 发送请求并显示新数据
-      // 请求成功后隐藏loading
-      setTimeout(() => {
-        wepy.hideLoading()
-      }, 1000)
     }
     onLoad () {
       var _this = this
