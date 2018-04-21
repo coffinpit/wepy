@@ -132,6 +132,11 @@
   background:#ff4a2d;
   color:#f6edeb;
 }
+.size-full{
+  width: 100%;
+  line-height:116rpx;
+  font-size: 32rpx;
+}
 .goods-promot{
   position:relative;
   margin-top:4px;
@@ -215,19 +220,24 @@ export default class extends wepy.app {
     ],
     window: {
       backgroundTextStyle: 'dark',
-      navigationBarBackgroundColor: '#fff',
+      navigationBarBackgroundColor: '#fc5e43',
       navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
+      navigationBarTextStyle: 'white'
     },
     tabBar: {
       color: '#282626',
       selectedColor: '#fc5e44',
-      backgroundColor: '#fff',
+      backgroundColor: '#f8f8f8',
       list: [{
         pagePath: 'pages/index',
         iconPath: 'image/index-default.png',
         selectedIconPath: 'image/index-active.png',
         text: '首页'
+      }, {
+        pagePath: 'pages/cart',
+        iconPath: 'image/category-default.png',
+        selectedIconPath: 'image/category-active.png',
+        text: '分类'
       }, {
         pagePath: 'pages/cart',
         iconPath: 'image/cart-default.png',

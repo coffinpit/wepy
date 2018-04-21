@@ -105,29 +105,74 @@
   </view>
 
     <view class="popup" wx:if="{{overflow}}"/>
-    <view class="popup__content {{overflow? 'active' : ''}}">
-        <view class="popup_close"><text class="title" catchtap="closeBuy">关闭</text></view>
-        <view class="popup_layer">
-          <view class="popup_image">
-            <image src="{{detail.path}}" mode="aspectFit"/>
+    <view class="popup__content {{overflow && buyModal? 'active' : ''}}">
+      <view class="popup_close"><text class="title" catchtap="closeBuy">关闭</text></view>
+      <view class="popup_layer">
+        <view class="popup_image">
+          <image src="{{detail.path}}" mode="aspectFit"/>
+        </view>
+        <view class="popup_goods">
+          <view class="popup_goods_box">
+            <view class="popup_goods_left">
+              <text class="title">已选：</text>
+            </view>
+            <view class="popup_goods_right">
+              <text class="title">{{buyResult.name}} × {{buyNum}}</text>
+            </view>
           </view>
-          <view class="popup_goods">
-            <text class="title">已选：{{detail.buytitle}} × {{chooseNum}}</text>
-            <text class="title link">价格：￥{{total}}</text>
-            
+          <text class="title link">价格：￥{{totalBuy}}</text>
+          
   <view class="counter calculate">
-    <view catchtap="$counter$plusTap" class="counter-btn">  +  </view>
-    <view class="counter-btn number"> {{$counter$num}} </view>
-    <view catchtap="$counter$minusTap" class="counter-btn">  -  </view>
+    <view catchtap="$counterBuy$plusTap" class="counter-btn">  +  </view>
+    <view class="counter-btn number"> {{$counterBuy$num}} </view>
+    <view catchtap="$counterBuy$minusTap" class="counter-btn">  -  </view>
   </view>
 
-          </view>
         </view>
+      </view>
+      <radio-group bindchange="addBuyGoods">
         <block wx:for="{{detail.goodList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
           <view class="popup_layer">
             <view class="goods-name {{item.num === 0 ? 'none' : ''}}">{{item.name}}</view>
-            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">{{item.num}}</view>
+            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="#fc5e43" checked="{{item.checked}}" disabled="{{item.num === 0? true : false}}"/></view>
           </view>
         </block>
+      </radio-group>
+      <button class="default-button size-full">立即购买</button>
+    </view>
+    <view class="popup__content {{overflow && cartModal? 'active' : ''}}">
+      <view class="popup_close"><text class="title" catchtap="closeCart">关闭</text></view>
+      <view class="popup_layer">
+        <view class="popup_image">
+          <image src="{{detail.path}}" mode="aspectFit"/>
+        </view>
+        <view class="popup_goods">
+          <view class="popup_goods_box">
+            <view class="popup_goods_left">
+              <text class="title">已选：</text>
+            </view>
+            <view class="popup_goods_right">
+              <text class="title">{{cartResult.name}} × {{cartNum}}</text>
+            </view>
+          </view>
+          <text class="title link">价格：￥{{totalCart}}</text>
+          
+  <view class="counter calculate">
+    <view catchtap="$counterCart$plusTap" class="counter-btn">  +  </view>
+    <view class="counter-btn number"> {{$counterCart$num}} </view>
+    <view catchtap="$counterCart$minusTap" class="counter-btn">  -  </view>
+  </view>
+
+        </view>
       </view>
+      <radio-group bindchange="addCartGoods">
+        <block wx:for="{{detail.goodList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="popup_layer">
+            <view class="goods-name {{item.num === 0 ? 'none' : ''}}">{{item.name}}</view>
+            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="#fc5e43" checked="{{item.checked}}" disabled="{{item.num === 0? true : false}}"/></view>
+          </view>
+        </block>
+      </radio-group>
+      <button class="default-button size-full">加入购物车</button>
+    </view>
   </view>

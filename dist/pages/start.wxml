@@ -1,4 +1,4 @@
 
   <view class="start">
-    <image class="start_bg" src="../image/start.png" mode="aspectFill" bindload="getLoad"/>
+    <image class="start_bg" src="../image/login-bg.jpg" mode="widthFix" bindload="getLoad"/>
   </view>

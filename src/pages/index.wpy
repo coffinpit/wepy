@@ -280,8 +280,7 @@
       },
       goDetail (id) {
         wepy.navigateTo({
-          url: './detail',
-          id: id
+          url: './detail?id=' + id
         })
       }
     }

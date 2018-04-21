@@ -1,4 +1,7 @@
 <style lang="less">
+  .container{
+    overflow: hidden;
+  }
   .detail-info{
     position:relative;
     height:575rpx;
@@ -190,17 +193,19 @@
   .popup{
     width:100%;
     height:100%;
-    background:rgba(0,0,0,0.4);
+    background:rgba(0,0,0,0.6);
     position:fixed;
+    top:0;
+    left:0;
     z-index:999999;
   }
   .popup__content {
     position:fixed;
-    bottom:-500rpx;
+    bottom:-100%;
     left:0;
     transition: .5s all ease-out;
     width: 100%;
-    height: 500rpx;
+    min-height: 500rpx;
     background: #ffffff;
     z-index:9999999;
   }
@@ -208,7 +213,7 @@
     bottom:0;
   }
   .popup_close{
-    padding:10rpx 40rpx;
+    padding:20rpx 40rpx;
     text-align:right;
   }
   .popup_layer{
@@ -228,11 +233,22 @@
     .popup_goods{
       padding-left: 44rpx;
       padding-top:20rpx;
-      text{
+      width:550rpx;
+      box-sizing: border-box;
+      .link{
         display:block;
       }
       .calculate{
         margin-top:20rpx;
+      }
+      .popup_goods_box{
+        display:flex;
+        .popup_goods_left{
+          width:20%
+        }
+        .popup_goods_right{
+          width: 80%;
+        }
       }
     }
     .goods-name{
@@ -245,6 +261,9 @@
     }
     .none{
       color:#999;
+    }
+    radio{
+      float:right;
     }
   }
 </style>
@@ -338,27 +357,66 @@
         <view class="section">关于</view>
       </view>
     </view>
-    <bottom @buy.user="buy"></bottom>
+    <bottom @buy.user="buy" @cart.user="cart"></bottom>
     <view class="popup" wx:if="{{overflow}}"></view>
-    <view class="popup__content {{overflow? 'active' : ''}}">
-        <view class="popup_close"><text class="title" catchtap="closeBuy">关闭</text></view>
-        <view class="popup_layer">
-          <view class="popup_image">
-            <image src="{{detail.path}}" mode="aspectFit"></image>
-          </view>
-          <view class="popup_goods">
-            <text class="title">已选：{{detail.buytitle}} × {{chooseNum}}</text>
-            <text class="title link">价格：￥{{total}}</text>
-            <counter @plusEdit.user="plusTap" @minusEdit.user="minusTap" class="calculate" :num="chooseNum"></counter>
-          </view>
+    <view class="popup__content {{overflow && buyModal? 'active' : ''}}">
+      <view class="popup_close"><text class="title" @tap.stop="closeBuy">关闭</text></view>
+      <view class="popup_layer">
+        <view class="popup_image">
+          <image src="{{detail.path}}" mode="aspectFit"></image>
         </view>
+        <view class="popup_goods">
+          <view class="popup_goods_box">
+            <view class="popup_goods_left">
+              <text class="title">已选：</text>
+            </view>
+            <view class="popup_goods_right">
+              <text class="title">{{buyResult.name}} × {{buyNum}}</text>
+            </view>
+          </view>
+          <text class="title link">价格：￥{{totalBuy}}</text>
+          <counterBuy @plusEdit.user="plusBuy" @minusEdit.user="minusBuy" class="calculate" :num.sync="buyNum"></counterBuy>
+        </view>
+      </view>
+      <radio-group @change="addBuyGoods">
         <repeat for="{{detail.goodList}}" item="item" index="index">
           <view class="popup_layer">
             <view class="goods-name {{item.num === 0 ? 'none' : ''}}">{{item.name}}</view>
-            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">{{item.num}}</view>
+            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="#fc5e43" checked="{{item.checked}}" disabled="{{item.num === 0? true : false}}"></radio></view>
           </view>
         </repeat>
+      </radio-group>
+      <button class="default-button size-full">立即购买</button>
+    </view>
+    <view class="popup__content {{overflow && cartModal? 'active' : ''}}">
+      <view class="popup_close"><text class="title" @tap.stop="closeCart">关闭</text></view>
+      <view class="popup_layer">
+        <view class="popup_image">
+          <image src="{{detail.path}}" mode="aspectFit"></image>
+        </view>
+        <view class="popup_goods">
+          <view class="popup_goods_box">
+            <view class="popup_goods_left">
+              <text class="title">已选：</text>
+            </view>
+            <view class="popup_goods_right">
+              <text class="title">{{cartResult.name}} × {{cartNum}}</text>
+            </view>
+          </view>
+          <text class="title link">价格：￥{{totalCart}}</text>
+          <counterCart @plusEdit.user="plusCart" @minusEdit.user="minusCart" class="calculate" :num.sync="cartNum"></counterCart>
+        </view>
       </view>
+      <radio-group @change="addCartGoods">
+        <repeat for="{{detail.goodList}}" item="item" index="index">
+          <view class="popup_layer">
+            <view class="goods-name {{item.num === 0 ? 'none' : ''}}">{{item.name}}</view>
+            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="#fc5e43" checked="{{item.checked}}" disabled="{{item.num === 0? true : false}}"></radio></view>
+          </view>
+        </repeat>
+      </radio-group>
+      <button class="default-button size-full">加入购物车</button>
+    </view>
   </view>
 </template>
 
@@ -373,11 +431,15 @@
     }
     components = {
       bottom: Bottom,
-      counter: Count
+      counterBuy: Count,
+      counterCart: Count
     }
     computed = {
-      total () {
-        return (this.detail.price * this.chooseNum).toFixed(1)
+      totalBuy () {
+        return this.buyResult.price * this.buyNum
+      },
+      totalCart () {
+        return this.cartResult.price * this.cartNum
       }
     }
     data = {
@@ -392,9 +454,14 @@
           price: 69,
           num: 0
         }, {
-          name: '自然牛肉500g',
+          name: '自然牛肉1000g',
           price: 120,
-          num: 0
+          num: 98,
+          checked: true
+        }, {
+          name: '自然牛肉2000g',
+          price: 220,
+          num: 98
         }]},
       collect: false,
       overflow: false,
@@ -435,7 +502,12 @@
         detail: '配送规则',
         isLink: true
       }],
-      chooseNum: 1
+      buyNum: 1,
+      cartNum: 1,
+      buyResult: [],
+      cartResult: [],
+      buyModal: false,
+      cartModal: false
     }
     methods = {
       collectTap () {
@@ -446,23 +518,83 @@
       },
       buy () {
         this.overflow = true
+        this.buyModal = true
       },
       closeBuy () {
         this.overflow = false
+        this.buyModal = false
+        this.initBuyResult()
+        this.buyNum = 1
+        // 发送清空商品请求
       },
-      plusTap () {
-        console.log('fa plus')
+      cart () {
+        this.overflow = true
+        this.cartModal = true
       },
-      minusTap () {
-        console.log('fa minus')
+      closeCart () {
+        this.overflow = false
+        this.cartModal = false
+      },
+      plusBuy () {
+        console.log(this.buyNum)
+        this.buyNum ++
+        // 发送数量
+      },
+      minusBuy () {
+        this.buyNum --
+        if (this.buyNum <= 0) {
+          this.buyNum = 0
+        }
+        // 发送数量
+      },
+      addBuyGoods (e) {
+        // 发送选中结果
+        this.buyResult = this.detail.goodList[e.detail.value]
+        console.log(this.buyResult)
+      },
+      plusCart () {
+        this.cartNum ++
+      },
+      minusCart () {
+        this.cartNum --
+        if (this.cartNum <= 0) {
+          this.cartNum = 0
+        }
+      },
+      addCartGoods (e) {
+        // 发送选中结果
+        this.cartResult = this.detail.goodList[e.detail.value]
+        console.log(this.cartResult)
       }
     }
-    onload (id) {
+    initCartData () {
+      // 往后台发请求清空购物车选项
+    }
+    initBuyData () {
+      // 往后台发请求清空立即购买选项
+    }
+    initBuyResult (id) {
+      // 根据商品id发送请求返回商品详情数据
+      let result = this.detail.goodList.filter((item) => {
+        return item.checked
+      })
+      this.buyResult = result[0]
+    }
+    initCartResult (id) {
+      // 根据商品id发送请求返回商品详情数据
+      let result = this.detail.goodList.filter((item) => {
+        return item.checked
+      })
+      this.cartResult = result[0]
+    }
+    onLoad (id) {
       console.log(id)
+      this.initBuyResult(id)
+      this.initCartResult(id)
       var _this = this
       wepy.getSystemInfo({
         success: function (res) {
-          _this.winHeight = res.windowHeight
+          _this.winHeight = res.windowHeight + 'px'
         }
       })
       this.$apply()

@@ -39,16 +39,9 @@
 
     methods = {
       plusTap () {
-        this.num = this.num + 1
-        console.log(this.$name + ' plus tap')
         this.$emit('plusEdit')
       },
       minusTap () {
-        this.num = this.num - 1
-        if (this.num < 0) {
-          this.num = 0
-        }
-        console.log(this.$name + ' minus tap')
         this.$emit('minusEdit')
       }
     }

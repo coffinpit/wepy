@@ -173,6 +173,11 @@
   background: #ff4a2d;
   color: #f6edeb;
 }
+.size-full {
+  width: 100%;
+  line-height: 116rpx;
+  font-size: 32rpx;
+}
 .goods-promot {
   position: relative;
   margin-top: 4px;

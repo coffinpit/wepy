@@ -1,5 +1,8 @@
 @import "./../components/counter.wxss";
 @import "./../components/bottombar.wxss";
+.container {
+  overflow: hidden;
+}
 .detail-info {
   position: relative;
   height: 575rpx;
@@ -191,17 +194,19 @@
 .popup {
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.6);
   position: fixed;
+  top: 0;
+  left: 0;
   z-index: 999999;
 }
 .popup__content {
   position: fixed;
-  bottom: -500rpx;
+  bottom: -100%;
   left: 0;
   transition: 0.5s all ease-out;
   width: 100%;
-  height: 500rpx;
+  min-height: 500rpx;
   background: #ffffff;
   z-index: 9999999;
 }
@@ -209,7 +214,7 @@
   bottom: 0;
 }
 .popup_close {
-  padding: 10rpx 40rpx;
+  padding: 20rpx 40rpx;
   text-align: right;
 }
 .popup_layer {
@@ -230,12 +235,23 @@
 .popup_layer .popup_goods {
   padding-left: 44rpx;
   padding-top: 20rpx;
+  width: 550rpx;
+  box-sizing: border-box;
 }
-.popup_layer .popup_goods text {
+.popup_layer .popup_goods .link {
   display: block;
 }
 .popup_layer .popup_goods .calculate {
   margin-top: 20rpx;
+}
+.popup_layer .popup_goods .popup_goods_box {
+  display: flex;
+}
+.popup_layer .popup_goods .popup_goods_box .popup_goods_left {
+  width: 20%;
+}
+.popup_layer .popup_goods .popup_goods_box .popup_goods_right {
+  width: 80%;
 }
 .popup_layer .goods-name {
   width: 70%;
@@ -247,4 +263,7 @@
 }
 .popup_layer .none {
   color: #999;
+}
+.popup_layer radio {
+  float: right;
 }

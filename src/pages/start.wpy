@@ -7,12 +7,11 @@
   }
   .start_bg{
     width:100%;
-    height:100%;
   }
 </style>
 <template>
   <view class="start">
-    <image class="start_bg" src="../image/start.png" mode="aspectFill" @load="getLoad"></image>
+    <image class="start_bg" src="../image/login-bg.jpg" mode="widthFix" @load="getLoad"></image>
   </view>
 </template>
 
