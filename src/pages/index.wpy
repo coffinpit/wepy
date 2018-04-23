@@ -32,19 +32,6 @@
     line-height: 50rpx;
     background: #f397b2
   }
-
-  .setting-button {
-    display: inline-block;
-    line-height: 50rpx;
-    margin: 20rpx 10rpx 0 0;
-    padding: 2rpx 20rpx;
-    border-radius: 6rpx;
-    background: #31b0d5;
-    color: #ffffff;
-    font-size: 18rpx;
-    text-align: center;
-  }
-
   .layout-code {
     padding: 15rpx;
     background: #222222;
@@ -59,11 +46,10 @@
   }
   .top_nav-container{
     width:100%;
-    border-top: 1px #eee solid;
     background:#fff;
     .top_nav{
       width:30%;
-      line-height:80rpx;
+      line-height:90rpx;
       text-align:center;
       margin: 0 10%;
       font-size:14px;
@@ -96,33 +82,6 @@
       .index-promot-txt{
         font-size:28rpx;
         line-height:36rpx;
-      }
-    }
-  }
-  .catogary{
-    padding:0 10px;
-  }
-  .index-catogary{
-    .index-catogary-list{
-      width:25%;
-      padding:10px 5px;
-      box-sizing:border-box;
-      text-align:center;
-      .index-catogary-list-bg{
-        background:#fff;
-        border-radius:50%;
-        box-shadow: 2px 2px 2px #eee;
-        overflow:hidden;
-        height:160rpx;
-        width:160rpx;
-        text-align:center;
-        margin-bottom:10px;
-        image{
-          height:160rpx;
-        }
-      }
-      .index-catogary-list-title{
-        font-size:32rpx;
       }
     }
   }
@@ -160,20 +119,6 @@
         <view class="index-promot-txt">预计全年可帮您节省￥5690.0</view>
         <view class="index-promot-txt">会员全场包邮(冷运品类需满两公斤包邮)</view>
       </view>
-    </view>
-    <view class="catogary">
-      <wxc-flex cross="{{cross}}" class="index-catogary">
-        <repeat for="{{catogary}}" index="index" item="item">
-          <view class="index-catogary-list">
-            <view class="index-catogary-list-bg">
-              <image src="{{item.path}}" mode="aspectFit"></image>
-            </view>
-            <view class="index-catogary-list-title">
-              {{item.title}}
-            </view>
-          </view>
-        </repeat>
-      </wxc-flex>
     </view>
     <wxc-flex cross="{{cross}}" class="top_nav-container">
       <repeat for="{{topnavigation}}" index="index" item="item">
@@ -226,7 +171,6 @@
       pageTab: {
         currentPage: 1
       },
-      catogary: [{path: '../image/login-bg.jpg', title: '肉禽'}, {path: '../image/login-bg.jpg', title: '水产'}, {path: '../image/login-bg.jpg', title: '厨具'}, {path: '../image/login-bg.jpg', title: '酒饮'}],
       scrollTop: 0,
       cross: 'stretch',
       baseHeight: 101,

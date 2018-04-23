@@ -168,10 +168,25 @@
   font-size: 28rpx;
   line-height: 48rpx;
   border-radius: 0;
+  margin: 0;
 }
 .default-button-hover {
   background: #ff4a2d;
   color: #f6edeb;
+}
+.blank-button {
+  border: 1px #fc5e44 solid;
+  color: #fc5e44;
+  font-size: 28rpx;
+  line-height: 44rpx;
+  border-radius: 0;
+  margin: 0;
+  position: initial;
+  background: transparent;
+}
+.blank-button-hover {
+  background: #fc5e44;
+  color: #fff;
 }
 .size-full {
   width: 100%;
@@ -231,5 +246,17 @@
   line-height: 44rpx;
 }
 .link {
-  color: #fc5e43;
+  color: #fc5e43 !important;
+}
+.font-bold {
+  font-weight: 700;
+}
+.tips {
+  font-size: 24rpx;
+  color: #999;
+}
+.font-small {
+  font-size: 24rpx;
+  color: #333;
+  line-height: 36rpx;
 }

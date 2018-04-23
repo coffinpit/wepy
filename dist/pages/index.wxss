@@ -35,17 +35,6 @@ image {
   line-height: 50rpx;
   background: #f397b2;
 }
-.setting-button {
-  display: inline-block;
-  line-height: 50rpx;
-  margin: 20rpx 10rpx 0 0;
-  padding: 2rpx 20rpx;
-  border-radius: 6rpx;
-  background: #31b0d5;
-  color: #ffffff;
-  font-size: 18rpx;
-  text-align: center;
-}
 .layout-code {
   padding: 15rpx;
   background: #222222;
@@ -60,12 +49,11 @@ image {
 }
 .top_nav-container {
   width: 100%;
-  border-top: 1px #eee solid;
   background: #fff;
 }
 .top_nav-container .top_nav {
   width: 30%;
-  line-height: 80rpx;
+  line-height: 90rpx;
   text-align: center;
   margin: 0 10%;
   font-size: 14px;
@@ -99,31 +87,6 @@ image {
 .index-promot .index-promot-content .index-promot-txt {
   font-size: 28rpx;
   line-height: 36rpx;
-}
-.catogary {
-  padding: 0 10px;
-}
-.index-catogary .index-catogary-list {
-  width: 25%;
-  padding: 10px 5px;
-  box-sizing: border-box;
-  text-align: center;
-}
-.index-catogary .index-catogary-list .index-catogary-list-bg {
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 2px 2px 2px #eee;
-  overflow: hidden;
-  height: 160rpx;
-  width: 160rpx;
-  text-align: center;
-  margin-bottom: 10px;
-}
-.index-catogary .index-catogary-list .index-catogary-list-bg image {
-  height: 160rpx;
-}
-.index-catogary .index-catogary-list .index-catogary-list-title {
-  font-size: 32rpx;
 }
 .goods-title {
   text-align: center;

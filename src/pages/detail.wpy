@@ -415,7 +415,7 @@
           </view>
         </repeat>
       </radio-group>
-      <button class="default-button size-full">加入购物车</button>
+      <button class="default-button size-full" @tap="goCart">加入购物车</button>
     </view>
   </view>
 </template>
@@ -449,20 +449,8 @@
         oldprice: '140.0',
         express: '38.0',
         title: '美国自然牛USDA PRIMA极佳级肉眼牛排',
-        goodList: [{
-          name: '自然牛肉500g',
-          price: 69,
-          num: 0
-        }, {
-          name: '自然牛肉1000g',
-          price: 120,
-          num: 98,
-          checked: true
-        }, {
-          name: '自然牛肉2000g',
-          price: 220,
-          num: 98
-        }]},
+        goodList: []
+      },
       collect: false,
       overflow: false,
       winHeight: 0,
@@ -506,6 +494,8 @@
       cartNum: 1,
       buyResult: [],
       cartResult: [],
+      totalBuy: 0,
+      totalCart: 0,
       buyModal: false,
       cartModal: false
     }
@@ -519,24 +509,27 @@
       buy () {
         this.overflow = true
         this.buyModal = true
+        this.initBuyResult()
       },
       closeBuy () {
         this.overflow = false
         this.buyModal = false
-        this.initBuyResult()
         this.buyNum = 1
+        this.detail.goodList = []
         // 发送清空商品请求
       },
       cart () {
         this.overflow = true
         this.cartModal = true
+        this.initCartResult()
       },
       closeCart () {
         this.overflow = false
         this.cartModal = false
+        this.cartNum = 1
+        this.detail.goodList = []
       },
       plusBuy () {
-        console.log(this.buyNum)
         this.buyNum ++
         // 发送数量
       },
@@ -550,7 +543,6 @@
       addBuyGoods (e) {
         // 发送选中结果
         this.buyResult = this.detail.goodList[e.detail.value]
-        console.log(this.buyResult)
       },
       plusCart () {
         this.cartNum ++
@@ -564,7 +556,11 @@
       addCartGoods (e) {
         // 发送选中结果
         this.cartResult = this.detail.goodList[e.detail.value]
-        console.log(this.cartResult)
+      },
+      goCart () {
+        wepy.switchTab({
+          url: './cart'
+        })
       }
     }
     initCartData () {
@@ -574,14 +570,42 @@
       // 往后台发请求清空立即购买选项
     }
     initBuyResult (id) {
-      // 根据商品id发送请求返回商品详情数据
-      let result = this.detail.goodList.filter((item) => {
+      // 根据商品id发送请求返回商品详情数据 以下模拟数据
+      this.detail.goodList = [{
+        name: '自然牛肉500g',
+        price: 69,
+        num: 0
+      }, {
+        name: '自然牛肉1000g',
+        price: 120,
+        num: 98,
+        checked: true
+      }, {
+        name: '自然牛肉2000g',
+        price: 220,
+        num: 98
+      }]
+      let resultbuy = this.detail.goodList.filter((item) => {
         return item.checked
       })
-      this.buyResult = result[0]
+      this.buyResult = resultbuy[0]
     }
     initCartResult (id) {
-      // 根据商品id发送请求返回商品详情数据
+      // 根据商品id发送请求返回商品详情数据 以下模拟数据
+      this.detail.goodList = [{
+        name: '自然牛肉500g',
+        price: 69,
+        num: 0
+      }, {
+        name: '自然牛肉1000g',
+        price: 120,
+        num: 98,
+        checked: true
+      }, {
+        name: '自然牛肉2000g',
+        price: 220,
+        num: 98
+      }]
       let result = this.detail.goodList.filter((item) => {
         return item.checked
       })

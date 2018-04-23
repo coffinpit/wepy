@@ -12,6 +12,8 @@
     }
     .number {
       color:#fc5e43;
+      width:67rpx;
+      height:70rpx;
     }
   }
   
@@ -19,7 +21,7 @@
 <template>
   <view class="counter">
     <view @tap.stop="plusTap" class="counter-btn">  +  </view>
-    <view class="counter-btn number"> {{num}} </view>
+    <input type="number" @input="inputTap" class="counter-btn number" value="{{num}}"/> 
     <view @tap.stop="minusTap" class="counter-btn">  -  </view>
   </view>
 </template>
@@ -43,7 +45,24 @@
       },
       minusTap () {
         this.$emit('minusEdit')
+      },
+      inputTap (e) {
+        var reg = /^[1-9]\d*$|^0$/
+        if (e.detail.value === '') {
+          e.detail.value = 0
+        }
+        if (!reg.test(e.detail.value)) {
+          wepy.showToast({
+            title: '请输入有效数字',
+            image: '../image/cancel.png',
+            duration: 1000
+          })
+        }
+        this.$emit('keyEdit', e.detail.value)
       }
+    }
+    onLoad() {
+      this.$apply()
     }
   }
 </script>

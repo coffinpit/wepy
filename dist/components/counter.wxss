@@ -12,4 +12,6 @@
 }
 .counter .number {
   color: #fc5e43;
+  width: 67rpx;
+  height: 70rpx;
 }

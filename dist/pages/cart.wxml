@@ -1,15 +1,36 @@
 
-  <view class="content">
-    <view>购物车</view>
-    <view class="item-box">  
-      <view class="items">  
-          <block wx:for="{{list}}" wx:for-index="index" wx:for-item="item" wx:key="index">  
-          <view class="item-list">
-            <view catchtouchstart="touchS" catchtouchmove="touchM" catchtouchend="touchE" data-index="{{index}}" style="{{item.txtStyle}}" class="inner txt">  
-            {{index}}{{item.txt}}</view>  
-            <view data-index="{{index}}" bindtap="delItem" class="inner del">删除</view>  
-           </view>
-          </block>
-      </view>  
+  <view class="container">
+    <view class="cart-status">
+      <text class="title">已购￥{{cartStatus.totalprice}}，成为会员立减<text class="title link font-bold">￥{{cartStatus.discount}}</text></text>
+      <button class="blank-button">加入会员</button>
     </view>
+    
+  <view class="item-box">  
+    <view class="items">  
+        <block wx:for="{{$orderItem$list}}" wx:for-index="$orderItem$index" wx:for-item="$orderItem$item" wx:key="$orderItem$index">  
+        <view class="item-list">
+          <view class="inner txt {{$orderItem$current === $orderItem$index ? $orderItem$animate : ''}}"> 
+            <view class="inner-layer" catchtouchstart="$orderItem$touchS" catchtouchmove="$orderItem$touchM" data-index="{{$orderItem$index}}">
+              <text class="title">{{$orderItem$item.title}}</text>
+              <text class="tips">{{$orderItem$item.detail}}</text>
+              <text class="font-small link">会员价：￥{{$orderItem$item.price}} </text>
+              <text class="font-small">原价：￥{{$orderItem$item.oldprice}}</text>
+            </view>
+            <view class="inner-image">
+              <image src="{{$orderItem$item.path}}" mode="aspectFill"/>
+              
+  <view class="counter">
+    <view catchtap="$orderItem$counte$plusTap" class="counter-btn" data-com-index="{{$orderItem$index}}">  +  </view>
+    <input type="number" bindinput="$orderItem$counte$inputTap" class="counter-btn number" value="{{$orderItem$item.count}}" data-com-index="{{$orderItem$index}}"/> 
+    <view catchtap="$orderItem$counte$minusTap" class="counter-btn" data-com-index="{{$orderItem$index}}">  -  </view>
+  </view>
+  
+            </view>
+          </view>
+          <view data-index="{{$orderItem$index}}" bindtap="$orderItem$delItem" class="inner del">删除</view>  
+         </view>
+        </block>
+    </view>  
+  </view>
+
   </view>

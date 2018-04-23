@@ -60,7 +60,7 @@
         
   <view class="counter">
     <view catchtap="$counter1$plusTap" class="counter-btn">  +  </view>
-    <view class="counter-btn number"> {{$counter1$num}} </view>
+    <input type="number" bindinput="$counter1$inputTap" class="counter-btn number" value="{{$counter1$num}}"/> 
     <view catchtap="$counter1$minusTap" class="counter-btn">  -  </view>
   </view>
 
@@ -72,7 +72,7 @@
         
   <view class="counter">
     <view catchtap="$counter2$plusTap" class="counter-btn">  +  </view>
-    <view class="counter-btn number"> {{$counter2$num}} </view>
+    <input type="number" bindinput="$counter2$inputTap" class="counter-btn number" value="{{$counter2$num}}"/> 
     <view catchtap="$counter2$minusTap" class="counter-btn">  -  </view>
   </view>
 

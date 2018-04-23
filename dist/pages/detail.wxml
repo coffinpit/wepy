@@ -124,7 +124,7 @@
           
   <view class="counter calculate">
     <view catchtap="$counterBuy$plusTap" class="counter-btn">  +  </view>
-    <view class="counter-btn number"> {{$counterBuy$num}} </view>
+    <input type="number" bindinput="$counterBuy$inputTap" class="counter-btn number" value="{{$counterBuy$num}}"/> 
     <view catchtap="$counterBuy$minusTap" class="counter-btn">  -  </view>
   </view>
 
@@ -159,7 +159,7 @@
           
   <view class="counter calculate">
     <view catchtap="$counterCart$plusTap" class="counter-btn">  +  </view>
-    <view class="counter-btn number"> {{$counterCart$num}} </view>
+    <input type="number" bindinput="$counterCart$inputTap" class="counter-btn number" value="{{$counterCart$num}}"/> 
     <view catchtap="$counterCart$minusTap" class="counter-btn">  -  </view>
   </view>
 
@@ -173,6 +173,6 @@
           </view>
         </block>
       </radio-group>
-      <button class="default-button size-full">加入购物车</button>
+      <button class="default-button size-full" bindtap="goCart">加入购物车</button>
     </view>
   </view>

@@ -1,0 +1,200 @@
+<style type="less">
+  .item-box{  
+    width:100%;
+    background-color: #fff;
+    margin-top:20rpx;
+  }  
+  .items{  
+    width: 100%;  
+  }  
+  .item-list{  
+      position: relative;  
+      border-top: 2rpx solid #eee;  
+      height: 240rpx;  
+      overflow: hidden;  
+  }  
+  .item-list:last-child{  
+      border-bottom: 2rpx solid #eee;  
+  }  
+  .inner{  
+      position: absolute;  
+      top:0;  
+      height:100%;
+  }  
+  .inner.txt{
+    background-color: #fff;  
+    width: 100%;  
+    z-index: 999;  
+    padding:20rpx;  
+    overflow:hidden;  
+    transition: all 0.2s ease-in-out; 
+  }  
+  .inner.del{  
+      background-color: #e64340;  
+      width: 120rpx;
+      height:100%;
+      line-height:240rpx;
+      text-align: center;  
+      z-index: 4;  
+      right: 0;  
+      color: #fff  
+  } 
+  .inner-left{
+    width:400rpx;
+    overflow:hidden;
+    white-space:break-all;
+    .place{
+      min-height: 108rpx;
+    }
+  }
+  .inner-animate-left{
+    transform:translateX(-120rpx)
+  } 
+  .inner-layer{
+    width:400rpx;
+    overflow:hidden;
+    position:absolute;
+    top:20rpx;
+    left:20rpx;
+    z-index:-1;
+    .title{
+      min-height:108rpx;
+      height:108rpx;
+      line-height:38rpx;
+      overflow:hidden;
+    }
+    .tips, .title{
+      display:block;
+    }
+    .tips{
+      margin-top:10rpx;
+    }
+  }
+  .inner-image{
+    position:absolute;
+    right:20rpx;
+    top:20rpx;
+    height:200rpx;
+    display:inline-block;
+    width:272rpx;
+    z-index:9999;
+    image{
+      width:200rpx;
+      height:200rpx;
+      border:1px #eee solid;
+      float:left;
+      border-right:none;
+    }
+  }
+  .counter{
+    display:inline-block;
+    float:left;
+    z-index:999999999;
+    .counter-btn{
+      display:block;
+    }
+    .number{
+      border-top:none;
+      border-bottom:none;
+    }
+  }
+</style>
+<template>
+  <view class="item-box">  
+    <view class="items">  
+        <repeat for="{{list}}" index="index" item="item" key="index">  
+        <view class="item-list">
+          <view  class="inner txt {{current === index ? animate : ''}}"> 
+            <view class="inner-layer" @touchstart.stop="touchS" @touchmove.stop="touchM" data-index="{{index}}">
+              <text class="title">{{item.title}}</text>
+              <text class="tips">{{item.detail}}</text>
+              <text class="font-small link">会员价：￥{{item.price}} </text>
+              <text class="font-small">原价：￥{{item.oldprice}}</text>
+            </view>
+            <view class="inner-image">
+              <image src="{{item.path}}" mode="aspectFill"></image>
+              <counte :num.sync ="item.count" @plusEdit.user="plusCart" @minusEdit.user="minCart" @keyEdit.user="keyCart" data-index="{{index}}"></counte>  
+            </view>
+          </view>
+          <view data-index="{{index}}" @tap="delItem" class="inner del">删除</view>  
+         </view>
+        </repeat>
+    </view>  
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import Counte from './counter'
+
+  export default class OrderItem extends wepy.component {
+    props = {
+      list: Object
+    }
+    components = {
+      counte: Counte
+    }
+    data = {
+      delBtnWidth: 180,
+      startX: 0,
+      animate: '',
+      current: '',
+      cartcount: []
+    }
+    methods = {
+      touchS (e) {
+        if (e.touches.length === 1) {
+          this.startX = e.touches[0].clientX
+        }
+      },
+      touchM (e) {
+        this.current = e.currentTarget.dataset.index
+        if (e.touches.length === 1) {
+          var moveX = e.touches[0].clientX
+          var disX = this.startX - moveX
+          if (disX === 0 || disX < 0) {
+            this.animate = ''
+            this.current = ''
+          } else if (disX > 0) {
+            this.animate = 'inner-animate-left'
+          }
+        }
+      },
+      delItem (e) {
+        var that = this
+        wepy.showModal({
+          title: '提示',
+          content: '是否删除？',
+          success: function (res) {
+            if (res.confirm) {
+              var index = e.currentTarget.dataset.index
+              var list = that.list
+              list.splice(index, 1)
+            }
+            that.animate = ''
+            this.current = ''
+            that.$apply()
+          }
+        })
+      },
+      plusCart (e) {
+        var index = e.source.$index
+        this.$parent.data.list[index].count ++
+        this.$apply()
+        // 发送购物车修改数据
+      },
+      minCart (e) {
+        var index = e.source.$index
+        this.$parent.data.list[index].count --
+        this.$apply()
+        // 发送购物车修改数据
+      },
+      keyCart (val, e) {
+        var index = e.source.$index
+        this.$parent.data.list[index].count = val
+      }
+    }
+    onLoad () {
+      this.$apply()
+    }
+  }
+</script>
