@@ -5,32 +5,87 @@
       <button class="blank-button">加入会员</button>
     </view>
     
-  <view class="item-box">  
-    <view class="items">  
-        <block wx:for="{{$orderItem$list}}" wx:for-index="$orderItem$index" wx:for-item="$orderItem$item" wx:key="$orderItem$index">  
-        <view class="item-list">
-          <view class="inner txt {{$orderItem$current === $orderItem$index ? $orderItem$animate : ''}}"> 
-            <view class="inner-layer" catchtouchstart="$orderItem$touchS" catchtouchmove="$orderItem$touchM" data-index="{{$orderItem$index}}">
-              <text class="title">{{$orderItem$item.title}}</text>
-              <text class="tips">{{$orderItem$item.detail}}</text>
-              <text class="font-small link">会员价：￥{{$orderItem$item.price}} </text>
-              <text class="font-small">原价：￥{{$orderItem$item.oldprice}}</text>
-            </view>
-            <view class="inner-image">
-              <image src="{{$orderItem$item.path}}" mode="aspectFill"/>
-              
+  <checkbox-group bindchange="$orderItem$checkboxChange" class="check-G">  
+  <view class="cart-list">
+    <view class="content">
+      <text class="title"><text class="iconfont icon-ys_ly"/>冷链配送</text>
+    </view>
+    <view class="item-box">  
+      <view class="items">
+          <block wx:for="{{$orderItem$coldlist}}" wx:for-index="$orderItem$index" wx:for-item="$orderItem$item" wx:key="$orderItem$index">  
+          <view class="item-list">
+            <view class="edited"  wx:if="{{$orderItem$isEdit}}"/>
+            <view class="inner txt {{$orderItem$isEdit ? 'inner-animate-left' : ''}}"> 
+              <view class="inner-layer" data-index="{{$orderItem$index}}" id="{{$orderItem$item.id}}" catchtap="$orderItem$goDetail" data-wpygodetail-a="{{$orderItem$item.id}}">
+                <text class="title">{{$orderItem$item.title}}</text>
+                <text class="tips">{{$orderItem$item.detail}}</text>
+                <text class="font-small link">会员价：￥{{$orderItem$item.price}} </text>
+                <text class="font-small">原价：￥{{$orderItem$item.oldprice}}</text>
+              </view>
+              <view class="inner-image">
+                <image src="{{$orderItem$item.path}}" mode="aspectFill" catchtap="$orderItem$goDetail" data-wpygodetail-a="{{$orderItem$item.id}}"/>
+                
   <view class="counter">
-    <view catchtap="$orderItem$counte$plusTap" class="counter-btn" data-com-index="{{$orderItem$index}}">  +  </view>
-    <input type="number" bindinput="$orderItem$counte$inputTap" class="counter-btn number" value="{{$orderItem$item.count}}" data-com-index="{{$orderItem$index}}"/> 
-    <view catchtap="$orderItem$counte$minusTap" class="counter-btn" data-com-index="{{$orderItem$index}}">  -  </view>
+    <view catchtap="$orderItem$counteCold$plusTap" class="counter-btn" data-com-index="{{$orderItem$index}}">  +  </view>
+    <input type="number" bindblur="$orderItem$counteCold$inputTap" class="counter-btn number" value="{{$orderItem$item.count}}" data-com-index="{{$orderItem$index}}"/> 
+    <view catchtap="$orderItem$counteCold$minusTap" class="counter-btn" data-com-index="{{$orderItem$index}}">  -  </view>
   </view>
   
+              </view>
             </view>
-          </view>
-          <view data-index="{{$orderItem$index}}" bindtap="$orderItem$delItem" class="inner del">删除</view>  
-         </view>
-        </block>
-    </view>  
+            <view data-index="{{$orderItem$index}}" class="inner del" style="z-index:{{$orderItem$isEdit? '99999' : '4'}}">
+              <checkbox value="{{$orderItem$item.id}}" checked="{{$orderItem$item.checked}}" color="#fc5e43"/>
+            </view>  
+           </view>
+          </block>
+      </view>  
+    </view>                 
+  </view>
+  <view class="cart-list">
+    <view class="content">
+      <text class="title"><text class="iconfont icon-ys_cg"/>常规配送</text>
+    </view>
+    <view class="item-box">  
+      <view class="items">  
+          <block wx:for="{{$orderItem$normallist}}" wx:for-index="$orderItem$index" wx:for-item="$orderItem$item" wx:key="$orderItem$index">  
+          <view class="item-list">
+            <view class="edited"  wx:if="{{$orderItem$isEdit}}"/>
+            <view class="inner txt {{$orderItem$isEdit ? 'inner-animate-left' : ''}}"> 
+              <view class="inner-layer" data-index="{{$orderItem$index}}" id="{{$orderItem$item.id}}" catchtap="$orderItem$goDetail" data-wpygodetail-a="{{$orderItem$item.id}}">
+                <text class="title">{{$orderItem$item.title}}</text>
+                <text class="tips">{{$orderItem$item.detail}}</text>
+                <text class="font-small link">会员价：￥{{$orderItem$item.price}} </text>
+                <text class="font-small">原价：￥{{$orderItem$item.oldprice}}</text>
+              </view>
+              <view class="inner-image">
+                <image src="{{$orderItem$item.path}}" mode="aspectFill"/>
+                
+  <view class="counter">
+    <view catchtap="$orderItem$counteNormal$plusTap" class="counter-btn" data-com-index="{{$orderItem$index}}">  +  </view>
+    <input type="number" bindblur="$orderItem$counteNormal$inputTap" class="counter-btn number" value="{{$orderItem$item.count}}" data-com-index="{{$orderItem$index}}"/> 
+    <view catchtap="$orderItem$counteNormal$minusTap" class="counter-btn" data-com-index="{{$orderItem$index}}">  -  </view>
+  </view>
+  
+              </view>
+            </view>
+            <view data-index="{{$orderItem$index}}" class="inner del" style="z-index:{{$orderItem$isEdit? '99999' : '4'}}">
+              <checkbox value="{{$orderItem$item.id}}" checked="{{$orderItem$item.checked}}" color="#fc5e43"/>
+            </view>   
+           </view>
+          </block>
+      </view>  
+    </view>
+  </view>
+  </checkbox-group>
+  <view class="cart-bottom">
+    <text class="title link" bindtap="$orderItem$editTap">{{$orderItem$editTxt}}</text>
+    <text class="title link" bindtap="$orderItem$checkAll"  wx:if="{{$orderItem$isEdit}}">全选</text>
+    <text bindtap="$orderItem$deleteTap">删除</text>
   </view>
 
+    <view class="vip-tip">
+      <text class="iconfont icon-vip link"/>
+      <text class="title">尊敬的优价会员，生鲜购满2公斤才可包邮哦</text>
+    </view>
+    
   </view>

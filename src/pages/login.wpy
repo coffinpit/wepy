@@ -111,14 +111,18 @@
         })
       },
       login () {
-        var _this = this.$parent
-        _this.getUserInfo((data) => {
-          console.log(data)
-          // 修改以下的请求回调
-          _this.HttpRequest.UserLogin(data).then((token) => {
-            wepy.setStorageSync('token', token)
-            this.methods.goIndex()
-          })
+        wepy.login({
+          success: (res) => {
+            console.log(res.code)
+            wepy.getUserInfo({
+              success: (data) => {
+                console.log(data)
+                // 往服务器发送code和encryptedData 获取token
+                // wepy.setStorage('token', token)
+                this.methods.goIndex()
+              }
+            })
+          }
         })
       }
     }

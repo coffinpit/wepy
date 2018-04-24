@@ -1,8 +1,10 @@
 @import "./counter.wxss";
+.check-G {
+  width: 100%;
+}
 .item-box {
   width: 100%;
   background-color: #fff;
-  margin-top: 20rpx;
 }
 .items {
   width: 100%;
@@ -12,6 +14,15 @@
   border-top: 2rpx solid #eee;
   height: 240rpx;
   overflow: hidden;
+}
+.item-list .edited {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  height: 100%;
+  background: rgba(204, 204, 204, 0.2);
 }
 .item-list:last-child {
   border-bottom: 2rpx solid #eee;
@@ -30,13 +41,12 @@
   transition: all 0.2s ease-in-out;
 }
 .inner.del {
-  background-color: #e64340;
   width: 120rpx;
   height: 100%;
   line-height: 240rpx;
   text-align: center;
   z-index: 4;
-  right: 0;
+  left: 0;
   color: #fff;
 }
 .inner-left {
@@ -48,7 +58,7 @@
   min-height: 108rpx;
 }
 .inner-animate-left {
-  transform: translateX(-120rpx);
+  transform: translateX(120rpx);
 }
 .inner-layer {
   width: 400rpx;
@@ -56,7 +66,7 @@
   position: absolute;
   top: 20rpx;
   left: 20rpx;
-  z-index: -1;
+  z-index: 9999;
 }
 .inner-layer .title {
   min-height: 108rpx;
@@ -94,8 +104,25 @@
 }
 .counter .counter-btn {
   display: block;
+  height: 68rpx;
+  line-height: 66rpx;
 }
 .counter .number {
   border-top: none;
   border-bottom: none;
+}
+.cart-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120rpx;
+  background: #fff;
+  z-index: 99999;
+}
+.cart-bottom .title {
+  width: 10%;
+  text-align: center;
+  line-height: 100rpx;
+  display: inline-block;
 }

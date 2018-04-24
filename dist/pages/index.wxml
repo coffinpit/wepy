@@ -33,15 +33,15 @@
     <view  wx:if="{{currentPage === 0}}" class="content">
         <view class="goods-title"><image src="../image/sptj_img.png"/></view>
         
-  <block wx:for="{{$goods$goodsItem}}" wx:for-index="$goods$index" wx:for-item="$goods$item" wx:key="$goods$key">
-    <view class="goods" bindtap="$goods$tap" id="{{$goods$item.id}}" data-wpytap-a="{{$goods$item.id}}">
-      <view class="goods-image"><image src="{{$goods$item.path}}" mode="aspectFit" lazy-load="true"/></view>
+  <block wx:for="{{$recGoods$goodsItem}}" wx:for-index="$recGoods$index" wx:for-item="$recGoods$item" wx:key="$recGoods$key">
+    <view class="goods" bindtap="$recGoods$tap" id="{{$recGoods$item.id}}" data-wpytap-a="{{$recGoods$item.id}}">
+      <view class="goods-image"><image src="{{$recGoods$item.path}}" mode="aspectFit" lazy-load="true"/></view>
       <view class="goods-detail">
-        <view class="goods-detail-title">{{$goods$item.title}}</view>
+        <view class="goods-detail-title">{{$recGoods$item.title}}</view>
         <view class="goods-detail-price">
-          会员价:<text class="price">￥{{$goods$item.price}} (优惠￥{{$goods$item.oldprice - $goods$item.price}})</text>
+          会员价:<text class="price">￥{{$recGoods$item.price}} (优惠￥{{$recGoods$item.oldprice - $recGoods$item.price}})</text>
         </view>
-        <view class="goods-detail-oldprice">原价:{{$goods$item.oldprice}}</view>
+        <view class="goods-detail-oldprice">原价:{{$recGoods$item.oldprice}}</view>
         <view class="goods-promot">
           <view class="goods-promot-image">
             <text class="iconfont icon-biaoqing"/>
@@ -58,5 +58,32 @@
   </block>
 
     </view>
-    <view  wx:elif="{{currentPage === 1}}">b</view>
+    <view  wx:elif="{{currentPage === 1}}" class="content">
+        <view class="goods-title"><image src="../image/rmsp_img.png"/></view>
+        
+  <block wx:for="{{$hotGoods$goodsItem}}" wx:for-index="$hotGoods$index" wx:for-item="$hotGoods$item" wx:key="$hotGoods$key">
+    <view class="goods" bindtap="$hotGoods$tap" id="{{$hotGoods$item.id}}" data-wpytap-a="{{$hotGoods$item.id}}">
+      <view class="goods-image"><image src="{{$hotGoods$item.path}}" mode="aspectFit" lazy-load="true"/></view>
+      <view class="goods-detail">
+        <view class="goods-detail-title">{{$hotGoods$item.title}}</view>
+        <view class="goods-detail-price">
+          会员价:<text class="price">￥{{$hotGoods$item.price}} (优惠￥{{$hotGoods$item.oldprice - $hotGoods$item.price}})</text>
+        </view>
+        <view class="goods-detail-oldprice">原价:{{$hotGoods$item.oldprice}}</view>
+        <view class="goods-promot">
+          <view class="goods-promot-image">
+            <text class="iconfont icon-biaoqing"/>
+          </view>
+          <view class="goods-info">
+            特别非常鲜到没朋友
+            <view class="goods-end">
+              <image src="../image/probq_bg.png" mode="right"/>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+    </view>
   </view>

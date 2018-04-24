@@ -53,10 +53,13 @@
             <text class="section">已有{{collectednum}}人收藏了本商品</text>
             <text class="iconfont icon-more"/>
           </view>
-          <view class="detail-collect-list">
+          <view class="detail-collect-list"  wx:if="{{collect}}">
             <block wx:for="{{collectedUser}}" wx:for-index="index" wx:for-item="item" wx:key="key">
               <view><image src="{{item.path}}" mode="aspectFill"/></view>
             </block>
+          </view>
+          <view class="detail-collect-list"  wx:else>
+            <text class="iconfont icon-leftsj"/><text class="un-collect">请点击收藏</text>
           </view>
         </view>
       </view>
@@ -79,8 +82,8 @@
          <block wx:for="{{transportDetail}}" wx:for-index="index" wx:for-item="item" wx:key="key">
            <view class="detail-goods">
               <view class="detail-goods-title">{{item.title}}</view>
-                <view  wx:if="{{!item.isLink}}" class="detail-goods-content">{{item.detail}}</view>
-                <navigate  wx:else to="" class="detail-goods-content link">{{item.detail}}</navigate>
+                <view wx:if="{{!item.isLink}}" class="detail-goods-content">{{item.detail}}</view>
+                <navigate wx:else to="" class="detail-goods-content link">{{item.detail}}</navigate>
            </view>
          </block>
       </view>
@@ -124,10 +127,11 @@
           
   <view class="counter calculate">
     <view catchtap="$counterBuy$plusTap" class="counter-btn">  +  </view>
-    <input type="number" bindinput="$counterBuy$inputTap" class="counter-btn number" value="{{$counterBuy$num}}"/> 
+    <input type="number" bindblur="$counterBuy$inputTap" class="counter-btn number" value="{{$counterBuy$num}}"/> 
     <view catchtap="$counterBuy$minusTap" class="counter-btn">  -  </view>
   </view>
 
+          <text wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
         </view>
       </view>
       <radio-group bindchange="addBuyGoods">
@@ -159,10 +163,11 @@
           
   <view class="counter calculate">
     <view catchtap="$counterCart$plusTap" class="counter-btn">  +  </view>
-    <input type="number" bindinput="$counterCart$inputTap" class="counter-btn number" value="{{$counterCart$num}}"/> 
+    <input type="number" bindblur="$counterCart$inputTap" class="counter-btn number" value="{{$counterCart$num}}"/> 
     <view catchtap="$counterCart$minusTap" class="counter-btn">  -  </view>
   </view>
 
+          <text wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
         </view>
       </view>
       <radio-group bindchange="addCartGoods">

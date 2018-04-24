@@ -2,6 +2,7 @@
 @import "./../components/bottombar.wxss";
 .container {
   overflow: hidden;
+  padding-bottom: 116rpx;
 }
 .detail-info {
   position: relative;
@@ -110,7 +111,7 @@
   margin-top: 5px;
 }
 .content {
-  padding: 20px 15px 116rpx;
+  padding: 20px 15px;
   margin-top: 10px;
   margin-bottom: 0;
 }
@@ -124,7 +125,7 @@
   align-items: stretch;
 }
 .detail-collect .detail-collect-icon {
-  width: 20%;
+  width: 18%;
   text-align: center;
 }
 .detail-collect .detail-collect-icon text {
@@ -144,6 +145,7 @@
 }
 .detail-collect .detail-collect-user {
   width: 80%;
+  margin-left: 2%;
 }
 .detail-collect .detail-collect-user .detail-collect-detail {
   overflow: hidden;
@@ -154,9 +156,12 @@
   float: right;
   margin-top: 18rpx;
 }
+.detail-collect .detail-collect-user .detail-collect-detail .section {
+  margin-top: 10rpx;
+}
 .detail-collect .detail-collect-user .detail-collect-list {
-  display: flex;
-  margin-top: 10px;
+  margin-top: 10rpx;
+  min-height: 84rpx;
 }
 .detail-collect .detail-collect-user .detail-collect-list view {
   width: 74rpx;
@@ -164,6 +169,7 @@
   background: #eee;
   margin-right: 5px;
   display: inline-block;
+  overflow: hidden;
 }
 .detail-collect .detail-collect-user .detail-collect-list view:last-child {
   margin-left: 0;
@@ -171,6 +177,18 @@
 .detail-collect .detail-collect-user .detail-collect-list view image {
   width: 100%;
   height: 100%;
+}
+.detail-collect .un-collect {
+  padding: 10rpx 20rpx;
+  color: #fff;
+  background: #ffa336;
+  font-size: 24rpx;
+}
+.detail-collect .icon-leftsj {
+  color: #ffa336;
+  vertical-align: middle;
+  margin-right: -8rpx;
+  font-size: 30rpx;
 }
 .detail-container {
   margin-bottom: 10px;
@@ -241,8 +259,13 @@
 .popup_layer .popup_goods .link {
   display: block;
 }
+.popup_layer .popup_goods .link.inline {
+  display: inline-block;
+}
 .popup_layer .popup_goods .calculate {
   margin-top: 20rpx;
+  margin-right: 20rpx;
+  display: inline-block;
 }
 .popup_layer .popup_goods .popup_goods_box {
   display: flex;

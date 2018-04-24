@@ -127,9 +127,12 @@
     </wxc-flex>
     <view wx:if="{{currentPage === 0}}" class="content">
         <view class="goods-title"><image src="../image/sptj_img.png"></image></view>
-        <goods :goodsItem="goods" @goodsTap.user="goDetail"></goods>
+        <recGoods :goodsItem="goods" @goodsTap.user="goDetail"></recGoods>
     </view>
-    <view wx:elif="{{currentPage === 1}}">b</view>
+    <view wx:elif="{{currentPage === 1}}" class="content">
+        <view class="goods-title"><image src="../image/rmsp_img.png"></image></view>
+        <hotGoods :goodsItem="goods" @goodsTap.user="goDetail"></hotGoods>
+    </view>
   </view>  
 </template>
 
@@ -148,7 +151,8 @@
       }
     }
     components = {
-      goods: Goods,
+      recGoods: Goods,
+      hotGoods: Goods,
       load: Loading,
       searchbar: Search
     }

@@ -2,13 +2,39 @@
   view{  
     box-sizing: border-box;  
   }
+  .container{
+    padding-bottom: 120rpx;
+  }
   .cart-status{
-    background:#fff;
+    background:#ffffff;
     border-bottom:2px #fc5e43 solid;
     padding:30rpx 20rpx;
     display: flex;
     width:100%;
     justify-content:space-between;
+  }
+  .cart-list{
+    margin-top:20rpx;
+    width:100%;
+    .content{
+      margin-bottom:0;
+    }
+    .iconfont{
+      font-size:80rpx;
+      vertical-align:middle;
+      margin-right:20rpx;
+    }
+  }
+  .vip-tip{
+    width:100%;
+    margin:10rpx 0;
+    background:#fff;
+    padding:10rpx 20rpx;
+    .iconfont{
+      font-size:60rpx;
+      vertical-align:middle;
+      margin-right:10rpx;
+    }
   }
 </style>
 <template>
@@ -17,7 +43,12 @@
       <text class="title">已购￥{{cartStatus.totalprice}}，成为会员立减<text class="title link font-bold">￥{{cartStatus.discount}}</text></text>
       <button class="blank-button">加入会员</button>
     </view>
-    <orderItem :list="list"></orderItem>
+    <orderItem :coldlist.sync="coldList" :normallist.sync="normalList" @checkTap.user="check"></orderItem>
+    <view class="vip-tip">
+      <text class="iconfont icon-vip link"></text>
+      <text class="title">尊敬的优价会员，生鲜购满2公斤才可包邮哦</text>
+    </view>
+    
   </view>
 </template>
 
@@ -39,7 +70,7 @@
         totalprice: '300',
         discount: '110'
       },
-      list: [
+      coldList: [
         {
           txtStyle: '',
           path: '../image/login-bg.jpg',
@@ -48,17 +79,41 @@
           oldprice: '160.0',
           id: '1231123',
           detail: '500g × 5',
-          count: '5'
+          count: '10',
+          checked: false
         },
         {
           txtStyle: '',
           path: '../image/login-bg.jpg',
-          title: '美国自然牛精',
+          title: '美国自然牛',
           price: '99.0',
           oldprice: '160.0',
-          id: '1231123',
+          id: '1223123',
           detail: '500g × 5',
-          count: '2'
+          count: '6',
+          checked: false
+        }
+      ],
+      normalList: [
+        {
+          txtStyle: '',
+          path: '../image/login-bg.jpg',
+          title: '美国自然牛精选后腿小方',
+          price: '99.0',
+          oldprice: '160.0',
+          id: '1261123',
+          detail: '500g × 5',
+          count: '10'
+        },
+        {
+          txtStyle: '',
+          path: '../image/login-bg.jpg',
+          title: '阿根廷红虾',
+          price: '99.0',
+          oldprice: '160.0',
+          id: '1234443',
+          detail: '500g × 5',
+          count: '6'
         }
       ]
     }

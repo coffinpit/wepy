@@ -1,8 +1,10 @@
 <style type="less">
+  .check-G{
+    width:100%;
+  }
   .item-box{  
     width:100%;
     background-color: #fff;
-    margin-top:20rpx;
   }  
   .items{  
     width: 100%;  
@@ -11,8 +13,17 @@
       position: relative;  
       border-top: 2rpx solid #eee;  
       height: 240rpx;  
-      overflow: hidden;  
-  }  
+      overflow: hidden;
+      .edited{
+        position:absolute;
+        width:100%;
+        left:0;
+        top:0;
+        z-index:9999;
+        height:100%;
+        background:rgba(204, 204, 204, 0.2);
+      }
+  }
   .item-list:last-child{  
       border-bottom: 2rpx solid #eee;  
   }  
@@ -30,13 +41,12 @@
     transition: all 0.2s ease-in-out; 
   }  
   .inner.del{  
-      background-color: #e64340;  
       width: 120rpx;
       height:100%;
       line-height:240rpx;
       text-align: center;  
       z-index: 4;  
-      right: 0;  
+      left: 0;  
       color: #fff  
   } 
   .inner-left{
@@ -48,7 +58,7 @@
     }
   }
   .inner-animate-left{
-    transform:translateX(-120rpx)
+    transform:translateX(120rpx)
   } 
   .inner-layer{
     width:400rpx;
@@ -56,7 +66,7 @@
     position:absolute;
     top:20rpx;
     left:20rpx;
-    z-index:-1;
+    z-index:9999;
     .title{
       min-height:108rpx;
       height:108rpx;
@@ -92,34 +102,95 @@
     z-index:999999999;
     .counter-btn{
       display:block;
+      height:68rpx;
+      line-height:66rpx;
     }
     .number{
       border-top:none;
       border-bottom:none;
     }
   }
+  .cart-bottom{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:120rpx;
+    background:#fff;
+    z-index:99999;
+    .title{
+      width:10%;
+      text-align:center;
+      line-height:100rpx;
+      display:inline-block;
+    }
+  }
 </style>
 <template>
-  <view class="item-box">  
-    <view class="items">  
-        <repeat for="{{list}}" index="index" item="item" key="index">  
-        <view class="item-list">
-          <view  class="inner txt {{current === index ? animate : ''}}"> 
-            <view class="inner-layer" @touchstart.stop="touchS" @touchmove.stop="touchM" data-index="{{index}}">
-              <text class="title">{{item.title}}</text>
-              <text class="tips">{{item.detail}}</text>
-              <text class="font-small link">会员价：￥{{item.price}} </text>
-              <text class="font-small">原价：￥{{item.oldprice}}</text>
+  <checkbox-group bindchange="checkboxChange" class="check-G">  
+  <view class="cart-list">
+    <view class="content">
+      <text class="title"><text class="iconfont icon-ys_ly"></text>冷链配送</text>
+    </view>
+    <view class="item-box">  
+      <view class="items">
+          <repeat for="{{coldlist}}" index="index" item="item" key="index">  
+          <view class="item-list">
+            <view class="edited" wx:if="{{isEdit}}"></view>
+            <view class="inner txt {{isEdit ? 'inner-animate-left' : ''}}"> 
+              <view class="inner-layer" data-index="{{index}}" id="{{item.id}}" @tap.stop="goDetail({{item.id}})">
+                <text class="title">{{item.title}}</text>
+                <text class="tips">{{item.detail}}</text>
+                <text class="font-small link">会员价：￥{{item.price}} </text>
+                <text class="font-small">原价：￥{{item.oldprice}}</text>
+              </view>
+              <view class="inner-image">
+                <image src="{{item.path}}" mode="aspectFill"  @tap.stop="goDetail({{item.id}})"></image>
+                <counteCold :num.sync="item.count" @plusEdit.user="plusCold" @minusEdit.user="minCold" @keyEdit.user="keyCold" data-index="{{index}}"></counteCold>  
+              </view>
             </view>
-            <view class="inner-image">
-              <image src="{{item.path}}" mode="aspectFill"></image>
-              <counte :num.sync ="item.count" @plusEdit.user="plusCart" @minusEdit.user="minCart" @keyEdit.user="keyCart" data-index="{{index}}"></counte>  
+            <view data-index="{{index}}" class="inner del" style="z-index:{{isEdit? '99999' : '4'}}">
+              <checkbox value="{{item.id}}" checked="{{item.checked}}" color="#fc5e43"/>
+            </view>  
+           </view>
+          </repeat>
+      </view>  
+    </view>                 
+  </view>
+  <view class="cart-list">
+    <view class="content">
+      <text class="title"><text class="iconfont icon-ys_cg"></text>常规配送</text>
+    </view>
+    <view class="item-box">  
+      <view class="items">  
+          <repeat for="{{normallist}}" index="index" item="item" key="index">  
+          <view class="item-list">
+            <view class="edited" wx:if="{{isEdit}}"></view>
+            <view  class="inner txt {{isEdit ? 'inner-animate-left' : ''}}"> 
+              <view class="inner-layer" data-index="{{index}}" id="{{item.id}}" @tap.stop="goDetail({{item.id}})">
+                <text class="title">{{item.title}}</text>
+                <text class="tips">{{item.detail}}</text>
+                <text class="font-small link">会员价：￥{{item.price}} </text>
+                <text class="font-small">原价：￥{{item.oldprice}}</text>
+              </view>
+              <view class="inner-image">
+                <image src="{{item.path}}" mode="aspectFill"></image>
+                <counteNormal :num.sync="item.count" @plusEdit.user="plusNormal" @minusEdit.user="minNormal" @keyEdit.user="keyNormal" data-index="{{index}}"></counteNormal>  
+              </view>
             </view>
-          </view>
-          <view data-index="{{index}}" @tap="delItem" class="inner del">删除</view>  
-         </view>
-        </repeat>
-    </view>  
+            <view data-index="{{index}}" class="inner del" style="z-index:{{isEdit? '99999' : '4'}}">
+              <checkbox value="{{item.id}}" checked="{{item.checked}}" color="#fc5e43"/>
+            </view>   
+           </view>
+          </repeat>
+      </view>  
+    </view>
+  </view>
+  </checkbox-group>
+  <view class="cart-bottom">
+    <text class="title link" @tap="editTap">{{editTxt}}</text>
+    <text class="title link" @tap="checkAll" wx:if="{{isEdit}}">全选</text>
+    <text @tap="deleteTap">删除</text>
   </view>
 </template>
 <script>
@@ -128,23 +199,32 @@
 
   export default class OrderItem extends wepy.component {
     props = {
-      list: Object
+      coldlist: Object,
+      normallist: Object
     }
     components = {
-      counte: Counte
+      counteCold: Counte,
+      counteNormal: Counte
     }
     data = {
       delBtnWidth: 180,
       startX: 0,
       animate: '',
       current: '',
-      cartcount: []
+      indexId: '',
+      cartcount: [],
+      isEdit: false,
+      editTxt: '编辑',
+      checkedList: [],
+      tempColdList: [],
+      tempNormalList: []
     }
     methods = {
       touchS (e) {
         if (e.touches.length === 1) {
           this.startX = e.touches[0].clientX
         }
+        this.indexId = e.currentTarget.id
       },
       touchM (e) {
         this.current = e.currentTarget.dataset.index
@@ -176,22 +256,111 @@
           }
         })
       },
-      plusCart (e) {
+      plusCold (e) {
         var index = e.source.$index
-        this.$parent.data.list[index].count ++
+        this.$parent.data.coldList[index].count ++
         this.$apply()
         // 发送购物车修改数据
       },
-      minCart (e) {
+      plusNormal (e) {
         var index = e.source.$index
-        this.$parent.data.list[index].count --
+        this.$parent.data.normalList[index].count ++
+        this.$apply()
+      },
+      minCold (e) {
+        var index = e.source.$index
+        this.$parent.data.coldList[index].count --
+        this.$apply()
+      },
+      minNormal (e) {
+        var index = e.source.$index
+        this.$parent.data.normalList[index].count --
         this.$apply()
         // 发送购物车修改数据
       },
-      keyCart (val, e) {
+      keyCold (val, e) {
         var index = e.source.$index
-        this.$parent.data.list[index].count = val
+        this.$parent.data.coldList[index].count = val
+      },
+      keyNormal (val, e) {
+        var index = e.source.$index
+        this.$parent.data.normalList[index].count = val
+      },
+      goDetail (id) {
+        console.log(id)
+        wepy.navigateTo({
+          url: './detail?id=' + id
+        })
+      },
+      editTap () {
+        this.isEdit = !this.isEdit
+        if (this.isEdit) {
+          this.editTxt = '取消'
+          this.initChecked()
+        } else {
+          this.editTxt = '编辑'
+        }
+      },
+      checkboxChange (e) {
+        var checkedArr = e.detail.value
+        console.log(e)
+        this.tempColdList = this.coldlist
+        this.tempNormalList = this.normallist
+        for (var i = 0; i < checkedArr.length; i++) {
+          this.tempColdList = this.tempColdList.filter((item) => {
+            return item.id !== checkedArr[i]
+          })
+          this.tempNormalList = this.tempNormalList.filter((item) => {
+            return item.id !== checkedArr[i]
+          })
+          this.coldlist.forEach((item) => {
+            if (item.id === checkedArr[i]) {
+              item.checked = true
+            }
+          })
+          this.normallist.forEach((item) => {
+            if (item.id === checkedArr[i]) {
+              item.checked = true
+            }
+          })
+        }
+      },
+      checkAll () {
+        this.coldlist.forEach((item) => {
+          item.checked = true
+        })
+        this.normallist.forEach((item) => {
+          item.checked = true
+        })
+        this.tempColdList = []
+        this.tempNormalList = []
+      },
+      deleteTap () {
+        var that = this
+        wepy.showModal({
+          title: '提示',
+          content: '是否删除？',
+          success: function (res) {
+            if (res.confirm) {
+              that.coldlist = that.tempColdList
+              that.normallist = that.tempNormalList
+              that.isEdit = false
+              that.editTxt = '编辑'
+            } else if (res.cancel) {
+              that.initChecked()
+            }
+            that.$apply()
+          }
+        })
       }
+    }
+    initChecked () {
+      this.coldlist.forEach((item) => {
+        item.checked = false
+      })
+      this.normallist.forEach((item) => {
+        item.checked = false
+      })
     }
     onLoad () {
       this.$apply()

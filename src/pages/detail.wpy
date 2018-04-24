@@ -1,6 +1,7 @@
 <style lang="less">
   .container{
     overflow: hidden;
+    padding-bottom:116rpx;
   }
   .detail-info{
     position:relative;
@@ -108,7 +109,7 @@
     }
   }
   .content{
-    padding:20px 15px 116rpx;
+    padding:20px 15px;
     margin-top:10px;
     margin-bottom:0;
   }
@@ -121,7 +122,7 @@
     display:flex;
     align-items:stretch;
     .detail-collect-icon{
-      width:20%;
+      width:18%;
       text-align:center;
       text{
         display:block;
@@ -142,6 +143,7 @@
     }
     .detail-collect-user{
       width:80%;
+      margin-left:2%;
       .detail-collect-detail{
         overflow:hidden;
         .iconfont{
@@ -150,16 +152,20 @@
           float:right;
           margin-top:18rpx;
         }
+        .section{
+          margin-top:10rpx;
+        }
       }
       .detail-collect-list{
-        display:flex;
-        margin-top:10px;
+        margin-top:10rpx;
+        min-height: 84rpx;
         view{
           width: 74rpx;
           height: 74rpx;
           background: #eee;
           margin-right:5px;
           display:inline-block;
+          overflow:hidden;
           &:last-child{
             margin-left: 0;
           }
@@ -169,6 +175,18 @@
           }
         }
       }
+    }
+    .un-collect{
+      padding:10rpx 20rpx;
+      color:#fff;
+      background:#ffa336;
+      font-size:24rpx;
+    }
+    .icon-leftsj{
+      color:#ffa336;
+      vertical-align:middle;
+      margin-right:-8rpx;
+      font-size:30rpx;
     }
   }
   .detail-container{
@@ -237,9 +255,14 @@
       box-sizing: border-box;
       .link{
         display:block;
+        &.inline{
+          display:inline-block;
+        }
       }
       .calculate{
         margin-top:20rpx;
+        margin-right:20rpx;
+        display:inline-block;
       }
       .popup_goods_box{
         display:flex;
@@ -322,10 +345,13 @@
             <text class="section">已有{{collectednum}}人收藏了本商品</text>
             <text class="iconfont icon-more"></text>
           </view>
-          <view class="detail-collect-list">
+          <view class="detail-collect-list"  wx:if="{{collect}}">
             <repeat for="{{collectedUser}}" index="index" item="item">
               <view><image src="{{item.path}}" mode="aspectFill"></image></view>
             </repeat>
+          </view>
+          <view class="detail-collect-list" wx:else>
+            <text class="iconfont icon-leftsj"></text><text class="un-collect">请点击收藏</text>
           </view>
         </view>
       </view>
@@ -375,7 +401,8 @@
             </view>
           </view>
           <text class="title link">价格：￥{{totalBuy}}</text>
-          <counterBuy @plusEdit.user="plusBuy" @minusEdit.user="minusBuy" class="calculate" :num.sync="buyNum"></counterBuy>
+          <counterBuy @plusEdit.user="plusBuy" @minusEdit.user="minusBuy" @keyEdit.user="keyBuy" class="calculate" :num.sync="buyNum"></counterBuy>
+          <text wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
         </view>
       </view>
       <radio-group @change="addBuyGoods">
@@ -404,7 +431,8 @@
             </view>
           </view>
           <text class="title link">价格：￥{{totalCart}}</text>
-          <counterCart @plusEdit.user="plusCart" @minusEdit.user="minusCart" class="calculate" :num.sync="cartNum"></counterCart>
+          <counterCart @plusEdit.user="plusCart" @minusEdit.user="minusCart" @keyEdit.user="keyCart" class="calculate" :num.sync="cartNum"></counterCart>
+          <text wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
         </view>
       </view>
       <radio-group @change="addCartGoods">
@@ -440,6 +468,15 @@
       },
       totalCart () {
         return this.cartResult.price * this.cartNum
+      },
+      maxtip () {
+        var maxtip = false
+        if (this.buyNum === this.buyResult.num || this.cartNum === this.cartResult.num) {
+          maxtip = true
+        } else {
+          maxtip = false
+        }
+        return maxtip
       }
     }
     data = {
@@ -501,9 +538,11 @@
     }
     methods = {
       collectTap () {
+        this.collect = !this.collect
         if (!this.collect) {
-          this.collect = true
           this.collectTxt = '已收藏'
+        } else {
+          this.collectTxt = '未收藏'
         }
       },
       buy () {
@@ -529,32 +568,49 @@
         this.cartNum = 1
         this.detail.goodList = []
       },
-      plusBuy () {
+      plusBuy (e) {
         this.buyNum ++
-        // 发送数量
+        if (this.buyNum > this.buyResult.num) {
+          this.buyNum = this.buyResult.num
+        }
+        // 发送购买增加数量
       },
       minusBuy () {
         this.buyNum --
         if (this.buyNum <= 0) {
           this.buyNum = 0
         }
-        // 发送数量
+        // 发送购买减少数量
+      },
+      keyBuy (val, e) {
+        this.buyNum = val
+        // 发送购买输入数量
       },
       addBuyGoods (e) {
         // 发送选中结果
+        this.buyNum = 1
         this.buyResult = this.detail.goodList[e.detail.value]
       },
       plusCart () {
         this.cartNum ++
+        if (this.cartNum > this.cartResult.num) {
+          this.cartNum = this.cartResult.num
+        }
+        // 发送购物车增加数量
       },
       minusCart () {
         this.cartNum --
         if (this.cartNum <= 0) {
           this.cartNum = 0
         }
+        // 发送购物车减少数量
+      },
+      keyCart (val, e) {
+        this.cartNum = val
       },
       addCartGoods (e) {
         // 发送选中结果
+        this.cartNum = 1
         this.cartResult = this.detail.goodList[e.detail.value]
       },
       goCart () {
@@ -578,12 +634,12 @@
       }, {
         name: '自然牛肉1000g',
         price: 120,
-        num: 98,
+        num: 2,
         checked: true
       }, {
         name: '自然牛肉2000g',
         price: 220,
-        num: 98
+        num: 4
       }]
       let resultbuy = this.detail.goodList.filter((item) => {
         return item.checked
@@ -599,12 +655,12 @@
       }, {
         name: '自然牛肉1000g',
         price: 120,
-        num: 98,
+        num: 3,
         checked: true
       }, {
         name: '自然牛肉2000g',
         price: 220,
-        num: 98
+        num: 5
       }]
       let result = this.detail.goodList.filter((item) => {
         return item.checked

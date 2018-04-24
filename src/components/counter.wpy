@@ -14,6 +14,7 @@
       color:#fc5e43;
       width:67rpx;
       height:70rpx;
+      vertical-align:middle;
     }
   }
   
@@ -21,7 +22,7 @@
 <template>
   <view class="counter">
     <view @tap.stop="plusTap" class="counter-btn">  +  </view>
-    <input type="number" @input="inputTap" class="counter-btn number" value="{{num}}"/> 
+    <input type="number" @blur="inputTap" class="counter-btn number" value="{{num}}"/> 
     <view @tap.stop="minusTap" class="counter-btn">  -  </view>
   </view>
 </template>
