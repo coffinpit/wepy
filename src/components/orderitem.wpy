@@ -128,7 +128,7 @@
 </style>
 <template>
   <checkbox-group bindchange="checkboxChange" class="check-G">  
-  <view class="cart-list">
+  <view class="cart-list" wx:if="{{isNull}}">
     <view class="content">
       <text class="title"><text class="iconfont icon-ys_ly"></text>冷链配送</text>
     </view>
@@ -157,7 +157,7 @@
       </view>  
     </view>                 
   </view>
-  <view class="cart-list">
+  <view class="cart-list" wx:if="{{isNull}}">
     <view class="content">
       <text class="title"><text class="iconfont icon-ys_cg"></text>常规配送</text>
     </view>
@@ -361,6 +361,8 @@
       this.normallist.forEach((item) => {
         item.checked = false
       })
+    }
+    onShow () {
     }
     onLoad () {
       this.$apply()

@@ -109,7 +109,7 @@
     }
   }
   .content{
-    padding:20px 15px;
+    padding:20rpx 30rpx;
     margin-top:10px;
     margin-bottom:0;
   }
@@ -127,9 +127,9 @@
       text{
         display:block;
       }
-      .iconfont{
-        font-size:80rpx;
-        color:#999;
+      image{
+        width:80rpx;
+        height:69rpx;
       }
       .collect-txt{
         color:#666;
@@ -325,7 +325,7 @@
         <view class="title">{{detail.title}}</view>
         <view class="goods-promot">
           <view class="goods-promot-image">
-            <text class="iconfont icon-biaoqing"></text>
+            <image src="../image/icon-xian.png"></image>
           </view>
           <view class="goods-info">
             特别非常鲜到没朋友
@@ -337,7 +337,7 @@
       </view>
       <view class="detail-collect">
         <view class="detail-collect-icon {{collect? 'collected' : ''}}" @tap="collectTap">
-          <text class="iconfont icon-shoucang"></text>
+          <image src="{{collect ? '../image/icon-cart.png' : '../image/icon-cart-blank.png'}}"></image>
           <text class="collect-txt">{{collectTxt}}</text>
         </view>
         <view class="detail-collect-user">
@@ -491,7 +491,7 @@
       collect: false,
       overflow: false,
       winHeight: 0,
-      collectTxt: '收藏',
+      collectTxt: '未收藏',
       collectednum: '4',
       collectedUser: [{
         path: '../image/login-bg.jpg',
@@ -534,15 +534,16 @@
       totalBuy: 0,
       totalCart: 0,
       buyModal: false,
-      cartModal: false
+      cartModal: false,
+      collectImage: '../image/icon-cart-blank.png'
     }
     methods = {
       collectTap () {
         this.collect = !this.collect
         if (!this.collect) {
-          this.collectTxt = '已收藏'
-        } else {
           this.collectTxt = '未收藏'
+        } else {
+          this.collectTxt = '已收藏'
         }
       },
       buy () {

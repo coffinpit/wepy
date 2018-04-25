@@ -112,7 +112,7 @@
   background:#f8f8f8;
 }
 .content{
-  padding:10px;
+  padding:20rpx;
   background:#fff;
   margin-bottom:10px;
   width:100%;
@@ -140,12 +140,22 @@
   line-height:44rpx;
   border-radius:0;
   margin:0;
-  position:initial;
   background:transparent;
+  padding:0 20rpx;
 }
 .blank-button-hover{
   background:#fc5e44;
   color:#fff;
+}
+.white-button{
+  border:1px #fc5e44 solid;
+  background:#fff;
+  color:#fc5e44;
+  font-size:28rpx;
+  line-height:48rpx;
+  border-radius:0;
+  margin:0;
+  padding:0 20rpx;
 }
 .size-full{
   width: 100%;
@@ -166,10 +176,12 @@
     top:0;
     left:0;
     z-index:99;
-    .iconfont{
-      color:#fc5e44;
-      float:left;
-      margin-left:2px;
+    image{
+      width:16px;
+      height:14px;
+      position:absolute;
+      left:3px;
+      top:3px;
     }
   }
   .goods-info{

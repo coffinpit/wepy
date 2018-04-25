@@ -1,23 +1,45 @@
 <style lang="less">
   view{  
-    box-sizing: border-box;  
+    box-sizing: border-box;
   }
   .container{
     padding-bottom: 120rpx;
+    display:block;
+    min-height:calc(100vh);
+    width:100%;
+    overflow:hidden;
   }
   .cart-status{
-    background:#ffffff;
-    border-bottom:2px #fc5e43 solid;
+    background:#fff;
     padding:30rpx 20rpx;
     display: flex;
     width:100%;
     justify-content:space-between;
+    .title{
+      color:#333;
+      vertical-align:middle;
+      line-height:48rpx;
+    }
+    .default-button{
+      padding:0 20rpx;
+    }
   }
   .cart-list{
     margin-top:20rpx;
     width:100%;
     .content{
       margin-bottom:0;
+      position:relative;
+      height:100rpx;
+      padding:20rpx;
+      .title{
+        position:absolute;
+        top:20rpx;
+        left:10%;
+        width:80%;
+        padding:10rpx 0; 
+        z-index:5;
+      }
     }
     .iconfont{
       font-size:80rpx;
@@ -36,43 +58,604 @@
       margin-right:10rpx;
     }
   }
+  .check-G{
+    width:100%;
+  }
+  .item-box{  
+    width:100%;
+    background-color: #fff;
+  }  
+  .items{  
+    width: 100%;  
+  }  
+  .item-list{  
+    position: relative;  
+    border-top: 2rpx solid #eee;  
+    height: 240rpx;  
+    overflow: hidden;
+    .edited{
+      position:absolute;
+      width:100%;
+      left:0;
+      top:0;
+      z-index:9999;
+      height:100%;
+      background:rgba(204, 204, 204, 0.2);
+    }
+  }
+  .item-list:last-child{  
+      border-bottom: 2rpx solid #eee;  
+  }  
+  .cart-checkbox{
+    width:40rpx;
+    height:40rpx;
+    border-radius:50%;
+    border:1px #ccc solid;
+    display:inline-block;
+    vertical-align:middle;
+    background:#fff;
+    margin-top:10rpx;
+    .iconfont{
+      opacity:0;
+      color:#fff;
+      font-size:36rpx;
+      float:left;
+      margin-bottom:4rpx;
+      font-weight:700;
+    }
+    &.checked {
+      background:#fc5e43;
+      border:1px #fc5e43 solid;
+      transition: 0.3s all ease-in;
+      .iconfont{
+        opacity:1 !important;
+      }
+    }
+  }
+  .inner{  
+      position: absolute;  
+      top:0;  
+      height:100%;
+  }  
+  .inner.txt{
+    background-color: #fff;  
+    width: 90%;  
+    z-index: 999;  
+    padding:20rpx; 
+    left:10%;
+    box-sizing:border-box; 
+    overflow:hidden;  
+  }  
+  .inner.del{  
+      width: 10%;
+      height:100%;
+      line-height:240rpx;
+      text-align: center;  
+      z-index: 4;  
+      left: 0;  
+      color: #fff;
+      .cart-checkbox{
+        margin-top:0;
+      }
+      .iconfont{
+        position: absolute;
+        bottom: -2rpx;
+        left:20rpx;
+      }
+  } 
+  .inner-left{
+    width:400rpx;
+    overflow:hidden;
+    white-space:break-all;
+    .place{
+      min-height: 108rpx;
+    }
+  }
+  .inner-animate-left{
+    transform:translateX(120rpx)
+  } 
+  .inner-layer{
+    width:400rpx;
+    overflow:hidden;
+    position:absolute;
+    top:20rpx;
+    left:20rpx;
+    z-index:9999;
+    .title{
+      min-height:108rpx;
+      height:108rpx;
+      line-height:38rpx;
+      overflow:hidden;
+    }
+    .tips, .title{
+      display:block;
+    }
+    .tips{
+      margin-top:10rpx;
+    }
+  }
+  .inner-image{
+    position:absolute;
+    right:20rpx;
+    top:20rpx;
+    height:200rpx;
+    display:inline-block;
+    width:272rpx;
+    z-index:9999;
+    image{
+      width:200rpx;
+      height:200rpx;
+      border:1px #eee solid;
+      float:left;
+      border-right:none;
+    }
+  }
+  .counter{
+    display:inline-block;
+    float:left;
+    z-index:999999999;
+    .counter-btn{
+      display:block;
+      height:68rpx;
+      line-height:66rpx;
+    }
+    .number{
+      border-top:none;
+      border-bottom:none;
+    }
+  }
+  .cart-bottom{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:120rpx;
+    background:#fff;
+    border-top:1px #fc5e43 solid;
+    z-index:99999;
+    .title{
+      width:13%;
+      text-align:center;
+      line-height:120rpx;
+      display:inline-block;
+    }
+    .all{
+      position:relative;
+      checkbox{
+        position:absolute;
+        left:0;
+        top:0;
+        opacity:0;
+        width:100%;
+      }
+    }
+    .del-cart{
+      float:right;
+      width:17%;
+      background:#ccc;
+      color:#fff;
+      height:120rpx;
+      line-height:120rpx;
+      font-size:32rpx;
+      text-align:center;
+      &.active{
+        background:#fc5e43;
+      }
+    }
+    .cart-info{
+      color:#333;
+      font-size:32rpx;
+      line-height:120rpx;
+      display:inline-block;
+      width: 55%;
+      text-align:right;
+      float:right;
+      padding-right:2%;
+      overflow:hidden;
+      height:120rpx;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+    }
+  }
+  .blank{
+    width:500rpx;
+    text-align:center;
+    margin:0 auto; 
+    padding-top: 50rpx;
+    image{
+      width:100%;
+      height:250rpx;
+    }
+    text{
+      display:block;
+    }
+    .blank-button{
+      width:40%;
+      margin:30rpx auto;
+      line-height:50rpx;
+    }
+  }
+
 </style>
 <template>
   <view class="container">
-    <view class="cart-status">
-      <text class="title">已购￥{{cartStatus.totalprice}}，成为会员立减<text class="title link font-bold">￥{{cartStatus.discount}}</text></text>
-      <button class="blank-button">加入会员</button>
+    <view wx:if="{{!isNull}}">
+      <view class="cart-status">
+        <text class="title">已购￥{{cartStatus.totalprice}}，成为会员立减 <text class="title link font-bold">￥{{cartStatus.discount}}</text></text>
+        <view class="default-button">加入会员</view>
+      </view>
+      <view class="cart-list">
+        <view class="content" wx:if="{{!coldNull}}">
+          <text class="title"><text class="iconfont icon-ys_ly"></text>冷链配送</text>
+          <view @tap.stop="coldAll" class="cart-checkbox {{coldChecked ? 'checked' : ''}}">
+            <text class="iconfont icon-fxkdui"></text>
+          </view>
+        </view>
+        <view class="item-box">  
+          <view class="items">
+              <repeat for="{{coldlist}}" index="index" item="item" key="index">  
+              <view class="item-list">
+                <view class="inner txt"> 
+                  <view class="inner-layer" data-index="{{index}}" id="{{item.id}}" @tap.stop="goDetail({{item.id}})">
+                    <text class="title">{{item.title}}</text>
+                    <text class="tips">{{item.detail}}</text>
+                    <text class="font-small link">会员价：￥{{item.price}} </text>
+                    <text class="font-small">原价：￥{{item.oldprice}}</text>
+                  </view>
+                  <view class="inner-image">
+                    <image src="{{item.path}}" mode="aspectFill"  @tap.stop="goDetail({{item.id}})"></image>
+                    <counteCold :num.sync="item.count" @plusEdit.user="plusCold" @minusEdit.user="minCold" @keyEdit.user="keyCold" data-index="{{index}}"></counteCold>  
+                  </view>
+                </view>
+                <view data-index="{{index}}" class="inner del">
+                  <view class="cart-checkbox {{item.checked ? 'checked' : ''}}" data-value="{{item.id}}" @tap.stop="coldCheck">
+                    <text class="iconfont icon-fxkdui"></text>
+                  </view>
+                </view>  
+               </view>
+              </repeat>
+          </view>  
+        </view>                 
+      </view>
+      <view class="cart-list">
+        <view class="content" wx:if="{{!normalNull}}">
+          <text class="title"><text class="iconfont icon-ys_cg"></text>常规配送</text>
+          <view @tap.stop="normalAll" class="cart-checkbox {{normalChecked ? 'checked' : ''}}">
+            <text class="iconfont icon-fxkdui"></text>
+          </view>
+        </view>
+        <view class="item-box">  
+          <view class="items">  
+              <repeat for="{{normallist}}" index="index" item="item" key="index">  
+              <view class="item-list">
+                <view  class="inner txt"> 
+                  <view class="inner-layer" data-index="{{index}}" id="{{item.id}}" @tap.stop="goDetail({{item.id}})">
+                    <text class="title">{{item.title}}</text>
+                    <text class="tips">{{item.detail}}</text>
+                    <text class="font-small link">会员价：￥{{item.price}} </text>
+                    <text class="font-small">原价：￥{{item.oldprice}}</text>
+                  </view>
+                  <view class="inner-image">
+                    <image src="{{item.path}}" mode="aspectFill"></image>
+                    <counteNormal :num.sync="item.count" @plusEdit.user="plusNormal" @minusEdit.user="minNormal" @keyEdit.user="keyNormal" data-index="{{index}}"></counteNormal>  
+                  </view>
+                </view>
+                <view data-index="{{index}}" class="inner del">
+                  <view class="cart-checkbox {{item.checked ? 'checked' : ''}}" data-value="{{item.id}}" @tap.stop="normalCheck">
+                    <text class="iconfont icon-fxkdui"></text>
+                  </view>
+                </view>   
+               </view>
+              </repeat>
+          </view>  
+        </view>
+      </view>
+      <view class="cart-bottom" wx:if="{{!isNull}}">
+        <view class="title link all" @tap.stop="checkAll">全选</view>
+        <text class="title link edit" @tap="deleteTap">删除</text>
+        <text @tap.stop="deleteTap" class="del-cart active">去结算</text>
+        <text class="cart-info"><text class="tips">(含运费￥{{freight}})</text> 合计: <text class="link">￥{{totalprice}}</text></text>
+      </view>
+      <view class="vip-tip">
+        <text class="iconfont icon-vip link"></text>
+        <text class="title">尊敬的优价会员，生鲜购满2公斤才可包邮哦</text>
+      </view>
     </view>
-    <orderItem :coldlist.sync="coldList" :normallist.sync="normalList" @checkTap.user="check"></orderItem>
-    <view class="vip-tip">
-      <text class="iconfont icon-vip link"></text>
-      <text class="title">尊敬的优价会员，生鲜购满2公斤才可包邮哦</text>
+    <view wx:else class="blank">
+      <image src="../image/null.png" mode="aspectFit"></image>
+      <text class="title">您的购物车空空如也</text>
+      <navigator url="./detail" class="blank-button" hover-class="blank-button-hover">逛一逛</navigator>
     </view>
-    
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
-  import order from '../components/orderitem'
+  import Counte from '../components/counter'
 
   export default class Cart extends wepy.page {
     config = {
       navigationBarTitleText: '购物车'
     }
     components = {
-      orderItem: order
+      counteCold: Counte,
+      counteNormal: Counte
+    }
+    computed = {
+      isNull () {
+        if (this.coldlist.length === 0 && this.normallist.length === 0) {
+          return true
+        } else {
+          return false
+        }
+      },
+      coldNull () {
+        if (this.coldlist.length === 0) {
+          return true
+        } else {
+          return false
+        }
+      },
+      normalNull () {
+        if (this.normallist.length === 0) {
+          return true
+        } else {
+          return false
+        }
+      },
+      totalprice () {
+        var result = 0
+        this.coldlist.forEach((item) => {
+          result += parseInt(item.price * item.count)
+        })
+        this.normallist.forEach((item) => {
+          result += parseInt(item.price * item.count)
+        })
+        return result
+      },
+      freight () {
+        var result = 0
+        this.coldlist.forEach((item) => {
+          result += parseInt(item.freightPrice)
+        })
+        this.normallist.forEach((item) => {
+          result += parseInt(item.freightPrice)
+        })
+        return result
+      }
     }
     data = {
-      delBtnWidth: 120,
-      startX: 0,
+      animate: '',
+      current: '',
+      indexId: '',
+      cartcount: [],
+      isEdit: false,
+      editTxt: '编辑',
+      checkedList: [],
+      tempColdList: [],
+      tempNormalList: [],
       cartStatus: {
         totalprice: '300',
         discount: '110'
       },
-      coldList: [
+      coldlist: [],
+      normallist: [],
+      coldArray: [],
+      coldChecked: false,
+      tempCold: [],
+      normalArray: [],
+      normalChecked: false,
+      tempNormal: []
+    }
+    methods = {
+      plusCold (e) {
+        var index = e.source.$index
+        this.coldlist[index].count ++
+        this.$apply()
+        // 发送购物车修改数据
+      },
+      plusNormal (e) {
+        var index = e.source.$index
+        this.normallist[index].count ++
+        this.$apply()
+      },
+      minCold (e) {
+        var index = e.source.$index
+        this.coldlist[index].count --
+        this.$apply()
+      },
+      minNormal (e) {
+        var index = e.source.$index
+        this.normallist[index].count --
+        this.$apply()
+        // 发送购物车修改数据
+      },
+      keyCold (val, e) {
+        var index = e.source.$index
+        this.coldlist[index].count = val
+      },
+      keyNormal (val, e) {
+        var index = e.source.$index
+        this.normallist[index].count = val
+      },
+      goDetail (id) {
+        console.log(id)
+        wepy.navigateTo({
+          url: './detail?id=' + id
+        })
+      },
+      coldCheck (e) {
+        var value = e.currentTarget.dataset.value
+        // 计算选中值
+        this.getChecked(this.coldArray, value)
+        this.coldlist.forEach((val) => {
+          if (val.id === value) {
+            val.checked = !val.checked
+          }
+        })
+        this.tempCold = this.coldlist.filter((item) => {
+          return item.checked
+        })
+        if (this.tempCold.length === this.coldlist.length) {
+          this.coldChecked = true
+        } else {
+          this.coldChecked = false
+        }
+      },
+      normalCheck (e) {
+        var value = e.currentTarget.dataset.value
+        // 计算选中值
+        this.getChecked(this.normalArray, value)
+        this.normallist.forEach((val) => {
+          if (val.id === value) {
+            val.checked = !val.checked
+          }
+        })
+        this.tempNormal = this.normallist.filter((item) => {
+          return item.checked
+        })
+        if (this.tempNormal.length === this.normallist.length) {
+          this.normalChecked = true
+        } else {
+          this.normalChecked = false
+        }
+      },
+      coldAll () {
+        if (this.tempCold.length === this.coldlist.length) {
+          this.coldlist.forEach((item) => {
+            item.checked = false
+            this.coldChecked = false
+            this.coldArray = []
+          })
+          this.tempCold = []
+        } else {
+          this.coldlist.forEach((item) => {
+            this.coldlist.forEach((item) => {
+              item.checked = true
+              this.coldChecked = true
+              if (this.coldArray.indexOf(item.id) === -1) {
+                this.coldArray.push(item.id)
+              }
+            })
+          })
+          this.tempCold = this.coldlist
+        }
+      },
+      normalAll () {
+        if (this.tempNormal.length === this.normallist.length) {
+          this.normallist.forEach((item) => {
+            item.checked = false
+            this.normalChecked = false
+            this.normalArray = []
+          })
+          this.tempNormal = []
+        } else {
+          this.normallist.forEach((item) => {
+            this.normallist.forEach((item) => {
+              item.checked = true
+              this.normalChecked = true
+              if (this.normalArray.indexOf(item.id) === -1) {
+                this.normalArray.push(item.id)
+              }
+            })
+          })
+          this.tempNormal = this.normallist
+        }
+      },
+      checkAll () {
+        console.log(this.tempCold, this.tempNormal)
+        if (this.tempCold.length === this.coldlist.length && this.tempNormal.length === this.normallist.length) {
+          this.coldlist.forEach((item) => {
+            item.checked = false
+            this.coldChecked = false
+            this.coldArray = []
+          })
+          this.tempCold = []
+          this.normallist.forEach((item) => {
+            item.checked = false
+            this.normalChecked = false
+            this.normalArray = []
+          })
+        } else {
+          this.coldlist.forEach((item) => {
+            this.coldlist.forEach((item) => {
+              item.checked = true
+              this.coldChecked = true
+              if (this.coldArray.indexOf(item.id) === -1) {
+                this.coldArray.push(item.id)
+              }
+            })
+          })
+          this.tempCold = this.coldlist
+          this.normallist.forEach((item) => {
+            this.normallist.forEach((item) => {
+              item.checked = true
+              this.normalChecked = true
+              if (this.normalArray.indexOf(item.id) === -1) {
+                this.normalArray.push(item.id)
+              }
+            })
+          })
+          this.tempNormal = this.normallist
+        }
+      },
+      deleteTap () {
+        var that = this
+        console.log(this.coldArray, this.normalArray)
+        var coldFilter = this.coldlist
+        var normalFilter = this.normallist
+        this.coldArray.forEach((item) => {
+          coldFilter = coldFilter.filter((val) => {
+            return val.id !== item
+          })
+        })
+        this.normalArray.forEach((item) => {
+          normalFilter = normalFilter.filter((val) => {
+            return val.id !== item
+          })
+        })
+        var coldSelected = this.coldlist
+        this.coldArray.forEach((item) => {
+          coldSelected = coldSelected.filter((val) => {
+            return val.id === item
+          })
+        })
+        if (this.coldArray.length === 0 && this.normalArray.length === 0) {
+          wepy.showToast({
+            title: '请选择商品',
+            duration: 1000,
+            image: '../image/cancel.png'
+          })
+        } else {
+          wepy.showModal({
+            title: '提示',
+            content: '是否删除？',
+            success: function (res) {
+              if (res.confirm) {
+                that.coldlist = coldFilter
+                that.tempCold = []
+                that.normallist = normalFilter
+                that.tempNormal = []
+              }
+              if (res.cancel) {
+              }
+              that.$apply()
+            }
+          })
+        }
+      }
+    }
+    getChecked (arr, val) {
+      if (arr.indexOf(val) === -1) {
+        arr.push(val)
+      } else {
+        arr.splice(arr.indexOf(val), 1)
+      }
+    }
+    initPageData () {
+      this.coldlist = [
         {
-          txtStyle: '',
+          freightPrice: '18',
           path: '../image/login-bg.jpg',
           title: '美国自然牛精选后腿小方',
           price: '99.0',
@@ -83,7 +666,7 @@
           checked: false
         },
         {
-          txtStyle: '',
+          freightPrice: '20',
           path: '../image/login-bg.jpg',
           title: '美国自然牛',
           price: '99.0',
@@ -93,33 +676,34 @@
           count: '6',
           checked: false
         }
-      ],
-      normalList: [
+      ]
+      this.normallist = [
         {
-          txtStyle: '',
+          freightPrice: '10',
           path: '../image/login-bg.jpg',
           title: '美国自然牛精选后腿小方',
           price: '99.0',
           oldprice: '160.0',
           id: '1261123',
           detail: '500g × 5',
-          count: '10'
+          count: '10',
+          checked: false
         },
         {
-          txtStyle: '',
+          freightPrice: '5',
           path: '../image/login-bg.jpg',
           title: '阿根廷红虾',
           price: '99.0',
           oldprice: '160.0',
           id: '1234443',
           detail: '500g × 5',
-          count: '6'
+          count: '6',
+          checked: false
         }
       ]
     }
-    methods = {
-    }
     onLoad () {
+      this.initPageData()
       this.$apply()
     }
   }

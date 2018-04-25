@@ -44,7 +44,7 @@
         <view class="goods-detail-oldprice">原价:{{$recGoods$item.oldprice}}</view>
         <view class="goods-promot">
           <view class="goods-promot-image">
-            <text class="iconfont icon-biaoqing"/>
+            <image src="../image/icon-xian.png"/>
           </view>
           <view class="goods-info">
             特别非常鲜到没朋友
@@ -72,7 +72,7 @@
         <view class="goods-detail-oldprice">原价:{{$hotGoods$item.oldprice}}</view>
         <view class="goods-promot">
           <view class="goods-promot-image">
-            <text class="iconfont icon-biaoqing"/>
+            <image src="../image/icon-xian.png"/>
           </view>
           <view class="goods-info">
             特别非常鲜到没朋友

@@ -55,7 +55,7 @@
         <view class="goods-detail-oldprice">原价:{{item.oldprice}}</view>
         <view class="goods-promot">
           <view class="goods-promot-image">
-            <text class="iconfont icon-biaoqing"></text>
+            <image src="../image/icon-xian.png"></image>
           </view>
           <view class="goods-info">
             特别非常鲜到没朋友

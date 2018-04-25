@@ -111,7 +111,7 @@
   margin-top: 5px;
 }
 .content {
-  padding: 20px 15px;
+  padding: 20rpx 30rpx;
   margin-top: 10px;
   margin-bottom: 0;
 }
@@ -131,9 +131,9 @@
 .detail-collect .detail-collect-icon text {
   display: block;
 }
-.detail-collect .detail-collect-icon .iconfont {
-  font-size: 80rpx;
-  color: #999;
+.detail-collect .detail-collect-icon image {
+  width: 80rpx;
+  height: 69rpx;
 }
 .detail-collect .detail-collect-icon .collect-txt {
   color: #666;
