@@ -3,30 +3,23 @@ import wepy from 'wepy'
 class HttpRequest extends wepy.app{
 	constructor () {
 		super()
+		this.$$base = 'http://zstest.zsbutcher.cn'
 		this.$$path = {
-			wechatLogin: ''
+			indexList: '?r=recommend/api-get-spus'
 		}
 	}
-	UserLogin (param) {
-		return new Promise((resolve, reject) => {
-			wepy.login({
-			  success: (res) =>{
-			    resolve(res)
-			  }
-			})
-		})
-	}
 	UserHttp (param) {
+		console.log(this.$$base + this.$$path.indexList)
 		return new Promise((resolve, reject) => {
 			wepy.request({
-				url: '',
+				url: this.$$base + this.$$path.indexList,
 				data: {
 					code: param
 				},
 				method: 'POST',
                 header: {'content-type': 'application/json'},
 				success: (data) => {
-				  resolv(data)
+				  resolve(data)
 				}
 			})
 		})

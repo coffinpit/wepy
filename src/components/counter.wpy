@@ -1,6 +1,7 @@
 <style lang="less">
   .counter {
     display:flex;
+    position:relative;
     .counter-btn{
       border:1px #eee solid;
       width: 70rpx;
@@ -9,6 +10,20 @@
       display:inline-block;
       line-height:70rpx;
       text-align:center;
+      background:#fff;
+      float:left;
+    }
+    .temp-input{
+      color:#fc5e43;
+      position:absolute;
+      left:98rpx;
+      top:2rpx;
+      border-left:0;
+      border-right:0;
+      z-index:99;
+      background:#fff;
+      border:none;
+      width:20rpx
     }
     .number {
       color:#fc5e43;
@@ -16,14 +31,27 @@
       height:70rpx;
       vertical-align:middle;
     }
+    .minusBtn{
+      background:#f8f8f8;
+      color:#999;
+      &.able{
+        background:#fff;
+        color:#333
+      }
+    }
+    .disable {
+      background:#f8f8f8;
+      color:#999;
+    }
   }
   
 </style>
 <template>
   <view class="counter">
-    <view @tap.stop="plusTap" class="counter-btn">  +  </view>
-    <input type="number" @blur="inputTap" class="counter-btn number" value="{{num}}"/> 
-    <view @tap.stop="minusTap" class="counter-btn">  -  </view>
+    <view @tap.stop="plusTap" class="counter-btn {{disable ? 'disable' : ''}}">  +  </view>
+    <view class="counter-btn temp-input" @tap="hiddenTap" wx:if="{{isTemp}}">1</view>
+    <input type="number" @input="inputTap" @blur="blurTap" class="counter-btn number" value="{{num}}" focus="{{autoFocus}}"/> 
+    <view @tap.stop="minusTap" class="counter-btn minusBtn {{able ? 'able' : ''}}">  -  </view>
   </view>
 </template>
 <script>
@@ -33,36 +61,57 @@
     props = {
       num: {
         type: [Number, String],
-        default: 1
+        default: 1,
+        twoWay: true
       }
     }
-
-    data = {
+    computed = {
+      able () {
+        if (this.num <= 1) {
+          return false
+        } else {
+          return true
+        }
+      },
+      disable () {
+        if (this.num >= this.maxCount) {
+          return true
+        } else {
+          return false
+        }
+      }
     }
-
+    data = {
+      isTemp: false,
+      autoFocus: false
+    }
     methods = {
+      hiddenTap () {
+        this.isTemp = false
+        this.autoFocus = true
+      },
       plusTap () {
+        this.disable = false
+        this.isTemp = false
         this.$emit('plusEdit')
       },
       minusTap () {
+        this.isTemp = false
         this.$emit('minusEdit')
       },
       inputTap (e) {
-        var reg = /^[1-9]\d*$|^0$/
-        if (e.detail.value === '') {
-          e.detail.value = 0
-        }
-        if (!reg.test(e.detail.value)) {
-          wepy.showToast({
-            title: '请输入有效数字',
-            image: '../image/cancel.png',
-            duration: 1000
-          })
-        }
+        this.isTemp = false
         this.$emit('keyEdit', e.detail.value)
+      },
+      blurTap(e) {
+        if (e.detail.value === '') {
+          this.isTemp = true
+          this.autoFocus = false
+        }
+        this.$emit('blurEdit', e.detail.value)
       }
     }
-    onLoad() {
+    onLoad () {
       this.$apply()
     }
   }

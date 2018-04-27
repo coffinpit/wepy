@@ -10,15 +10,13 @@
   color: #fff;
 }
 .bottombar .contact {
-  width: 20%;
-  border-right: 1px #999 solid;
+  width: 15%;
 }
 .bottombar .contact button {
   font-size: 28rpx;
   color: #fff;
   background: none;
-  line-height: 48rpx;
-  padding-top: 20rpx;
+  padding: 0 10rpx;
 }
 .bottombar .contact text {
   display: block;
@@ -28,12 +26,56 @@
   color: #fff;
   font-size: 72rpx;
 }
+.bottombar .contact .icon-kefu {
+  line-height: 110rpx;
+}
+.bottombar .contact .contact-active .iconfont {
+  color: #fc5e43;
+}
+.bottombar .goCart {
+  width: 15%;
+  border-right: 1px #999 solid;
+}
+.bottombar .goCart .goCart-icon {
+  position: relative;
+}
+.bottombar .goCart .goCart-icon .icon-ksj_gwc {
+  color: #fff;
+  font-size: 66rpx;
+  margin-top: 18rpx;
+  display: inline-block;
+}
+.bottombar .goCart .goCart-icon .goCart-txt {
+  font-size: 28rpx;
+  color: #fff;
+  display: block;
+}
+.bottombar .goCart .goCart-icon .cart-count {
+  position: absolute;
+  top: 14rpx;
+  right: 32rpx;
+  line-height: 38rpx;
+  background: #fc5e43;
+  color: #fff;
+  text-align: center;
+  border-radius: 40rpx;
+  padding: 0 6px;
+  min-width: 10rpx;
+  font-size: 20rpx;
+}
+.bottombar .goCart .goCart-icon .icon-sljia {
+  font-size: 16rpx;
+  color: #fff;
+  vertical-align: middle;
+  margin-top: -4rpx;
+  float: right;
+}
 .bottombar .cart,
 .bottombar .buy {
-  width: 40%;
-  text-align: center;
+  width: 35%;
   line-height: 116rpx;
   font-size: 36rpx;
+  text-align: center;
 }
 .bottombar .buy {
   background: #fc5e43;

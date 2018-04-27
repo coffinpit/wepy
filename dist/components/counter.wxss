@@ -1,5 +1,6 @@
 .counter {
   display: flex;
+  position: relative;
 }
 .counter .counter-btn {
   border: 1px #eee solid;
@@ -9,10 +10,36 @@
   display: inline-block;
   line-height: 70rpx;
   text-align: center;
+  background: #fff;
+  float: left;
+}
+.counter .temp-input {
+  color: #fc5e43;
+  position: absolute;
+  left: 98rpx;
+  top: 2rpx;
+  border-left: 0;
+  border-right: 0;
+  z-index: 99;
+  background: #fff;
+  border: none;
+  width: 20rpx;
 }
 .counter .number {
   color: #fc5e43;
   width: 67rpx;
   height: 70rpx;
   vertical-align: middle;
+}
+.counter .minusBtn {
+  background: #f8f8f8;
+  color: #999;
+}
+.counter .minusBtn.able {
+  background: #fff;
+  color: #333;
+}
+.counter .disable {
+  background: #f8f8f8;
+  color: #999;
 }

@@ -139,7 +139,7 @@
       }
       .iconfont{
         position: absolute;
-        bottom: -2rpx;
+        bottom: -6rpx;
         left:20rpx;
       }
   } 
@@ -193,6 +193,7 @@
   .counter{
     display:inline-block;
     float:left;
+    width:72rpx;
     z-index:999999999;
     .counter-btn{
       display:block;
@@ -202,6 +203,10 @@
     .number{
       border-top:none;
       border-bottom:none;
+    }
+    .temp-input{
+      left:25rpx;
+      top:68rpx;
     }
   }
   .cart-bottom{
@@ -275,7 +280,15 @@
       line-height:50rpx;
     }
   }
-
+  .hidden-temp{
+    .temp-input {
+      display:none;
+    }
+    .minusBtn.able{
+      background:#fff;
+      color:#333
+    }
+  }
 </style>
 <template>
   <view class="container">
@@ -296,7 +309,7 @@
               <repeat for="{{coldlist}}" index="index" item="item" key="index">  
               <view class="item-list">
                 <view class="inner txt"> 
-                  <view class="inner-layer" data-index="{{index}}" id="{{item.id}}" @tap.stop="goDetail({{item.id}})">
+                  <view class="inner-layer" data-index="{{index}}" id="{{item.id}}">
                     <text class="title">{{item.title}}</text>
                     <text class="tips">{{item.detail}}</text>
                     <text class="font-small link">会员价：￥{{item.price}} </text>
@@ -304,7 +317,7 @@
                   </view>
                   <view class="inner-image">
                     <image src="{{item.path}}" mode="aspectFill"  @tap.stop="goDetail({{item.id}})"></image>
-                    <counteCold :num.sync="item.count" @plusEdit.user="plusCold" @minusEdit.user="minCold" @keyEdit.user="keyCold" data-index="{{index}}"></counteCold>  
+                    <counteCold :num.sync="item.count" @plusEdit.user="plusCold" @minusEdit.user="minCold" @keyEdit.user="keyCold" data-index="{{index}}" class="{{ hiddenColdTemp === index ? '' : 'hidden-temp'}}" @blurEdit.user="blurCold"></counteCold>  
                   </view>
                 </view>
                 <view data-index="{{index}}" class="inner del">
@@ -329,15 +342,15 @@
               <repeat for="{{normallist}}" index="index" item="item" key="index">  
               <view class="item-list">
                 <view  class="inner txt"> 
-                  <view class="inner-layer" data-index="{{index}}" id="{{item.id}}" @tap.stop="goDetail({{item.id}})">
+                  <view class="inner-layer" data-index="{{index}}" id="{{item.id}}">
                     <text class="title">{{item.title}}</text>
                     <text class="tips">{{item.detail}}</text>
                     <text class="font-small link">会员价：￥{{item.price}} </text>
                     <text class="font-small">原价：￥{{item.oldprice}}</text>
                   </view>
                   <view class="inner-image">
-                    <image src="{{item.path}}" mode="aspectFill"></image>
-                    <counteNormal :num.sync="item.count" @plusEdit.user="plusNormal" @minusEdit.user="minNormal" @keyEdit.user="keyNormal" data-index="{{index}}"></counteNormal>  
+                    <image src="{{item.path}}" mode="aspectFill" @tap.stop="goDetail({{item.id}})"></image>
+                    <counteNormal :num.sync="item.count" @plusEdit.user="plusNormal" @minusEdit.user="minNormal" @keyEdit.user="keyNormal" data-index="{{index}}" class="{{ hiddenNormalTemp === index ? '' : 'hidden-temp'}}" @blurEdit.user="blurNormal"></counteNormal>  
                   </view>
                 </view>
                 <view data-index="{{index}}" class="inner del">
@@ -445,38 +458,91 @@
       tempCold: [],
       normalArray: [],
       normalChecked: false,
-      tempNormal: []
+      tempNormal: [],
+      hiddenColdTemp: 0,
+      hiddenNormalTemp: 0
     }
     methods = {
       plusCold (e) {
         var index = e.source.$index
         this.coldlist[index].count ++
+        if (this.coldlist[index].count >= this.coldlist[index].totalCount) {
+          this.coldlist[index].count = this.coldlist[index].totalCount
+          this.maxModal()
+        }
         this.$apply()
         // 发送购物车修改数据
       },
       plusNormal (e) {
         var index = e.source.$index
         this.normallist[index].count ++
+        console.log(this.normallist[index].count, this.normallist[index].totalCount)
+        if (this.normallist[index].count >= this.normallist[index].totalCount) {
+          this.normallist[index].count = this.normallist[index].totalCount
+          this.maxModal()
+        }
         this.$apply()
+        // 发送购物车修改数据
       },
       minCold (e) {
         var index = e.source.$index
         this.coldlist[index].count --
+        if (this.coldlist[index].count <= 0) {
+          this.coldlist[index].count = 1
+        }
         this.$apply()
+        // 发送购物车修改数据
       },
       minNormal (e) {
         var index = e.source.$index
         this.normallist[index].count --
+        if (this.normallist[index].count <= 0) {
+          this.normallist[index].count = 1
+        }
         this.$apply()
         // 发送购物车修改数据
       },
       keyCold (val, e) {
         var index = e.source.$index
-        this.coldlist[index].count = val
+        this.hiddenColdTemp = e.source.$index
+        if (val === '0') {
+          this.coldlist[index].count = 1
+        } else {
+          this.coldlist[index].count = val
+        }
+        if (this.coldlist[index].count > this.coldlist[index].totalCount) {
+          this.coldlist[index].count = this.coldlist[index].totalCount
+          console.log(this.coldlist[index].count, this.coldlist[index].totalCount)
+          this.maxModal()
+        }
+        return this.coldlist[index].count
+      },
+      blurCold (val, e) {
+        var index = e.source.$index
+        if (val === '') {
+          this.coldlist[index].count = 1
+        }
       },
       keyNormal (val, e) {
         var index = e.source.$index
+        this.hiddenNormalTemp = e.source.$index
         this.normallist[index].count = val
+        if (val === '0') {
+          this.normallist[index].count = 1
+        } else {
+          this.normallist[index].count = val
+        }
+        if (this.normallist[index].count > this.normallist[index].totalCount) {
+          this.normallist[index].count = this.normallist[index].totalCount
+          this.maxModal()
+        }
+        return this.normallist[index].count
+      },
+      blurNormal (val, e) {
+        var index = e.source.$index
+        if (val === '') {
+          this.normalist[index].count = 1
+        }
       },
       goDetail (id) {
         console.log(id)
@@ -652,6 +718,13 @@
         arr.splice(arr.indexOf(val), 1)
       }
     }
+    maxModal () {
+      wepy.showToast({
+        title: '数量已达上限',
+        duration: 1000,
+        image: '../image/cancel.png'
+      })
+    }
     initPageData () {
       this.coldlist = [
         {
@@ -663,7 +736,8 @@
           id: '1231123',
           detail: '500g × 5',
           count: '10',
-          checked: false
+          checked: false,
+          totalCount: '12'
         },
         {
           freightPrice: '20',
@@ -674,7 +748,8 @@
           id: '1223123',
           detail: '500g × 5',
           count: '6',
-          checked: false
+          checked: false,
+          totalCount: '8'
         }
       ]
       this.normallist = [
@@ -687,7 +762,8 @@
           id: '1261123',
           detail: '500g × 5',
           count: '10',
-          checked: false
+          checked: false,
+          totalCount: '14'
         },
         {
           freightPrice: '5',
@@ -698,7 +774,8 @@
           id: '1234443',
           detail: '500g × 5',
           count: '6',
-          checked: false
+          checked: false,
+          totalCount: '6'
         }
       ]
     }

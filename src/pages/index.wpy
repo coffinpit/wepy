@@ -227,7 +227,20 @@
         wepy.hideLoading()
       }, 1000)
     }
+    getInitData () {
+      var _this = this.$parent
+      var data = {
+        token: '5a98c06cbc74d423378',
+        recommendType: 1,
+        pageSize: 5,
+        pageNum: 1
+      }
+      _this.HttpRequest.UserHttp(data).then((res) => {
+        console.log(res)
+      })
+    }
     onLoad () {
+      this.getInitData()
       var _this = this
       wepy.getSystemInfo({
         success: function (res) {

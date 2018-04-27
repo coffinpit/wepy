@@ -260,12 +260,13 @@
   display: block;
 }
 .popup_layer .popup_goods .link.inline {
-  display: inline-block;
+  float: left;
+  margin-top: 52rpx;
 }
 .popup_layer .popup_goods .calculate {
   margin-top: 20rpx;
   margin-right: 20rpx;
-  display: inline-block;
+  float: left;
 }
 .popup_layer .popup_goods .popup_goods_box {
   display: flex;

@@ -17,7 +17,7 @@
               <block wx:for="{{coldlist}}" wx:for-index="index" wx:for-item="item" wx:key="index">  
               <view class="item-list">
                 <view class="inner txt"> 
-                  <view class="inner-layer" data-index="{{index}}" id="{{item.id}}" catchtap="goDetail" data-wpygodetail-a="{{item.id}}">
+                  <view class="inner-layer" data-index="{{index}}" id="{{item.id}}">
                     <text class="title">{{item.title}}</text>
                     <text class="tips">{{item.detail}}</text>
                     <text class="font-small link">会员价：￥{{item.price}} </text>
@@ -26,10 +26,11 @@
                   <view class="inner-image">
                     <image src="{{item.path}}" mode="aspectFill" catchtap="goDetail" data-wpygodetail-a="{{item.id}}"/>
                     
-  <view class="counter">
-    <view catchtap="$counteCold$plusTap" class="counter-btn" data-com-index="{{index}}">  +  </view>
-    <input type="number" bindblur="$counteCold$inputTap" class="counter-btn number" value="{{item.count}}" data-com-index="{{index}}"/> 
-    <view catchtap="$counteCold$minusTap" class="counter-btn" data-com-index="{{index}}">  -  </view>
+  <view class="counter {{ hiddenColdTemp === index ? '' : 'hidden-temp'}}">
+    <view catchtap="$counteCold$plusTap" class="counter-btn {{$counteCold$disable ? 'disable' : ''}}" data-com-index="{{index}}">  +  </view>
+    <view class="counter-btn temp-input" bindtap="$counteCold$hiddenTap"  wx:if="{{$counteCold$isTemp}}" data-com-index="{{index}}">1</view>
+    <input type="number" bindinput="$counteCold$inputTap" bindblur="$counteCold$blurTap" class="counter-btn number" value="{{item.count}}" focus="{{$counteCold$autoFocus}}" data-com-index="{{index}}"/> 
+    <view catchtap="$counteCold$minusTap" class="counter-btn minusBtn {{$counteCold$able ? 'able' : ''}}" data-com-index="{{index}}">  -  </view>
   </view>
   
                   </view>
@@ -56,19 +57,20 @@
               <block wx:for="{{normallist}}" wx:for-index="index" wx:for-item="item" wx:key="index">  
               <view class="item-list">
                 <view class="inner txt"> 
-                  <view class="inner-layer" data-index="{{index}}" id="{{item.id}}" catchtap="goDetail" data-wpygodetail-a="{{item.id}}">
+                  <view class="inner-layer" data-index="{{index}}" id="{{item.id}}">
                     <text class="title">{{item.title}}</text>
                     <text class="tips">{{item.detail}}</text>
                     <text class="font-small link">会员价：￥{{item.price}} </text>
                     <text class="font-small">原价：￥{{item.oldprice}}</text>
                   </view>
                   <view class="inner-image">
-                    <image src="{{item.path}}" mode="aspectFill"/>
+                    <image src="{{item.path}}" mode="aspectFill" catchtap="goDetail" data-wpygodetail-a="{{item.id}}"/>
                     
-  <view class="counter">
-    <view catchtap="$counteNormal$plusTap" class="counter-btn" data-com-index="{{index}}">  +  </view>
-    <input type="number" bindblur="$counteNormal$inputTap" class="counter-btn number" value="{{item.count}}" data-com-index="{{index}}"/> 
-    <view catchtap="$counteNormal$minusTap" class="counter-btn" data-com-index="{{index}}">  -  </view>
+  <view class="counter {{ hiddenNormalTemp === index ? '' : 'hidden-temp'}}">
+    <view catchtap="$counteNormal$plusTap" class="counter-btn {{$counteNormal$disable ? 'disable' : ''}}" data-com-index="{{index}}">  +  </view>
+    <view class="counter-btn temp-input" bindtap="$counteNormal$hiddenTap"  wx:if="{{$counteNormal$isTemp}}" data-com-index="{{index}}">1</view>
+    <input type="number" bindinput="$counteNormal$inputTap" bindblur="$counteNormal$blurTap" class="counter-btn number" value="{{item.count}}" focus="{{$counteNormal$autoFocus}}" data-com-index="{{index}}"/> 
+    <view catchtap="$counteNormal$minusTap" class="counter-btn minusBtn {{$counteNormal$able ? 'able' : ''}}" data-com-index="{{index}}">  -  </view>
   </view>
   
                   </view>

@@ -94,10 +94,15 @@
     
   <view class="bottombar">
     <view class="contact">
-      <button open-type="contact" session-from="weapp">
+      <button open-type="contact" session-from="weapp" hover-class="contact-active">
         <text class="iconfont icon-kefu"/>
-        <text>客服</text>
       </button>
+    </view>
+    <view class="goCart">
+      <view class="goCart-icon user">
+        <text class="iconfont icon-ksj_gwc"/>
+        <text class="cart-count"  wx:if="{{$bottom$cartVal > 0}}">{{$bottom$cartMaxVal}}<text class="iconfont icon-sljia" wx:if="{{$bottom$cartVal >= 99}}"/></text>
+      </view>
     </view>
     <view class="cart" bindtap="$bottom$addCart">
       <text>加入购物车</text>
@@ -107,7 +112,7 @@
     </view>
   </view>
 
-    <view class="popup" wx:if="{{overflow}}"/>
+    <view class="popup"  wx:if="{{overflow}}"/>
     <view class="popup__content {{overflow && buyModal? 'active' : ''}}">
       <view class="popup_close"><text class="title" catchtap="closeBuy">关闭</text></view>
       <view class="popup_layer">
@@ -126,12 +131,13 @@
           <text class="title link">价格：￥{{totalBuy}}</text>
           
   <view class="counter calculate">
-    <view catchtap="$counterBuy$plusTap" class="counter-btn">  +  </view>
-    <input type="number" bindblur="$counterBuy$inputTap" class="counter-btn number" value="{{$counterBuy$num}}"/> 
-    <view catchtap="$counterBuy$minusTap" class="counter-btn">  -  </view>
+    <view catchtap="$counterBuy$plusTap" class="counter-btn {{$counterBuy$disable ? 'disable' : ''}}">  +  </view>
+    <view class="counter-btn temp-input" bindtap="$counterBuy$hiddenTap"  wx:if="{{$counterBuy$isTemp}}">1</view>
+    <input type="number" bindinput="$counterBuy$inputTap" bindblur="$counterBuy$blurTap" class="counter-btn number" value="{{$counterBuy$num}}" focus="{{$counterBuy$autoFocus}}"/> 
+    <view catchtap="$counterBuy$minusTap" class="counter-btn minusBtn {{$counterBuy$able ? 'able' : ''}}">  -  </view>
   </view>
 
-          <text wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
+          <text  wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
         </view>
       </view>
       <radio-group bindchange="addBuyGoods">
@@ -162,12 +168,13 @@
           <text class="title link">价格：￥{{totalCart}}</text>
           
   <view class="counter calculate">
-    <view catchtap="$counterCart$plusTap" class="counter-btn">  +  </view>
-    <input type="number" bindblur="$counterCart$inputTap" class="counter-btn number" value="{{$counterCart$num}}"/> 
-    <view catchtap="$counterCart$minusTap" class="counter-btn">  -  </view>
+    <view catchtap="$counterCart$plusTap" class="counter-btn {{$counterCart$disable ? 'disable' : ''}}">  +  </view>
+    <view class="counter-btn temp-input" bindtap="$counterCart$hiddenTap"  wx:if="{{$counterCart$isTemp}}">1</view>
+    <input type="number" bindinput="$counterCart$inputTap" bindblur="$counterCart$blurTap" class="counter-btn number" value="{{$counterCart$num}}" focus="{{$counterCart$autoFocus}}"/> 
+    <view catchtap="$counterCart$minusTap" class="counter-btn minusBtn {{$counterCart$able ? 'able' : ''}}">  -  </view>
   </view>
 
-          <text wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
+          <text  wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
         </view>
       </view>
       <radio-group bindchange="addCartGoods">

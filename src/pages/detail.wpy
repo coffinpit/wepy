@@ -256,13 +256,14 @@
       .link{
         display:block;
         &.inline{
-          display:inline-block;
+          float:left;
+          margin-top:52rpx;
         }
       }
       .calculate{
         margin-top:20rpx;
         margin-right:20rpx;
-        display:inline-block;
+        float:left;
       }
       .popup_goods_box{
         display:flex;
@@ -383,7 +384,7 @@
         <view class="section">关于</view>
       </view>
     </view>
-    <bottom @buy.user="buy" @cart.user="cart"></bottom>
+    <bottom @buy.user="buy" @cart.user="cart" :cartVal.sync="addCartCount"></bottom>
     <view class="popup" wx:if="{{overflow}}"></view>
     <view class="popup__content {{overflow && buyModal? 'active' : ''}}">
       <view class="popup_close"><text class="title" @tap.stop="closeBuy">关闭</text></view>
@@ -401,7 +402,7 @@
             </view>
           </view>
           <text class="title link">价格：￥{{totalBuy}}</text>
-          <counterBuy @plusEdit.user="plusBuy" @minusEdit.user="minusBuy" @keyEdit.user="keyBuy" class="calculate" :num.sync="buyNum"></counterBuy>
+          <counterBuy @plusEdit.user="plusBuy" @minusEdit.user="minusBuy" @keyEdit.user="keyBuy" class="calculate" :num.sync="buyNum" @blurEdit.user="blurBuy"></counterBuy>
           <text wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
         </view>
       </view>
@@ -431,7 +432,7 @@
             </view>
           </view>
           <text class="title link">价格：￥{{totalCart}}</text>
-          <counterCart @plusEdit.user="plusCart" @minusEdit.user="minusCart" @keyEdit.user="keyCart" class="calculate" :num.sync="cartNum"></counterCart>
+          <counterCart @plusEdit.user="plusCart" @minusEdit.user="minusCart" @keyEdit.user="keyCart" class="calculate" :num.sync="cartNum" @blurEdit.user="blurCart"></counterCart>
           <text wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
         </view>
       </view>
@@ -471,7 +472,7 @@
       },
       maxtip () {
         var maxtip = false
-        if (this.buyNum === this.buyResult.num || this.cartNum === this.cartResult.num) {
+        if (this.buyNum >= this.buyResult.num || this.cartNum >= this.cartResult.num) {
           maxtip = true
         } else {
           maxtip = false
@@ -529,6 +530,7 @@
       }],
       buyNum: 1,
       cartNum: 1,
+      addCartCount: 0,
       buyResult: [],
       cartResult: [],
       totalBuy: 0,
@@ -571,7 +573,7 @@
       },
       plusBuy (e) {
         this.buyNum ++
-        if (this.buyNum > this.buyResult.num) {
+        if (this.buyNum >= this.buyResult.num) {
           this.buyNum = this.buyResult.num
         }
         // 发送购买增加数量
@@ -579,13 +581,27 @@
       minusBuy () {
         this.buyNum --
         if (this.buyNum <= 0) {
-          this.buyNum = 0
+          this.buyNum = 1
         }
         // 发送购买减少数量
       },
       keyBuy (val, e) {
         this.buyNum = val
+        if (val === '0') {
+          this.buyNum = 1
+        } else {
+          this.buyNum = val
+        }
+        if (this.buyNum >= this.buyResult.num) {
+          this.buyNum = parseInt(this.buyResult.num)
+        }
+        return this.buyNum
         // 发送购买输入数量
+      },
+      blurBuy (val) {
+        if (val === '') {
+          this.buyNum = 1
+        }
       },
       addBuyGoods (e) {
         // 发送选中结果
@@ -602,12 +618,23 @@
       minusCart () {
         this.cartNum --
         if (this.cartNum <= 0) {
-          this.cartNum = 0
+          this.cartNum = 1
         }
         // 发送购物车减少数量
       },
-      keyCart (val, e) {
+      keyCart (val) {
         this.cartNum = val
+        if (val === '0') {
+          this.cartNum = 1
+        } else {
+          this.cartNum = val
+        }
+        return this.cartNum
+      },
+      blurCart (val) {
+        if (val === '') {
+          this.cartNum = 1
+        }
       },
       addCartGoods (e) {
         // 发送选中结果
@@ -615,9 +642,10 @@
         this.cartResult = this.detail.goodList[e.detail.value]
       },
       goCart () {
-        wepy.switchTab({
-          url: './cart'
-        })
+        if (this.cartNum <= this.cartResult.num) {
+          this.addCartCount += this.cartNum
+          this.methods.closeCart.apply(this)
+        }
       }
     }
     initCartData () {
@@ -656,7 +684,7 @@
       }, {
         name: '自然牛肉1000g',
         price: 120,
-        num: 3,
+        num: 120,
         checked: true
       }, {
         name: '自然牛肉2000g',

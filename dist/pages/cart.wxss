@@ -140,7 +140,7 @@ view {
 }
 .inner.del .iconfont {
   position: absolute;
-  bottom: -2rpx;
+  bottom: -6rpx;
   left: 20rpx;
 }
 .inner-left {
@@ -194,6 +194,7 @@ view {
 .counter {
   display: inline-block;
   float: left;
+  width: 72rpx;
   z-index: 999999999;
 }
 .counter .counter-btn {
@@ -204,6 +205,10 @@ view {
 .counter .number {
   border-top: none;
   border-bottom: none;
+}
+.counter .temp-input {
+  left: 25rpx;
+  top: 68rpx;
 }
 .cart-bottom {
   position: fixed;
@@ -275,4 +280,11 @@ view {
   width: 40%;
   margin: 30rpx auto;
   line-height: 50rpx;
+}
+.hidden-temp .temp-input {
+  display: none;
+}
+.hidden-temp .minusBtn.able {
+  background: #fff;
+  color: #333;
 }
