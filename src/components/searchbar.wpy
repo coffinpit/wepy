@@ -30,7 +30,7 @@
   
 </style>
 <template>
-  <view class="searchbar">
+  <view class="searchbar" @tap="goSearch">
     <view class="searchinput">
       <image src="../image/search.png"></image>
       <text>搜索商品</text>
@@ -46,8 +46,15 @@
 
     data = {
     }
-
     methods = {
+      goSearch () {
+        wepy.navigateTo({
+          url: './search'
+        })
+      }
+    }
+    onLoad () {
+      this.$apply()
     }
   }
 </script>

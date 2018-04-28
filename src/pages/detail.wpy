@@ -293,6 +293,7 @@
 </style>
 <template>
   <view class="container" style="height: {{overflow? winHeight : 'auto'}}">
+    <menuList></menuList>
     <view class="detail-info">
       <view class="detail-img">
         <image src="{{detail.path}}" mode="aspectFill"></image>
@@ -453,6 +454,7 @@
   import wepy from 'wepy'
   import Bottom from '../components/bottombar'
   import Count from '../components/counter'
+  import Menu from '../components/menu'
 
   export default class Detail extends wepy.page {
     config = {
@@ -461,7 +463,8 @@
     components = {
       bottom: Bottom,
       counterBuy: Count,
-      counterCart: Count
+      counterCart: Count,
+      menuList: Menu
     }
     computed = {
       totalBuy () {

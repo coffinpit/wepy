@@ -71,14 +71,48 @@
         transform: scale(1);
       }
     }
+
+    .lost-goods{
+      margin:50rpx 0;
+      width:196rpx;
+      height:170rpx;
+      position:relative;
+      image{
+        width:196rpx;
+        height:170rpx;
+      }
+      text{
+        position:absolute;
+        top:80rpx;
+        left:50%;
+        transform:translate(-50%, 0);
+        background:#fff;
+        color:#999;
+        font-size:28rpx;
+        padding:10rpx 20rpx;
+        border-radius:20rpx;
+        min-width:120rpx;
+        border:1px #ccc solid;
+      }
+    }
 </style>
 <template>
-  <view class="closed-signboard">
-    <view class="sign">售罄</view>
-    <view class="strings"></view>
-    <view class="pin pin1"></view>
-    <view class="pin pin2"></view>
-    <view class="pin pin3"></view>
+  <view>
+    <slot name="lost-goods">
+      <view class="lost-goods">
+        <image src="../image/lost-goods.png"></image>
+        <text>暂无数据</text>
+      </view>
+    </slot>
+    <slot name="lost-category">
+      <view class="closed-signboard">
+        <view class="sign">售罄</view>
+        <view class="strings"></view>
+        <view class="pin pin1"></view>
+        <view class="pin pin2"></view>
+        <view class="pin pin3"></view>
+      </view>
+    </slot>
   </view>
 </template>
 <script>

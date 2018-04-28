@@ -105,25 +105,8 @@
     data = {
     }
     methods = {
-      goIndex () {
-        wepy.switchTab({
-          url: './index'
-        })
-      },
       login () {
-        wepy.login({
-          success: (res) => {
-            console.log(res.code)
-            wepy.getUserInfo({
-              success: (data) => {
-                console.log(data)
-                // 往服务器发送code和encryptedData 获取token
-                // wepy.setStorage('token', token)
-                this.methods.goIndex()
-              }
-            })
-          }
-        })
+        this.$parent.getUserInfo()
       }
     }
     onload () {

@@ -1,0 +1,42 @@
+<style lang="less">
+  .menu-layer{
+    position: fixed;
+    right:20rpx;
+    bottom:300rpx;
+    background:rbga(0,0,0,0.8);
+    width:80rpx;
+    min-height:80rpx;
+    border-radius:40rpx;
+    image{
+      width:40rpx;
+      height:40rpx;
+    }
+  }
+  
+</style>
+<template>
+  <view class="menu-layer">
+    <view><image src="../image/index-active.png"></image></view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  
+  export default class Search extends wepy.component {
+    props = {
+    }
+
+    data = {
+    }
+    methods = {
+      goSearch () {
+        wepy.navigateTo({
+          url: './search'
+        })
+      }
+    }
+    onLoad () {
+      this.$apply()
+    }
+  }
+</script>

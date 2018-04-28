@@ -1,0 +1,13 @@
+.menu-layer {
+  position: fixed;
+  right: 20rpx;
+  bottom: 300rpx;
+  background: rbga(0, 0, 0, 0.8);
+  width: 80rpx;
+  min-height: 80rpx;
+  border-radius: 40rpx;
+}
+.menu-layer image {
+  width: 40rpx;
+  height: 40rpx;
+}

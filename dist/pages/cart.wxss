@@ -264,7 +264,7 @@ view {
   text-overflow: ellipsis;
 }
 .blank {
-  width: 500rpx;
+  width: 400rpx;
   text-align: center;
   margin: 0 auto;
   padding-top: 50rpx;

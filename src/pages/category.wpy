@@ -5,6 +5,7 @@
     overflow:hidden;
     display:block;
     padding-bottom:20rpx;
+    margin-top:80rpx;
   }
   .category-bg{
     width:750rpx;
@@ -12,7 +13,7 @@
     overflow:hidden;
     image{
       position:absolute;
-      top:0;
+      top:80rpx;
       left:0;
       width:750rpx;
       height:278rpx;
@@ -27,7 +28,7 @@
     width:100%;
     display:flex;
     position:absolute;
-    top:180rpx;
+    top:260rpx;
     z-index:999;
     .category-tab-list{
       width:21%;
@@ -49,7 +50,7 @@
     width:100%;
     background:#fff;
     position:absolute;
-    top:278rpx;
+    top:358rpx;
     left:0;
     z-index:999;
     overflow:hidden;
@@ -99,6 +100,7 @@
 </style>
 <template>
   <view class="container">
+    <searchbar></searchbar>
     <view class="category-bg">
       <repeat for="{{categoryImg}}" item="item" index="index" key="index">
         <image src="{{item}}" class="{{index === currentTab ? 'active' : ''}}" style="z-index:{{index === currentTab ? '999' : index}}"></image>
@@ -130,6 +132,7 @@
 <script>
   import wepy from 'wepy'
   import Goods from '../components/goods'
+  import Search from '../components/searchbar'
   import Defect from '../components/defect'
 
   export default class Hot extends wepy.page {
@@ -138,7 +141,8 @@
     }
     components = {
       Categoods: Goods,
-      defectImage: Defect
+      defectImage: Defect,
+      searchbar: Search
     }
     data = {
       categoryImg: ['../image/categoryA.jpg', '../image/categoryB.jpg', '../image/categoryC.jpg', '../image/categoryD.jpg'],

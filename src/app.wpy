@@ -241,6 +241,7 @@ import { setStore } from 'wepy-redux'
 import configStore from './store'
 
 import HttpRequest from './service/HttpRequest'
+var Md5 = require('./service/md5')
 
 const store = configStore()
 setStore(store)
@@ -305,16 +306,13 @@ export default class extends wepy.app {
           title: '加载中',
           icon: 'loading'
         })
-        console.log('config request: ', p)
         return p
       },
       success (p) {
-        console.log('request success: ', p)
         wepy.hideLoading()
         return p
       },
       fail (p) {
-        console.log('request fail: ', p)
         wepy.hideLoading()
         wepy.showToast({
           title: '加载失败',
@@ -324,7 +322,6 @@ export default class extends wepy.app {
         return p
       },
       complete (p) {
-        console.log('request complete: ', p)
       }
     })
   }
@@ -345,25 +342,55 @@ export default class extends wepy.app {
     const data = await this.sleep(3)
     console.log(data)
   }
-
+  goIndex () {
+    wepy.switchTab({
+      url: './index'
+    })
+  }
   getUserInfo(cb) {
     const that = this
-    if (this.globalData.userInfo) {
-      return this.globalData.userInfo
+    if (wepy.getStorageSync('token')) {
+      this.goIndex()
     }
-    wepy.getUserInfo({
-      success (res) {
-        that.globalData.userInfo = res.userInfo
-        cb && cb(res.userInfo)
-      },
-      fail () {
-        wepy.showModal({
-          title: '警告',
-          content: '登录失败',
-          success: (res) => {
-            if (res.confirm) {
-              console.log('用户已确认')
-            }
+    wepy.login({
+      success: (res) => {
+        console.log(res.code)
+        wepy.getUserInfo({
+          success: (data) => {
+            console.log(data)
+            that.globalData = res.userInfo
+            that.HttpRequest.UserLogin({phone: '13402155751'}).then((res) => {
+              var token = res.data.data.token
+              wepy.setStorageSync('token', token)
+              this.goIndex()
+            })
+            cb && cb(res.userInfo)
+          },
+          fail (res) {
+            wepy.showModal({
+              title: '警告',
+              content: '请检查网络连接，并重新开启授权',
+              success: (res) => {
+                if (res.confirm) {
+                  wepy.openSetting({
+                    success: (res) => {
+                      if (res.authSetting['scope.userInfo']) {
+                        console.log(res.authSetting['scope.userInfo'])
+                      } else {
+                        wepy.showModal({
+                          'title': '登录失败'
+                        })
+                      }
+                    },
+                    fail: function () {
+                      wepy.showModal({
+                        'title': '拒绝授权将无法使用小程序部分功能，请重新开启授权'
+                      })
+                    }
+                  })
+                }
+              }
+            })
           }
         })
       }
@@ -371,5 +398,6 @@ export default class extends wepy.app {
   }
 
   HttpRequest = new HttpRequest()
+  Md5 = Md5.hexMD5
 }
 </script>

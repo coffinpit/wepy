@@ -1,5 +1,13 @@
 
   <view class="container">
+    
+  <view class="searchbar" bindtap="$searchbar$goSearch">
+    <view class="searchinput">
+      <image src="../image/search.png"/>
+      <text>搜索商品</text>
+    </view>
+  </view>
+
     <view class="category-bg">
       <block wx:for="{{categoryImg}}" wx:for-index="index" wx:for-item="item" wx:key="index">
         <image src="{{item}}" class="{{index === currentTab ? 'active' : ''}}" style="z-index:{{index === currentTab ? '999' : index}}"/>
@@ -22,12 +30,22 @@
       </block>
     </view>
     
-  <view class="closed-signboard" wx:if="{{isNull}}">
-    <view class="sign">售罄</view>
-    <view class="strings"/>
-    <view class="pin pin1"/>
-    <view class="pin pin2"/>
-    <view class="pin pin3"/>
+  <view wx:if="{{isNull}}">
+    
+      <view class="lost-goods">
+        <image src="../image/lost-goods.png"/>
+        <text>暂无数据</text>
+      </view>
+    
+    
+      <view class="closed-signboard">
+        <view class="sign">售罄</view>
+        <view class="strings"/>
+        <view class="pin pin1"/>
+        <view class="pin pin2"/>
+        <view class="pin pin3"/>
+      </view>
+    
   </view>
 
     <view class="content"  wx:else>
@@ -38,7 +56,7 @@
       <view class="goods-detail">
         <view class="goods-detail-title">{{$Categoods$item.title}}</view>
         <view class="goods-detail-price">
-          会员价:<text class="price">￥{{$Categoods$item.price}} (优惠￥{{$Categoods$item.oldprice - $Categoods$item.price}})</text>
+          会员价:<text class="price">￥{{$Categoods$item.price}} (优惠￥{{$Categoods$item.reduction}})</text>
         </view>
         <view class="goods-detail-oldprice">原价:{{$Categoods$item.oldprice}}</view>
         <view class="goods-promot">

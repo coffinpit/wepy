@@ -19,38 +19,24 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Search = function (_wepy$component) {
-  _inherits(Search, _wepy$component);
+var Defect = function (_wepy$component) {
+  _inherits(Defect, _wepy$component);
 
-  function Search() {
-    var _ref;
+  function Defect() {
+    _classCallCheck(this, Defect);
 
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, Search);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Search.__proto__ || Object.getPrototypeOf(Search)).call.apply(_ref, [this].concat(args))), _this), _this.props = {}, _this.data = {}, _this.methods = {
-      goSearch: function goSearch() {
-        _wepy2.default.navigateTo({
-          url: './search'
-        });
-      }
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    return _possibleConstructorReturn(this, (Defect.__proto__ || Object.getPrototypeOf(Defect)).apply(this, arguments));
   }
 
-  _createClass(Search, [{
+  _createClass(Defect, [{
     key: 'onLoad',
     value: function onLoad() {
       this.$apply();
     }
   }]);
 
-  return Search;
+  return Defect;
 }(_wepy2.default.component);
 
-exports.default = Search;
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNlYXJjaGJhci5qcyJdLCJuYW1lcyI6WyJTZWFyY2giLCJwcm9wcyIsImRhdGEiLCJtZXRob2RzIiwiZ29TZWFyY2giLCJuYXZpZ2F0ZVRvIiwidXJsIiwiJGFwcGx5IiwiY29tcG9uZW50Il0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFDRTs7Ozs7Ozs7Ozs7O0lBRXFCQSxNOzs7Ozs7Ozs7Ozs7OztzTEFDbkJDLEssR0FBUSxFLFFBR1JDLEksR0FBTyxFLFFBRVBDLE8sR0FBVTtBQUNSQyxjQURRLHNCQUNJO0FBQ1YsdUJBQUtDLFVBQUwsQ0FBZ0I7QUFDZEMsZUFBSztBQURTLFNBQWhCO0FBR0Q7QUFMTyxLOzs7Ozs2QkFPQTtBQUNSLFdBQUtDLE1BQUw7QUFDRDs7OztFQWZpQyxlQUFLQyxTOztrQkFBcEJSLE0iLCJmaWxlIjoic2VhcmNoYmFyLmpzIiwic291cmNlc0NvbnRlbnQiOlsiXG4gIGltcG9ydCB3ZXB5IGZyb20gJ3dlcHknXG4gIFxuICBleHBvcnQgZGVmYXVsdCBjbGFzcyBTZWFyY2ggZXh0ZW5kcyB3ZXB5LmNvbXBvbmVudCB7XG4gICAgcHJvcHMgPSB7XG4gICAgfVxuXG4gICAgZGF0YSA9IHtcbiAgICB9XG4gICAgbWV0aG9kcyA9IHtcbiAgICAgIGdvU2VhcmNoICgpIHtcbiAgICAgICAgd2VweS5uYXZpZ2F0ZVRvKHtcbiAgICAgICAgICB1cmw6ICcuL3NlYXJjaCdcbiAgICAgICAgfSlcbiAgICAgIH1cbiAgICB9XG4gICAgb25Mb2FkICgpIHtcbiAgICAgIHRoaXMuJGFwcGx5KClcbiAgICB9XG4gIH1cbiJdfQ==
+exports.default = Defect;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInJlYWNoZG93bi5qcyJdLCJuYW1lcyI6WyJEZWZlY3QiLCIkYXBwbHkiLCJjb21wb25lbnQiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7OztBQUNFOzs7Ozs7Ozs7Ozs7SUFFcUJBLE07Ozs7Ozs7Ozs7OzZCQUNUO0FBQ1IsV0FBS0MsTUFBTDtBQUNEOzs7O0VBSGlDLGVBQUtDLFM7O2tCQUFwQkYsTSIsImZpbGUiOiJyZWFjaGRvd24uanMiLCJzb3VyY2VzQ29udGVudCI6WyJcclxuICBpbXBvcnQgd2VweSBmcm9tICd3ZXB5J1xyXG5cclxuICBleHBvcnQgZGVmYXVsdCBjbGFzcyBEZWZlY3QgZXh0ZW5kcyB3ZXB5LmNvbXBvbmVudCB7XHJcbiAgICBvbkxvYWQgKCkge1xyXG4gICAgICB0aGlzLiRhcHBseSgpXHJcbiAgICB9XHJcbiAgfVxyXG4iXX0=

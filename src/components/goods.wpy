@@ -52,7 +52,7 @@
       <view class="goods-detail">
         <view class="goods-detail-title">{{item.title}}</view>
         <view class="goods-detail-price">
-          会员价:<text class="price">￥{{item.price}} (优惠￥{{item.oldprice - item.price}})</text>
+          会员价:<text class="price">￥{{item.price}} (优惠￥{{item.reduction}})</text>
         </view>
         <view class="goods-detail-oldprice">原价:{{item.oldprice}}</view>
         <view class="goods-promot">
@@ -75,7 +75,7 @@
 
   export default class Goods extends wepy.component {
     props = {
-      goodsItem: {}
+      goodsItem: Array
     }
     methods = {
       tap (id) {
@@ -83,6 +83,8 @@
       }
     }
     onLoad () {
+      console.log(this.goodsItem)
+      this.$apply()
     }
   }
 </script>

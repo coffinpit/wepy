@@ -1,7 +1,7 @@
 
   <view class="container">
     
-  <view class="searchbar">
+  <view class="searchbar" bindtap="$searchbar$goSearch">
     <view class="searchinput">
       <image src="../image/search.png"/>
       <text>搜索商品</text>
@@ -39,7 +39,7 @@
       <view class="goods-detail">
         <view class="goods-detail-title">{{$recGoods$item.title}}</view>
         <view class="goods-detail-price">
-          会员价:<text class="price">￥{{$recGoods$item.price}} (优惠￥{{$recGoods$item.oldprice - $recGoods$item.price}})</text>
+          会员价:<text class="price">￥{{$recGoods$item.price}} (优惠￥{{$recGoods$item.reduction}})</text>
         </view>
         <view class="goods-detail-oldprice">原价:{{$recGoods$item.oldprice}}</view>
         <view class="goods-promot">
@@ -67,7 +67,7 @@
       <view class="goods-detail">
         <view class="goods-detail-title">{{$hotGoods$item.title}}</view>
         <view class="goods-detail-price">
-          会员价:<text class="price">￥{{$hotGoods$item.price}} (优惠￥{{$hotGoods$item.oldprice - $hotGoods$item.price}})</text>
+          会员价:<text class="price">￥{{$hotGoods$item.price}} (优惠￥{{$hotGoods$item.reduction}})</text>
         </view>
         <view class="goods-detail-oldprice">原价:{{$hotGoods$item.oldprice}}</view>
         <view class="goods-promot">
@@ -86,4 +86,22 @@
   </block>
 
     </view>
+    
+  <view wx:if="{{isNull}}">
+    
+      <view class="lost-goods">
+        <image src="../image/lost-goods.png"/>
+        <text>暂无数据</text>
+      </view>
+    
+    <view/>
+  </view>
+
+    
+  <view wx:if="{{isDown}}">
+    <view class="isDown">
+      <text>—————————— 到底啦 ——————————</text>
+    </view>
+  </view>
+
   </view>

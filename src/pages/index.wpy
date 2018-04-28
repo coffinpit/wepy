@@ -127,12 +127,14 @@
     </wxc-flex>
     <view wx:if="{{currentPage === 0}}" class="content">
         <view class="goods-title"><image src="../image/sptj_img.png"></image></view>
-        <recGoods :goodsItem="goods" @goodsTap.user="goDetail"></recGoods>
+        <recGoods :goodsItem.sync="goods" @goodsTap.user="goDetail"></recGoods>
     </view>
     <view wx:elif="{{currentPage === 1}}" class="content">
         <view class="goods-title"><image src="../image/rmsp_img.png"></image></view>
-        <hotGoods :goodsItem="goods" @goodsTap.user="goDetail"></hotGoods>
+        <hotGoods :goodsItem.sync="goods" @goodsTap.user="goDetail"></hotGoods>
     </view>
+    <defect wx:if="{{isNull}}"><view slot="lost-category"></view></defect>
+    <isDown wx:if="{{isDown}}"></isDown>
   </view>  
 </template>
 
@@ -141,6 +143,8 @@
   import Search from '../components/searchbar'
   import Goods from '../components/goods'
   import Loading from '../components/loading'
+  import Defect from '../components/defect'
+  import Reachdown from '../components/reachdown'
 
   export default class Main extends wepy.page {
     config = {
@@ -154,7 +158,9 @@
       recGoods: Goods,
       hotGoods: Goods,
       load: Loading,
-      searchbar: Search
+      searchbar: Search,
+      defect: Defect,
+      isDown: Reachdown
     }
     data = {
       winWidth: 0,
@@ -178,25 +184,21 @@
       scrollTop: 0,
       cross: 'stretch',
       baseHeight: 101,
-      goods: [{
-        path: '../image/login-bg.jpg',
-        title: '美国自然牛精选后腿小方',
-        price: '99.0',
-        oldprice: '160.0',
-        id: '1231123'
-      }, {
-        path: '../image/login-bg.jpg',
-        title: '美国自然牛精选后腿小方',
-        price: '99.0',
-        oldprice: '160.0',
-        id: '1234321'
-      }],
-      loaded: false
+      goods: [],
+      loaded: false,
+      pageNum: 1,
+      totalPageNum: '',
+      isNull: false,
+      isDown: false
     }
 
     methods = {
       navTab (index) {
         this.currentPage = index
+        this.goods = []
+        this.pageNum = 1
+        this.isNull = false
+        this.getInitData()
       },
       changeTab (e) {
         this.currentPage = e.detail.current
@@ -211,37 +213,66 @@
       }
     }
     onShow () {
-      const token = wepy.getStorageSync('token')
-      console.log(token)
     }
     onReachBottom () {
-      console.log('到底了')
       // 显示加载状态
       wepy.showLoading({
         title: '加载中',
         icon: 'loading'
       })
-      // 发送请求并显示新数据
-      // 请求成功后隐藏loading
-      setTimeout(() => {
+      if (this.pageNum < this.totalPageNum) {
+        // 显示下一页数据
+        this.pageNum ++
+        this.getInitData(() => {
+          // 请求成功后隐藏loading
+          wepy.hideLoading()
+        })
+      } else {
         wepy.hideLoading()
-      }, 1000)
-    }
-    getInitData () {
-      var _this = this.$parent
-      var data = {
-        token: '5a98c06cbc74d423378',
-        recommendType: 1,
-        pageSize: 5,
-        pageNum: 1
+        this.isDown = true
       }
-      _this.HttpRequest.UserHttp(data).then((res) => {
-        console.log(res)
+    }
+    getInitData (cb) {
+      this.isDown = false
+      var parent = this.$parent
+      var _this = this
+      const token = wepy.getStorageSync('token')
+      var data = {
+        pageNum: this.pageNum,
+        recommendType: this.currentPage + 1,
+        token: token,
+        pageSize: '5'
+      }
+      parent.HttpRequest.UserHttp(data).then((res) => {
+        if (res.data.error === 0) {
+          _this.totalPageNum = res.data.data.totalPageNum
+          var data = res.data.data.spus
+          console.log(data)
+          if (data.length === 0) {
+            _this.isNull = true
+          } else {
+            _this.isNull = false
+          }
+          data.forEach((item, index) => {
+            var good = {}
+            good.path = item.cover
+            good.title = item.title
+            good.price = item.memberPrice
+            good.oldprice = item.price
+            good.reduction = item.reduction
+            good.id = item.sourceId
+            _this.goods.push(good)
+            cb && cb()
+          })
+        } else {
+          this.isNull = true
+        }
+        _this.$apply()
       })
     }
     onLoad () {
-      this.getInitData()
       var _this = this
+      this.getInitData()
       wepy.getSystemInfo({
         success: function (res) {
           _this.winWidth = res.windowWidth

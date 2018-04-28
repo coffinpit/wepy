@@ -1,3 +1,4 @@
+@import "./../components/menu.wxss";
 @import "./../components/counter.wxss";
 @import "./../components/bottombar.wxss";
 .container {

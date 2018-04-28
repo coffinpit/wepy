@@ -1,3 +1,4 @@
+@import "./../components/searchbar.wxss";
 @import "./../components/defect.wxss";
 @import "./../components/goods.wxss";
 .container {
@@ -6,6 +7,7 @@
   overflow: hidden;
   display: block;
   padding-bottom: 20rpx;
+  margin-top: 80rpx;
 }
 .category-bg {
   width: 750rpx;
@@ -14,7 +16,7 @@
 }
 .category-bg image {
   position: absolute;
-  top: 0;
+  top: 80rpx;
   left: 0;
   width: 750rpx;
   height: 278rpx;
@@ -28,7 +30,7 @@
   width: 100%;
   display: flex;
   position: absolute;
-  top: 180rpx;
+  top: 260rpx;
   z-index: 999;
 }
 .category-tab .category-tab-list {
@@ -50,7 +52,7 @@
   width: 100%;
   background: #fff;
   position: absolute;
-  top: 278rpx;
+  top: 358rpx;
   left: 0;
   z-index: 999;
   overflow: hidden;
