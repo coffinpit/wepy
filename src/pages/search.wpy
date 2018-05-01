@@ -1,53 +1,154 @@
 <style lang="less">
-  
+  .container{
+    min-height:calc(100vh);
+    display: block;
+  }
+  .search-layer{
+    width:100%;
+    height:80rpx;
+    padding:10rpx 20rpx;
+    box-sizing:border-box;
+    .search-input{
+      border-radius: 30rpx;
+      background:#fff;
+      padding: 10rpx 20rpx;
+      font-size:28rpx;
+      height:40rpx;
+      border:1px #ccc solid;
+      width:74%;
+      float:left;
+      image{
+        vertical-align:middle;
+        width: 36rpx;
+        height:36rpx;
+        margin-right:20rpx; 
+        margin-top:4rpx;
+        float:left;
+      }
+      input{
+        width: 440rpx;
+        height:40rpx;
+        min-height:40rpx;
+        line-height:40rpx;
+        float:left;
+        color:#333;
+      }
+      .placeholder{
+        color:#999;
+      }
+    }
+    .search-button{
+      float:right;
+      padding:0 5%;
+      text-align:center;
+      font-size:28rpx;
+      line-height:60rpx;
+      .search-cancel{
+        color:#666;
+      }
+      .search-confirm{
+        color:#f397b2;
+      }
+    }
+  }
 </style>
 <template>
-  <view>
-    <nav navIndex="2"></nav>
-  </view>
-  <view>搜索</view>
-  <button @tap="goBack">Back</button>
-  <button @tap="getCurrentId" data-id="testId">Get Id</button>
-  <view>
-    <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"></image>
-    <text class="userinfo-nickname">{{ userInfo.nickName }}</text>
+  <view class="container">
+    <view class="search-layer">
+      <view class="search-input">
+        <image src="../image/search.png"></image>
+        <input type="text" placeholder="搜索商品" placeholder-class="placeholder" value="{{keywords}}" @input="keySearch"/>
+      </view>
+      <view class="search-button">
+        <view class="search-cancel {{isSearch ? 'search-confirm' : ''}}" @tap="doSearch"><text>{{isSearch ? '搜索' : '取消'}}</text></view>
+      </view>
+    </view>
+    <view class="content" wx:if="{{isNull}}">
+      <searchResult goodsItem.sync="goods" @goodsTap.user="goDetail"></searchResult>
+    </view>
+    <defect wx:else><view slot="lost-category"></view></defect>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
-  import Nav from '../components/navigator'
+  import Goods from '../components/goods'
+  import Defect from '../components/defect'
 
   export default class Search extends wepy.page {
     config = {
       navigationBarTitleText: '搜索'
     }
     components = {
-      nav: Nav
+      searchResult: Goods,
+      defect: Defect
     }
     data = {
-      userInfo: {}
+      parentTab: '',
+      goods: [],
+      search: '',
+      pageSize: 5,
+      pageNum: 1
     }
     onShow () {
-
     }
-    methods = {
-      goBack () {
-        let pageList = this.getCurrentPages()
-        let prePage = pageList[pageList.length - 2]
-        prePage.setData({
-          page: 'search'
-        })
-        wepy.navigateBack({
-          delta: 1
-        })
+    computed = {
+      isSearch () {
+        if (this.search === '') {
+          return false
+        } else {
+          return true
+        }
       },
-      getCurrentId (e) {
-        console.log(e.currentTarget.dataset.id)
-        this.userInfo = this.$parent.globalData.userInfo
+      isNull () {
+        if (this.goods.length === 0) {
+          return false
+        } else {
+          return true
+        }
       }
     }
-    onload () {
+    methods = {
+      goDetail (id) {
+        wepy.navigateTo({
+          url: './detail?id=' + id
+        })
+      },
+      keySearch (e) {
+        this.search = e.detail.value
+      },
+      doSearch () {
+        if (this.isSearch) {
+          this.getResult()
+        } else {
+          if (this.parentTab === 'category') {
+            wepy.switchTab({
+              url: './category'
+            })
+          } else {
+            wepy.switchTab({
+              url: './index'
+            })
+          }
+        }
+      }
+    }
+    getResult () {
+      const token = this.$parent.getToken('search')
+      var data = {
+        token: token,
+        pageSize: this.pageSize,
+        pageNum: this.pageNum,
+        search: this.search
+      }
+      console.log(token)
+      console.log(data)
+      this.$parent.HttpRequest.SearchHttp(data).then((res) => {
+        console.log(res)
+      })
+    }
+    onLoad (parent) {
+      this.parentTab = parent.page
       this.$apply()
     }
   }

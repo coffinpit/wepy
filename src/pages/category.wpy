@@ -100,7 +100,7 @@
 </style>
 <template>
   <view class="container">
-    <searchbar></searchbar>
+    <searchbar :pagefrom.sync="pageTile"></searchbar>
     <view class="category-bg">
       <repeat for="{{categoryImg}}" item="item" index="index" key="index">
         <image src="{{item}}" class="{{index === currentTab ? 'active' : ''}}" style="z-index:{{index === currentTab ? '999' : index}}"></image>
@@ -108,7 +108,7 @@
     </view>
     <view class="category-tab">
       <repeat for="{{categoryTab}}" item="item" index="index" key="index">
-        <view class="category-tab-list {{currentTab === index ? 'active' : ''}}" @tap="changeTab({{index}})">
+        <view class="category-tab-list {{currentTab === index ? 'active' : ''}}" @tap="changeTab({{index}}, {{item.id}})">
           <view class="category-tab-title">{{item.title}}</view>
         </view>
       </repeat>
@@ -116,7 +116,7 @@
     <view class="category-tab-item">
       <repeat for="{{categoryTab}}" item="item" index="index" key="index">
         <scroll-view class="category-tab-page {{showMore === index ? 'more' : ''}}" wx:if="{{currentTab === index}}" scroll-x>
-          <repeat for="{{item.category}}" item="item" index="index" key="index">
+          <repeat for="{{item.child}}" item="item" index="index" key="index">
             <view class="catrgory-tab-link {{currentItem === index ? 'current' : ''}}" id="{{item.id}}" @tap="reqCategory({{index}})"><text>{{item.name}}</text></view>
           </repeat>
         </scroll-view>
@@ -145,82 +145,12 @@
       searchbar: Search
     }
     data = {
+      token: '',
       categoryImg: ['../image/categoryA.jpg', '../image/categoryB.jpg', '../image/categoryC.jpg', '../image/categoryD.jpg'],
-      categoryTab: [{
-        'title': '肉禽',
-        'category': [{
-          name: '全部',
-          id: '12313'
-        }, {
-          name: '猪肉',
-          id: '34123'
-        }, {
-          name: '牛肉',
-          id: '12342'
-        }, {
-          name: '羊肉',
-          id: '64524'
-        }, {
-          name: '禽肉',
-          id: '84532'
-        }]
-      }, {
-        'title': '水产',
-        'category': [{
-          name: '全部',
-          id: '16343'
-        }, {
-          name: '鱼类',
-          id: '74532'
-        }, {
-          name: '虾类',
-          id: '42134'
-        }, {
-          name: '贝类',
-          id: '42342'
-        }, {
-          name: '软体',
-          id: '56234'
-        }, {
-          name: '蟹类',
-          id: '56234'
-        }]
-      }, {
-        'title': '厨具',
-        'category': [{
-          name: '全部',
-          id: '16343'
-        }, {
-          name: '调料',
-          id: '74532'
-        }, {
-          name: '锅具',
-          id: '42134'
-        }, {
-          name: '刀铲',
-          id: '42342'
-        }, {
-          name: '盆锅',
-          id: '56234'
-        }]
-      }, {
-        'title': '酒饮',
-        'category': [{
-          name: '全部',
-          id: '16343'
-        }, {
-          name: '葡萄酒',
-          id: '74532'
-        }, {
-          name: '果汁',
-          id: '42134'
-        }, {
-          name: '啤酒',
-          id: '42342'
-        }, {
-          name: '烈酒',
-          id: '56234'
-        }]
+      categoryTab: [],
+      childCategory: [{
+        name: '',
+        id: ''
       }],
       goods: [{
         path: '../image/login-bg.jpg',
@@ -247,6 +177,7 @@
         oldprice: '160.0',
         id: '1234321'
       }],
+      pageTile: 'category',
       currentTab: 0,
       currentItem: 0,
       isNull: false,
@@ -260,7 +191,7 @@
       })
     }
     methods = {
-      changeTab (index) {
+      changeTab (index, id) {
         this.currentTab = index
         this.currentItem = 0
       },
@@ -286,11 +217,60 @@
         wepy.hideLoading()
       }, 1000)
     }
+    getTopCate () {
+      var _this = this
+      var data = {
+        token: this.token
+      }
+      this.$parent.HttpRequest.GetTopCategory(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          var data = res.data.data
+          data.forEach((item) => {
+            var obj = {}
+            obj.title = item.name
+            obj.id = item.id
+            obj.child = _this.getChildCate(item.id)
+            _this.categoryTab.push(obj)
+          })
+        }
+        _this.$apply()
+      })
+    }
+    getChildCate (sourceId) {
+      var _this = this
+      var data = {
+        token: this.token,
+        categoryId: sourceId,
+        includSelf: 1
+      }
+      var child = [{
+        name: '全部',
+        id: sourceId
+      }]
+      this.$parent.HttpRequest.GetChildCategory(data).then((res) => {
+        console.log(_this.categoryTab)
+        if (res.data.error === 0) {
+          var data = res.data.data
+          data.forEach((item) => {
+            var obj = {}
+            obj.name = item.name
+            obj.id = item.id
+            child.push(obj)
+          })
+        }
+        _this.$apply()
+      })
+      return child
+    }
     onLoad () {
       if (this.goods.length === 0) {
         this.isNull = true
       }
+      this.token = this.$parent.getToken('category')
+      this.getTopCate()
       this.getShowMore()
+      console.log(this.categoryTab)
       console.log(this.showMore)
       this.$apply()
     }

@@ -8,7 +8,12 @@ class HttpRequest extends wepy.app{
 		this.$$path = {
 			time:'r=test',
 			userlogin: 'r=member/api-get-token-by-phone',
-			indexList: 'r=recommend/api-get-spus'
+			indexList: 'r=recommend/api-get-spus',
+			detail: 'r=product/api-get-spu-detail',
+			search: 'r=product/api-search-spu',
+			addcart: 'r=shopping-cart/api-update',
+			topCategory: 'r=category/api-get-top-categories',
+			childCategory: 'r=category/api-get-children'
 		}
 	}
 	getData (res, param) {
@@ -55,7 +60,7 @@ class HttpRequest extends wepy.app{
         	})
         })
 	}
-	UserHttp (param) {
+	IndexHttp (param) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -64,6 +69,91 @@ class HttpRequest extends wepy.app{
 					url: this.$$base + this.$$path.indexList,
 					data: data,
 					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					}
+				})
+			})
+		})
+	}
+	DetailHttp (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.detail,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					}
+				})
+			})
+		})
+	}
+	AddCartHttp (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.addcart,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					}
+				})
+			})
+		})
+	}
+	GetTopCategory (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.topCategory,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					}
+				})
+			})
+		})
+	}
+	GetChildCategory (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.childCategory,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					}
+				})
+			})
+		})
+	}
+	SearchHttp (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.search,
+					data: data,
+					method: 'POST',
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)

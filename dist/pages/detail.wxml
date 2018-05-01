@@ -1,13 +1,16 @@
 
   <view class="container" style="height: {{overflow? winHeight : 'auto'}}">
     
-  <view class="menu-layer">
-    <view><image src="../image/index-active.png"/></view>
+  <view class="menu-layer {{$menuList$fullMenu ? 'active' : ''}}" catchtap="$menuList$showMenu">
+    <view><text class="iconfont icon-rightsj"/></view>
+    <view><image src="../image/index-default.png"/></view>
+    <view><image src="../image/category-default.png"/></view>
+    <view><image src="../image/user-default.png"/></view>
   </view>
 
     <view class="detail-info">
       <view class="detail-img">
-        <image src="{{detail.path}}" mode="aspectFill"/>
+        <image src="{{detail.path}}" mode="aspectFit"/>
       </view>
       <view class="detail-dots">
         <view class="detail-dots-gray"/>
@@ -118,43 +121,6 @@
   </view>
 
     <view class="popup"  wx:if="{{overflow}}"/>
-    <view class="popup__content {{overflow && buyModal? 'active' : ''}}">
-      <view class="popup_close"><text class="title" catchtap="closeBuy">关闭</text></view>
-      <view class="popup_layer">
-        <view class="popup_image">
-          <image src="{{detail.path}}" mode="aspectFit"/>
-        </view>
-        <view class="popup_goods">
-          <view class="popup_goods_box">
-            <view class="popup_goods_left">
-              <text class="title">已选：</text>
-            </view>
-            <view class="popup_goods_right">
-              <text class="title">{{buyResult.name}} × {{buyNum}}</text>
-            </view>
-          </view>
-          <text class="title link">价格：￥{{totalBuy}}</text>
-          
-  <view class="counter calculate">
-    <view catchtap="$counterBuy$plusTap" class="counter-btn {{$counterBuy$disable ? 'disable' : ''}}">  +  </view>
-    <view class="counter-btn temp-input" bindtap="$counterBuy$hiddenTap"  wx:if="{{$counterBuy$isTemp}}">1</view>
-    <input type="number" bindinput="$counterBuy$inputTap" bindblur="$counterBuy$blurTap" class="counter-btn number" value="{{$counterBuy$num}}" focus="{{$counterBuy$autoFocus}}"/> 
-    <view catchtap="$counterBuy$minusTap" class="counter-btn minusBtn {{$counterBuy$able ? 'able' : ''}}">  -  </view>
-  </view>
-
-          <text  wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
-        </view>
-      </view>
-      <radio-group bindchange="addBuyGoods">
-        <block wx:for="{{detail.goodList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
-          <view class="popup_layer">
-            <view class="goods-name {{item.num === 0 ? 'none' : ''}}">{{item.name}}</view>
-            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="#fc5e43" checked="{{item.checked}}" disabled="{{item.num === 0? true : false}}"/></view>
-          </view>
-        </block>
-      </radio-group>
-      <button class="default-button size-full">立即购买</button>
-    </view>
     <view class="popup__content {{overflow && cartModal? 'active' : ''}}">
       <view class="popup_close"><text class="title" catchtap="closeCart">关闭</text></view>
       <view class="popup_layer">
@@ -190,6 +156,6 @@
           </view>
         </block>
       </radio-group>
-      <button class="default-button size-full" bindtap="goCart">加入购物车</button>
+      <button class="default-button size-full" bindtap="goCart">{{isAddCart ? '加入购物车' : '立即购买'}}</button>
     </view>
   </view>

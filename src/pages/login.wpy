@@ -103,18 +103,22 @@
       navigationBarTitleText: '欢迎'
     }
     data = {
+      page: null
     }
     methods = {
       login () {
-        this.$parent.getUserInfo()
+        this.$parent.getUserInfo(this.page)
       }
     }
-    onload () {
+    onLoad (page) {
+      // 获取跳转页面来源
+      console.log(page)
+      if (page) {
+        this.page = page.page
+      }
       this.$apply()
     }
     onShow () {
-      const token = wepy.getStorageSync('token')
-      token && setTimeout(this.methods.goIndex, 1500)
     }
   }
 </script>

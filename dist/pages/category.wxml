@@ -15,7 +15,7 @@
     </view>
     <view class="category-tab">
       <block wx:for="{{categoryTab}}" wx:for-index="index" wx:for-item="item" wx:key="index">
-        <view class="category-tab-list {{currentTab === index ? 'active' : ''}}" bindtap="changeTab" data-wpychangetab-a="{{index}}">
+        <view class="category-tab-list {{currentTab === index ? 'active' : ''}}" bindtap="changeTab" data-wpychangetab-a="{{index}}" data-wpychangetab-b="{{item.id}}">
           <view class="category-tab-title">{{item.title}}</view>
         </view>
       </block>
@@ -23,7 +23,7 @@
     <view class="category-tab-item">
       <block wx:for="{{categoryTab}}" wx:for-index="index" wx:for-item="item" wx:key="index">
         <scroll-view class="category-tab-page {{showMore === index ? 'more' : ''}}"  wx:if="{{currentTab === index}}" scroll-x>
-          <block wx:for="{{item.category}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+          <block wx:for="{{item.child}}" wx:for-index="index" wx:for-item="item" wx:key="index">
             <view class="catrgory-tab-link {{currentItem === index ? 'current' : ''}}" id="{{item.id}}" bindtap="reqCategory" data-wpyreqcategory-a="{{index}}"><text>{{item.name}}</text></view>
           </block>
         </scroll-view>

@@ -1,13 +1,36 @@
 .menu-layer {
   position: fixed;
   right: 20rpx;
-  bottom: 300rpx;
-  background: rbga(0, 0, 0, 0.8);
+  bottom: 200rpx;
+  background: rgba(215, 215, 215, 0.5);
   width: 80rpx;
-  min-height: 80rpx;
+  height: 80rpx;
   border-radius: 40rpx;
+  text-align: center;
+  line-height: 70rpx;
+  transition: 0.5s height ease-in;
+  overflow: hidden;
+  z-index: 9999999;
+}
+.menu-layer view {
+  width: 80rpx;
+  height: 80rpx;
 }
 .menu-layer image {
-  width: 40rpx;
-  height: 40rpx;
+  width: 60rpx;
+  height: 60rpx;
+  vertical-align: middle;
+}
+.menu-layer.active {
+  height: 340rpx;
+}
+.menu-layer.active .iconfont {
+  transform: rotateZ(90deg);
+}
+.menu-layer .iconfont {
+  color: #666;
+  font-size: 50rpx;
+  transform: rotateZ(-90deg);
+  display: inline-block;
+  vertical-align: middle;
 }

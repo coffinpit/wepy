@@ -73,7 +73,7 @@
     }
 
     .lost-goods{
-      margin:50rpx 0;
+      margin:50rpx auto;
       width:196rpx;
       height:170rpx;
       position:relative;
@@ -89,10 +89,11 @@
         background:#fff;
         color:#999;
         font-size:28rpx;
-        padding:10rpx 20rpx;
-        border-radius:20rpx;
+        padding:5rpx 15rpx;
+        border-radius:60rpx;
         min-width:120rpx;
         border:1px #ccc solid;
+        text-align:center;
       }
     }
 </style>

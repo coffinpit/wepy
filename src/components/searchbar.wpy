@@ -42,6 +42,7 @@
   
   export default class Search extends wepy.component {
     props = {
+      pagefrom: String
     }
 
     data = {
@@ -49,7 +50,7 @@
     methods = {
       goSearch () {
         wepy.navigateTo({
-          url: './search'
+          url: './search?page=' + this.pagefrom
         })
       }
     }

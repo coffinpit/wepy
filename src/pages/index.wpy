@@ -102,7 +102,7 @@
 </style>
 <template>
   <view class="container">
-    <searchbar></searchbar>
+    <searchbar :pagefrom.sync="pageTile"></searchbar>
     <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" @change.stop="changeBanner" class="index-swiper">
       <repeat for="{{bannerLink}}" index="index" item="item" key="key">
           <swiper-item>
@@ -165,6 +165,7 @@
     data = {
       winWidth: 0,
       winHeight: 0,
+      pageTile: 'index',
       bannerLink: [{path: '../image/bg-bannerA@2x.jpg', id: 'png1'}, {path: '../image/bg-bannerB@2x.jpg', id: 'png2'}, {path: '../image/bg-bannerC@2x.jpg', id: 'png3'}, {path: '../image/bg-bannerD@2x.jpg', id: 'png4'}],
       topnavigation: ['推荐', '热门'],
       currentPage: 0,
@@ -178,12 +179,6 @@
         indicatorColor: '#cccccc',
         indicatorActive: '#ff6600'
       },
-      pageTab: {
-        currentPage: 1
-      },
-      scrollTop: 0,
-      cross: 'stretch',
-      baseHeight: 101,
       goods: [],
       loaded: false,
       pageNum: 1,
@@ -195,10 +190,7 @@
     methods = {
       navTab (index) {
         this.currentPage = index
-        this.goods = []
-        this.pageNum = 1
-        this.isNull = false
-        this.getInitData()
+        this.initPage()
       },
       changeTab (e) {
         this.currentPage = e.detail.current
@@ -213,6 +205,8 @@
       }
     }
     onShow () {
+      this.currentPage = 0
+      this.initPage()
     }
     onReachBottom () {
       // 显示加载状态
@@ -236,14 +230,14 @@
       this.isDown = false
       var parent = this.$parent
       var _this = this
-      const token = wepy.getStorageSync('token')
+      const token = this.$parent.getToken('index')
       var data = {
         pageNum: this.pageNum,
         recommendType: this.currentPage + 1,
         token: token,
         pageSize: '5'
       }
-      parent.HttpRequest.UserHttp(data).then((res) => {
+      parent.HttpRequest.IndexHttp(data).then((res) => {
         if (res.data.error === 0) {
           _this.totalPageNum = res.data.data.totalPageNum
           var data = res.data.data.spus
@@ -269,6 +263,12 @@
         }
         _this.$apply()
       })
+    }
+    initPage () {
+      this.goods = []
+      this.pageNum = 1
+      this.isNull = false
+      this.getInitData()
     }
     onLoad () {
       var _this = this

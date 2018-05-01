@@ -1,1 +1,54 @@
-@import "./../components/navigator.wxss";
+@import "./../components/defect.wxss";
+@import "./../components/goods.wxss";
+.container {
+  min-height: calc(100vh);
+  display: block;
+}
+.search-layer {
+  width: 100%;
+  height: 80rpx;
+  padding: 10rpx 20rpx;
+  box-sizing: border-box;
+}
+.search-layer .search-input {
+  border-radius: 30rpx;
+  background: #fff;
+  padding: 10rpx 20rpx;
+  font-size: 28rpx;
+  height: 40rpx;
+  border: 1px #ccc solid;
+  width: 74%;
+  float: left;
+}
+.search-layer .search-input image {
+  vertical-align: middle;
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 20rpx;
+  margin-top: 4rpx;
+  float: left;
+}
+.search-layer .search-input input {
+  width: 440rpx;
+  height: 40rpx;
+  min-height: 40rpx;
+  line-height: 40rpx;
+  float: left;
+  color: #333;
+}
+.search-layer .search-input .placeholder {
+  color: #999;
+}
+.search-layer .search-button {
+  float: right;
+  padding: 0 5%;
+  text-align: center;
+  font-size: 28rpx;
+  line-height: 60rpx;
+}
+.search-layer .search-button .search-cancel {
+  color: #666;
+}
+.search-layer .search-button .search-confirm {
+  color: #f397b2;
+}

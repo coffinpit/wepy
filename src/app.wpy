@@ -342,12 +342,24 @@ export default class extends wepy.app {
     const data = await this.sleep(3)
     console.log(data)
   }
-  goIndex () {
-    wepy.switchTab({
-      url: './index'
-    })
+  goIndex (page) {
+    if (page) {
+      if (page === 'index' || page === 'category' || page === 'cart' || page === 'user') {
+        wepy.switchTab({
+          url: './' + page
+        })
+      } else {
+        wepy.navigateTo({
+          url: './' + page
+        })
+      }
+    } else {
+      wepy.switchTab({
+        url: './index'
+      })
+    }
   }
-  getUserInfo(cb) {
+  getUserInfo(page, cb) {
     const that = this
     if (wepy.getStorageSync('token')) {
       this.goIndex()
@@ -362,7 +374,7 @@ export default class extends wepy.app {
             that.HttpRequest.UserLogin({phone: '13402155751'}).then((res) => {
               var token = res.data.data.token
               wepy.setStorageSync('token', token)
-              this.goIndex()
+              this.goIndex(page)
             })
             cb && cb(res.userInfo)
           },
@@ -396,7 +408,23 @@ export default class extends wepy.app {
       }
     })
   }
-
+  getToken (page) {
+    if (wepy.getStorageSync('token') !== '') {
+      return wepy.getStorageSync('token')
+    } else {
+      wepy.showModal({
+        title: '获取登录状态失败',
+        content: '请点击确认重新登录',
+        success: (res) => {
+          if (res.confirm) {
+            wepy.navigateTo({
+              url: './login?page=' + page
+            })
+          }
+        }
+      })
+    }
+  }
   HttpRequest = new HttpRequest()
   Md5 = Md5.hexMD5
 }

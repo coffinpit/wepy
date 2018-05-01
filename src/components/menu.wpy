@@ -2,21 +2,47 @@
   .menu-layer{
     position: fixed;
     right:20rpx;
-    bottom:300rpx;
-    background:rbga(0,0,0,0.8);
+    bottom:200rpx;
+    background:rgba(215,215,215,0.5);
     width:80rpx;
-    min-height:80rpx;
+    height:80rpx;
     border-radius:40rpx;
+    text-align:center;
+    line-height:70rpx;
+    transition:.5s height ease-in;
+    overflow:hidden;
+    z-index:9999999;
+    view{
+      width:80rpx;
+      height:80rpx;
+    }
     image{
-      width:40rpx;
-      height:40rpx;
+      width:60rpx;
+      height:60rpx;
+      vertical-align:middle;
+    }
+    &.active{
+      height:340rpx;
+      .iconfont{
+        transform:rotateZ(90deg);
+      }
+    }
+    .iconfont{
+      color:#666;
+      font-size:50rpx;
+      transform: rotateZ(-90deg);
+      display:inline-block;
+      vertical-align:middle;
     }
   }
   
 </style>
 <template>
-  <view class="menu-layer">
-    <view><image src="../image/index-active.png"></image></view>
+  <view class="menu-layer {{fullMenu ? 'active' : ''}}" @tap.stop="showMenu">
+    <view><text class="iconfont icon-rightsj"></text></view>
+    <view><image src="../image/index-default.png"></image></view>
+    <view><image src="../image/category-default.png"></image></view>
+    <view><image src="../image/user-default.png"></image></view>
   </view>
 </template>
 <script>
@@ -27,12 +53,11 @@
     }
 
     data = {
+      fullMenu: false
     }
     methods = {
-      goSearch () {
-        wepy.navigateTo({
-          url: './search'
-        })
+      showMenu () {
+        this.fullMenu = !this.fullMenu
       }
     }
     onLoad () {

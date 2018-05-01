@@ -1,19 +1,50 @@
 
-  <view>
+  <view class="container">
+    <view class="search-layer">
+      <view class="search-input">
+        <image src="../image/search.png"/>
+        <input type="text" placeholder="搜索商品" placeholder-class="placeholder" value="{{keywords}}" bindinput="keySearch"/>
+      </view>
+      <view class="search-button">
+        <view class="search-cancel {{isSearch ? 'search-confirm' : ''}}" bindtap="doSearch"><text>{{isSearch ? '搜索' : '取消'}}</text></view>
+      </view>
+    </view>
+    <view class="content"  wx:if="{{isNull}}">
+      
+  <block wx:for="{{$searchResult$goodsItem}}" wx:for-index="$searchResult$index" wx:for-item="$searchResult$item" wx:key="$searchResult$key">
+    <view class="goods" bindtap="$searchResult$tap" id="{{$searchResult$item.id}}" data-wpytap-a="{{$searchResult$item.id}}">
+      <view class="goods-image"><image src="{{$searchResult$item.path}}" mode="aspectFit" lazy-load="true"/></view>
+      <view class="goods-detail">
+        <view class="goods-detail-title">{{$searchResult$item.title}}</view>
+        <view class="goods-detail-price">
+          会员价:<text class="price">￥{{$searchResult$item.price}} (优惠￥{{$searchResult$item.reduction}})</text>
+        </view>
+        <view class="goods-detail-oldprice">原价:{{$searchResult$item.oldprice}}</view>
+        <view class="goods-promot">
+          <view class="goods-promot-image">
+            <image src="../image/icon-xian.png"/>
+          </view>
+          <view class="goods-info">
+            特别非常鲜到没朋友
+            <view class="goods-end">
+              <image src="../image/probq_bg.png" mode="right"/>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+    </view>
     
-  <view>
-    <wxc-flex cross="{{$nav$cross}}" class="top_nav-container">
-      <block wx:for="{{$nav$topnavigation}}" wx:for-index="$nav$index" wx:for-item="$nav$item" wx:key="$nav$key">
-        <navigator class="top_nav {{$nav$index == $nav$navIndex? 'top_nav_active' : ''}}" url="{{$nav$item.url}}">{{$nav$item.title}}</navigator>
-      </block>
-    </wxc-flex>
+  <view wx:else>
+    
+      <view class="lost-goods">
+        <image src="../image/lost-goods.png"/>
+        <text>暂无数据</text>
+      </view>
+    
+    <view/>
   </view>
 
-  </view>
-  <view>搜索</view>
-  <button bindtap="goBack">Back</button>
-  <button bindtap="getCurrentId" data-id="testId">Get Id</button>
-  <view>
-    <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
-    <text class="userinfo-nickname">{{ userInfo.nickName }}</text>
   </view>

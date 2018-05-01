@@ -123,10 +123,10 @@
     }
     methods = {
       addCart () {
-        this.$emit('cart')
+        this.$emit('cart', 'addCart')
       },
       buyTap () {
-        this.$emit('buy')
+        this.$emit('buy', 'addBuy')
       }
     }
     onLoad () {

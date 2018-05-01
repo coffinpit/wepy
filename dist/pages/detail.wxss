@@ -24,7 +24,8 @@
   box-shadow: 2px 2px 2px #eee;
 }
 .detail-info .detail-img image {
-  height: 100%;
+  width: 505rpx;
+  height: 505rpx;
 }
 .detail-info .detail-dots {
   position: absolute;
