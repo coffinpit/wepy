@@ -3,7 +3,10 @@
     <view class="search-layer">
       <view class="search-input">
         <image src="../image/search.png"/>
+        <form bindreset="clearInput">
         <input type="text" placeholder="搜索商品" placeholder-class="placeholder" value="{{keywords}}" bindinput="keySearch"/>
+        <button class="clear-btn" form-type="reset"><text class="iconfont icon-kf_qxbtn"/></button>
+        </form>
       </view>
       <view class="search-button">
         <view class="search-cancel {{isSearch ? 'search-confirm' : ''}}" bindtap="doSearch"><text>{{isSearch ? '搜索' : '取消'}}</text></view>
@@ -11,29 +14,31 @@
     </view>
     <view class="content"  wx:if="{{isNull}}">
       
-  <block wx:for="{{$searchResult$goodsItem}}" wx:for-index="$searchResult$index" wx:for-item="$searchResult$item" wx:key="$searchResult$key">
-    <view class="goods" bindtap="$searchResult$tap" id="{{$searchResult$item.id}}" data-wpytap-a="{{$searchResult$item.id}}">
-      <view class="goods-image"><image src="{{$searchResult$item.path}}" mode="aspectFit" lazy-load="true"/></view>
-      <view class="goods-detail">
-        <view class="goods-detail-title">{{$searchResult$item.title}}</view>
-        <view class="goods-detail-price">
-          会员价:<text class="price">￥{{$searchResult$item.price}} (优惠￥{{$searchResult$item.reduction}})</text>
-        </view>
-        <view class="goods-detail-oldprice">原价:{{$searchResult$item.oldprice}}</view>
-        <view class="goods-promot">
-          <view class="goods-promot-image">
-            <image src="../image/icon-xian.png"/>
+  <view class="goods-layer">
+    <block wx:for="{{$searchResult$goodsItem}}" wx:for-index="$searchResult$index" wx:for-item="$searchResult$item" wx:key="$searchResult$key">
+      <view class="goods" bindtap="$searchResult$tap" id="{{$searchResult$item.id}}" data-wpytap-a="{{$searchResult$item.id}}">
+        <view class="goods-image"><image src="{{$searchResult$item.path}}" mode="aspectFit" lazy-load="true"/></view>
+        <view class="goods-detail">
+          <view class="goods-detail-title">{{$searchResult$item.title}}</view>
+          <view class="goods-detail-price">
+            会员价:<text class="price">￥{{$searchResult$item.price}} (优惠￥{{$searchResult$item.reduction}})</text>
           </view>
-          <view class="goods-info">
-            特别非常鲜到没朋友
-            <view class="goods-end">
-              <image src="../image/probq_bg.png" mode="right"/>
+          <view class="goods-detail-oldprice">原价:{{$searchResult$item.oldprice}}</view>
+          <view class="goods-promot">
+            <view class="goods-promot-image">
+              <image src="../image/icon-xian.png"/>
+            </view>
+            <view class="goods-info">
+              {{$searchResult$item.descript}}
+              <view class="goods-end">
+                <image src="../image/probq_bg.png" mode="right"/>
+              </view>
             </view>
           </view>
         </view>
       </view>
-    </view>
-  </block>
+    </block>
+  </view>
 
     </view>
     

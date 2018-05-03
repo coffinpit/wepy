@@ -46,29 +46,31 @@
   }
 </style>
 <template>
-  <repeat for="{{goodsItem}}" item="item">
-    <view class="goods" @tap="tap({{item.id}})" id="{{item.id}}">
-      <view class="goods-image"><image src="{{item.path}}" mode="aspectFit" lazy-load="true"></image></view>
-      <view class="goods-detail">
-        <view class="goods-detail-title">{{item.title}}</view>
-        <view class="goods-detail-price">
-          会员价:<text class="price">￥{{item.price}} (优惠￥{{item.reduction}})</text>
-        </view>
-        <view class="goods-detail-oldprice">原价:{{item.oldprice}}</view>
-        <view class="goods-promot">
-          <view class="goods-promot-image">
-            <image src="../image/icon-xian.png"></image>
+  <view class="goods-layer">
+    <repeat for="{{goodsItem}}" item="item">
+      <view class="goods" @tap="tap({{item.id}})" id="{{item.id}}">
+        <view class="goods-image"><image src="{{item.path}}" mode="aspectFit" lazy-load="true"></image></view>
+        <view class="goods-detail">
+          <view class="goods-detail-title">{{item.title}}</view>
+          <view class="goods-detail-price">
+            会员价:<text class="price">￥{{item.price}} (优惠￥{{item.reduction}})</text>
           </view>
-          <view class="goods-info">
-            特别非常鲜到没朋友
-            <view class="goods-end">
-              <image src="../image/probq_bg.png" mode="right"></image>
+          <view class="goods-detail-oldprice">原价:{{item.oldprice}}</view>
+          <view class="goods-promot">
+            <view class="goods-promot-image">
+              <image src="../image/icon-xian.png"></image>
+            </view>
+            <view class="goods-info">
+              {{item.descript}}
+              <view class="goods-end">
+                <image src="../image/probq_bg.png" mode="right"></image>
+              </view>
             </view>
           </view>
         </view>
       </view>
-    </view>
-  </repeat>
+    </repeat>
+  </view>
 </template>
 <script>
   import wepy from 'wepy'

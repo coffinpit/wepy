@@ -48,8 +48,7 @@
 </style>
 <template>
   <view class="counter">
-    <view @tap.stop="plusTap" class="counter-btn {{disable ? 'disable' : ''}}">  +  </view>
-    <view class="counter-btn temp-input" @tap="hiddenTap" wx:if="{{isTemp}}">1</view>
+    <view @tap.stop="plusTap" class="counter-btn {{disable ? 'disable' : ''}}" data-id="{{sourceId}}">  +  </view>
     <input type="number" @input="inputTap" @blur="blurTap" class="counter-btn number" value="{{num}}" focus="{{autoFocus}}"/> 
     <view @tap.stop="minusTap" class="counter-btn minusBtn {{able ? 'able' : ''}}">  -  </view>
   </view>
@@ -63,7 +62,8 @@
         type: [Number, String],
         default: 1,
         twoWay: true
-      }
+      },
+      sourceId: Number
     }
     computed = {
       able () {
@@ -82,32 +82,19 @@
       }
     }
     data = {
-      isTemp: false,
-      autoFocus: false
     }
     methods = {
-      hiddenTap () {
-        this.isTemp = false
-        this.autoFocus = true
-      },
-      plusTap () {
+      plusTap (e) {
         this.disable = false
-        this.isTemp = false
-        this.$emit('plusEdit')
+        this.$emit('plusEdit', e)
       },
-      minusTap () {
-        this.isTemp = false
-        this.$emit('minusEdit')
+      minusTap (e) {
+        this.$emit('minusEdit', e)
       },
       inputTap (e) {
-        this.isTemp = false
         this.$emit('keyEdit', e.detail.value)
       },
       blurTap(e) {
-        if (e.detail.value === '') {
-          this.isTemp = true
-          this.autoFocus = false
-        }
         this.$emit('blurEdit', e.detail.value)
       }
     }

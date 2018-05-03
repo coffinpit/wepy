@@ -74,7 +74,7 @@
 .bottombar .buy {
   width: 35%;
   line-height: 116rpx;
-  font-size: 36rpx;
+  font-size: 32rpx;
   text-align: center;
 }
 .bottombar .buy {

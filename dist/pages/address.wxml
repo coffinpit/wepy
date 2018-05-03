@@ -1,0 +1,35 @@
+
+  <view class="container">
+    <block wx:for="{{address}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+      <view class="address-container">
+        <view class="address-layer">
+          <text class="title">{{item.name}}</text>
+          <text class="phonenumer">{{item.phone}}</text>
+          <text class="address-detail tips">{{item.add}}</text>
+        </view>
+        <view class="address-edit">
+          <text class="iconfont icon-me_dz"/>
+          <view class="delete-layer" bindtap="deleteAdd" data-wpydeleteadd-a="{{item.id}}">
+            <text class="iconfont icon-dz_sc"/>
+            <text class="title">删除</text>
+          </view>
+          <view class="edit-layer" bindtap="editAdd">
+            <text class="iconfont icon-dz_bj"/>
+            <text class="title">编辑</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    
+  <view wx:if="{{isNull}}">
+    
+      <view class="lost-goods">
+        <image src="../image/lost-goods.png"/>
+        <text>暂无数据</text>
+      </view>
+    
+    <view/>
+  </view>
+
+    <button class="default-button" bindtap="goNewAdd">新建地址</button>
+  </view>

@@ -4,8 +4,13 @@
     width:100%;
     overflow:hidden;
     display:block;
-    padding-bottom:20rpx;
     margin-top:80rpx;
+  }
+  .content{
+    padding:0 20rpx;
+  }
+  .goods{
+    margin:20rpx 0;
   }
   .category-bg{
     width:750rpx;
@@ -94,8 +99,11 @@
       height:25px;
     }
   }
-  .content ,.defect{
+  .content{
     margin-top:100rpx;
+  }
+  .defect {
+    margin-top:140rpx;
   }
 </style>
 <template>
@@ -117,15 +125,18 @@
       <repeat for="{{categoryTab}}" item="item" index="index" key="index">
         <scroll-view class="category-tab-page {{showMore === index ? 'more' : ''}}" wx:if="{{currentTab === index}}" scroll-x>
           <repeat for="{{item.child}}" item="item" index="index" key="index">
-            <view class="catrgory-tab-link {{currentItem === index ? 'current' : ''}}" id="{{item.id}}" @tap="reqCategory({{index}})"><text>{{item.name}}</text></view>
+            <view class="catrgory-tab-link {{currentItem === index ? 'current' : ''}}" id="{{item.id}}" @tap="reqCategory({{index}}, {{item.id}})"><text>{{item.name}}</text></view>
           </repeat>
         </scroll-view>
       </repeat>
     </view>
-    <defectImage wx:if="{{isNull}}"></defectImage>
-    <view class="content" wx:else>
-      <Categoods :goodsItem="goods" @goodsTap.user="goDetail"></Categoods>
+    <view class="defect" wx:if="{{isNull}}">
+      <defectImage><view slot="lost-category"></view></defectImage>
     </view>
+    <view class="content" wx:else>
+      <Categoods :goodsItem.sync="goods" @goodsTap.user="goDetail"></Categoods>
+    </view>
+    <isDown wx:if="{{isDown}}"></isDown>
   </view>
 </template>
 
@@ -134,6 +145,7 @@
   import Goods from '../components/goods'
   import Search from '../components/searchbar'
   import Defect from '../components/defect'
+  import Reachdown from '../components/reachdown'
 
   export default class Hot extends wepy.page {
     config = {
@@ -142,7 +154,8 @@
     components = {
       Categoods: Goods,
       defectImage: Defect,
-      searchbar: Search
+      searchbar: Search,
+      isDown: Reachdown
     }
     data = {
       token: '',
@@ -152,36 +165,17 @@
         name: '',
         id: ''
       }],
-      goods: [{
-        path: '../image/login-bg.jpg',
-        title: '美国自然牛精选后腿小方',
-        price: '99.0',
-        oldprice: '160.0',
-        id: '1231123'
-      }, {
-        path: '../image/login-bg.jpg',
-        title: '美国自然牛精选后腿小方',
-        price: '99.0',
-        oldprice: '160.0',
-        id: '1234321'
-      }, {
-        path: '../image/login-bg.jpg',
-        title: '美国自然牛精选后腿小方',
-        price: '99.0',
-        oldprice: '160.0',
-        id: '1234321'
-      }, {
-        path: '../image/login-bg.jpg',
-        title: '美国自然牛精选后腿小方',
-        price: '99.0',
-        oldprice: '160.0',
-        id: '1234321'
-      }],
+      goods: [],
       pageTile: 'category',
       currentTab: 0,
       currentItem: 0,
       isNull: false,
-      showMore: ''
+      showMore: '',
+      pageSize: 5,
+      pageNum: 1,
+      sourceId: '',
+      totalPageNum: '',
+      isDown: false
     }
     getShowMore () {
       this.categoryTab.forEach((item, index) => {
@@ -194,9 +188,17 @@
       changeTab (index, id) {
         this.currentTab = index
         this.currentItem = 0
+        this.sourceId = id
+        this.isNull = false
+        this.pageNum = 1
+        this.getSpu(this.sourceId)
       },
-      reqCategory (index) {
+      reqCategory (index, id) {
         this.currentItem = index
+        this.sourceId = id
+        this.isNull = false
+        this.pageNum = 1
+        this.getSpu(this.sourceId)
       },
       goDetail (id) {
         wepy.navigateTo({
@@ -205,17 +207,15 @@
       }
     }
     onReachBottom () {
-      console.log('到底了')
-      // 显示加载状态
-      wepy.showLoading({
-        title: '加载中',
-        icon: 'loading'
-      })
-      // 发送请求并显示新数据
-      // 请求成功后隐藏loading
-      setTimeout(() => {
-        wepy.hideLoading()
-      }, 1000)
+      if (this.pageNum < this.totalPageNum) {
+        // 显示下一页数据
+        this.pageNum ++
+        this.getSpu(this.sourceId)
+      } else {
+        if (this.goods.length !== 0) {
+          this.isDown = true
+        }
+      }
     }
     getTopCate () {
       var _this = this
@@ -223,7 +223,6 @@
         token: this.token
       }
       this.$parent.HttpRequest.GetTopCategory(data).then((res) => {
-        console.log(res)
         if (res.data.error === 0) {
           var data = res.data.data
           data.forEach((item) => {
@@ -233,9 +232,12 @@
             obj.child = _this.getChildCate(item.id)
             _this.categoryTab.push(obj)
           })
+          _this.sourceId = _this.categoryTab[0].id
+          _this.getSpu(_this.sourceId)
         }
         _this.$apply()
       })
+      console.log(this.goods)
     }
     getChildCate (sourceId) {
       var _this = this
@@ -249,7 +251,6 @@
         id: sourceId
       }]
       this.$parent.HttpRequest.GetChildCategory(data).then((res) => {
-        console.log(_this.categoryTab)
         if (res.data.error === 0) {
           var data = res.data.data
           data.forEach((item) => {
@@ -263,21 +264,65 @@
       })
       return child
     }
-    onLoad () {
-      if (this.goods.length === 0) {
-        this.isNull = true
+    getSpu (sourceId, cb) {
+      this.$parent.showLoading()
+      this.isDown = false
+      var _this = this
+      var data = {
+        categoryId: sourceId,
+        token: this.token,
+        pageSize: this.pageSize,
+        pageNum: this.pageNum
       }
+      this.$parent.HttpRequest.GetSpuHttp(data).then((res) => {
+        console.log(res)
+        if (this.pageNum === 1) {
+          this.goods = []
+        }
+        if (res.data.error === 0) {
+          _this.totalPageNum = res.data.data.totalPageNum
+          var data = res.data.data.spus
+          if (data.length === 0) {
+            _this.isNull = true
+          } else {
+            _this.isNull = false
+            if (data.length < this.pageSize) {
+              _this.isDown = true
+            } else {
+              _this.isDown = false
+            }
+          }
+          data.forEach((item) => {
+            var good = {}
+            good.path = item.cover
+            good.title = item.title
+            good.price = item.memberPrice
+            good.oldprice = item.price
+            good.reduction = item.reduction
+            good.id = item.sourceId
+            good.descript = item.desc
+            _this.goods.push(good)
+            cb && cb()
+          })
+        } else {
+          _this.isNull = false
+        }
+        _this.$apply()
+      })
+    }
+    onLoad () {
       this.token = this.$parent.getToken('category')
       this.getTopCate()
       this.getShowMore()
-      console.log(this.categoryTab)
-      console.log(this.showMore)
       this.$apply()
     }
     onShow () {
       // 数据刷新
       this.currentTab = 0
       this.currentItem = 0
+      if (this.categoryTab.length !== 0) {
+        this.getSpu(this.categoryTab[0].id)
+      }
     }
   }
 </script>

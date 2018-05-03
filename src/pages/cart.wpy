@@ -57,6 +57,9 @@
       vertical-align:middle;
       margin-right:10rpx;
     }
+    .title{
+      font-size:28rpx;
+    }
   }
   .check-G{
     width:100%;
@@ -71,7 +74,7 @@
   .item-list{  
     position: relative;  
     border-top: 2rpx solid #eee;  
-    height: 240rpx;  
+    height: 200rpx;  
     overflow: hidden;
     .edited{
       position:absolute;
@@ -87,21 +90,25 @@
       border-bottom: 2rpx solid #eee;  
   }  
   .cart-checkbox{
-    width:40rpx;
-    height:40rpx;
+    width:36rpx;
+    height:36rpx;
     border-radius:50%;
     border:1px #ccc solid;
     display:inline-block;
     vertical-align:middle;
     background:#fff;
     margin-top:10rpx;
+    position:relative;
     .iconfont{
       opacity:0;
       color:#fff;
       font-size:36rpx;
-      float:left;
       margin-bottom:4rpx;
       font-weight:700;
+      position:absolute;
+      left:0;
+      top:0;
+      line-height:36rpx;
     }
     &.checked {
       background:#fc5e43;
@@ -129,7 +136,7 @@
   .inner.del{  
       width: 10%;
       height:100%;
-      line-height:240rpx;
+      line-height:200rpx;
       text-align: center;  
       z-index: 4;  
       left: 0;  
@@ -137,14 +144,9 @@
       .cart-checkbox{
         margin-top:0;
       }
-      .iconfont{
-        position: absolute;
-        bottom: -6rpx;
-        left:20rpx;
-      }
   } 
   .inner-left{
-    width:400rpx;
+    width:360rpx;
     overflow:hidden;
     white-space:break-all;
     .place{
@@ -162,30 +164,38 @@
     left:20rpx;
     z-index:9999;
     .title{
-      min-height:108rpx;
-      height:108rpx;
+      min-height:76rpx;
+      height:76rpx;
       line-height:38rpx;
       overflow:hidden;
+      display:block;
+      font-size:28rpx;
+      margin-bottom:6rpx;
     }
     .tips, .title{
       display:block;
     }
     .tips{
-      margin-top:10rpx;
+      float:right;
+    }
+    .font-small{
+      float:left;
+      display:block;
+      width:260rpx;
     }
   }
   .inner-image{
     position:absolute;
     right:20rpx;
     top:20rpx;
-    height:200rpx;
+    height:150rpx;
     display:inline-block;
-    width:272rpx;
     z-index:9999;
     image{
-      width:200rpx;
-      height:200rpx;
+      width:148rpx;
+      height:148rpx;
       border:1px #eee solid;
+      box-sizing:border-box;
       float:left;
       border-right:none;
     }
@@ -193,16 +203,23 @@
   .counter{
     display:inline-block;
     float:left;
-    width:72rpx;
+    width:50rpx;
+    height:150rpx;
     z-index:999999999;
     .counter-btn{
       display:block;
-      height:68rpx;
-      line-height:66rpx;
+      height:50rpx;
+      line-height:50rpx;
+      width:50rpx;
+      font-size:28rpx;
+      box-sizing:border-box;
     }
     .number{
       border-top:none;
       border-bottom:none;
+      min-height: 50rpx;
+      height:50rpx;
+      width:50rpx;
     }
     .temp-input{
       left:25rpx;
@@ -267,9 +284,10 @@
     text-align:center;
     margin:0 auto; 
     padding-top: 50rpx;
+    text-align:center;
     image{
-      width:100%;
-      height:250rpx;
+      width:200rpx;
+      height:125rpx;
     }
     text{
       display:block;
@@ -297,72 +315,41 @@
         <text class="title">已购￥{{cartStatus.totalprice}}，成为会员立减 <text class="title link font-bold">￥{{cartStatus.discount}}</text></text>
         <view class="default-button">加入会员</view>
       </view>
-      <view class="cart-list">
-        <view class="content" wx:if="{{!coldNull}}">
-          <text class="title"><text class="iconfont icon-ys_ly"></text>冷链配送</text>
-          <view @tap.stop="coldAll" class="cart-checkbox {{coldChecked ? 'checked' : ''}}">
-            <text class="iconfont icon-fxkdui"></text>
+      <repeat for="{{cartList}}" item="item" index="index">
+        <view class="cart-list">
+          <view class="content">
+            <text class="title"><text class="iconfont icon-ys_ly"></text>{{item.title}}</text>
+            <view @tap.stop="coldAll({{index}})" class="cart-checkbox {{item.coldChecked ? 'checked' : ''}}">
+              <text class="iconfont icon-fxkdui"></text>
+            </view>
           </view>
+          <view class="item-box">  
+            <view class="items">
+                <repeat for="{{item.coldlist}}" index="index" item="item" key="index">  
+                <view class="item-list">
+                  <view class="inner txt"> 
+                    <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
+                      <text class="title">{{item.title}}</text>
+                      <text class="font-small link">会员价：￥{{item.price}} </text>
+                      <text class="font-small">原价：￥{{item.oldprice}}</text>
+                      <text class="tips">{{item.detail}}</text>
+                    </view>
+                    <view class="inner-image">
+                      <image src="{{item.path}}" mode="aspectFill"  @tap.stop="goDetail({{item.id}})"></image>
+                      <counteCold :num.sync="item.count" @plusEdit.user="plusCold" @minusEdit.user="minCold" @keyEdit.user="keyCold" :sourceId.sync="item.sourceId" class="{{ hiddenColdTemp === index ? '' : 'hidden-temp'}}" @blurEdit.user="blurCold"></counteCold>  
+                    </view>
+                  </view>
+                  <view data-index="{{index}}" class="inner del" @tap.stop="coldCheck" data-value="{{item.sourceId}}">
+                    <view class="cart-checkbox {{item.checked ? 'checked' : ''}}">
+                      <text class="iconfont icon-fxkdui"></text>
+                    </view>
+                  </view>  
+                 </view>
+                </repeat>
+            </view>  
+          </view>                 
         </view>
-        <view class="item-box">  
-          <view class="items">
-              <repeat for="{{coldlist}}" index="index" item="item" key="index">  
-              <view class="item-list">
-                <view class="inner txt"> 
-                  <view class="inner-layer" data-index="{{index}}" id="{{item.id}}">
-                    <text class="title">{{item.title}}</text>
-                    <text class="tips">{{item.detail}}</text>
-                    <text class="font-small link">会员价：￥{{item.price}} </text>
-                    <text class="font-small">原价：￥{{item.oldprice}}</text>
-                  </view>
-                  <view class="inner-image">
-                    <image src="{{item.path}}" mode="aspectFill"  @tap.stop="goDetail({{item.id}})"></image>
-                    <counteCold :num.sync="item.count" @plusEdit.user="plusCold" @minusEdit.user="minCold" @keyEdit.user="keyCold" data-index="{{index}}" class="{{ hiddenColdTemp === index ? '' : 'hidden-temp'}}" @blurEdit.user="blurCold"></counteCold>  
-                  </view>
-                </view>
-                <view data-index="{{index}}" class="inner del">
-                  <view class="cart-checkbox {{item.checked ? 'checked' : ''}}" data-value="{{item.id}}" @tap.stop="coldCheck">
-                    <text class="iconfont icon-fxkdui"></text>
-                  </view>
-                </view>  
-               </view>
-              </repeat>
-          </view>  
-        </view>                 
-      </view>
-      <view class="cart-list">
-        <view class="content" wx:if="{{!normalNull}}">
-          <text class="title"><text class="iconfont icon-ys_cg"></text>常规配送</text>
-          <view @tap.stop="normalAll" class="cart-checkbox {{normalChecked ? 'checked' : ''}}">
-            <text class="iconfont icon-fxkdui"></text>
-          </view>
-        </view>
-        <view class="item-box">  
-          <view class="items">  
-              <repeat for="{{normallist}}" index="index" item="item" key="index">  
-              <view class="item-list">
-                <view  class="inner txt"> 
-                  <view class="inner-layer" data-index="{{index}}" id="{{item.id}}">
-                    <text class="title">{{item.title}}</text>
-                    <text class="tips">{{item.detail}}</text>
-                    <text class="font-small link">会员价：￥{{item.price}} </text>
-                    <text class="font-small">原价：￥{{item.oldprice}}</text>
-                  </view>
-                  <view class="inner-image">
-                    <image src="{{item.path}}" mode="aspectFill" @tap.stop="goDetail({{item.id}})"></image>
-                    <counteNormal :num.sync="item.count" @plusEdit.user="plusNormal" @minusEdit.user="minNormal" @keyEdit.user="keyNormal" data-index="{{index}}" class="{{ hiddenNormalTemp === index ? '' : 'hidden-temp'}}" @blurEdit.user="blurNormal"></counteNormal>  
-                  </view>
-                </view>
-                <view data-index="{{index}}" class="inner del">
-                  <view class="cart-checkbox {{item.checked ? 'checked' : ''}}" data-value="{{item.id}}" @tap.stop="normalCheck">
-                    <text class="iconfont icon-fxkdui"></text>
-                  </view>
-                </view>   
-               </view>
-              </repeat>
-          </view>  
-        </view>
-      </view>
+      </repeat>
       <view class="cart-bottom" wx:if="{{!isNull}}">
         <view class="title link all" @tap.stop="checkAll">全选</view>
         <text class="title link edit" @tap="deleteTap">删除</text>
@@ -395,33 +382,9 @@
       counteNormal: Counte
     }
     computed = {
-      isNull () {
-        if (this.coldlist.length === 0 && this.normallist.length === 0) {
-          return true
-        } else {
-          return false
-        }
-      },
-      coldNull () {
-        if (this.coldlist.length === 0) {
-          return true
-        } else {
-          return false
-        }
-      },
-      normalNull () {
-        if (this.normallist.length === 0) {
-          return true
-        } else {
-          return false
-        }
-      },
       totalprice () {
         var result = 0
         this.coldlist.forEach((item) => {
-          result += parseInt(item.price * item.count)
-        })
-        this.normallist.forEach((item) => {
           result += parseInt(item.price * item.count)
         })
         return result
@@ -431,56 +394,39 @@
         this.coldlist.forEach((item) => {
           result += parseInt(item.freightPrice)
         })
-        this.normallist.forEach((item) => {
-          result += parseInt(item.freightPrice)
-        })
         return result
       }
     }
     data = {
-      animate: '',
-      current: '',
-      indexId: '',
+      token: '',
       cartcount: [],
-      isEdit: false,
-      editTxt: '编辑',
       checkedList: [],
       tempColdList: [],
       tempNormalList: [],
       cartStatus: {
-        totalprice: '300',
-        discount: '110'
+        totalprice: '',
+        discount: ''
       },
+      cartList: [],
       coldlist: [],
-      normallist: [],
-      coldArray: [],
+      coldTitle: '',
       coldChecked: false,
       tempCold: [],
-      normalArray: [],
-      normalChecked: false,
-      tempNormal: [],
+      checkedArr: [],
       hiddenColdTemp: 0,
-      hiddenNormalTemp: 0
+      hiddenNormalTemp: 0,
+      isNull: true
     }
     methods = {
       plusCold (e) {
-        var index = e.source.$index
-        this.coldlist[index].count ++
-        if (this.coldlist[index].count >= this.coldlist[index].totalCount) {
-          this.coldlist[index].count = this.coldlist[index].totalCount
-          this.maxModal()
-        }
-        this.$apply()
-        // 发送购物车修改数据
-      },
-      plusNormal (e) {
-        var index = e.source.$index
-        this.normallist[index].count ++
-        console.log(this.normallist[index].count, this.normallist[index].totalCount)
-        if (this.normallist[index].count >= this.normallist[index].totalCount) {
-          this.normallist[index].count = this.normallist[index].totalCount
-          this.maxModal()
-        }
+        var sourceId = e.currentTarget.dataset.id
+        this.cartList.forEach((item) => {
+          item.coldlist.forEach((val) => {
+            if (val.sourceId === sourceId) {
+              val.count ++
+            }
+          })
+        })
         this.$apply()
         // 发送购物车修改数据
       },
@@ -489,15 +435,6 @@
         this.coldlist[index].count --
         if (this.coldlist[index].count <= 0) {
           this.coldlist[index].count = 1
-        }
-        this.$apply()
-        // 发送购物车修改数据
-      },
-      minNormal (e) {
-        var index = e.source.$index
-        this.normallist[index].count --
-        if (this.normallist[index].count <= 0) {
-          this.normallist[index].count = 1
         }
         this.$apply()
         // 发送购物车修改数据
@@ -523,27 +460,6 @@
           this.coldlist[index].count = 1
         }
       },
-      keyNormal (val, e) {
-        var index = e.source.$index
-        this.hiddenNormalTemp = e.source.$index
-        this.normallist[index].count = val
-        if (val === '0') {
-          this.normallist[index].count = 1
-        } else {
-          this.normallist[index].count = val
-        }
-        if (this.normallist[index].count > this.normallist[index].totalCount) {
-          this.normallist[index].count = this.normallist[index].totalCount
-          this.maxModal()
-        }
-        return this.normallist[index].count
-      },
-      blurNormal (val, e) {
-        var index = e.source.$index
-        if (val === '') {
-          this.normalist[index].count = 1
-        }
-      },
       goDetail (id) {
         console.log(id)
         wepy.navigateTo({
@@ -552,141 +468,73 @@
       },
       coldCheck (e) {
         var value = e.currentTarget.dataset.value
-        // 计算选中值
-        this.getChecked(this.coldArray, value)
-        this.coldlist.forEach((val) => {
-          if (val.id === value) {
-            val.checked = !val.checked
+        this.cartList.forEach((item) => {
+          item.coldlist.forEach((val) => {
+            if (val.sourceId === value) {
+              val.checked = !val.checked
+            }
+          })
+          item.tempCold = item.coldlist.filter((item) => {
+            return item.checked
+          })
+          if (item.tempCold.length === item.coldlist.length) {
+            item.coldChecked = true
+          } else {
+            item.coldChecked = false
           }
         })
-        this.tempCold = this.coldlist.filter((item) => {
-          return item.checked
-        })
-        if (this.tempCold.length === this.coldlist.length) {
-          this.coldChecked = true
-        } else {
-          this.coldChecked = false
-        }
       },
-      normalCheck (e) {
-        var value = e.currentTarget.dataset.value
-        // 计算选中值
-        this.getChecked(this.normalArray, value)
-        this.normallist.forEach((val) => {
-          if (val.id === value) {
-            val.checked = !val.checked
-          }
-        })
-        this.tempNormal = this.normallist.filter((item) => {
-          return item.checked
-        })
-        if (this.tempNormal.length === this.normallist.length) {
-          this.normalChecked = true
-        } else {
-          this.normalChecked = false
-        }
-      },
-      coldAll () {
-        if (this.tempCold.length === this.coldlist.length) {
-          this.coldlist.forEach((item) => {
+      coldAll (index) {
+        if (this.cartList[index].tempCold.length === this.cartList[index].coldlist.length) {
+          this.cartList[index].coldlist.forEach((item) => {
             item.checked = false
-            this.coldChecked = false
-            this.coldArray = []
           })
-          this.tempCold = []
+          this.cartList[index].coldChecked = false
+          this.cartList[index].tempCold = []
         } else {
-          this.coldlist.forEach((item) => {
-            this.coldlist.forEach((item) => {
-              item.checked = true
-              this.coldChecked = true
-              if (this.coldArray.indexOf(item.id) === -1) {
-                this.coldArray.push(item.id)
-              }
-            })
+          this.cartList[index].coldlist.forEach((item) => {
+            item.checked = true
           })
-          this.tempCold = this.coldlist
-        }
-      },
-      normalAll () {
-        if (this.tempNormal.length === this.normallist.length) {
-          this.normallist.forEach((item) => {
-            item.checked = false
-            this.normalChecked = false
-            this.normalArray = []
-          })
-          this.tempNormal = []
-        } else {
-          this.normallist.forEach((item) => {
-            this.normallist.forEach((item) => {
-              item.checked = true
-              this.normalChecked = true
-              if (this.normalArray.indexOf(item.id) === -1) {
-                this.normalArray.push(item.id)
-              }
-            })
-          })
-          this.tempNormal = this.normallist
+          this.cartList[index].coldChecked = true
+          this.cartList[index].tempCold = this.cartList[index].coldlist
         }
       },
       checkAll () {
-        console.log(this.tempCold, this.tempNormal)
-        if (this.tempCold.length === this.coldlist.length && this.tempNormal.length === this.normallist.length) {
-          this.coldlist.forEach((item) => {
-            item.checked = false
-            this.coldChecked = false
-            this.coldArray = []
-          })
-          this.tempCold = []
-          this.normallist.forEach((item) => {
-            item.checked = false
-            this.normalChecked = false
-            this.normalArray = []
-          })
-        } else {
-          this.coldlist.forEach((item) => {
-            this.coldlist.forEach((item) => {
-              item.checked = true
-              this.coldChecked = true
-              if (this.coldArray.indexOf(item.id) === -1) {
-                this.coldArray.push(item.id)
-              }
+        var total = 0
+        var check = 0
+        this.cartList.forEach((item, index) => {
+          total += item.coldlist.length
+          check += item.tempCold.length
+        })
+        console.log(total, check)
+        this.cartList.forEach((item, index) => {
+          if (total === check) {
+            item.coldlist.forEach((i) => {
+              i.checked = false
             })
-          })
-          this.tempCold = this.coldlist
-          this.normallist.forEach((item) => {
-            this.normallist.forEach((item) => {
-              item.checked = true
-              this.normalChecked = true
-              if (this.normalArray.indexOf(item.id) === -1) {
-                this.normalArray.push(item.id)
-              }
+            item.coldChecked = false
+            item.tempCold = []
+          } else {
+            item.coldlist.forEach((i) => {
+              i.checked = true
             })
-          })
-          this.tempNormal = this.normallist
-        }
+            item.coldChecked = true
+            item.tempCold = item.coldlist
+          }
+        })
       },
       deleteTap () {
         var that = this
-        console.log(this.coldArray, this.normalArray)
-        var coldFilter = this.coldlist
-        var normalFilter = this.normallist
-        this.coldArray.forEach((item) => {
-          coldFilter = coldFilter.filter((val) => {
-            return val.id !== item
+        var result = []
+        this.cartList.forEach((item) => {
+          item.tempCold.forEach((source) => {
+            var obj = {}
+            obj.sourceType = source.sourceType
+            obj.sourceId = source.sourceId
+            result.push(obj)
           })
         })
-        this.normalArray.forEach((item) => {
-          normalFilter = normalFilter.filter((val) => {
-            return val.id !== item
-          })
-        })
-        var coldSelected = this.coldlist
-        this.coldArray.forEach((item) => {
-          coldSelected = coldSelected.filter((val) => {
-            return val.id === item
-          })
-        })
-        if (this.coldArray.length === 0 && this.normalArray.length === 0) {
+        if (result.length === 0) {
           wepy.showToast({
             title: '请选择商品',
             duration: 1000,
@@ -698,14 +546,13 @@
             content: '是否删除？',
             success: function (res) {
               if (res.confirm) {
-                that.coldlist = coldFilter
-                that.tempCold = []
-                that.normallist = normalFilter
-                that.tempNormal = []
+                that.deleteData(result, () => {
+                  that.initPageData()
+                  that.$apply()
+                })
               }
               if (res.cancel) {
               }
-              that.$apply()
             }
           })
         }
@@ -725,61 +572,88 @@
         image: '../image/cancel.png'
       })
     }
+    deleteData (json, cb) {
+      var data = {
+        token: this.token,
+        sourceList: JSON.stringify(json)
+      }
+      this.$parent.HttpRequest.DeleteCartHttp(data).then((res) => {
+        console.log(res)
+        cb && cb()
+      })
+    }
     initPageData () {
-      this.coldlist = [
-        {
-          freightPrice: '18',
-          path: '../image/login-bg.jpg',
-          title: '美国自然牛精选后腿小方',
-          price: '99.0',
-          oldprice: '160.0',
-          id: '1231123',
-          detail: '500g × 5',
-          count: '10',
-          checked: false,
-          totalCount: '12'
-        },
-        {
-          freightPrice: '20',
-          path: '../image/login-bg.jpg',
-          title: '美国自然牛',
-          price: '99.0',
-          oldprice: '160.0',
-          id: '1223123',
-          detail: '500g × 5',
-          count: '6',
-          checked: false,
-          totalCount: '8'
+      this.$parent.showLoading()
+      var _this = this
+      var data = {
+        token: this.token
+      }
+      this.cartList = []
+      this.$parent.HttpRequest.GetCartHttp(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          var data = res.data.data
+          this.cartStatus.totalprice = data.price
+          this.cartStatus.discount = data.reduction
+          if (data.childOrders.length === 0) {
+            this.isNull = true
+          } else {
+            this.isNull = false
+          }
+          data.childOrders.forEach((item) => {
+            var obj = {}
+            obj.title = item.title
+            obj.freight = item.freight
+            obj.coldChecked = false
+            obj.tempCold = []
+            obj.coldlist = this.initChild(item.salesUnits)
+            _this.cartList.push(obj)
+            _this.$apply()
+          })
         }
-      ]
-      this.normallist = [
-        {
-          freightPrice: '10',
-          path: '../image/login-bg.jpg',
-          title: '美国自然牛精选后腿小方',
-          price: '99.0',
-          oldprice: '160.0',
-          id: '1261123',
-          detail: '500g × 5',
-          count: '10',
-          checked: false,
-          totalCount: '14'
-        },
-        {
-          freightPrice: '5',
-          path: '../image/login-bg.jpg',
-          title: '阿根廷红虾',
-          price: '99.0',
-          oldprice: '160.0',
-          id: '1234443',
-          detail: '500g × 5',
-          count: '6',
-          checked: false,
-          totalCount: '6'
+      })
+    }
+    initChild (parent) {
+      var child = []
+      parent.forEach((item) => {
+        var obj = {}
+        obj.path = item.cover
+        obj.title = item.title
+        obj.price = item.memberPrice
+        obj.oldprice = item.price
+        obj.id = item.productId
+        obj.sourceType = item.salesUnitType
+        obj.sourceId = item.salesUnitId
+        if (item.buyCount <= item.keepCount) {
+          obj.detail = item.viceTitle + '×' + item.buyCount
+          obj.count = item.buyCount
+        } else {
+          obj.detail = item.viceTitle + '×' + item.keepCount
+          obj.count = item.keepCount
         }
-      ]
+        obj.checked = false
+        obj.totalCount = item.keepCount
+        child.push(obj)
+      })
+      return child
+    }
+    addCartData (good) {
+      var data = {
+        token: this.token,
+        sourceType: good.sourceType,
+        sourceId: good.sourceId,
+        count: good.cartNum
+      }
+      console.log(data)
+      this.$parent.HttpRequest.AddCartHttp(data).then((res) => {
+        console.log(res)
+      })
     }
     onLoad () {
+      this.token = this.$parent.getToken('cart')
+      this.$apply()
+    }
+    onShow () {
       this.initPageData()
       this.$apply()
     }

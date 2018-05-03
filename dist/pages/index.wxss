@@ -76,7 +76,7 @@ image {
   position: absolute;
   left: 30%;
   top: 50%;
-  width: 65%;
+  width: 68%;
   transform: translateY(-50%);
   color: #ffd05a;
 }

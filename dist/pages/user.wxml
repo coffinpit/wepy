@@ -1,13 +1,70 @@
 
-  <view>
-    
-  <view>
-    <wxc-flex cross="{{$nav$cross}}" class="top_nav-container">
-      <block wx:for="{{$nav$topnavigation}}" wx:for-index="$nav$index" wx:for-item="$nav$item" wx:key="$nav$key">
-        <navigator class="top_nav {{$nav$index == $nav$navIndex? 'top_nav_active' : ''}}" url="{{$nav$item.url}}">{{$nav$item.title}}</navigator>
-      </block>
-    </wxc-flex>
-  </view>
-
-    <view>{{page}}</view>
+  <view class="container">
+    <view class="user-logo">
+      <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
+      <view class="userinfo-nickname">
+        <text>{{ userInfo.nickName }}</text>
+      </view>
+      <view class="user-setting">
+        <text>账号管理</text>
+      </view>
+    </view>
+    <view class="user-level">
+      <text class="iconfont icon-vip {{!isVip ? '' : 'vip'}}"/>
+      <view  wx:if="{{!isVip}}">
+        <text class="title">成为 <text class="link">优价会员</text> 获取超值优惠</text>
+        <button class="default-button">会员申请</button>
+      </view>
+      <view  wx:else>
+        <text class="title">您的 <text class="link">优价会员</text> 将于 {{validation}} 到期</text>
+      </view>
+    </view>
+    <view class="setting-container">
+      <view class="setting-layer" wx:if="{{isVip}}">
+        <text class="iconfont icon-me_fw"/>
+        <text>我的服务</text>
+        <text class="iconfont icon-rightsj"/>
+        <text class="notice">2</text>
+      </view>
+      <view class="setting-layer">
+        <text class="iconfont icon-me_dd"/>
+        <text>我的订单</text>
+        <text class="iconfont icon-rightsj"/>
+      </view>
+      <view class="setting-layer order-layer">
+        <view class="order-list">
+          <text>{{unpaid}}</text>
+          <text>待付款</text>
+        </view>
+        <view class="order-list">
+          <text>{{undelivered}}</text>
+          <text>待发货</text>
+        </view>
+        <view class="order-list">
+          <text>{{unreceipted}}</text>
+          <text>待收货</text>
+        </view>
+        <view class="order-list">
+          <text>{{refunding}}</text>
+          <text>售后</text>
+        </view>
+      </view>
+    </view>
+    <view class="setting-container">
+      <view class="setting-layer">
+        <text class="iconfont icon-me_sc"/>
+        <text>我的收藏</text>
+        <text class="iconfont icon-rightsj"/>
+      </view>
+      <view class="setting-layer" bindtap="goAddress">
+        <text class="iconfont icon-me_dz"/>
+        <text>收货地址</text>
+        <text class="iconfont icon-rightsj"/>
+      </view>
+      <view class="setting-layer">
+        <text class="iconfont icon-me_xx"/>
+        <text>消息通知</text>
+        <text class="iconfont icon-rightsj"/>
+      </view>
+    </view>
   </view>

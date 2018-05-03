@@ -13,7 +13,15 @@ class HttpRequest extends wepy.app{
 			search: 'r=product/api-search-spu',
 			addcart: 'r=shopping-cart/api-update',
 			topCategory: 'r=category/api-get-top-categories',
-			childCategory: 'r=category/api-get-children'
+			childCategory: 'r=category/api-get-children',
+			getSpu: 'r=category/api-get-spu',
+			userInfo: 'r=member/api-get-info',
+			orderStatus: 'r=order/api-get-order-statistics',
+			getAddress: 'r=address/api-get-address-list',
+			editAddress: 'r=address/api-update-address',
+			deleteAddress: 'r=address/api-del-address',
+			getCart: 'r=shopping-cart/api-get-shopping-cart',
+			deleteCart: 'r=shopping-cart/api-del'
 		}
 	}
 	getData (res, param) {
@@ -28,8 +36,8 @@ class HttpRequest extends wepy.app{
 			newParam[item] = param[item]
 		})
 		var sign = JSON.stringify(newParam) + '^ZS2018LCJ'
-		param.signature = Md5.hexMD5(sign)
-		return param
+		newParam.signature = Md5.hexMD5(sign)
+		return newParam
 	}
 	getTime () {
 		return new Promise((resolve, reject) => {
@@ -145,16 +153,154 @@ class HttpRequest extends wepy.app{
 			})
 		})
 	}
-	SearchHttp (param) {
+	GetSpuHttp (param) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
 				var data = _this.getData(res, param)
 				wepy.request({
-					url: this.$$base + this.$$path.search,
+					url: this.$$base + this.$$path.getSpu,
 					data: data,
-					method: 'POST',
+					method: 'GET',
 	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					}
+				})
+			})
+		})
+	}
+	GetCartHttp (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.getCart,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					}
+				})
+			})
+		})
+	}
+	DeleteCartHttp (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				console.log(data)
+				wepy.request({
+					url: this.$$base + this.$$path.deleteCart,
+					method: 'POST',
+	                header: {'content-type': 'application/x-www-form-urlencoded'},
+	                data: data,
+					success: (data) => {
+					  resolve(data)
+					}
+				})
+			})
+		})
+	}
+	GetUserInfo (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.userInfo,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					}
+				})
+			})
+		})
+	}
+	GetUserOrder (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.orderStatus,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					}
+				})
+			})
+		})
+	}
+	GetAddress (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.getAddress,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					}
+				})
+			})
+		})
+	}
+	EditAddress (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.editAddress,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					}
+				})
+			})
+		})
+	}
+	DeleteAddress (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.deleteAddress,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					}
+				})
+			})
+		})
+	}
+	SearchHttp (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				console.log(data)
+				wepy.request({
+					url: this.$$base + this.$$path.search,
+					method: 'POST',
+	                header: {'content-type': 'application/x-www-form-urlencoded'},
+	                data: data,
 					success: (data) => {
 					  resolve(data)
 					}

@@ -107,7 +107,26 @@
     }
     methods = {
       login () {
-        this.$parent.getUserInfo(this.page)
+        this.$parent.getUserInfo(this.page, () => {
+          this.goIndex(this.page)
+        })
+      }
+    }
+    goIndex (page) {
+      if (page) {
+        if (page === 'index' || page === 'category' || page === 'cart' || page === 'user') {
+          wepy.switchTab({
+            url: './' + page
+          })
+        } else {
+          wepy.navigateTo({
+            url: './' + page
+          })
+        }
+      } else {
+        wepy.switchTab({
+          url: './index'
+        })
       }
     }
     onLoad (page) {

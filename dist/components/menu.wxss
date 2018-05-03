@@ -33,4 +33,5 @@
   transform: rotateZ(-90deg);
   display: inline-block;
   vertical-align: middle;
+  margin-top: 6rpx;
 }

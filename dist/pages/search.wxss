@@ -29,7 +29,7 @@
   float: left;
 }
 .search-layer .search-input input {
-  width: 440rpx;
+  width: 420rpx;
   height: 40rpx;
   min-height: 40rpx;
   line-height: 40rpx;
@@ -38,6 +38,20 @@
 }
 .search-layer .search-input .placeholder {
   color: #999;
+}
+.search-layer .search-input .clear-btn {
+  width: 30rpx;
+  height: 30rpx;
+  float: right;
+  border-radius: 50%;
+  margin: 5rpx 0;
+  padding: 0;
+}
+.search-layer .search-input .clear-btn .iconfont {
+  color: #ccc;
+  font-size: 30rpx;
+  line-height: 30rpx;
+  float: left;
 }
 .search-layer .search-button {
   float: right;
@@ -50,5 +64,5 @@
   color: #666;
 }
 .search-layer .search-button .search-confirm {
-  color: #f397b2;
+  color: #fc5e43;
 }

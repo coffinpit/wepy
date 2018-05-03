@@ -26,7 +26,7 @@
         float:left;
       }
       input{
-        width: 440rpx;
+        width: 420rpx;
         height:40rpx;
         min-height:40rpx;
         line-height:40rpx;
@@ -35,6 +35,20 @@
       }
       .placeholder{
         color:#999;
+      }
+      .clear-btn{
+        width:30rpx;
+        height:30rpx;
+        float:right;
+        border-radius:50%;
+        margin:5rpx 0;
+        padding:0;
+        .iconfont{
+          color:#ccc;
+          font-size:30rpx;
+          line-height:30rpx;
+          float:left;
+        }
       }
     }
     .search-button{
@@ -47,7 +61,7 @@
         color:#666;
       }
       .search-confirm{
-        color:#f397b2;
+        color:#fc5e43;
       }
     }
   }
@@ -57,7 +71,10 @@
     <view class="search-layer">
       <view class="search-input">
         <image src="../image/search.png"></image>
+        <form @reset="clearInput">
         <input type="text" placeholder="搜索商品" placeholder-class="placeholder" value="{{keywords}}" @input="keySearch"/>
+        <button class="clear-btn" form-type="reset"><text class="iconfont icon-kf_qxbtn"></text></button>
+        </form>
       </view>
       <view class="search-button">
         <view class="search-cancel {{isSearch ? 'search-confirm' : ''}}" @tap="doSearch"><text>{{isSearch ? '搜索' : '取消'}}</text></view>
@@ -86,7 +103,7 @@
     data = {
       parentTab: '',
       goods: [],
-      search: '',
+      keywords: '',
       pageSize: 5,
       pageNum: 1
     }
@@ -94,7 +111,7 @@
     }
     computed = {
       isSearch () {
-        if (this.search === '') {
+        if (this.keywords === '') {
           return false
         } else {
           return true
@@ -114,8 +131,12 @@
           url: './detail?id=' + id
         })
       },
+      clearInput () {
+        this.keywords = ''
+        console.log(this.keywords)
+      },
       keySearch (e) {
-        this.search = e.detail.value
+        this.keywords = e.detail.value
       },
       doSearch () {
         if (this.isSearch) {
@@ -134,17 +155,30 @@
       }
     }
     getResult () {
+      var _this = this
       const token = this.$parent.getToken('search')
       var data = {
-        token: token,
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        search: this.search
+        search: encodeURI(this.keywords),
+        token: token
       }
-      console.log(token)
-      console.log(data)
       this.$parent.HttpRequest.SearchHttp(data).then((res) => {
         console.log(res)
+        if (res.data.error === 0) {
+          var data = res.data.data.spus
+          data.forEach((item) => {
+            var good = {}
+            good.path = item.cover
+            good.title = item.title
+            good.price = item.memberPrice
+            good.oldprice = item.price
+            good.reduction = item.reduction
+            good.id = item.sourceId
+            _this.goods.push(good)
+          })
+        }
+        _this.$apply()
       })
     }
     onLoad (parent) {

@@ -1,11 +1,11 @@
 
   <view class="container" style="height: {{overflow? winHeight : 'auto'}}">
     
-  <view class="menu-layer {{$menuList$fullMenu ? 'active' : ''}}" catchtap="$menuList$showMenu">
-    <view><text class="iconfont icon-rightsj"/></view>
-    <view><image src="../image/index-default.png"/></view>
-    <view><image src="../image/category-default.png"/></view>
-    <view><image src="../image/user-default.png"/></view>
+  <view class="menu-layer {{$menuList$fullMenu ? 'active' : ''}}">
+    <view catchtap="$menuList$showMenu"><text class="iconfont icon-rightsj"/></view>
+    <view bindtap="$menuList$goIndex"><image src="../image/index-default.png"/></view>
+    <view bindtap="$menuList$goCategory"><image src="../image/category-default.png"/></view>
+    <view bindtap="$menuList$goUser"><image src="../image/user-default.png"/></view>
   </view>
 
     <view class="detail-info">
@@ -31,7 +31,7 @@
         </view>
         <view class="detail-txt-price express">
           <text>快递￥{{detail.express}}</text>
-          <text class="tips">成为会员即享包邮</text>
+          <text class="tips">成为会员</text><text class="tips">即享包邮</text>
           <button class="default-button" hover-class="default-button-active">配送规则</button>
         </view>
       </view>
@@ -44,7 +44,7 @@
             <image src="../image/icon-xian.png"/>
           </view>
           <view class="goods-info">
-            特别非常鲜到没朋友
+            {{detail.descript}}
             <view class="goods-end">
               <image src="../image/probq_bg.png" mode="right"/>
             </view>
@@ -106,7 +106,7 @@
         <text class="iconfont icon-kefu"/>
       </button>
     </view>
-    <view class="goCart">
+    <view class="goCart" bindtap="$bottom$goCart">
       <view class="goCart-icon user">
         <text class="iconfont icon-ksj_gwc"/>
         <text class="cart-count"  wx:if="{{$bottom$cartVal > 0}}">{{$bottom$cartMaxVal}}<text class="iconfont icon-sljia" wx:if="{{$bottom$cartVal >= 99}}"/></text>
@@ -139,13 +139,12 @@
           <text class="title link">价格：￥{{totalCart}}</text>
           
   <view class="counter calculate">
-    <view catchtap="$counterCart$plusTap" class="counter-btn {{$counterCart$disable ? 'disable' : ''}}">  +  </view>
-    <view class="counter-btn temp-input" bindtap="$counterCart$hiddenTap"  wx:if="{{$counterCart$isTemp}}">1</view>
+    <view catchtap="$counterCart$plusTap" class="counter-btn {{$counterCart$disable ? 'disable' : ''}}" data-id="{{$counterCart$sourceId}}">  +  </view>
     <input type="number" bindinput="$counterCart$inputTap" bindblur="$counterCart$blurTap" class="counter-btn number" value="{{$counterCart$num}}" focus="{{$counterCart$autoFocus}}"/> 
     <view catchtap="$counterCart$minusTap" class="counter-btn minusBtn {{$counterCart$able ? 'able' : ''}}">  -  </view>
   </view>
 
-          <text  wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
+          <text wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
         </view>
       </view>
       <radio-group bindchange="addCartGoods">
@@ -156,6 +155,6 @@
           </view>
         </block>
       </radio-group>
-      <button class="default-button size-full" bindtap="goCart">{{isAddCart ? '加入购物车' : '立即购买'}}</button>
+      <button class="default-button size-full" catchtap="goCart">{{isAddCart ? '加入购物车' : '立即购买'}}</button>
     </view>
   </view>

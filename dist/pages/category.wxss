@@ -1,3 +1,4 @@
+@import "./../components/reachdown.wxss";
 @import "./../components/searchbar.wxss";
 @import "./../components/defect.wxss";
 @import "./../components/goods.wxss";
@@ -6,8 +7,13 @@
   width: 100%;
   overflow: hidden;
   display: block;
-  padding-bottom: 20rpx;
   margin-top: 80rpx;
+}
+.content {
+  padding: 0 20rpx;
+}
+.goods {
+  margin: 20rpx 0;
 }
 .category-bg {
   width: 750rpx;
@@ -94,7 +100,9 @@
   width: 140px;
   height: 25px;
 }
-.content,
-.defect {
+.content {
   margin-top: 100rpx;
+}
+.defect {
+  margin-top: 140rpx;
 }

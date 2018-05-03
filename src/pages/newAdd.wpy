@@ -1,0 +1,109 @@
+<style lang="less">
+  .container{
+    min-height:calc(100vh);
+    display:block;
+    padding-top:20rpx;
+  }
+  .address-container{
+    margin-bottom:20rpx;
+  }
+  .address-layer{
+    font-size:28rpx;
+    color:#333;
+    width:100%;
+    padding:30rpx 20rpx;
+    box-sizing:border-box;
+    background:#fff;
+    border-bottom: 1px #eee solid;
+    display:flex;
+    .title{
+      width:200rpx;
+      line-height:48rpx;
+    }
+    input{
+      width:510rpx;
+    }
+    .picker{
+      margin-right:30rpx;
+      display:flex;
+      &.last-child{
+        margin-right:0
+      }
+      picker{
+        width:480rpx;
+        height:52rpx;
+        line-height:52rpx;
+      }
+      .iconfont{
+        font-size:28rpx;
+        color:#999;
+        vertical-align:middle;
+      }
+    }
+  }
+
+  .default-button{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    line-height:100rpx;
+  }
+</style>
+<template>
+  <view class="container">
+    <view class="address-container">
+      <view class="address-layer">
+        <text class="title">收货人</text><input type="text" value="{{userName}}"/>
+      </view>
+      <view class="address-layer">
+        <text class="title">联系电话</text><input type="text" value="{{userPhone}}"/>
+      </view>
+      <view class="address-layer">
+        <text class="title">收货地址</text>
+        <view class="picker">
+          <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+            <view>{{region[0]}}，{{region[1]}}，{{region[2]}}</view>
+          </picker>
+          <text class="iconfont icon-xlsanjiao"></text>
+        </view>
+      </view>
+    </view>
+    <button class="default-button">新建地址</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Address extends wepy.page {
+    config = {
+      navigationBarTitleText: '新增地址'
+    }
+    data = {
+      token: '',
+      region: ['广东省', '广州市', '海珠区'],
+      customItem: '全部'
+    }
+    methods = {
+      bindRegionChange (e) {
+        console.log(e.detail.value)
+        this.region = e.detail.value
+      }
+    }
+    deleteAdd (id) {
+      var _this = this
+      var data = {
+        token: this.token,
+        addressId: id
+      }
+      this.$parent.HttpRequest.DeleteAddress(data).then((res) => {
+        _this.$apply()
+      })
+    }
+    onLoad () {
+      this.token = this.$parent.getToken('newAdd')
+      this.$apply()
+    }
+  }
+</script>

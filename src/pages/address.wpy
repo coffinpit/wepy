@@ -1,0 +1,174 @@
+<style lang="less">
+  .container{
+    min-height:calc(100vh);
+    display:block;
+    padding-top:20rpx;
+  }
+  .address-container{
+    margin-bottom:20rpx;
+  }
+  .address-layer{
+    font-size:28rpx;
+    color:#333;
+    width:100%;
+    padding:30rpx 20rpx;
+    box-sizing:border-box;
+    background:#fff;
+    border-bottom: 1px #eee solid;
+    .phonenumer{
+      float:right;
+      color:#999;
+    }
+    .address-detail{
+      display:block;
+      margin-top:10rpx;
+    }
+  }
+  .address-edit{
+    background:#fff;
+    .icon-me_dz{
+      font-size:100rpx;
+      color:#eee;
+      margin-left:-20rpx;
+    }
+    .edit-layer, .delete-layer{
+      float: right;
+      padding: 0 40rpx;
+      font-size:28rpx;
+      color:#333;
+      margin-top:30rpx;
+      .iconfont{
+        font-size:40rpx;
+        margin-right:40rpx;
+        color:#333;
+        vertical-align:center;
+      }
+    }
+    .edit-layer{
+      border-right:1px #eee solid;
+    }
+    .actived{
+      text{
+        color:#fc5e43;
+      }
+    }
+  }
+  .default-button{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    line-height:100rpx;
+  }
+</style>
+<template>
+  <view class="container">
+    <repeat for="{{address}}" item="item" index="index" key="index">
+      <view class="address-container">
+        <view class="address-layer">
+          <text class="title">{{item.name}}</text>
+          <text class="phonenumer">{{item.phone}}</text>
+          <text class="address-detail tips">{{item.add}}</text>
+        </view>
+        <view class="address-edit">
+          <text class="iconfont icon-me_dz"></text>
+          <view class="delete-layer" @tap="deleteAdd({{item.id}})">
+            <text class="iconfont icon-dz_sc"></text>
+            <text class="title">删除</text>
+          </view>
+          <view class="edit-layer" @tap="editAdd">
+            <text class="iconfont icon-dz_bj"></text>
+            <text class="title">编辑</text>
+          </view>
+        </view>
+      </view>
+    </repeat>
+    <defect wx:if="{{isNull}}"><view slot="lost-category"></view></defect>
+    <button class="default-button" @tap="goNewAdd">新建地址</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Defect from '../components/defect'
+
+  export default class Address extends wepy.page {
+    config = {
+      navigationBarTitleText: '收货地址'
+    }
+    data = {
+      token: '',
+      address: []
+    }
+    components = {
+      defect: Defect
+    }
+    computed = {
+      isNull () {
+        if (this.address.length === 0) {
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+    methods = {
+      editAdd () {
+      },
+      goNewAdd () {
+        wepy.navigateTo({
+          url: './newAdd'
+        })
+      },
+      deleteAdd (id) {
+        var _this = this
+        wepy.showModal({
+          title: '提示',
+          content: '是否删除',
+          success: (res) => {
+            if (res.confirm) {
+              _this.deleteAdd(id)
+            }
+          }
+        })
+      }
+    }
+    initAdd () {
+      var _this = this
+      var data = {
+        token: this.token
+      }
+      this.$parent.HttpRequest.GetAddress(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          var data = res.data.data
+          data.forEach((item) => {
+            var obj = {}
+            obj.name = item.name
+            obj.phone = item.phone
+            obj.add = item.address
+            obj.id = item.id
+            _this.address.push(obj)
+          })
+        }
+        _this.$apply()
+      })
+    }
+    deleteAdd (id) {
+      var _this = this
+      var data = {
+        token: this.token,
+        addressId: id
+      }
+      this.$parent.HttpRequest.DeleteAddress(data).then((res) => {
+        _this.initAdd()
+        _this.$apply()
+      })
+    }
+    onLoad () {
+      this.token = this.$parent.getToken('address')
+      this.initAdd()
+      this.$apply()
+    }
+  }
+</script>

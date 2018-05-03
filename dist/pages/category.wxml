@@ -24,55 +24,58 @@
       <block wx:for="{{categoryTab}}" wx:for-index="index" wx:for-item="item" wx:key="index">
         <scroll-view class="category-tab-page {{showMore === index ? 'more' : ''}}"  wx:if="{{currentTab === index}}" scroll-x>
           <block wx:for="{{item.child}}" wx:for-index="index" wx:for-item="item" wx:key="index">
-            <view class="catrgory-tab-link {{currentItem === index ? 'current' : ''}}" id="{{item.id}}" bindtap="reqCategory" data-wpyreqcategory-a="{{index}}"><text>{{item.name}}</text></view>
+            <view class="catrgory-tab-link {{currentItem === index ? 'current' : ''}}" id="{{item.id}}" bindtap="reqCategory" data-wpyreqcategory-a="{{index}}" data-wpyreqcategory-b="{{item.id}}"><text>{{item.name}}</text></view>
           </block>
         </scroll-view>
       </block>
     </view>
-    
-  <view wx:if="{{isNull}}">
+    <view class="defect"  wx:if="{{isNull}}">
+      
+  <view>
     
       <view class="lost-goods">
         <image src="../image/lost-goods.png"/>
         <text>暂无数据</text>
       </view>
     
-    
-      <view class="closed-signboard">
-        <view class="sign">售罄</view>
-        <view class="strings"/>
-        <view class="pin pin1"/>
-        <view class="pin pin2"/>
-        <view class="pin pin3"/>
-      </view>
-    
+    <view/>
   </view>
 
-    <view class="content"  wx:else>
+    </view>
+    <view class="content" wx:else>
       
-  <block wx:for="{{$Categoods$goodsItem}}" wx:for-index="$Categoods$index" wx:for-item="$Categoods$item" wx:key="$Categoods$key">
-    <view class="goods" bindtap="$Categoods$tap" id="{{$Categoods$item.id}}" data-wpytap-a="{{$Categoods$item.id}}">
-      <view class="goods-image"><image src="{{$Categoods$item.path}}" mode="aspectFit" lazy-load="true"/></view>
-      <view class="goods-detail">
-        <view class="goods-detail-title">{{$Categoods$item.title}}</view>
-        <view class="goods-detail-price">
-          会员价:<text class="price">￥{{$Categoods$item.price}} (优惠￥{{$Categoods$item.reduction}})</text>
-        </view>
-        <view class="goods-detail-oldprice">原价:{{$Categoods$item.oldprice}}</view>
-        <view class="goods-promot">
-          <view class="goods-promot-image">
-            <image src="../image/icon-xian.png"/>
+  <view class="goods-layer">
+    <block wx:for="{{$Categoods$goodsItem}}" wx:for-index="$Categoods$index" wx:for-item="$Categoods$item" wx:key="$Categoods$key">
+      <view class="goods" bindtap="$Categoods$tap" id="{{$Categoods$item.id}}" data-wpytap-a="{{$Categoods$item.id}}">
+        <view class="goods-image"><image src="{{$Categoods$item.path}}" mode="aspectFit" lazy-load="true"/></view>
+        <view class="goods-detail">
+          <view class="goods-detail-title">{{$Categoods$item.title}}</view>
+          <view class="goods-detail-price">
+            会员价:<text class="price">￥{{$Categoods$item.price}} (优惠￥{{$Categoods$item.reduction}})</text>
           </view>
-          <view class="goods-info">
-            特别非常鲜到没朋友
-            <view class="goods-end">
-              <image src="../image/probq_bg.png" mode="right"/>
+          <view class="goods-detail-oldprice">原价:{{$Categoods$item.oldprice}}</view>
+          <view class="goods-promot">
+            <view class="goods-promot-image">
+              <image src="../image/icon-xian.png"/>
+            </view>
+            <view class="goods-info">
+              {{$Categoods$item.descript}}
+              <view class="goods-end">
+                <image src="../image/probq_bg.png" mode="right"/>
+              </view>
             </view>
           </view>
         </view>
       </view>
-    </view>
-  </block>
+    </block>
+  </view>
 
     </view>
+    
+  <view wx:if="{{isDown}}">
+    <view class="isDown">
+      <text>—————————— 到底啦 ——————————</text>
+    </view>
+  </view>
+
   </view>

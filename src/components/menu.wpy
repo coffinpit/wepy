@@ -33,16 +33,17 @@
       transform: rotateZ(-90deg);
       display:inline-block;
       vertical-align:middle;
+      margin-top:6rpx;
     }
   }
   
 </style>
 <template>
-  <view class="menu-layer {{fullMenu ? 'active' : ''}}" @tap.stop="showMenu">
-    <view><text class="iconfont icon-rightsj"></text></view>
-    <view><image src="../image/index-default.png"></image></view>
-    <view><image src="../image/category-default.png"></image></view>
-    <view><image src="../image/user-default.png"></image></view>
+  <view class="menu-layer {{fullMenu ? 'active' : ''}}">
+    <view @tap.stop="showMenu"><text class="iconfont icon-rightsj"></text></view>
+    <view @tap="goIndex"><image src="../image/index-default.png"></image></view>
+    <view @tap="goCategory"><image src="../image/category-default.png"></image></view>
+    <view @tap="goUser"><image src="../image/user-default.png"></image></view>
   </view>
 </template>
 <script>
@@ -51,13 +52,27 @@
   export default class Search extends wepy.component {
     props = {
     }
-
     data = {
       fullMenu: false
     }
     methods = {
       showMenu () {
         this.fullMenu = !this.fullMenu
+      },
+      goIndex () {
+        wepy.switchTab({
+          url: './index'
+        })
+      },
+      goCategory () {
+        wepy.switchTab({
+          url: './category'
+        })
+      },
+      goUser () {
+        wepy.switchTab({
+          url: './user'
+        })
       }
     }
     onLoad () {

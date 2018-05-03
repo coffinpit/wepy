@@ -256,7 +256,9 @@ export default class extends wepy.app {
       'pages/cart',
       'pages/user',
       'pages/category',
-      'pages/search'
+      'pages/search',
+      'pages/address',
+      'pages/newAdd'
     ],
     window: {
       backgroundTextStyle: 'dark',
@@ -293,7 +295,9 @@ export default class extends wepy.app {
   }
 
   globalData = {
-    userInfo: null
+    userInfo: null,
+    userLevel: null,
+    userHash: null
   }
 
   constructor () {
@@ -302,10 +306,6 @@ export default class extends wepy.app {
     this.intercept('request', {
       config (p) {
         p.timestamp = +new Date()
-        wepy.showLoading({
-          title: '加载中',
-          icon: 'loading'
-        })
         return p
       },
       success (p) {
@@ -342,41 +342,31 @@ export default class extends wepy.app {
     const data = await this.sleep(3)
     console.log(data)
   }
-  goIndex (page) {
-    if (page) {
-      if (page === 'index' || page === 'category' || page === 'cart' || page === 'user') {
-        wepy.switchTab({
-          url: './' + page
-        })
-      } else {
-        wepy.navigateTo({
-          url: './' + page
-        })
-      }
-    } else {
-      wepy.switchTab({
-        url: './index'
-      })
-    }
-  }
   getUserInfo(page, cb) {
     const that = this
     if (wepy.getStorageSync('token')) {
-      this.goIndex()
+      wepy.switchTab({
+        url: './index'
+      })
     }
     wepy.login({
       success: (res) => {
         console.log(res.code)
         wepy.getUserInfo({
           success: (data) => {
-            console.log(data)
-            that.globalData = res.userInfo
+            that.globalData.userInfo = data.userInfo
             that.HttpRequest.UserLogin({phone: '13402155751'}).then((res) => {
               var token = res.data.data.token
               wepy.setStorageSync('token', token)
-              this.goIndex(page)
+              that.HttpRequest.GetUserInfo({token: token}).then((res) => {
+                if (res.data.error === 0) {
+                  that.globalData.userLevel = res.data.data.level
+                  that.globalData.userHash = res.data.data.hash
+                }
+              })
+              console.log(that.globalData)
+              cb && cb(res.userInfo)
             })
-            cb && cb(res.userInfo)
           },
           fail (res) {
             wepy.showModal({
@@ -424,6 +414,38 @@ export default class extends wepy.app {
         }
       })
     }
+  }
+  showLoading () {
+    wepy.showLoading({
+      title: '加载中',
+      icon: 'loading'
+    })
+  }
+  dateFormat (timestamp, formats) {
+    formats = formats || 'Y-m-d'
+    var zero = function (value) {
+      if (value < 10) {
+        return '0' + value
+      }
+      return value
+    }
+    var myDate = timestamp ? new Date(timestamp) : new Date()
+    var year = myDate.getFullYear()
+    var month = zero(myDate.getMonth() + 1)
+    var day = zero(myDate.getDate())
+    var hour = zero(myDate.getHours())
+    var minite = zero(myDate.getMinutes())
+    var second = zero(myDate.getSeconds())
+    return formats.replace(/Y|m|d|H|i|s/ig, function (matches) {
+      return ({
+        Y: year,
+        m: month,
+        d: day,
+        H: hour,
+        i: minite,
+        s: second
+      })[matches]
+    })
   }
   HttpRequest = new HttpRequest()
   Md5 = Md5.hexMD5

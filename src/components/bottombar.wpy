@@ -76,7 +76,7 @@
       width:35%;
       text-align:center;
       line-height:116rpx;
-      font-size:36rpx;
+      font-size:32rpx;
       text-align:center;
     }
     .buy{
@@ -91,7 +91,7 @@
         <text class="iconfont icon-kefu"></text>
       </button>
     </view>
-    <view class="goCart">
+    <view class="goCart" @tap="goCart">
       <view class="goCart-icon user">
         <text class="iconfont icon-ksj_gwc"></text>
         <text class="cart-count" wx:if="{{cartVal > 0}}">{{cartMaxVal}}<text class="iconfont icon-sljia" wx:if="{{cartVal >= 99}}"></text></text>
@@ -127,6 +127,11 @@
       },
       buyTap () {
         this.$emit('buy', 'addBuy')
+      },
+      goCart () {
+        wepy.switchTab({
+          url: './cart'
+        })
       }
     }
     onLoad () {

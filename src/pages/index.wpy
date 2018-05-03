@@ -70,7 +70,7 @@
       position:absolute;
       left:30%;
       top:50%;
-      width:65%;
+      width:68%;
       transform:translateY(-50%);
       color:#ffd05a;
       .index-promot-title{
@@ -102,7 +102,7 @@
 </style>
 <template>
   <view class="container">
-    <searchbar :pagefrom.sync="pageTile"></searchbar>
+    <searchbar :pagefrom.sync="pageTitle"></searchbar>
     <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" @change.stop="changeBanner" class="index-swiper">
       <repeat for="{{bannerLink}}" index="index" item="item" key="key">
           <swiper-item>
@@ -163,9 +163,7 @@
       isDown: Reachdown
     }
     data = {
-      winWidth: 0,
-      winHeight: 0,
-      pageTile: 'index',
+      pageTitle: 'index',
       bannerLink: [{path: '../image/bg-bannerA@2x.jpg', id: 'png1'}, {path: '../image/bg-bannerB@2x.jpg', id: 'png2'}, {path: '../image/bg-bannerC@2x.jpg', id: 'png3'}, {path: '../image/bg-bannerD@2x.jpg', id: 'png4'}],
       topnavigation: ['推荐', '热门'],
       currentPage: 0,
@@ -210,23 +208,18 @@
     }
     onReachBottom () {
       // 显示加载状态
-      wepy.showLoading({
-        title: '加载中',
-        icon: 'loading'
-      })
       if (this.pageNum < this.totalPageNum) {
         // 显示下一页数据
         this.pageNum ++
-        this.getInitData(() => {
-          // 请求成功后隐藏loading
-          wepy.hideLoading()
-        })
+        this.getInitData()
       } else {
-        wepy.hideLoading()
-        this.isDown = true
+        if (this.goods.length !== 0) {
+          this.isDown = true
+        }
       }
     }
     getInitData (cb) {
+      this.$parent.showLoading()
       this.isDown = false
       var parent = this.$parent
       var _this = this
@@ -238,6 +231,7 @@
         pageSize: '5'
       }
       parent.HttpRequest.IndexHttp(data).then((res) => {
+        console.log(res)
         if (res.data.error === 0) {
           _this.totalPageNum = res.data.data.totalPageNum
           var data = res.data.data.spus
@@ -246,6 +240,11 @@
             _this.isNull = true
           } else {
             _this.isNull = false
+            if (data.length < this.pageSize) {
+              _this.isDown = true
+            } else {
+              _this.isDown = false
+            }
           }
           data.forEach((item, index) => {
             var good = {}
@@ -255,11 +254,12 @@
             good.oldprice = item.price
             good.reduction = item.reduction
             good.id = item.sourceId
+            good.descript = item.desc
             _this.goods.push(good)
             cb && cb()
           })
         } else {
-          this.isNull = true
+          _this.isNull = true
         }
         _this.$apply()
       })
@@ -271,15 +271,7 @@
       this.getInitData()
     }
     onLoad () {
-      var _this = this
       this.getInitData()
-      wepy.getSystemInfo({
-        success: function (res) {
-          _this.winWidth = res.windowWidth
-          _this.winHeight = res.windowHeight
-          console.log(res.windowHeight, res.screenHeight)
-        }
-      })
       this.$apply()
     }
   }
