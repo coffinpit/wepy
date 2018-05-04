@@ -10,8 +10,8 @@
       <view class="address-layer">
         <text class="title">收货地址</text>
         <view class="picker">
-          <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
-            <view>{{region[0]}}，{{region[1]}}，{{region[2]}}</view>
+          <picker bindchange="bindRegionChange" value="{{index}}" range="{{topArea}}">
+            <view>{{array[index]}}</view>
           </picker>
           <text class="iconfont icon-xlsanjiao"/>
         </view>

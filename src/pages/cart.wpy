@@ -25,7 +25,6 @@
     }
   }
   .cart-list{
-    margin-top:20rpx;
     width:100%;
     .content{
       margin-bottom:0;
@@ -35,10 +34,23 @@
       .title{
         position:absolute;
         top:20rpx;
-        left:10%;
-        width:80%;
-        padding:10rpx 0; 
+        left:0;
+        width:100%;
+        padding:10rpx 20rpx; 
         z-index:5;
+        transition: 0.5s left ease-in;
+        background:#fff;
+        &.animate{
+          left: 10%;
+        }
+      }
+      .check-layer{
+        position:absolute;
+        top:20rpx;
+        left:0;
+        width:10%;
+        z-index:4;
+        text-align:center;
       }
     }
     .iconfont{
@@ -49,7 +61,7 @@
   }
   .vip-tip{
     width:100%;
-    margin:10rpx 0;
+    margin:10rpx 0 20rpx;
     background:#fff;
     padding:10rpx 20rpx;
     .iconfont{
@@ -76,15 +88,6 @@
     border-top: 2rpx solid #eee;  
     height: 200rpx;  
     overflow: hidden;
-    .edited{
-      position:absolute;
-      width:100%;
-      left:0;
-      top:0;
-      z-index:9999;
-      height:100%;
-      background:rgba(204, 204, 204, 0.2);
-    }
   }
   .item-list:last-child{  
       border-bottom: 2rpx solid #eee;  
@@ -126,12 +129,16 @@
   }  
   .inner.txt{
     background-color: #fff;  
-    width: 90%;  
+    width: 100%;  
     z-index: 999;  
     padding:20rpx; 
-    left:10%;
+    left:0;
     box-sizing:border-box; 
-    overflow:hidden;  
+    overflow:hidden;
+    transition: 0.5s left ease-in;
+    &.animate{
+      left: 10%;
+    }
   }  
   .inner.del{  
       width: 10%;
@@ -161,7 +168,7 @@
     overflow:hidden;
     position:absolute;
     top:20rpx;
-    left:20rpx;
+    left:30rpx;
     z-index:9999;
     .title{
       min-height:76rpx;
@@ -186,7 +193,7 @@
   }
   .inner-image{
     position:absolute;
-    right:20rpx;
+    right:30rpx;
     top:20rpx;
     height:150rpx;
     display:inline-block;
@@ -307,36 +314,56 @@
       color:#333
     }
   }
+  .unedit-layer{
+    width:100%;
+    height:100%;
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:-1;
+    background:rgba(204,204,204,0.2);
+    transition: 0.5s opacity ease-in;
+    opacity:0;
+    &.animate{
+      left:10%;
+      opacity:1;
+      z-index:999999999;
+    }
+  }
 </style>
 <template>
   <view class="container">
     <view wx:if="{{!isNull}}">
-      <view class="cart-status">
+      <view class="cart-status" wx:if="{{!userLevel}}">
         <text class="title">已购￥{{cartStatus.totalprice}}，成为会员立减 <text class="title link font-bold">￥{{cartStatus.discount}}</text></text>
         <view class="default-button">加入会员</view>
       </view>
       <repeat for="{{cartList}}" item="item" index="index">
         <view class="cart-list">
           <view class="content">
-            <text class="title"><text class="iconfont icon-ys_ly"></text>{{item.title}}</text>
-            <view @tap.stop="coldAll({{index}})" class="cart-checkbox {{item.coldChecked ? 'checked' : ''}}">
-              <text class="iconfont icon-fxkdui"></text>
+            <view class="unedit-layer {{isEdit ? 'animate' : ''}}"></view>
+            <text class="title {{isEdit ? 'animate' : ''}}"><text class="iconfont icon-ys_ly"></text>{{item.title}}</text>
+            <view class="check-layer">
+              <view @tap.stop="coldAll({{index}})" class="cart-checkbox {{item.coldChecked ? 'checked' : ''}}">
+                <text class="iconfont icon-fxkdui"></text>
+              </view>
             </view>
           </view>
           <view class="item-box">  
             <view class="items">
                 <repeat for="{{item.coldlist}}" index="index" item="item" key="index">  
                 <view class="item-list">
-                  <view class="inner txt"> 
+                  <view class="unedit-layer {{isEdit ? 'animate' : ''}}"></view>
+                  <view class="inner txt {{isEdit ? 'animate' : ''}}"> 
                     <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
                       <text class="title">{{item.title}}</text>
                       <text class="font-small link">会员价：￥{{item.price}} </text>
-                      <text class="font-small">原价：￥{{item.oldprice}}</text>
+                      <text class="font-small through">原价：￥{{item.oldprice}}</text>
                       <text class="tips">{{item.detail}}</text>
                     </view>
                     <view class="inner-image">
                       <image src="{{item.path}}" mode="aspectFill"  @tap.stop="goDetail({{item.id}})"></image>
-                      <counteCold :num.sync="item.count" @plusEdit.user="plusCold" @minusEdit.user="minCold" @keyEdit.user="keyCold" :sourceId.sync="item.sourceId" class="{{ hiddenColdTemp === index ? '' : 'hidden-temp'}}" @blurEdit.user="blurCold"></counteCold>  
+                      <counteCold :num.sync="item.count" @plusEdit.user="plusCold" @minusEdit.user="minCold" @keyEdit.user="keyCold" :sourceId.sync="item.sourceId" @blurEdit.user="blurCold"></counteCold>  
                     </view>
                   </view>
                   <view data-index="{{index}}" class="inner del" @tap.stop="coldCheck" data-value="{{item.sourceId}}">
@@ -351,10 +378,11 @@
         </view>
       </repeat>
       <view class="cart-bottom" wx:if="{{!isNull}}">
-        <view class="title link all" @tap.stop="checkAll">全选</view>
-        <text class="title link edit" @tap="deleteTap">删除</text>
-        <text @tap.stop="deleteTap" class="del-cart active">去结算</text>
-        <text class="cart-info"><text class="tips">(含运费￥{{freight}})</text> 合计: <text class="link">￥{{totalprice}}</text></text>
+        <text class="title link edit" @tap="editTap">{{isEdit ? '取消' : '编辑'}}</text>
+        <view class="title link all" @tap.stop="checkAll" wx:if="{{isEdit}}">全选</view>
+        <text class="title link edit" @tap="deleteTap" wx:if="{{isEdit}}">删除</text>
+        <text @tap.stop="goOrder" class="del-cart {{isEdit ? '' : 'active'}}">去结算</text>
+        <text class="cart-info"><text class="tips">(含运费￥{{freight}})</text> 合计: <text class="link">￥{{finalprice}}</text></text>
       </view>
       <view class="vip-tip">
         <text class="iconfont icon-vip link"></text>
@@ -364,7 +392,7 @@
     <view wx:else class="blank">
       <image src="../image/null.png" mode="aspectFit"></image>
       <text class="title">您的购物车空空如也</text>
-      <navigator url="./detail" class="blank-button" hover-class="blank-button-hover">逛一逛</navigator>
+      <view class="blank-button" hover-class="blank-button-hover" @tap="goCategory">逛一逛</view>
     </view>
   </view>
 </template>
@@ -381,22 +409,6 @@
       counteCold: Counte,
       counteNormal: Counte
     }
-    computed = {
-      totalprice () {
-        var result = 0
-        this.coldlist.forEach((item) => {
-          result += parseInt(item.price * item.count)
-        })
-        return result
-      },
-      freight () {
-        var result = 0
-        this.coldlist.forEach((item) => {
-          result += parseInt(item.freightPrice)
-        })
-        return result
-      }
-    }
     data = {
       token: '',
       cartcount: [],
@@ -412,59 +424,108 @@
       coldTitle: '',
       coldChecked: false,
       tempCold: [],
-      checkedArr: [],
-      hiddenColdTemp: 0,
-      hiddenNormalTemp: 0,
-      isNull: true
+      isEdit: false,
+      isNull: false,
+      finalprice: 0,
+      freight: 0,
+      orderHash: ''
+    }
+    computed = {
+      userLevel () {
+        if (this.$parent.globalData.userLevel === 0) {
+          return false
+        } else if (this.$parent.globalData.userLevel === 1) {
+          return true
+        }
+      }
     }
     methods = {
+      editTap () {
+        this.isEdit = !this.isEdit
+      },
       plusCold (e) {
         var sourceId = e.currentTarget.dataset.id
         this.cartList.forEach((item) => {
           item.coldlist.forEach((val) => {
             if (val.sourceId === sourceId) {
               val.count ++
+              if (val.count > val.totalCount) {
+                val.count = val.totalCount
+                this.maxModal('数量已达上限')
+              } else {
+                // 发送购物车修改数据
+                this.addCartData(val, 1, () => {
+                  this.initPageData()
+                })
+              }
             }
           })
         })
         this.$apply()
-        // 发送购物车修改数据
       },
       minCold (e) {
-        var index = e.source.$index
-        this.coldlist[index].count --
-        if (this.coldlist[index].count <= 0) {
-          this.coldlist[index].count = 1
-        }
+        var sourceId = e.currentTarget.dataset.id
+        this.cartList.forEach((item) => {
+          item.coldlist.forEach((val) => {
+            if (val.sourceId === sourceId) {
+              val.count --
+              if (val.count < 1) {
+                val.count = 1
+                this.maxModal('不能再少啦')
+              } else {
+                // 发送购物车修改数据
+                this.addCartData(val, -1, () => {
+                  this.initPageData()
+                })
+              }
+            }
+          })
+        })
         this.$apply()
-        // 发送购物车修改数据
       },
-      keyCold (val, e) {
-        var index = e.source.$index
-        this.hiddenColdTemp = e.source.$index
-        if (val === '0') {
-          this.coldlist[index].count = 1
-        } else {
-          this.coldlist[index].count = val
-        }
-        if (this.coldlist[index].count > this.coldlist[index].totalCount) {
-          this.coldlist[index].count = this.coldlist[index].totalCount
-          console.log(this.coldlist[index].count, this.coldlist[index].totalCount)
-          this.maxModal()
-        }
-        return this.coldlist[index].count
+      keyCold (keyVal, e) {
       },
-      blurCold (val, e) {
-        var index = e.source.$index
-        if (val === '') {
-          this.coldlist[index].count = 1
-        }
+      blurCold (keyVal, e) {
+        var sourceId = e.currentTarget.dataset.id
+        this.cartList.forEach((item) => {
+          item.coldlist.forEach((val) => {
+            if (val.sourceId === sourceId) {
+              if (keyVal <= 0) {
+                val.count = 1
+              } else if (keyVal > val.totalCount) {
+                val.count = val.totalCount
+                this.maxModal('数量已达上限')
+              } else {
+                val.count = keyVal
+              }
+            }
+            console.log(val.initCount)
+            this.addCartData(val, val.count - val.initCount, () => {
+              this.initPageData()
+            })
+            return val.count
+          })
+        })
       },
       goDetail (id) {
         console.log(id)
         wepy.navigateTo({
           url: './detail?id=' + id
         })
+      },
+      goCategory () {
+        wepy.switchTab({
+          url: './category'
+        })
+      },
+      goOrder () {
+        if (!this.isEdit) {
+          this.applyOrder(() => {
+            wepy.navigateTo({
+              url: './order?hash=' + this.orderHash + '&order=' + JSON.stringify(this.cartList)
+            })
+          })
+        }
       },
       coldCheck (e) {
         var value = e.currentTarget.dataset.value
@@ -565,9 +626,9 @@
         arr.splice(arr.indexOf(val), 1)
       }
     }
-    maxModal () {
+    maxModal (content) {
       wepy.showToast({
-        title: '数量已达上限',
+        title: content,
         duration: 1000,
         image: '../image/cancel.png'
       })
@@ -589,17 +650,27 @@
         token: this.token
       }
       this.cartList = []
+      this.finalprice = 0
+      this.freight = 0
+      this.isNull = false
       this.$parent.HttpRequest.GetCartHttp(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
           var data = res.data.data
           this.cartStatus.totalprice = data.price
           this.cartStatus.discount = data.reduction
-          if (data.childOrders.length === 0) {
-            this.isNull = true
-          } else {
-            this.isNull = false
+          if (_this.$parent.globalData.userLevel === 0) {
+            this.finalprice = data.finalPrice
+          } else if (_this.$parent.globalData.userLevel === 1) {
+            this.finalprice = data.finalPrice
           }
+          this.freight = data.freight
+          if (data.childOrders.length === 0) {
+            _this.isNull = true
+          } else {
+            _this.isNull = false
+          }
+          this.orderHash = data.hash
           data.childOrders.forEach((item) => {
             var obj = {}
             obj.title = item.title
@@ -611,6 +682,7 @@
             _this.$apply()
           })
         }
+        _this.$apply()
       })
     }
     initChild (parent) {
@@ -627,9 +699,11 @@
         if (item.buyCount <= item.keepCount) {
           obj.detail = item.viceTitle + '×' + item.buyCount
           obj.count = item.buyCount
+          obj.initCount = item.buyCount
         } else {
           obj.detail = item.viceTitle + '×' + item.keepCount
           obj.count = item.keepCount
+          obj.initCount = item.keepCount
         }
         obj.checked = false
         obj.totalCount = item.keepCount
@@ -637,20 +711,31 @@
       })
       return child
     }
-    addCartData (good) {
+    addCartData (good, val, cb) {
       var data = {
         token: this.token,
         sourceType: good.sourceType,
         sourceId: good.sourceId,
-        count: good.cartNum
+        count: val
       }
       console.log(data)
       this.$parent.HttpRequest.AddCartHttp(data).then((res) => {
         console.log(res)
+        cb && cb()
+      })
+    }
+    applyOrder (cb) {
+      var data = {
+        token: this.token
+      }
+      this.$parent.HttpRequest.ApplyOrderHttp(data).then((res) => {
+        console.log(res)
+        cb && cb()
       })
     }
     onLoad () {
       this.token = this.$parent.getToken('cart')
+      // 判断用户memberHash
       this.$apply()
     }
     onShow () {

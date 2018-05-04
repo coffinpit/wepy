@@ -64,7 +64,7 @@
 <template>
   <view class="container">
     <repeat for="{{address}}" item="item" index="index" key="index">
-      <view class="address-container">
+      <view class="address-container" @tap="backToOrder({{index}})">
         <view class="address-layer">
           <text class="title">{{item.name}}</text>
           <text class="phonenumer">{{item.phone}}</text>
@@ -98,19 +98,12 @@
     }
     data = {
       token: '',
-      address: []
+      address: [],
+      isNull: false,
+      prevPage: ''
     }
     components = {
       defect: Defect
-    }
-    computed = {
-      isNull () {
-        if (this.address.length === 0) {
-          return true
-        } else {
-          return false
-        }
-      }
     }
     methods = {
       editAdd () {
@@ -131,6 +124,18 @@
             }
           }
         })
+      },
+      backToOrder (index) {
+        if (this.prevPage === 'order') {
+          var pages = this.getCurrentPages()
+          var prevpage = pages[pages.length - 2]
+          prevpage.setData({
+            addressMain: this.address[index].areaId,
+            user: this.address[index]
+          })
+          console.log(this.address[index].areaId)
+          wepy.navigateBack()
+        }
       }
     }
     initAdd () {
@@ -138,16 +143,23 @@
       var data = {
         token: this.token
       }
+      this.address = []
       this.$parent.HttpRequest.GetAddress(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
           var data = res.data.data
+          if (data.length === 0) {
+            this.isNull = true
+          } else {
+            this.isNull = false
+          }
           data.forEach((item) => {
             var obj = {}
             obj.name = item.name
             obj.phone = item.phone
             obj.add = item.address
             obj.id = item.id
+            obj.areaId = item.areaId
             _this.address.push(obj)
           })
         }
@@ -165,10 +177,13 @@
         _this.$apply()
       })
     }
-    onLoad () {
+    onLoad (data) {
+      this.prevPage = data.page
       this.token = this.$parent.getToken('address')
-      this.initAdd()
       this.$apply()
+    }
+    onShow () {
+      this.initAdd()
     }
   }
 </script>

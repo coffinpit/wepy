@@ -49,8 +49,8 @@
 <template>
   <view class="counter">
     <view @tap.stop="plusTap" class="counter-btn {{disable ? 'disable' : ''}}" data-id="{{sourceId}}">  +  </view>
-    <input type="number" @input="inputTap" @blur="blurTap" class="counter-btn number" value="{{num}}" focus="{{autoFocus}}"/> 
-    <view @tap.stop="minusTap" class="counter-btn minusBtn {{able ? 'able' : ''}}">  -  </view>
+    <input type="number" @input="inputTap" @blur="blurTap" class="counter-btn number" value="{{num}}" focus="{{autoFocus}}" data-id="{{sourceId}}"/> 
+    <view @tap.stop="minusTap" class="counter-btn minusBtn {{able ? 'able' : ''}}" data-id="{{sourceId}}">  -  </view>
   </view>
 </template>
 <script>
@@ -63,7 +63,10 @@
         default: 1,
         twoWay: true
       },
-      sourceId: Number
+      sourceId: {
+        type: Number,
+        default: null
+      }
     }
     computed = {
       able () {
@@ -92,10 +95,10 @@
         this.$emit('minusEdit', e)
       },
       inputTap (e) {
-        this.$emit('keyEdit', e.detail.value)
+        this.$emit('keyEdit', e.detail.value, e)
       },
       blurTap(e) {
-        this.$emit('blurEdit', e.detail.value)
+        this.$emit('blurEdit', e.detail.value, e)
       }
     }
     onLoad () {

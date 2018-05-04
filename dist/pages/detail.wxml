@@ -140,8 +140,8 @@
           
   <view class="counter calculate">
     <view catchtap="$counterCart$plusTap" class="counter-btn {{$counterCart$disable ? 'disable' : ''}}" data-id="{{$counterCart$sourceId}}">  +  </view>
-    <input type="number" bindinput="$counterCart$inputTap" bindblur="$counterCart$blurTap" class="counter-btn number" value="{{$counterCart$num}}" focus="{{$counterCart$autoFocus}}"/> 
-    <view catchtap="$counterCart$minusTap" class="counter-btn minusBtn {{$counterCart$able ? 'able' : ''}}">  -  </view>
+    <input type="number" bindinput="$counterCart$inputTap" bindblur="$counterCart$blurTap" class="counter-btn number" value="{{$counterCart$num}}" focus="{{$counterCart$autoFocus}}" data-id="{{$counterCart$sourceId}}"/> 
+    <view catchtap="$counterCart$minusTap" class="counter-btn minusBtn {{$counterCart$able ? 'able' : ''}}" data-id="{{$counterCart$sourceId}}">  -  </view>
   </view>
 
           <text wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>

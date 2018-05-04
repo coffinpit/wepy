@@ -448,7 +448,7 @@
       },
       maxtip () {
         var maxtip = false
-        if (this.cartNum >= this.cartResult.num) {
+        if (this.cartNum > this.cartResult.num) {
           maxtip = true
         } else {
           maxtip = false
@@ -554,16 +554,15 @@
       },
       keyCart (val) {
         this.cartNum = val
-        if (val === '0') {
-          this.cartNum = 1
-        } else {
-          this.cartNum = val
-        }
         return this.cartNum
       },
       blurCart (val) {
-        if (val === '') {
+        if (val <= 0) {
           this.cartNum = 1
+        } else if (this.cartNum > this.cartResult.num) {
+          this.cartNum = this.cartResult.num
+        } else {
+          this.cartNum = val
         }
         return this.cartNum
       },

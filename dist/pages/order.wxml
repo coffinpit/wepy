@@ -1,0 +1,35 @@
+
+  <view class="container">
+    <view class="address" bindtap="goAddress">
+      <text class="address-title">订单配送至</text>
+      <scroll-view scroll-x>{{user.add}}</scroll-view>
+      <text class="iconfont icon-rightsj"/>
+      <text class="user">{{user.name}} {{user.phone}}</text>
+    </view>
+    <block wx:for="{{order}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+      <view class="cart-list"  wx:if="{{!item.isNull}}">
+        <view class="content">
+          <text class="title"><text class="iconfont icon-ys_ly"/>{{item.title}}</text>
+        </view>
+        <view class="item-box">
+          <view class="items">
+            <block wx:for="{{item.coldlist}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+              <view class="item-list">
+                <view class="inner txt">
+                  <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
+                    <text class="title">{{item.title}}</text>
+                    <text class="font-small link">会员价：￥{{item.price}} </text>
+                    <text class="font-small through">原价：￥{{item.oldprice}}</text>
+                    <text class="tips">{{item.detail}}</text>
+                  </view>
+                  <view class="inner-image">
+                    <image src="{{item.path}}" mode="aspectFill"/>
+                  </view>
+                </view>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>

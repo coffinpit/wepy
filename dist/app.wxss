@@ -272,3 +272,6 @@
   color: #333;
   line-height: 36rpx;
 }
+.through {
+  text-decoration: line-through;
+}

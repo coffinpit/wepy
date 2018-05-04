@@ -1,0 +1,198 @@
+<style lang="less">
+  .container{
+    min-height:calc(100vh);
+    display:block;
+    background: linear-gradient(#fc5e43 80rpx, #fff 500rpx);  
+  }
+  .address {
+    color:#fff;
+    padding:20rpx;
+    .address-title{
+      font-size:24rpx;
+      display:block;
+      margin-bottom:10rpx;
+    }
+    scroll-view{
+      width:90%;
+      white-space:nowrap;
+      font-size:40rpx;
+      height:56rpx;
+      line-height:56rpx;
+      display:inline-block;
+      vertical-align:middle;
+    }
+    .iconfont{
+      color:#fff;
+      font-size:32rpx;
+      width:10%;
+      text-align:right;
+      vertical-align:middle;
+      display:inline-block;
+    }
+    .user{
+      font-size:28rpx;
+    }
+  }
+  .cart-list{
+    width:100%;
+    padding:0 20rpx;
+    box-sizing:border-box;
+    .content{
+      margin-bottom:0;
+      height:100rpx;
+      padding:20rpx;
+      .title{
+        padding:10rpx 0; 
+      }
+    }
+    .iconfont{
+      font-size:80rpx;
+      vertical-align:middle;
+      margin-right:20rpx;
+    }
+  }
+  .item-box{  
+    width:100%;
+    background-color: #fff;
+    }  
+    .items{  
+      width: 100%;  
+    }  
+    .item-list{  
+      height: 200rpx;  
+      overflow: hidden;
+      padding:0 20rpx 20rpx;
+      box-sizing:border-box;
+    }
+    .inner.txt{
+      background-color: #f8f8f8;
+      padding:20rpx;
+      box-sizing:border-box; 
+      overflow:hidden;  
+    }  
+    .inner-left{
+      width:360rpx;
+      overflow:hidden;
+      white-space:break-all;
+      .place{
+        min-height: 108rpx;
+      }
+    }
+    .inner-layer{
+      width:400rpx;
+      overflow:hidden;
+      float:left;
+      .title{
+        min-height:76rpx;
+        height:76rpx;
+        line-height:38rpx;
+        overflow:hidden;
+        display:block;
+        font-size:28rpx;
+        margin-bottom:6rpx;
+      }
+      .tips, .title{
+        display:block;
+      }
+      .tips{
+        float:right;
+      }
+      .font-small{
+        float:left;
+        display:block;
+        width:260rpx;
+      }
+    }
+    .inner-image{
+      height:150rpx;
+      float:right;
+      image{
+        width:148rpx;
+        height:148rpx;
+        border:1px #eee solid;
+        box-sizing:border-box;
+        float:left;
+        border-right:none;
+      }
+    }
+</style>
+<template>
+  <view class="container">
+    <view class="address" @tap="goAddress">
+      <text class="address-title">订单配送至</text>
+      <scroll-view scroll-x>{{user.add}}</scroll-view>
+      <text class="iconfont icon-rightsj"></text>
+      <text class="user">{{user.name}} {{user.phone}}</text>
+    </view>
+    <repeat for="{{order}}" item="item" index="index">
+      <view class="cart-list" wx:if="{{!item.isNull}}">
+        <view class="content">
+          <text class="title"><text class="iconfont icon-ys_ly"></text>{{item.title}}</text>
+        </view>
+        <view class="item-box">
+          <view class="items">
+            <repeat for="{{item.coldlist}}" index="index" item="item" key="index">
+              <view class="item-list">
+                <view class="inner txt">
+                  <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
+                    <text class="title">{{item.title}}</text>
+                    <text class="font-small link">会员价：￥{{item.price}} </text>
+                    <text class="font-small through">原价：￥{{item.oldprice}}</text>
+                    <text class="tips">{{item.detail}}</text>
+                  </view>
+                  <view class="inner-image">
+                    <image src="{{item.path}}" mode="aspectFill"></image>
+                  </view>
+                </view>
+              </view>
+            </repeat>
+          </view>
+        </view>
+      </view>
+    </repeat>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Order extends wepy.page {
+    config = {
+      navigationBarTitleText: '确认订单'
+    }
+    data = {
+      orderHash: '',
+      token: '',
+      user: {
+        add: '请选择收货地址'
+      },
+      addressMain: '',
+      appType: 'web',
+      order: []
+    }
+    methods = {
+      goAddress () {
+        wepy.navigateTo({
+          url: './address?page=order'
+        })
+      }
+    }
+    initOrder () {
+      var data = {
+        token: this.token,
+        orderId: this.orderId
+      }
+      this.$parent.HttpRequest.GetOrderHttp(data).then((res) => {
+        console.log(res)
+      })
+    }
+    onLoad (data) {
+      this.orderHash = data.hash
+      this.order = JSON.parse(data.order)
+      this.token = this.$parent.getToken('order')
+      this.$apply()
+    }
+    onShow () {
+    }
+  }
+</script>

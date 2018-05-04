@@ -231,6 +231,9 @@
   color:#333;
   line-height:36rpx;
 }
+.through{
+  text-decoration: line-through;
+}
 </style>
 
 <script>
@@ -258,7 +261,8 @@ export default class extends wepy.app {
       'pages/category',
       'pages/search',
       'pages/address',
-      'pages/newAdd'
+      'pages/newAdd',
+      'pages/order'
     ],
     window: {
       backgroundTextStyle: 'dark',

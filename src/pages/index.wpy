@@ -181,7 +181,7 @@
       loaded: false,
       pageNum: 1,
       totalPageNum: '',
-      isNull: false,
+      isNull: true,
       isDown: false
     }
 
@@ -271,7 +271,6 @@
       this.getInitData()
     }
     onLoad () {
-      this.getInitData()
       this.$apply()
     }
   }

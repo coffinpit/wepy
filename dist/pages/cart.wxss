@@ -25,7 +25,6 @@ view {
   padding: 0 20rpx;
 }
 .cart-list {
-  margin-top: 20rpx;
   width: 100%;
 }
 .cart-list .content {
@@ -37,10 +36,23 @@ view {
 .cart-list .content .title {
   position: absolute;
   top: 20rpx;
-  left: 10%;
-  width: 80%;
-  padding: 10rpx 0;
+  left: 0;
+  width: 100%;
+  padding: 10rpx 20rpx;
   z-index: 5;
+  transition: 0.5s left ease-in;
+  background: #fff;
+}
+.cart-list .content .title.animate {
+  left: 10%;
+}
+.cart-list .content .check-layer {
+  position: absolute;
+  top: 20rpx;
+  left: 0;
+  width: 10%;
+  z-index: 4;
+  text-align: center;
 }
 .cart-list .iconfont {
   font-size: 80rpx;
@@ -49,7 +61,7 @@ view {
 }
 .vip-tip {
   width: 100%;
-  margin: 10rpx 0;
+  margin: 10rpx 0 20rpx;
   background: #fff;
   padding: 10rpx 20rpx;
 }
@@ -76,15 +88,6 @@ view {
   border-top: 2rpx solid #eee;
   height: 200rpx;
   overflow: hidden;
-}
-.item-list .edited {
-  position: absolute;
-  width: 100%;
-  left: 0;
-  top: 0;
-  z-index: 9999;
-  height: 100%;
-  background: rgba(204, 204, 204, 0.2);
 }
 .item-list:last-child {
   border-bottom: 2rpx solid #eee;
@@ -126,12 +129,16 @@ view {
 }
 .inner.txt {
   background-color: #fff;
-  width: 90%;
+  width: 100%;
   z-index: 999;
   padding: 20rpx;
-  left: 10%;
+  left: 0;
   box-sizing: border-box;
   overflow: hidden;
+  transition: 0.5s left ease-in;
+}
+.inner.txt.animate {
+  left: 10%;
 }
 .inner.del {
   width: 10%;
@@ -161,7 +168,7 @@ view {
   overflow: hidden;
   position: absolute;
   top: 20rpx;
-  left: 20rpx;
+  left: 30rpx;
   z-index: 9999;
 }
 .inner-layer .title {
@@ -187,7 +194,7 @@ view {
 }
 .inner-image {
   position: absolute;
-  right: 20rpx;
+  right: 30rpx;
   top: 20rpx;
   height: 150rpx;
   display: inline-block;
@@ -304,4 +311,20 @@ view {
 .hidden-temp .minusBtn.able {
   background: #fff;
   color: #333;
+}
+.unedit-layer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  background: rgba(204, 204, 204, 0.2);
+  transition: 0.5s opacity ease-in;
+  opacity: 0;
+}
+.unedit-layer.animate {
+  left: 10%;
+  opacity: 1;
+  z-index: 999999999;
 }
