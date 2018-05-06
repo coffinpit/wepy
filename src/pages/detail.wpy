@@ -126,6 +126,7 @@
     .detail-collect-icon{
       width:18%;
       text-align:center;
+      margin-top:16rpx;
       text{
         display:block;
       }
@@ -315,13 +316,13 @@
         </view>
         <view class="detail-txt-price">
           <text>原价</text>
-          <text>￥{{detail.oldprice}}</text>
+          <text class="through">￥{{detail.oldprice}}</text>
           <navigator url="" class="detail-link">成为会员?</navigator>
         </view>
         <view class="detail-txt-price express">
           <text>快递￥{{detail.express}}</text>
           <text class="tips">成为会员</text><text class="tips">即享包邮</text>
-          <button class="default-button" hover-class="default-button-active">配送规则</button>
+          <button class="default-button" hover-class="default-button-active" @tap="goRules">配送规则</button>
         </view>
       </view>
     </view>
@@ -448,7 +449,7 @@
       },
       maxtip () {
         var maxtip = false
-        if (this.cartNum > this.cartResult.num) {
+        if (this.cartNum >= this.cartResult.num) {
           maxtip = true
         } else {
           maxtip = false
@@ -471,17 +472,8 @@
       overflow: false,
       winHeight: 0,
       collectTxt: '未收藏',
-      collectednum: '4',
-      collectedUser: [{
-        path: '../image/login-bg.jpg',
-        name: 'xxx'
-      }, {
-        path: '../image/login-bg.jpg',
-        name: 'xxx'
-      }, {
-        path: '../image/login-bg.jpg',
-        name: 'xxx'
-      }],
+      collectednum: 0,
+      collectedUser: [],
       goodsDetail: [{
         title: '商品名称',
         detail: '美国自然牛USDA PRIMA极佳级肉眼牛排'
@@ -512,15 +504,21 @@
       cartResult: [],
       totalCart: 0,
       cartModal: false,
-      collectImage: '../image/icon-cart-blank.png'
+      collectImage: '../image/icon-cart-blank.png',
+      markId: ''
     }
     methods = {
       collectTap () {
-        this.collect = !this.collect
         if (!this.collect) {
-          this.collectTxt = '未收藏'
+          this.setMark(() => {
+            this.collectTxt = '已收藏'
+            this.collect = true
+          })
         } else {
-          this.collectTxt = '已收藏'
+          this.CancelMark(() => {
+            this.collectTxt = '未收藏'
+            this.collect = false
+          })
         }
       },
       cart (action) {
@@ -583,6 +581,11 @@
         } else {
           console.log('跳转至购买页面')
         }
+      },
+      goRules () {
+        wepy.navigateTo({
+          url: './rules'
+        })
       }
     }
     initCartData () {
@@ -606,21 +609,31 @@
       this.$parent.HttpRequest.DetailHttp(data).then((res) => {
         console.log(res)
         this.detail.goodList = []
-        if (!res.data.data.collectionId) {
-          this.collect = false
-        } else {
-          this.collect = true
-        }
-        if (res.data.data.memberHash !== _this.$parent.globalData.userHash) {
-          _this.resetUserLevel()
-        }
         if (res.data.error === 0) {
           var data = res.data.data
+          if (!data.collectionId) {
+            _this.collect = false
+          } else {
+            _this.collect = true
+          }
+          // 测试用户身份变化
+          _this.$parent.resetUserLevel(data.memberHash, this.token)
           _this.detail.path = data.cover
           _this.detail.title = data.title
           _this.detail.price = data.memberPrice
           _this.detail.oldprice = data.price
           _this.detail.descript = data.desc
+          _this.detail.type = data.sourceType
+          _this.detail.id = data.sourceId
+          _this.detail.collectId = data.collectionId
+          _this.getMarkUser(data.sourceId, data.sourceType)
+          if (data.collectionId) {
+            _this.collect = true
+            _this.collectTxt = '已收藏'
+          } else {
+            _this.collect = false
+            _this.collectTxt = '未收藏'
+          }
           data.skus.forEach((item) => {
             var good = {}
             good.name = item.productName + item.title
@@ -652,13 +665,62 @@
         console.log(res)
       })
     }
-    resetUserLevel () {
+    getMarkUser (id, type) {
+      this.collectednum = 0
+      this.collectedUser = []
       var _this = this
       var data = {
+        token: this.token,
+        markType: 1,
+        sourceType: type,
+        sourceId: id
+      }
+      this.$parent.HttpRequest.GetMarkUser(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          var data = res.data.data
+          _this.collectednum = data.length
+          data.forEach((item) => {
+            var obj = {}
+            obj.id = item.id
+            obj.name = item.nickName
+            obj.path = item.avatar
+            _this.collectedUser.push(obj)
+          })
+        }
+        _this.$apply()
+      })
+    }
+    setMark (cb) {
+      var _this = this
+      var data = {
+        token: this.token,
+        markType: 1,
+        sourceType: this.detail.type,
+        sourceId: this.detail.id
+      }
+      console.log(data)
+      this.$parent.HttpRequest.SetMarkHttp(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          _this.markId = res.data.data
+          _this.getMarkUser(_this.detail.id, this.detail.type)
+          cb && cb()
+        }
+        _this.$apply()
+      })
+    }
+    CancelMark (cb) {
+      var _this = this
+      var data = {
+        markId: this.markId || this.detail.collectId,
         token: this.token
       }
-      this.$parent.HttpRequest.GetUserInfo(data).then((res) => {
-        _this.$parent.globalData.userLevel = res.data.data.level
+      console.log(this.detail.collectId, this.markId)
+      this.$parent.HttpRequest.CancelMarkHttp(data).then((res) => {
+        console.log(res)
+        _this.getMarkUser(_this.detail.id, this.detail.type)
+        cb && cb()
         _this.$apply()
       })
     }

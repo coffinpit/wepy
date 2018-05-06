@@ -254,15 +254,18 @@ export default class extends wepy.app {
     pages: [
       'pages/start',
       'pages/login',
-      'pages/index',
       'pages/detail',
+      'pages/index',
       'pages/cart',
-      'pages/user',
+      'pages/system',
       'pages/category',
       'pages/search',
       'pages/address',
       'pages/newAdd',
-      'pages/order'
+      'pages/order',
+      'pages/rules',
+      'pages/user',
+      'pages/logistica'
     ],
     window: {
       backgroundTextStyle: 'dark',
@@ -368,7 +371,6 @@ export default class extends wepy.app {
                   that.globalData.userHash = res.data.data.hash
                 }
               })
-              console.log(that.globalData)
               cb && cb(res.userInfo)
             })
           },
@@ -399,6 +401,13 @@ export default class extends wepy.app {
             })
           }
         })
+      },
+      fail: () => {
+        wepy.showToast({
+          title: '网络连接失败',
+          icon: 'none',
+          image: '../image/cancel.png'
+        })
       }
     })
   }
@@ -419,10 +428,29 @@ export default class extends wepy.app {
       })
     }
   }
+  resetUserLevel (hash, token) {
+    if (hash !== this.globalData.userHash) {
+      var _this = this
+      var data = {
+        token: token
+      }
+      this.HttpRequest.GetUserInfo(data).then((res) => {
+        _this.globalData.userLevel = res.data.data.level
+        _this.$apply()
+      })
+    }
+  }
   showLoading () {
     wepy.showLoading({
       title: '加载中',
       icon: 'loading'
+    })
+  }
+  showFail () {
+    wepy.showToast({
+      title: '加载失败',
+      icon: 'none',
+      image: '../image/cancel.png'
     })
   }
   dateFormat (timestamp, formats) {

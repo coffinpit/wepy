@@ -151,6 +151,10 @@
   .order-layer{
     padding:20rpx 0;
   }
+  .default-button {
+    padding:20rpx 0;
+    margin:50rpx 20rpx 20rpx;
+  }
 </style>
 <template>
   <view class="container">
@@ -220,6 +224,12 @@
         <text>消息通知</text>
         <text class="iconfont icon-rightsj"></text>
       </view>
+      <view class="setting-layer">
+        <text class="iconfont icon-me_sc"></text>
+        <text>关于我们</text>
+        <text class="iconfont icon-psfs_fwtx"></text>
+      </view>
+      <button class="default-button" hover-class="default-button-hover" @tap="clear">清空缓存</button>
     </view>
   </view>
 </template>
@@ -245,6 +255,21 @@
       goAddress () {
         wepy.navigateTo({
           url: './address'
+        })
+      },
+      clear () {
+        wepy.getStorageInfo({
+          success: (res) => {
+            wepy.showModal({
+              title: '提示',
+              content: '当前缓存' + res.currentSize + 'kb,是否清理缓存',
+              success: (res) => {
+                if (res.confirm) {
+                  wepy.clearStorage()
+                }
+              }
+            })
+          }
         })
       }
     }
@@ -288,6 +313,11 @@
     onLoad () {
       this.token = this.$parent.getToken('user')
       this.userInfo = this.$parent.globalData.userInfo
+      if (this.$parent.globalData.userLevel === 0) {
+        this.isVip = false
+      } else if (this.$parent.globalData.userLevel === 1) {
+        this.isVip = true
+      }
       this.initUserData()
       this.initUserOrder()
       this.$apply()

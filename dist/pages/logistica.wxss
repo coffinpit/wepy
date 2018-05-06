@@ -1,0 +1,24 @@
+.container {
+  min-height: calc(100vh);
+  display: block;
+}
+.package {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 90rpx;
+  font-size: 28rpx;
+  color: #333;
+  height: 90rpx;
+}
+.package view {
+  width: calc(33.33333333%);
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  text-align: center;
+  float: left;
+}
+.package view.active {
+  border-bottom: 2px #fe5946 solid;
+  color: #fe5946;
+}

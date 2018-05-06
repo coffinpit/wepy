@@ -428,16 +428,7 @@
       isNull: false,
       finalprice: 0,
       freight: 0,
-      orderHash: ''
-    }
-    computed = {
-      userLevel () {
-        if (this.$parent.globalData.userLevel === 0) {
-          return false
-        } else if (this.$parent.globalData.userLevel === 1) {
-          return true
-        }
-      }
+      userLevel: 0
     }
     methods = {
       editTap () {
@@ -520,10 +511,8 @@
       },
       goOrder () {
         if (!this.isEdit) {
-          this.applyOrder(() => {
-            wepy.navigateTo({
-              url: './order?hash=' + this.orderHash + '&order=' + JSON.stringify(this.cartList)
-            })
+          wepy.navigateTo({
+            url: './order'
           })
         }
       },
@@ -670,7 +659,6 @@
           } else {
             _this.isNull = false
           }
-          this.orderHash = data.hash
           data.childOrders.forEach((item) => {
             var obj = {}
             obj.title = item.title
@@ -724,17 +712,14 @@
         cb && cb()
       })
     }
-    applyOrder (cb) {
-      var data = {
-        token: this.token
-      }
-      this.$parent.HttpRequest.ApplyOrderHttp(data).then((res) => {
-        console.log(res)
-        cb && cb()
-      })
-    }
     onLoad () {
       this.token = this.$parent.getToken('cart')
+      console.log(this.$parent.globalData.userLevel)
+      if (this.$parent.globalData.userLevel === 0) {
+        this.userLevel = false
+      } else if (this.$parent.globalData.userLevel === 1) {
+        this.userLevel = true
+      }
       // 判断用户memberHash
       this.$apply()
     }

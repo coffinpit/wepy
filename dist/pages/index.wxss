@@ -62,7 +62,7 @@ image {
 }
 .top_nav-container .top_nav_active {
   border-bottom: 2px #fe5946 solid;
-  color: #f60;
+  color: #fe5946;
 }
 .index-promot {
   position: relative;

@@ -26,13 +26,13 @@
         </view>
         <view class="detail-txt-price">
           <text>原价</text>
-          <text>￥{{detail.oldprice}}</text>
+          <text class="through">￥{{detail.oldprice}}</text>
           <navigator url="" class="detail-link">成为会员?</navigator>
         </view>
         <view class="detail-txt-price express">
           <text>快递￥{{detail.express}}</text>
           <text class="tips">成为会员</text><text class="tips">即享包邮</text>
-          <button class="default-button" hover-class="default-button-active">配送规则</button>
+          <button class="default-button" hover-class="default-button-active" bindtap="goRules">配送规则</button>
         </view>
       </view>
     </view>

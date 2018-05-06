@@ -56,7 +56,7 @@
     }
     .top_nav_active{
       border-bottom: 2px #fe5946 solid;
-      color: #f60
+      color: #fe5946;
     }
   }
   .index-promot{
@@ -235,7 +235,6 @@
         if (res.data.error === 0) {
           _this.totalPageNum = res.data.data.totalPageNum
           var data = res.data.data.spus
-          console.log(data)
           if (data.length === 0) {
             _this.isNull = true
           } else {
@@ -259,9 +258,12 @@
             cb && cb()
           })
         } else {
+          _this.$parent.showFail()
           _this.isNull = true
         }
         _this.$apply()
+      }).catch(() => {
+        _this.isNull = true
       })
     }
     initPage () {

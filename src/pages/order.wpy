@@ -177,7 +177,7 @@
         })
       }
     }
-    initOrder () {
+    createOrder () {
       var data = {
         token: this.token,
         orderId: this.orderId
@@ -186,13 +186,20 @@
         console.log(res)
       })
     }
-    onLoad (data) {
-      this.orderHash = data.hash
-      this.order = JSON.parse(data.order)
-      this.token = this.$parent.getToken('order')
+    applyOrder (cb) {
+      var data = {
+        token: this.token
+      }
+      this.$parent.HttpRequest.ApplyOrderHttp(data).then((res) => {
+        console.log(res)
+        cb && cb()
+      })
+    }
+    onLoad () {
       this.$apply()
     }
     onShow () {
+      this.applyOrder()
     }
   }
 </script>

@@ -18,7 +18,7 @@
 <script>
   import wepy from 'wepy'
 
-  export default class Hot extends wepy.page {
+  export default class Start extends wepy.page {
     config = {
       navigationBarTitleText: '欢迎'
     }
@@ -29,8 +29,9 @@
       getLoad () {
         setTimeout(() => {
           if (wepy.getStorageSync('token')) {
-            this.methods.goIndex()
-            this.$parent.getUserInfo()
+            this.$parent.getUserInfo('start', () => {
+              this.methods.goIndex()
+            })
           } else {
             this.methods.goLogin()
           }

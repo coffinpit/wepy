@@ -5,6 +5,7 @@ class HttpRequest extends wepy.app{
 	constructor () {
 		super()
 		this.$$base = 'https://zstest.zsbutcher.cn/smartShopping/backend/web/index.php?'
+		this.$$baseHtml = 'https://zstest.zsbutcher.cn/smartShopping/h5/'
 		this.$$path = {
 			time:'r=test',
 			userlogin: 'r=member/api-get-token-by-phone',
@@ -24,7 +25,13 @@ class HttpRequest extends wepy.app{
 			deleteCart: 'r=shopping-cart/api-del',
 			topArea: 'r=area/api-get-top-areas',
 			applyOrder: 'r=buying/api-apply-create-order-by-shopping-cart',
-			getOrder: 'r=order/api-get-detail'
+			getOrder: 'r=order/api-get-detail',
+			setMark: 'r=mark/api-mark',
+			cancelMark: 'r=mark/api-cancel-mark',
+			getMarkUser: 'r=mark/api-get-collectors'
+		}
+		this.$$pathHtml = {
+			rules: 'distribution_rules.html'
 		}
 	}
 	getData (res, param) {
@@ -50,6 +57,9 @@ class HttpRequest extends wepy.app{
 				header: {'content-type': 'application/json'},
 				success: (data) => {
 				  resolve(data)
+				},
+				fail: (error) => {
+				  reject(error)
 				}
 			})
 		})
@@ -66,6 +76,9 @@ class HttpRequest extends wepy.app{
 	            	header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 	            })
         	})
@@ -83,6 +96,9 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -100,6 +116,9 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -117,6 +136,9 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -134,6 +156,9 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -151,6 +176,9 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -168,6 +196,69 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			})
+		})
+	}
+	SetMarkHttp (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.setMark,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			})
+		})
+	}
+	CancelMarkHttp (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.cancelMark,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			})
+		})
+	}
+	GetMarkUser (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.getMarkUser,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -185,6 +276,9 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -203,6 +297,9 @@ class HttpRequest extends wepy.app{
 	                data: data,
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -220,6 +317,9 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -237,6 +337,9 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -254,6 +357,9 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -271,6 +377,9 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -288,6 +397,9 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -305,6 +417,9 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -322,6 +437,9 @@ class HttpRequest extends wepy.app{
 	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})
@@ -335,6 +453,9 @@ class HttpRequest extends wepy.app{
                 header: {'content-type': 'application/json'},
 				success: (data) => {
 				  resolve(data)
+				},
+				fail: (error) => {
+				  reject(error)
 				}
 			})
 		})
@@ -352,6 +473,9 @@ class HttpRequest extends wepy.app{
 	                data: data,
 					success: (data) => {
 					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
 					}
 				})
 			})

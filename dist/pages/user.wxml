@@ -66,5 +66,11 @@
         <text>消息通知</text>
         <text class="iconfont icon-rightsj"/>
       </view>
+      <view class="setting-layer">
+        <text class="iconfont icon-me_sc"/>
+        <text>关于我们</text>
+        <text class="iconfont icon-psfs_fwtx"/>
+      </view>
+      <button class="default-button" hover-class="default-button-hover" bindtap="clear">清空缓存</button>
     </view>
   </view>

@@ -1,0 +1,27 @@
+<style lang="less">
+</style>
+<template>
+  <view>
+    <web-view src="{{url}}"></web-view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Rules extends wepy.page {
+    config = {
+      navigationBarTitleText: '配送规则'
+    }
+    data = {
+      url: ''
+    }
+    methods = {
+    }
+    onLoad () {
+      this.url = this.$parent.HttpRequest.$$baseHtml + this.$parent.HttpRequest.$$pathHtml.rules
+      console.log(this.url)
+      this.$apply()
+    }
+  }
+</script>

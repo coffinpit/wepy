@@ -147,7 +147,7 @@
   import Defect from '../components/defect'
   import Reachdown from '../components/reachdown'
 
-  export default class Hot extends wepy.page {
+  export default class Category extends wepy.page {
     config = {
       navigationBarTitleText: '商品分类'
     }
@@ -276,8 +276,8 @@
       }
       this.$parent.HttpRequest.GetSpuHttp(data).then((res) => {
         console.log(res)
-        if (this.pageNum === 1) {
-          this.goods = []
+        if (_this.pageNum === 1) {
+          _this.goods = []
         }
         if (res.data.error === 0) {
           _this.totalPageNum = res.data.data.totalPageNum
@@ -305,9 +305,11 @@
             cb && cb()
           })
         } else {
-          _this.isNull = false
+          _this.isNull = true
         }
         _this.$apply()
+      }).catch(() => {
+        _this.isNull = true
       })
     }
     onLoad () {

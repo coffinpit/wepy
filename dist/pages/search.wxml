@@ -17,7 +17,7 @@
   <view class="goods-layer">
     <block wx:for="{{$searchResult$goodsItem}}" wx:for-index="$searchResult$index" wx:for-item="$searchResult$item" wx:key="$searchResult$key">
       <view class="goods" bindtap="$searchResult$tap" id="{{$searchResult$item.id}}" data-wpytap-a="{{$searchResult$item.id}}">
-        <view class="goods-image"><image src="{{$searchResult$item.path}}" mode="aspectFit" lazy-load="true"/></view>
+        <view class="goods-image {{$searchResult$item.noSales ? 'no-salse' : ''}}"><image src="{{$searchResult$item.path}}" mode="aspectFit" lazy-load="true"/></view>
         <view class="goods-detail">
           <view class="goods-detail-title">{{$searchResult$item.title}}</view>
           <view class="goods-detail-price">

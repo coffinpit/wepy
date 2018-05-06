@@ -1,0 +1,27 @@
+<style lang="less">
+  .container{
+    min-height:calc(100vh);
+    display:block;
+  }
+</style>
+<template>
+  <view class="container">
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class System extends wepy.page {
+    config = {
+      navigationBarTitleText: '系统消息'
+    }
+    data = {
+    }
+    methods = {
+    }
+    onLoad () {
+      this.$apply()
+    }
+  }
+</script>

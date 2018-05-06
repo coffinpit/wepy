@@ -36,7 +36,7 @@
   <view class="goods-layer">
     <block wx:for="{{$recGoods$goodsItem}}" wx:for-index="$recGoods$index" wx:for-item="$recGoods$item" wx:key="$recGoods$key">
       <view class="goods" bindtap="$recGoods$tap" id="{{$recGoods$item.id}}" data-wpytap-a="{{$recGoods$item.id}}">
-        <view class="goods-image"><image src="{{$recGoods$item.path}}" mode="aspectFit" lazy-load="true"/></view>
+        <view class="goods-image {{$recGoods$item.noSales ? 'no-salse' : ''}}"><image src="{{$recGoods$item.path}}" mode="aspectFit" lazy-load="true"/></view>
         <view class="goods-detail">
           <view class="goods-detail-title">{{$recGoods$item.title}}</view>
           <view class="goods-detail-price">
@@ -66,7 +66,7 @@
   <view class="goods-layer">
     <block wx:for="{{$hotGoods$goodsItem}}" wx:for-index="$hotGoods$index" wx:for-item="$hotGoods$item" wx:key="$hotGoods$key">
       <view class="goods" bindtap="$hotGoods$tap" id="{{$hotGoods$item.id}}" data-wpytap-a="{{$hotGoods$item.id}}">
-        <view class="goods-image"><image src="{{$hotGoods$item.path}}" mode="aspectFit" lazy-load="true"/></view>
+        <view class="goods-image {{$hotGoods$item.noSales ? 'no-salse' : ''}}"><image src="{{$hotGoods$item.path}}" mode="aspectFit" lazy-load="true"/></view>
         <view class="goods-detail">
           <view class="goods-detail-title">{{$hotGoods$item.title}}</view>
           <view class="goods-detail-price">

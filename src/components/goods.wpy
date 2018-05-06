@@ -15,9 +15,18 @@
       height:200rpx;
       width:200rpx;
       overflow:hidden;
+      position:relative;
       image{
         height:100%;
         width:200rpx;
+      }
+      &.no-sales {
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        backgrond:rgba(0,0,0,0.2);
       }
     }
     .goods-detail{
@@ -49,7 +58,7 @@
   <view class="goods-layer">
     <repeat for="{{goodsItem}}" item="item">
       <view class="goods" @tap="tap({{item.id}})" id="{{item.id}}">
-        <view class="goods-image"><image src="{{item.path}}" mode="aspectFit" lazy-load="true"></image></view>
+        <view class="goods-image {{item.noSales ? 'no-salse' : ''}}"><image src="{{item.path}}" mode="aspectFit" lazy-load="true"></image></view>
         <view class="goods-detail">
           <view class="goods-detail-title">{{item.title}}</view>
           <view class="goods-detail-price">

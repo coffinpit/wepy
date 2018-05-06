@@ -1,0 +1,6 @@
+
+  <view class="container">
+    <scroll-view scroll-x class="package">
+      <block wx:for="{{package}}" wx:for-index="index" wx:for-item="item" wx:key="key"><view class="{{current === index ? 'active' : ''}}" bindtap="checkPackage" data-wpycheckpackage-a="{{index}}">{{item}}</view></block>
+    </scroll-view>
+  </view>

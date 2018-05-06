@@ -14,10 +14,19 @@
   height: 200rpx;
   width: 200rpx;
   overflow: hidden;
+  position: relative;
 }
 .goods .goods-image image {
   height: 100%;
   width: 200rpx;
+}
+.goods .goods-image.no-sales {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backgrond: rgba(0, 0, 0, 0.2);
 }
 .goods .goods-detail {
   width: 65%;

@@ -119,8 +119,8 @@
             url: './' + page
           })
         } else {
-          wepy.navigateTo({
-            url: './' + page
+          wepy.switchTab({
+            url: './index'
           })
         }
       } else {

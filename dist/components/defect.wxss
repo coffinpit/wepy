@@ -65,12 +65,12 @@
 }
 .lost-goods {
   margin: 50rpx auto;
-  width: 196rpx;
-  height: 170rpx;
+  width: 330rpx;
+  height: 270rpx;
   position: relative;
 }
 .lost-goods image {
-  width: 196rpx;
+  width: 330rpx;
   height: 170rpx;
 }
 .lost-goods text {
@@ -85,5 +85,14 @@
   border-radius: 60rpx;
   min-width: 120rpx;
   border: 1px #ccc solid;
+  text-align: center;
+}
+.lost-goods .blank-button {
+  width: 40%;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  line-height: 50rpx;
   text-align: center;
 }
