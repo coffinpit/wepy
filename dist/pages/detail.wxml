@@ -62,9 +62,7 @@
             <text class="iconfont icon-more"/>
           </view>
           <view class="detail-collect-list"  wx:if="{{collect}}">
-            <block wx:for="{{collectedUser}}" wx:for-index="index" wx:for-item="item" wx:key="key">
-              <view><image src="{{item.path}}" mode="aspectFill"/></view>
-            </block>
+            <text class="iconfont icon-leftsj collect"/><text class="un-collect collect">收藏成功</text>
           </view>
           <view class="detail-collect-list"  wx:else>
             <text class="iconfont icon-leftsj"/><text class="un-collect">请点击收藏</text>

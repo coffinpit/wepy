@@ -25,10 +25,13 @@ class HttpRequest extends wepy.app{
 			deleteCart: 'r=shopping-cart/api-del',
 			topArea: 'r=area/api-get-top-areas',
 			applyOrder: 'r=buying/api-apply-create-order-by-shopping-cart',
-			getOrder: 'r=order/api-get-detail',
+			createOrder: 'r=buying/api-create-order-by-shopping-cart',
+			applyOrderBuy: 'r=buying/api-apply-create-order-by-fast-buying',
+			createOrderBuy: 'r=buying/api-create-order-by-fast-buying',
 			setMark: 'r=mark/api-mark',
 			cancelMark: 'r=mark/api-cancel-mark',
-			getMarkUser: 'r=mark/api-get-collectors'
+			getMarkUser: 'r=mark/api-get-collectors',
+			getOrder: 'r=order/api-get-detail'
 		}
 		this.$$pathHtml = {
 			rules: 'distribution_rules.html'
@@ -345,6 +348,46 @@ class HttpRequest extends wepy.app{
 			})
 		})
 	}
+	CreateUserOrder (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.createOrder,
+					method: 'POST',
+	                header: {'content-type': 'application/x-www-form-urlencoded'},
+	                data: data,
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			})
+		})
+	}
+	CreateOrderBuy (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.createOrderBuy,
+					method: 'POST',
+	                header: {'content-type': 'application/x-www-form-urlencoded'},
+	                data: data,
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			})
+		})
+	}
 	GetAddress (param) {
 		var _this = this
 		return new Promise((resolve, reject) => {
@@ -412,6 +455,26 @@ class HttpRequest extends wepy.app{
 				var data = _this.getData(res, param)
 				wepy.request({
 					url: this.$$base + this.$$path.applyOrder,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			})
+		})
+	}
+	ApplyOrderBuy (param) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.applyOrderBuy,
 					data: data,
 					method: 'GET',
 	                header: {'content-type': 'application/json'},

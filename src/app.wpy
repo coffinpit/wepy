@@ -262,7 +262,8 @@ export default class extends wepy.app {
       'pages/search',
       'pages/address',
       'pages/newAdd',
-      'pages/order',
+      'pages/paycart',
+      'pages/paybuy',
       'pages/rules',
       'pages/user',
       'pages/logistica'
@@ -306,6 +307,10 @@ export default class extends wepy.app {
     userLevel: null,
     userHash: null
   }
+
+  // 判断tabbar回退页面
+  pageRoot = false
+
 
   constructor () {
     super()

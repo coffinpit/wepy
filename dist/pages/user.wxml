@@ -5,9 +5,6 @@
       <view class="userinfo-nickname">
         <text>{{ userInfo.nickName }}</text>
       </view>
-      <view class="user-setting">
-        <text>账号管理</text>
-      </view>
     </view>
     <view class="user-level">
       <text class="iconfont icon-vip {{!isVip ? '' : 'vip'}}"/>
@@ -67,9 +64,9 @@
         <text class="iconfont icon-rightsj"/>
       </view>
       <view class="setting-layer">
-        <text class="iconfont icon-me_sc"/>
+        <text class="iconfont icon-kf_bq"/>
         <text>关于我们</text>
-        <text class="iconfont icon-psfs_fwtx"/>
+        <text class="iconfont icon-rightsj"/>
       </view>
       <button class="default-button" hover-class="default-button-hover" bindtap="clear">清空缓存</button>
     </view>

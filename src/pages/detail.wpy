@@ -184,12 +184,18 @@
       color:#fff;
       background:#ffa336;
       font-size:24rpx;
+      &.collect{
+        background:#fc5e43;
+      }
     }
     .icon-leftsj{
       color:#ffa336;
       vertical-align:middle;
       margin-right:-10rpx;
       font-size:30rpx;
+      &.collect{
+        color:#fc5e43;
+      }
     }
   }
   .detail-container{
@@ -352,9 +358,7 @@
             <text class="iconfont icon-more"></text>
           </view>
           <view class="detail-collect-list"  wx:if="{{collect}}">
-            <repeat for="{{collectedUser}}" index="index" item="item">
-              <view><image src="{{item.path}}" mode="aspectFill"></image></view>
-            </repeat>
+            <text class="iconfont icon-leftsj collect"></text><text class="un-collect collect">收藏成功</text>
           </view>
           <view class="detail-collect-list" wx:else>
             <text class="iconfont icon-leftsj"></text><text class="un-collect">请点击收藏</text>
@@ -473,7 +477,6 @@
       winHeight: 0,
       collectTxt: '未收藏',
       collectednum: 0,
-      collectedUser: [],
       goodsDetail: [{
         title: '商品名称',
         detail: '美国自然牛USDA PRIMA极佳级肉眼牛排'
@@ -579,7 +582,10 @@
             this.methods.closeCart.apply(this)
           }
         } else {
-          console.log('跳转至购买页面')
+          console.log(this.cartResult)
+          wepy.navigateTo({
+            url: './paybuy?id=' + this.cartResult.id + '&type=' + this.cartResult.type + '&count=' + this.cartNum
+          })
         }
       },
       goRules () {
@@ -667,7 +673,6 @@
     }
     getMarkUser (id, type) {
       this.collectednum = 0
-      this.collectedUser = []
       var _this = this
       var data = {
         token: this.token,
@@ -680,13 +685,6 @@
         if (res.data.error === 0) {
           var data = res.data.data
           _this.collectednum = data.length
-          data.forEach((item) => {
-            var obj = {}
-            obj.id = item.id
-            obj.name = item.nickName
-            obj.path = item.avatar
-            _this.collectedUser.push(obj)
-          })
         }
         _this.$apply()
       })
@@ -701,7 +699,6 @@
       }
       console.log(data)
       this.$parent.HttpRequest.SetMarkHttp(data).then((res) => {
-        console.log(res)
         if (res.data.error === 0) {
           _this.markId = res.data.data
           _this.getMarkUser(_this.detail.id, this.detail.type)
@@ -716,9 +713,7 @@
         markId: this.markId || this.detail.collectId,
         token: this.token
       }
-      console.log(this.detail.collectId, this.markId)
       this.$parent.HttpRequest.CancelMarkHttp(data).then((res) => {
-        console.log(res)
         _this.getMarkUser(_this.detail.id, this.detail.type)
         cb && cb()
         _this.$apply()
@@ -728,6 +723,7 @@
       this.pageId = id.id
       this.token = this.$parent.getToken('detail')
       this.initData(this.pageId)
+      this.$parent.pageRoot = true
       var _this = this
       wepy.getSystemInfo({
         success: function (res) {

@@ -1,7 +1,7 @@
 
   <view class="container">
     <view  wx:if="{{!isNull}}">
-      <view class="cart-status" wx:if="{{!userLevel}}">
+      <view class="cart-status" wx:if="{{!userLevel && cartStatus.totalprice}}">
         <text class="title">已购￥{{cartStatus.totalprice}}，成为会员立减 <text class="title link font-bold">￥{{cartStatus.discount}}</text></text>
         <view class="default-button">加入会员</view>
       </view>
@@ -25,7 +25,7 @@
                     <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
                       <text class="title">{{item.title}}</text>
                       <text class="font-small link">会员价：￥{{item.price}} </text>
-                      <text class="font-small through">原价：￥{{item.oldprice}}</text>
+                      <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.oldprice}}</text>
                       <text class="tips">{{item.detail}}</text>
                     </view>
                     <view class="inner-image">
@@ -50,16 +50,20 @@
           </view>                 
         </view>
       </block>
-      <view class="cart-bottom" wx:if="{{!isNull}}">
+      <view class="cart-bottom" wx:if="{{cartList != false}}">
         <text class="title link edit" bindtap="editTap">{{isEdit ? '取消' : '编辑'}}</text>
         <view class="title link all" catchtap="checkAll" wx:if="{{isEdit}}">全选</view>
         <text class="title link edit" bindtap="deleteTap" wx:if="{{isEdit}}">删除</text>
         <text catchtap="goOrder" class="del-cart {{isEdit ? '' : 'active'}}">去结算</text>
         <text class="cart-info"><text class="tips">(含运费￥{{freight}})</text> 合计: <text class="link">￥{{finalprice}}</text></text>
       </view>
-      <view class="vip-tip">
+      <view class="vip-tip" wx:if="{{userLevel && cartList != false}}">
         <text class="iconfont icon-vip link"/>
         <text class="title">尊敬的优价会员，生鲜购满2公斤才可包邮哦</text>
+      </view>
+      <view class="vip-tip no-active" wx:elif="{{cartList != false}}">
+        <text class="iconfont icon-vip"/>
+        <text class="title">成为会员，生鲜购满2公斤全场包邮</text>
       </view>
     </view>
     <view  wx:else class="blank">

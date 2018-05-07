@@ -19,7 +19,7 @@
 }
 .user-logo .userinfo-nickname {
   float: left;
-  width: 300rpx;
+  width: 500rpx;
   height: 100rpx;
   overflow: hidden;
   padding-top: 30rpx;
@@ -79,7 +79,7 @@
 .user-level .default-button {
   padding: 0 20rpx;
   float: right;
-  margin-top: 8rpx;
+  margin: 8rpx 0 0;
   font-size: 28rpx;
 }
 .setting-container {
@@ -107,12 +107,13 @@
   display: inline-block;
   width: 60rpx;
   height: 65rpx;
+  line-height: 65rpx;
 }
 .setting-layer text {
   vertical-align: middle;
 }
 .setting-layer .icon-rightsj {
-  margin: 10rpx 0 0;
+  margin: 6rpx 0 0;
   float: right;
   font-size: 40rpx;
 }

@@ -188,11 +188,17 @@
   background: #ffa336;
   font-size: 24rpx;
 }
+.detail-collect .un-collect.collect {
+  background: #fc5e43;
+}
 .detail-collect .icon-leftsj {
   color: #ffa336;
   vertical-align: middle;
   margin-right: -10rpx;
   font-size: 30rpx;
+}
+.detail-collect .icon-leftsj.collect {
+  color: #fc5e43;
 }
 .detail-container {
   margin-bottom: 10px;

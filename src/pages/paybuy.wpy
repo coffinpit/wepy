@@ -1,0 +1,431 @@
+<style lang="less">
+  .container{
+    min-height:calc(100vh);
+    display:block;
+    background: linear-gradient(#fc5e43 80rpx, #f8f8f8 500rpx);  
+  }
+  .address {
+    color:#fff;
+    padding:20rpx;
+    .address-title{
+      font-size:24rpx;
+      display:block;
+      margin-bottom:10rpx;
+    }
+    scroll-view{
+      width:90%;
+      white-space:nowrap;
+      font-size:40rpx;
+      height:56rpx;
+      line-height:56rpx;
+      display:inline-block;
+      vertical-align:middle;
+    }
+    .iconfont{
+      color:#fff;
+      font-size:32rpx;
+      width:10%;
+      text-align:right;
+      vertical-align:middle;
+      display:inline-block;
+    }
+    .user{
+      font-size:28rpx;
+    }
+  }
+  .cart-list{
+    width:100%;
+    padding:0 20rpx;
+    box-sizing:border-box;
+    .content{
+      margin-bottom:0;
+      height:100rpx;
+      padding:20rpx;
+      .title{
+        padding:10rpx 0; 
+      }
+    }
+    .iconfont{
+      font-size:80rpx;
+      vertical-align:middle;
+      margin-right:20rpx;
+    }
+  }
+  .item-box{  
+    width:100%;
+    background-color: #fff;
+    }  
+    .items{  
+      width: 100%;  
+    }  
+    .item-list{  
+      height: 200rpx;  
+      overflow: hidden;
+      padding:0 20rpx 20rpx;
+      box-sizing:border-box;
+    }
+    .inner.txt{
+      background-color: #f8f8f8;
+      padding:20rpx;
+      box-sizing:border-box; 
+      overflow:hidden;  
+    }  
+    .inner-left{
+      width:360rpx;
+      overflow:hidden;
+      white-space:break-all;
+      .place{
+        min-height: 108rpx;
+      }
+    }
+    .inner-layer{
+      width:400rpx;
+      overflow:hidden;
+      float:left;
+      .title{
+        min-height:76rpx;
+        height:76rpx;
+        line-height:38rpx;
+        overflow:hidden;
+        display:block;
+        font-size:28rpx;
+        margin-bottom:6rpx;
+      }
+      .tips, .title{
+        display:block;
+      }
+      .tips{
+        float:right;
+      }
+      .font-small{
+        float:left;
+        display:block;
+        width:260rpx;
+      }
+    }
+    .inner-image{
+      height:150rpx;
+      float:right;
+      image{
+        width:148rpx;
+        height:148rpx;
+        border:1px #eee solid;
+        box-sizing:border-box;
+        float:left;
+        border-right:none;
+      }
+    }
+    .vip-tip{
+      margin:20rpx 20rpx 0;
+      background:#fff;
+      padding:20rpx;
+      box-sizing:border-box;
+      .iconfont{
+        font-size:60rpx;
+        vertical-align:middle;
+        margin-right:10rpx;
+      }
+      .title{
+        font-size:28rpx;
+      }
+      &.no-active{
+        .iconfont {
+          color:#999;
+        }
+      }
+    }
+    .order-list{
+      margin:0 20rpx;
+      border-top:1px #eee solid;
+      padding:20rpx;
+      box-sizing:border-box;
+      background:#fff;
+      .order-list-right{
+        float:right;
+        margin-top:10rpx;
+      }
+    }
+    .cart-status{
+      background:rgba(0,0,0,0.5);
+      padding:30rpx 20rpx;
+      display: flex;
+      margin:20rpx;
+      justify-content:space-between;
+      .title{
+        color:#fff;
+        vertical-align:middle;
+        line-height:48rpx;
+      }
+      .default-button{
+        padding:0 20rpx;
+      }
+    }
+    .order-bottom{
+      border-top:2rpx #fc5e43 solid;
+      margin-top:20rpx;
+      background:#fff;
+      padding-left:40rpx;
+      height:120rpx;
+      line-height:120rpx;
+      .go-pay{
+        float:right;
+        width:200rpx;
+        background:#fc5e43;
+        color:#fff;
+        height:120rpx;
+        line-height:120rpx;
+        font-size:32rpx;
+        text-align:center;
+      }
+    }
+    .memo{
+      margin:20rpx 20rpx 0;
+      background:#fff;
+      padding:20rpx;
+      overflow:hidden;
+      .memo-left{
+        float:left;
+        width:150rpx;
+        text{
+          display:block;
+          line-height:32rpx;
+          margin-top:4rpx;
+        }
+      }
+      .memo-right{
+        float:right;
+        width:480rpx;
+        font-size:28rpx;
+        textarea{
+          width:480rpx;
+          height:150rpx;
+          vertical-align:middle;
+        }
+      }
+      .placeholder{
+        color:#999;
+        font-size:28rpx;
+      }
+    }
+</style>
+<template>
+  <view class="container" wx:if="{{!isNull}}">
+    <view class="address" @tap="goAddress">
+      <text class="address-title">订单配送至</text>
+      <scroll-view scroll-x>{{user.add}}</scroll-view>
+      <text class="iconfont icon-rightsj"></text>
+      <text class="user">{{user.name}} {{user.phone}}</text>
+    </view>
+    <view class="cart-status" wx:if="{{!isNull}}">
+      <text class="title">成为优价会员，本单可省 <text class="title link font-bold">￥{{reduction}}</text></text>
+      <view class="default-button">加入会员</view>
+    </view>
+    <repeat for="{{order}}" item="item" index="index">
+      <view class="cart-list" wx:if="{{!item.isNull}}">
+        <view class="content">
+          <text class="title"><text class="iconfont icon-ys_ly"></text>{{item.title}}</text>
+        </view>
+        <view class="item-box">
+          <view class="items">
+            <repeat for="{{item.coldlist}}" index="index" item="item" key="index">
+              <view class="item-list">
+                <view class="inner txt">
+                  <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
+                    <text class="title">{{item.title}}</text>
+                    <text class="font-small link">会员价：￥{{item.price}} </text>
+                    <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.oldprice}}</text>
+                    <text class="tips">{{item.detail}}</text>
+                  </view>
+                  <view class="inner-image">
+                    <image src="{{item.path}}" mode="aspectFill"></image>
+                  </view>
+                </view>
+              </view>
+            </repeat>
+          </view>
+        </view>
+      </view>
+    </repeat>
+    <view class="memo">
+      <view class="memo-left">
+        <text class="title">订单备注:</text>
+        <text class="tips">{{txtLength}}/100</text>
+      </view>
+      <view class="memo-right">
+        <textarea placeholder="请输入备注" placeholder-class="placeholder" maxlength="100" @input="inputTap"/>
+      </view>
+    </view>
+    <view class="vip-tip" wx:if="{{userLevel}}">
+      <text class="iconfont icon-vip link"></text>
+      <text class="title">尊敬的优价会员，生鲜购满2公斤才可包邮哦</text>
+    </view>
+    <view class="vip-tip no-active" wx:else>
+      <text class="iconfont icon-vip"></text>
+      <text class="title">成为会员，生鲜购满2公斤全场包邮</text>
+    </view>
+    <view class="order-list">
+      <text class="title">运费：</text>
+      <text class="title order-list-right">￥{{freight}}</text>
+    </view>
+    <view class="order-list">
+      <text class="title">订单总额：</text>
+      <text class="title order-list-right link">￥{{finalprice}}</text>
+    </view>
+    <view class="order-bottom">
+      <text class="title">合计:￥<text class="link">{{pay}}</text><text class="tips">（含运费 ￥{{freight}}）</text></text>
+      <text class="go-pay" @tap="goPay">去付款</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class PayBuy extends wepy.page {
+    config = {
+      navigationBarTitleText: '确认订单'
+    }
+    computed = {
+      userLevel () {
+        if (this.$parent.globalData.userLevel === 0) {
+          return false
+        } else if (this.$parent.globalData.userLevel === 1) {
+          return true
+        }
+      },
+      isNull () {
+        if (this.order.length === 0) {
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+    data = {
+      token: '',
+      sourceId: '',
+      sourceType: '',
+      count: '',
+      user: {
+        add: '请选择收货地址'
+      },
+      addressMain: '',
+      appType: 'web',
+      order: [],
+      reduction: '',
+      freight: '',
+      pay: '',
+      finalprice: '',
+      txtLength: 0,
+      memo: ''
+    }
+    methods = {
+      goAddress () {
+        wepy.navigateTo({
+          url: './address?page=paybuy' + '&sourceType=' + this.sourceType + '&sourceId=' + this.sourceId + '&count=' + this.count
+        })
+      },
+      goPay () {
+        if (!this.user.areaId) {
+          wepy.showToast({
+            title: '请选择收货地址',
+            icon: 'none',
+            image: '../image/cancel.png'
+          })
+        } else {
+          var data = {
+            token: this.token,
+            appType: 'ios',
+            sourceType: this.sourceType,
+            sourceId: this.sourceId,
+            buyCount: this.count,
+            address_main: this.user.id,
+            memo_main: this.memo,
+            date_main: 4
+          }
+          console.log(data)
+          this.$parent.HttpRequest.CreateOrderBuy(data).then((res) => {
+            console.log(res)
+          })
+        }
+      },
+      inputTap (e) {
+        this.txtLength = e.detail.value.length
+        this.memo = e.detail.value
+      }
+    }
+    applyOrder () {
+      this.order = []
+      var _this = this
+      var data = {
+        token: this.token,
+        sourceType: this.sourceType,
+        sourceId: this.sourceId,
+        buyCount: this.count
+      }
+      console.log(data)
+      this.$parent.HttpRequest.ApplyOrderBuy(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          var data = res.data.data
+          _this.reduction = data.reduction
+          _this.freight = data.freight
+          _this.pay = data.pay
+          _this.finalprice = data.finalPrice
+          data.childOrders.forEach((item) => {
+            var obj = {}
+            obj.title = item.title
+            obj.freight = item.freight
+            obj.coldChecked = false
+            obj.tempCold = []
+            obj.coldlist = this.initChild(item.salesUnits)
+            _this.order.push(obj)
+            _this.$apply()
+          })
+          console.log(_this.order)
+        }
+      })
+    }
+    initChild (parent) {
+      var child = []
+      parent.forEach((item) => {
+        var obj = {}
+        obj.path = item.cover
+        obj.title = item.title
+        obj.price = item.memberPrice
+        obj.oldprice = item.price
+        obj.id = item.productId
+        obj.sourceType = item.salesUnitType
+        obj.sourceId = item.salesUnitId
+        if (item.buyCount <= item.keepCount) {
+          obj.detail = item.viceTitle + '×' + item.buyCount
+          obj.count = item.buyCount
+          obj.initCount = item.buyCount
+        } else {
+          obj.detail = item.viceTitle + '×' + item.keepCount
+          obj.count = item.keepCount
+          obj.initCount = item.keepCount
+        }
+        obj.checked = false
+        obj.totalCount = item.keepCount
+        child.push(obj)
+      })
+      return child
+    }
+    onLoad (param) {
+      if (param.user) {
+        this.user = JSON.parse(param.user)
+      }
+      console.log(param)
+      this.sourceId = param.id
+      this.sourceType = param.type
+      this.count = param.count
+      this.token = this.$parent.getToken('paybuy')
+      this.$apply()
+    }
+    onShow () {
+      this.$apply()
+      this.applyOrder()
+    }
+  }
+</script>

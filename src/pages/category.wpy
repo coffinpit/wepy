@@ -319,11 +319,14 @@
       this.$apply()
     }
     onShow () {
-      // 数据刷新
-      this.currentTab = 0
-      this.currentItem = 0
-      if (this.categoryTab.length !== 0) {
-        this.getSpu(this.categoryTab[0].id)
+      if (this.$parent.pageRoot) {
+        this.$parent.pageRoot = false
+      } else {
+        this.currentTab = 0
+        this.currentItem = 0
+        if (this.categoryTab.length !== 0) {
+          this.getSpu(this.categoryTab[0].id)
+        }
       }
     }
   }

@@ -26,6 +26,7 @@
   }
   .cart-list{
     width:100%;
+    margin-top:20rpx;
     .content{
       margin-bottom:0;
       position:relative;
@@ -71,6 +72,11 @@
     }
     .title{
       font-size:28rpx;
+    }
+    &.no-active{
+      .iconfont {
+        color:#999;
+      }
     }
   }
   .check-G{
@@ -240,7 +246,7 @@
     width:100%;
     height:120rpx;
     background:#fff;
-    border-top:1px #fc5e43 solid;
+    border-top:2rpx #fc5e43 solid;
     z-index:99999;
     .title{
       width:13%;
@@ -276,7 +282,7 @@
       font-size:32rpx;
       line-height:120rpx;
       display:inline-block;
-      width: 55%;
+      width: 65%;
       text-align:right;
       float:right;
       padding-right:2%;
@@ -334,7 +340,7 @@
 <template>
   <view class="container">
     <view wx:if="{{!isNull}}">
-      <view class="cart-status" wx:if="{{!userLevel}}">
+      <view class="cart-status" wx:if="{{!userLevel && cartStatus.totalprice}}">
         <text class="title">已购￥{{cartStatus.totalprice}}，成为会员立减 <text class="title link font-bold">￥{{cartStatus.discount}}</text></text>
         <view class="default-button">加入会员</view>
       </view>
@@ -358,7 +364,7 @@
                     <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
                       <text class="title">{{item.title}}</text>
                       <text class="font-small link">会员价：￥{{item.price}} </text>
-                      <text class="font-small through">原价：￥{{item.oldprice}}</text>
+                      <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.oldprice}}</text>
                       <text class="tips">{{item.detail}}</text>
                     </view>
                     <view class="inner-image">
@@ -377,16 +383,20 @@
           </view>                 
         </view>
       </repeat>
-      <view class="cart-bottom" wx:if="{{!isNull}}">
+      <view class="cart-bottom" wx:if="{{cartList != false}}">
         <text class="title link edit" @tap="editTap">{{isEdit ? '取消' : '编辑'}}</text>
         <view class="title link all" @tap.stop="checkAll" wx:if="{{isEdit}}">全选</view>
         <text class="title link edit" @tap="deleteTap" wx:if="{{isEdit}}">删除</text>
         <text @tap.stop="goOrder" class="del-cart {{isEdit ? '' : 'active'}}">去结算</text>
         <text class="cart-info"><text class="tips">(含运费￥{{freight}})</text> 合计: <text class="link">￥{{finalprice}}</text></text>
       </view>
-      <view class="vip-tip">
+      <view class="vip-tip" wx:if="{{userLevel && cartList != false}}">
         <text class="iconfont icon-vip link"></text>
         <text class="title">尊敬的优价会员，生鲜购满2公斤才可包邮哦</text>
+      </view>
+      <view class="vip-tip no-active" wx:elif="{{cartList != false}}">
+        <text class="iconfont icon-vip"></text>
+        <text class="title">成为会员，生鲜购满2公斤全场包邮</text>
       </view>
     </view>
     <view wx:else class="blank">
@@ -415,10 +425,7 @@
       checkedList: [],
       tempColdList: [],
       tempNormalList: [],
-      cartStatus: {
-        totalprice: '',
-        discount: ''
-      },
+      cartStatus: {},
       cartList: [],
       coldlist: [],
       coldTitle: '',
@@ -427,8 +434,23 @@
       isEdit: false,
       isNull: false,
       finalprice: 0,
-      freight: 0,
-      userLevel: 0
+      freight: 0
+    }
+    computed = {
+      userLevel () {
+        if (this.$parent.globalData.userLevel === 0) {
+          return false
+        } else if (this.$parent.globalData.userLevel === 1) {
+          return true
+        }
+      },
+      isNull () {
+        if (this.cartList.length === 0) {
+          return true
+        } else {
+          return false
+        }
+      }
     }
     methods = {
       editTap () {
@@ -512,7 +534,7 @@
       goOrder () {
         if (!this.isEdit) {
           wepy.navigateTo({
-            url: './order'
+            url: './paycart'
           })
         }
       },
@@ -641,7 +663,7 @@
       this.cartList = []
       this.finalprice = 0
       this.freight = 0
-      this.isNull = false
+      this.cartStatus = {}
       this.$parent.HttpRequest.GetCartHttp(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
@@ -654,11 +676,6 @@
             this.finalprice = data.finalPrice
           }
           this.freight = data.freight
-          if (data.childOrders.length === 0) {
-            _this.isNull = true
-          } else {
-            _this.isNull = false
-          }
           data.childOrders.forEach((item) => {
             var obj = {}
             obj.title = item.title
@@ -715,11 +732,6 @@
     onLoad () {
       this.token = this.$parent.getToken('cart')
       console.log(this.$parent.globalData.userLevel)
-      if (this.$parent.globalData.userLevel === 0) {
-        this.userLevel = false
-      } else if (this.$parent.globalData.userLevel === 1) {
-        this.userLevel = true
-      }
       // 判断用户memberHash
       this.$apply()
     }

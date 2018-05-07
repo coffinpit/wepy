@@ -26,6 +26,7 @@ view {
 }
 .cart-list {
   width: 100%;
+  margin-top: 20rpx;
 }
 .cart-list .content {
   margin-bottom: 0;
@@ -72,6 +73,9 @@ view {
 }
 .vip-tip .title {
   font-size: 28rpx;
+}
+.vip-tip.no-active .iconfont {
+  color: #999;
 }
 .check-G {
   width: 100%;
@@ -241,7 +245,7 @@ view {
   width: 100%;
   height: 120rpx;
   background: #fff;
-  border-top: 1px #fc5e43 solid;
+  border-top: 2rpx #fc5e43 solid;
   z-index: 99999;
 }
 .cart-bottom .title {
@@ -278,7 +282,7 @@ view {
   font-size: 32rpx;
   line-height: 120rpx;
   display: inline-block;
-  width: 55%;
+  width: 65%;
   text-align: right;
   float: right;
   padding-right: 2%;

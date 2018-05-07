@@ -176,3 +176,32 @@
   font-size: 32rpx;
   text-align: center;
 }
+.memo {
+  margin: 20rpx 20rpx 0;
+  background: #fff;
+  padding: 20rpx;
+  overflow: hidden;
+}
+.memo .memo-left {
+  float: left;
+  width: 150rpx;
+}
+.memo .memo-left text {
+  display: block;
+  line-height: 32rpx;
+  margin-top: 4rpx;
+}
+.memo .memo-right {
+  float: right;
+  width: 480rpx;
+  font-size: 28rpx;
+}
+.memo .memo-right textarea {
+  width: 480rpx;
+  height: 150rpx;
+  vertical-align: middle;
+}
+.memo .placeholder {
+  color: #999;
+  font-size: 28rpx;
+}

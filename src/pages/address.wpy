@@ -100,7 +100,10 @@
       token: '',
       address: [],
       isNull: false,
-      prevPage: ''
+      prevPage: '',
+      sourceType: '',
+      sourceId: '',
+      count: ''
     }
     components = {
       defect: Defect
@@ -126,15 +129,15 @@
         })
       },
       backToOrder (index) {
-        if (this.prevPage === 'order') {
-          var pages = this.getCurrentPages()
-          var prevpage = pages[pages.length - 2]
-          prevpage.setData({
-            addressMain: this.address[index].areaId,
-            user: this.address[index]
+        if (this.prevPage === 'paycart') {
+          wepy.navigateTo({
+            url: './paycart?user=' + JSON.stringify(this.address[index])
           })
-          console.log(this.address[index].areaId)
-          wepy.navigateBack()
+        }
+        if (this.prevPage === 'paybuy') {
+          wepy.navigateTo({
+            url: './paybuy?user=' + JSON.stringify(this.address[index]) + '&type=' + this.sourceType + '&id=' + this.sourceId + '&count=' + this.count
+          })
         }
       }
     }
@@ -178,7 +181,11 @@
       })
     }
     onLoad (data) {
+      console.log(data)
       this.prevPage = data.page
+      this.sourceType = data.sourceType
+      this.sourceId = data.sourceId
+      this.count = data.count
       this.token = this.$parent.getToken('address')
       this.$apply()
     }
