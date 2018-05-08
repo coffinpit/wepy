@@ -226,6 +226,11 @@
   font-size:24rpx;
   color:#999;
 }
+.font-normal{
+  font-size:28rpx;
+  color:#333;
+  line-height:44rpx;
+}
 .font-small{
   font-size:24rpx;
   color:#333;
@@ -266,7 +271,9 @@ export default class extends wepy.app {
       'pages/paybuy',
       'pages/rules',
       'pages/user',
-      'pages/logistica'
+      'pages/collect',
+      'pages/logistica',
+      'pages/order'
     ],
     window: {
       backgroundTextStyle: 'dark',
@@ -310,7 +317,6 @@ export default class extends wepy.app {
 
   // 判断tabbar回退页面
   pageRoot = false
-
 
   constructor () {
     super()

@@ -64,7 +64,8 @@
   }
 }
 .lost-goods {
-  margin: 50rpx auto;
+  padding: 50rpx 0;
+  margin: 0 auto;
   width: 330rpx;
   height: 200rpx;
   position: relative;
@@ -75,7 +76,7 @@
 }
 .lost-goods text {
   position: absolute;
-  top: 80rpx;
+  top: 130rpx;
   left: 50%;
   transform: translate(-50%, 0);
   background: #fff;

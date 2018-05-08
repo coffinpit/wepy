@@ -23,7 +23,7 @@
         <text class="iconfont icon-rightsj"/>
         <text class="notice">2</text>
       </view>
-      <view class="setting-layer">
+      <view class="setting-layer" bindtap="goOrder">
         <text class="iconfont icon-me_dd"/>
         <text>我的订单</text>
         <text class="iconfont icon-rightsj"/>
@@ -48,7 +48,7 @@
       </view>
     </view>
     <view class="setting-container">
-      <view class="setting-layer">
+      <view class="setting-layer" bindtap="goCollect">
         <text class="iconfont icon-me_sc"/>
         <text>我的收藏</text>
         <text class="iconfont icon-rightsj"/>

@@ -267,6 +267,11 @@
   font-size: 24rpx;
   color: #999;
 }
+.font-normal {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 44rpx;
+}
 .font-small {
   font-size: 24rpx;
   color: #333;

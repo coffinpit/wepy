@@ -1,8 +1,11 @@
 
   <view class="container">
     <view  wx:if="{{!isNull}}">
-      <view class="cart-status" wx:if="{{!userLevel && cartStatus.totalprice}}">
-        <text class="title">已购￥{{cartStatus.totalprice}}，成为会员立减 <text class="title link font-bold">￥{{cartStatus.discount}}</text></text>
+      <view class="cart-status" wx:if="{{userLevel}}">
+        <text class="font-normal">尊敬的优价会员，本单已为您节省 <text class="font-normal link font-bold">￥{{cartStatus.discount}}</text></text>
+      </view>
+      <view class="cart-status" wx:else>
+        <text class="font-normal">已购￥{{cartStatus.totalprice}}，成为会员仅需 <text class="font-normal link font-bold">￥{{cartStatus.memberPrice}}</text></text>
         <view class="default-button">加入会员</view>
       </view>
       <block wx:for="{{cartList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
@@ -50,18 +53,19 @@
           </view>                 
         </view>
       </block>
-      <view class="cart-bottom" wx:if="{{cartList != false}}">
+      <view class="cart-bottom" wx:if="{{!isNull}}">
+        <image src="../image/dz_bgbl.png"/>
         <text class="title link edit" bindtap="editTap">{{isEdit ? '取消' : '编辑'}}</text>
         <view class="title link all" catchtap="checkAll" wx:if="{{isEdit}}">全选</view>
         <text class="title link edit" bindtap="deleteTap" wx:if="{{isEdit}}">删除</text>
         <text catchtap="goOrder" class="del-cart {{isEdit ? '' : 'active'}}">去结算</text>
         <text class="cart-info"><text class="tips">(含运费￥{{freight}})</text> 合计: <text class="link">￥{{finalprice}}</text></text>
       </view>
-      <view class="vip-tip" wx:if="{{userLevel && cartList != false}}">
+      <view class="vip-tip" wx:if="{{userLevel && !isNull}}">
         <text class="iconfont icon-vip link"/>
         <text class="title">尊敬的优价会员，生鲜购满2公斤才可包邮哦</text>
       </view>
-      <view class="vip-tip no-active" wx:elif="{{cartList != false}}">
+      <view class="vip-tip no-active" wx:elif="{{!isNull}}">
         <text class="iconfont icon-vip"/>
         <text class="title">成为会员，生鲜购满2公斤全场包邮</text>
       </view>

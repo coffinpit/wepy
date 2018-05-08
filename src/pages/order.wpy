@@ -1,48 +1,46 @@
 <style lang="less">
-  .container{
+  .container {
     min-height:calc(100vh);
     display:block;
-    background: linear-gradient(#fc5e43 80rpx, #fff 500rpx);  
   }
-  .address {
-    color:#fff;
-    padding:20rpx;
-    .address-title{
-      font-size:24rpx;
-      display:block;
-      margin-bottom:10rpx;
-    }
-    scroll-view{
-      width:90%;
-      white-space:nowrap;
-      font-size:40rpx;
-      height:56rpx;
-      line-height:56rpx;
-      display:inline-block;
-      vertical-align:middle;
-    }
-    .iconfont{
-      color:#fff;
-      font-size:32rpx;
-      width:10%;
-      text-align:right;
-      vertical-align:middle;
-      display:inline-block;
-    }
-    .user{
-      font-size:28rpx;
+  .order-status{
+    width:100%;
+    white-space:nowrap;
+    line-height:90rpx;
+    font-size:28rpx;
+    color:#333;
+    height:90rpx;
+    border-bottom:1px #eee solid;
+    background:#fff;
+    view{
+      width:12%;
+      margin:0 4%;
+      box-sizing:border-box;
+      text-align:center;
+      float:left;
+      &.active{
+        border-bottom: 2px #fe5946 solid;
+        color: #fe5946;
+      }
     }
   }
   .cart-list{
     width:100%;
-    padding:0 20rpx;
     box-sizing:border-box;
+    margin-top:20rpx;
+    .order-title{
+      border-bottom:1px #eee solid;
+    }
     .content{
       margin-bottom:0;
       height:100rpx;
       padding:20rpx;
-      .title{
-        padding:10rpx 0; 
+      .order-num{
+        color:#999;
+      }
+      .link{
+        float:right;
+        margin-top:8rpx;
       }
     }
     .iconfont{
@@ -54,90 +52,88 @@
   .item-box{  
     width:100%;
     background-color: #fff;
-    }  
-    .items{  
-      width: 100%;  
-    }  
-    .item-list{  
-      height: 200rpx;  
-      overflow: hidden;
-      padding:0 20rpx 20rpx;
-      box-sizing:border-box;
+  }  
+  .items{  
+    width: 100%;  
+  }  
+  .item-list{  
+    height: 200rpx;  
+    overflow: hidden;
+    padding:0 20rpx 20rpx;
+    box-sizing:border-box;
+  }
+  .inner.txt{
+    background-color: #f8f8f8;
+    padding:20rpx;
+    box-sizing:border-box; 
+    overflow:hidden;  
+  }  
+  .inner-left{
+    width:360rpx;
+    overflow:hidden;
+    white-space:break-all;
+    .place{
+      min-height: 108rpx;
     }
-    .inner.txt{
-      background-color: #f8f8f8;
-      padding:20rpx;
-      box-sizing:border-box; 
-      overflow:hidden;  
-    }  
-    .inner-left{
-      width:360rpx;
+  }
+  .inner-layer{
+    width:400rpx;
+    overflow:hidden;
+    float:left;
+    .title{
+      min-height:76rpx;
+      height:76rpx;
+      line-height:38rpx;
       overflow:hidden;
-      white-space:break-all;
-      .place{
-        min-height: 108rpx;
-      }
+      display:block;
+      font-size:28rpx;
+      margin-bottom:6rpx;
     }
-    .inner-layer{
-      width:400rpx;
-      overflow:hidden;
-      float:left;
-      .title{
-        min-height:76rpx;
-        height:76rpx;
-        line-height:38rpx;
-        overflow:hidden;
-        display:block;
-        font-size:28rpx;
-        margin-bottom:6rpx;
-      }
-      .tips, .title{
-        display:block;
-      }
-      .tips{
-        float:right;
-      }
-      .font-small{
-        float:left;
-        display:block;
-        width:260rpx;
-      }
+    .tips, .title{
+      display:block;
     }
-    .inner-image{
-      height:150rpx;
+    .tips{
       float:right;
-      image{
-        width:148rpx;
-        height:148rpx;
-        border:1px #eee solid;
-        box-sizing:border-box;
-        float:left;
-        border-right:none;
-      }
     }
+    .font-small{
+      float:left;
+      display:block;
+      width:260rpx;
+    }
+  }
+  .inner-image{
+    height:150rpx;
+    float:right;
+    image{
+      width:148rpx;
+      height:148rpx;
+      border:1px #eee solid;
+      box-sizing:border-box;
+      float:left;
+      border-right:none;
+    }
+  }
 </style>
 <template>
   <view class="container">
-    <view class="address" @tap="goAddress">
-      <text class="address-title">订单配送至</text>
-      <scroll-view scroll-x>{{user.add}}</scroll-view>
-      <text class="iconfont icon-rightsj"></text>
-      <text class="user">{{user.name}} {{user.phone}}</text>
+    <view class="order-status">
+      <repeat for="{{package}}" item="item" index="index"><view class="{{current === index ? 'active' : ''}}" @tap="checkPackage({{index}}, {{item.type}})">{{item.title}}</view></repeat>
     </view>
-    <repeat for="{{order}}" item="item" index="index">
+    <repeat for="{{orderList}}" item="item" index="index">
       <view class="cart-list" wx:if="{{!item.isNull}}">
-        <view class="content">
-          <text class="title"><text class="iconfont icon-ys_ly"></text>{{item.title}}</text>
+        <view class="content order-title">
+          <text class="font-normal order-num">订单编号：{{item.title}}</text>
+          <text class="font-normal link">{{item.status}}</text>
         </view>
         <view class="item-box">
           <view class="items">
-            <repeat for="{{item.coldlist}}" index="index" item="item" key="index">
+            <repeat for="{{item.orderDetail}}" index="index" item="item" key="index">
               <view class="item-list">
                 <view class="inner txt">
                   <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
                     <text class="title">{{item.title}}</text>
                     <text class="font-small link">会员价：￥{{item.price}} </text>
-                    <text class="font-small through">原价：￥{{item.oldprice}}</text>
+                    <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.oldprice}}</text>
                     <text class="tips">{{item.detail}}</text>
                   </view>
                   <view class="inner-image">
@@ -158,48 +154,94 @@
 
   export default class Order extends wepy.page {
     config = {
-      navigationBarTitleText: '确认订单'
+      navigationBarTitleText: '我的订单'
     }
     data = {
-      orderHash: '',
       token: '',
-      user: {
-        add: '请选择收货地址'
-      },
-      addressMain: '',
-      appType: 'web',
-      order: []
+      package: [{
+        title: '全部',
+        type: 'all'
+      }, {
+        title: '待支付',
+        type: 'unpaid'
+      }, {
+        title: '待发货',
+        type: 'undelivered'
+      }, {
+        title: '待收货',
+        type: 'unreceipted'
+      }, {
+        title: '售后',
+        type: 'refunding'
+      }],
+      orderStatus: ['待支付', '待发货', '待收货', '售后'],
+      current: 0,
+      orderType: 'all',
+      orderList: [],
+      pageSize: 5,
+      pageNum: 1,
+      totalPageNum: 0
     }
     methods = {
-      goAddress () {
-        wepy.navigateTo({
-          url: './address?page=order'
-        })
+      checkPackage (index, type) {
+        this.current = index
+        this.orderType = type
       }
     }
-    createOrder () {
+    initOrder () {
+      this.orderList = []
+      this.pageNum = 1
+      var _this = this
       var data = {
         token: this.token,
-        orderId: this.orderId
+        pageSize: this.pageSize,
+        pageNum: this.pageNum,
+        status: this.orderType
       }
-      this.$parent.HttpRequest.GetOrderHttp(data).then((res) => {
+      console.log(data)
+      this.$parent.HttpRequest.GetOrderStatus(data).then((res) => {
         console.log(res)
+        if (res.data.error === 0) {
+          var data = res.data.data
+          _this.totalPageNum = data.totalPageNum
+          data.orders.forEach((item) => {
+            var obj = {}
+            obj.title = item.showId
+            obj.pay = item.pay
+            obj.freight = item.freight
+            obj.status = _this.orderStatus[item.status - 1]
+            obj.orderDetail = this.initChild(item.buyingRecords)
+            _this.orderList.push(obj)
+          })
+        }
+        _this.$apply()
       })
     }
-    applyOrder (cb) {
-      var data = {
-        token: this.token
-      }
-      this.$parent.HttpRequest.ApplyOrderHttp(data).then((res) => {
-        console.log(res)
-        cb && cb()
+    initChild (parent) {
+      var child = []
+      parent.forEach((item) => {
+        var obj = {}
+        obj.path = item.cover
+        obj.title = item.productName
+        obj.price = item.memberPrice
+        obj.oldprice = item.price
+        obj.id = item.productId
+        obj.sourceType = item.salesUnitType
+        obj.sourceId = item.salesUnitId
+        obj.detail = item.title + '×' + item.buyingCount
+        obj.count = item.buyingCount
+        obj.checked = false
+        obj.totalCount = item.keepCount
+        child.push(obj)
       })
+      return child
     }
     onLoad () {
+      this.token = this.$parent.getToken('order')
       this.$apply()
     }
     onShow () {
-      this.applyOrder()
+      this.initOrder()
     }
   }
 </script>

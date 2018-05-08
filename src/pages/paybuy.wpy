@@ -2,7 +2,8 @@
   .container{
     min-height:calc(100vh);
     display:block;
-    background: linear-gradient(#fc5e43 80rpx, #f8f8f8 500rpx);  
+    background: linear-gradient(#fc5e43 280rpx, #f8f8f8 380rpx);  
+    padding-bottom:120rpx;
   }
   .address {
     color:#fff;
@@ -52,161 +53,173 @@
     }
   }
   .item-box{  
-    width:100%;
-    background-color: #fff;
-    }  
-    .items{  
-      width: 100%;  
-    }  
-    .item-list{  
-      height: 200rpx;  
-      overflow: hidden;
-      padding:0 20rpx 20rpx;
-      box-sizing:border-box;
+  width:100%;
+  background-color: #fff;
+  }  
+  .items{  
+    width: 100%;  
+  }  
+  .item-list{  
+    height: 200rpx;  
+    overflow: hidden;
+    padding:0 20rpx 20rpx;
+    box-sizing:border-box;
+  }
+  .inner.txt{
+    background-color: #f8f8f8;
+    padding:20rpx;
+    box-sizing:border-box; 
+    overflow:hidden;  
+  }  
+  .inner-left{
+    width:360rpx;
+    overflow:hidden;
+    white-space:break-all;
+    .place{
+      min-height: 108rpx;
     }
-    .inner.txt{
-      background-color: #f8f8f8;
-      padding:20rpx;
-      box-sizing:border-box; 
-      overflow:hidden;  
-    }  
-    .inner-left{
-      width:360rpx;
+  }
+  .inner-layer{
+    width:460rpx;
+    overflow:hidden;
+    float:left;
+    .title{
+      min-height:76rpx;
+      height:76rpx;
+      line-height:38rpx;
       overflow:hidden;
-      white-space:break-all;
-      .place{
-        min-height: 108rpx;
-      }
+      display:block;
+      font-size:28rpx;
+      margin-bottom:6rpx;
     }
-    .inner-layer{
-      width:400rpx;
-      overflow:hidden;
-      float:left;
-      .title{
-        min-height:76rpx;
-        height:76rpx;
-        line-height:38rpx;
-        overflow:hidden;
-        display:block;
-        font-size:28rpx;
-        margin-bottom:6rpx;
-      }
-      .tips, .title{
-        display:block;
-      }
-      .tips{
-        float:right;
-      }
-      .font-small{
-        float:left;
-        display:block;
-        width:260rpx;
-      }
+    .tips, .title{
+      display:block;
     }
-    .inner-image{
-      height:150rpx;
+    .tips{
       float:right;
-      image{
-        width:148rpx;
-        height:148rpx;
-        border:1px #eee solid;
-        box-sizing:border-box;
-        float:left;
-        border-right:none;
-      }
     }
-    .vip-tip{
-      margin:20rpx 20rpx 0;
-      background:#fff;
-      padding:20rpx;
+    .font-small{
+      float:left;
+      display:block;
+      width:260rpx;
+    }
+  }
+  .inner-image{
+    height:150rpx;
+    float:right;
+    image{
+      width:148rpx;
+      height:148rpx;
+      border:1px #eee solid;
       box-sizing:border-box;
-      .iconfont{
-        font-size:60rpx;
-        vertical-align:middle;
-        margin-right:10rpx;
-      }
-      .title{
-        font-size:28rpx;
-      }
-      &.no-active{
-        .iconfont {
-          color:#999;
-        }
+      float:left;
+      border-right:none;
+    }
+  }
+  .vip-tip{
+    margin:20rpx 20rpx 0;
+    background:#fff;
+    padding:20rpx;
+    box-sizing:border-box;
+    .iconfont{
+      font-size:60rpx;
+      vertical-align:middle;
+      margin-right:10rpx;
+    }
+    .title{
+      font-size:28rpx;
+    }
+    &.no-active{
+      .iconfont {
+        color:#999;
       }
     }
-    .order-list{
-      margin:0 20rpx;
-      border-top:1px #eee solid;
-      padding:20rpx;
-      box-sizing:border-box;
-      background:#fff;
-      .order-list-right{
-        float:right;
-        margin-top:10rpx;
-      }
+  }
+  .order-list{
+    margin:0 20rpx;
+    border-top:1px #eee solid;
+    padding:20rpx;
+    box-sizing:border-box;
+    background:#fff;
+    .order-list-right{
+      float:right;
+      margin-top:10rpx;
     }
-    .cart-status{
-      background:rgba(0,0,0,0.5);
-      padding:30rpx 20rpx;
-      display: flex;
-      margin:20rpx;
-      justify-content:space-between;
-      .title{
-        color:#fff;
-        vertical-align:middle;
-        line-height:48rpx;
-      }
-      .default-button{
-        padding:0 20rpx;
-      }
+  }
+  .cart-status{
+    background:#fff;
+    padding:30rpx 20rpx;
+    display: flex;
+    margin:20rpx;
+    justify-content:space-between;
+    .title{
+      color:#333;
+      vertical-align:middle;
+      line-height:48rpx;
     }
-    .order-bottom{
-      border-top:2rpx #fc5e43 solid;
-      margin-top:20rpx;
-      background:#fff;
-      padding-left:40rpx;
+    .default-button{
+      padding:0 20rpx;
+    }
+  }
+  .order-bottom{
+    margin-top:20rpx;
+    background:#fff;
+    padding-left:40rpx;
+    height:120rpx;
+    line-height:120rpx;
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    z-index:99999;
+    box-sizing:border-box;
+    image{
+      position:absolute;
+      top:0;
+      left:0;
+      height:8rpx;
+      width:79%;
+    }
+    .go-pay{
+      float:right;
+      width:23%;
+      background:#fc5e43;
+      color:#fff;
       height:120rpx;
       line-height:120rpx;
-      .go-pay{
-        float:right;
-        width:200rpx;
-        background:#fc5e43;
-        color:#fff;
-        height:120rpx;
-        line-height:120rpx;
-        font-size:32rpx;
-        text-align:center;
+      font-size:32rpx;
+      text-align:center;
+    }
+  }
+  .memo{
+    margin:20rpx 20rpx 0;
+    background:#fff;
+    padding:20rpx;
+    overflow:hidden;
+    .memo-left{
+      float:left;
+      width:150rpx;
+      text{
+        display:block;
+        line-height:32rpx;
+        margin-top:4rpx;
       }
     }
-    .memo{
-      margin:20rpx 20rpx 0;
-      background:#fff;
-      padding:20rpx;
-      overflow:hidden;
-      .memo-left{
-        float:left;
-        width:150rpx;
-        text{
-          display:block;
-          line-height:32rpx;
-          margin-top:4rpx;
-        }
-      }
-      .memo-right{
-        float:right;
+    .memo-right{
+      float:right;
+      width:480rpx;
+      font-size:28rpx;
+      textarea{
         width:480rpx;
-        font-size:28rpx;
-        textarea{
-          width:480rpx;
-          height:150rpx;
-          vertical-align:middle;
-        }
-      }
-      .placeholder{
-        color:#999;
-        font-size:28rpx;
+        height:150rpx;
+        float:left;
       }
     }
+    .placeholder{
+      color:#999;
+      font-size:28rpx;
+    }
+  }
 </style>
 <template>
   <view class="container" wx:if="{{!isNull}}">
@@ -216,8 +229,11 @@
       <text class="iconfont icon-rightsj"></text>
       <text class="user">{{user.name}} {{user.phone}}</text>
     </view>
-    <view class="cart-status" wx:if="{{!isNull}}">
-      <text class="title">成为优价会员，本单可省 <text class="title link font-bold">￥{{reduction}}</text></text>
+    <view class="cart-status" wx:if="{{userLevel}}">
+      <text class="font-normal">尊敬的优价会员，本单已为您节省 <text class="font-normal link font-bold">￥{{reduction}}</text></text>
+    </view>
+    <view class="cart-status" wx:eles>
+      <text class="font-normal">成为优价会员，本单仅需 <text class="font-normal link font-bold">￥{{memberPrice}}</text></text>
       <view class="default-button">加入会员</view>
     </view>
     <repeat for="{{order}}" item="item" index="index">
@@ -272,6 +288,7 @@
       <text class="title order-list-right link">￥{{finalprice}}</text>
     </view>
     <view class="order-bottom">
+      <image src="../image/dz_bgbl.png"></image>
       <text class="title">合计:￥<text class="link">{{pay}}</text><text class="tips">（含运费 ￥{{freight}}）</text></text>
       <text class="go-pay" @tap="goPay">去付款</text>
     </view>
@@ -315,6 +332,7 @@
       reduction: '',
       freight: '',
       pay: '',
+      memberPrice: '',
       finalprice: '',
       txtLength: 0,
       memo: ''
@@ -355,6 +373,7 @@
       }
     }
     applyOrder () {
+      this.$parent.showLoading()
       this.order = []
       var _this = this
       var data = {
@@ -371,6 +390,7 @@
           _this.reduction = data.reduction
           _this.freight = data.freight
           _this.pay = data.pay
+          _this.memberPrice = data.memberPrice
           _this.finalprice = data.finalPrice
           data.childOrders.forEach((item) => {
             var obj = {}
@@ -397,15 +417,7 @@
         obj.id = item.productId
         obj.sourceType = item.salesUnitType
         obj.sourceId = item.salesUnitId
-        if (item.buyCount <= item.keepCount) {
-          obj.detail = item.viceTitle + '×' + item.buyCount
-          obj.count = item.buyCount
-          obj.initCount = item.buyCount
-        } else {
-          obj.detail = item.viceTitle + '×' + item.keepCount
-          obj.count = item.keepCount
-          obj.initCount = item.keepCount
-        }
+        obj.detail = item.viceTitle + '×' + item.buyCount
         obj.checked = false
         obj.totalCount = item.keepCount
         child.push(obj)

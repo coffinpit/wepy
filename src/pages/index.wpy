@@ -239,7 +239,7 @@
             _this.isNull = true
           } else {
             _this.isNull = false
-            if (data.length < this.pageSize) {
+            if (data.totalCount <= this.pageSize) {
               _this.isDown = true
             } else {
               _this.isDown = false

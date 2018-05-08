@@ -1,23 +1,17 @@
 
-  <view class="container"  wx:if="{{!isNull}}">
-    <view class="address" bindtap="goAddress">
-      <text class="address-title">订单配送至</text>
-      <scroll-view scroll-x>{{user.add}}</scroll-view>
-      <text class="iconfont icon-rightsj"/>
-      <text class="user">{{user.name}} {{user.phone}}</text>
+  <view class="container">
+    <view class="order-status">
+      <block wx:for="{{package}}" wx:for-index="index" wx:for-item="item" wx:key="key"><view class="{{current === index ? 'active' : ''}}" bindtap="checkPackage" data-wpycheckpackage-a="{{index}}" data-wpycheckpackage-b="{{item.type}}">{{item.title}}</view></block>
     </view>
-    <view class="cart-status" wx:if="{{!isNull}}">
-      <text class="title">成为优价会员，本单可省 <text class="title link font-bold">￥{{reduction}}</text></text>
-      <view class="default-button">加入会员</view>
-    </view>
-    <block wx:for="{{order}}" wx:for-index="index" wx:for-item="item" wx:key="key">
-      <view class="cart-list" wx:if="{{!item.isNull}}">
-        <view class="content">
-          <text class="title"><text class="iconfont icon-ys_ly"/>{{item.title}}</text>
+    <block wx:for="{{orderList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+      <view class="cart-list"  wx:if="{{!item.isNull}}">
+        <view class="content order-title">
+          <text class="font-normal order-num">订单编号：{{item.title}}</text>
+          <text class="font-normal link">{{item.status}}</text>
         </view>
         <view class="item-box">
           <view class="items">
-            <block wx:for="{{item.coldlist}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+            <block wx:for="{{item.orderDetail}}" wx:for-index="index" wx:for-item="item" wx:key="index">
               <view class="item-list">
                 <view class="inner txt">
                   <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
@@ -36,24 +30,4 @@
         </view>
       </view>
     </block>
-    <view class="vip-tip" wx:if="{{userLevel}}">
-      <text class="iconfont icon-vip link"/>
-      <text class="title">尊敬的优价会员，生鲜购满2公斤才可包邮哦</text>
-    </view>
-    <view class="vip-tip no-active" wx:else>
-      <text class="iconfont icon-vip"/>
-      <text class="title">成为会员，生鲜购满2公斤全场包邮</text>
-    </view>
-    <view class="order-list">
-      <text class="title">运费：</text>
-      <text class="title order-list-right">￥{{freight}}</text>
-    </view>
-    <view class="order-list">
-      <text class="title">订单总额：</text>
-      <text class="title order-list-right link">￥{{finalprice}}</text>
-    </view>
-    <view class="order-bottom">
-      <text class="title">合计 ￥<text class="link">{{pay}}</text><text class="tips">（含运费 ￥{{freight}}）</text></text>
-      <text class="go-pay" bindtap="goPay">去付款</text>
-    </view>
   </view>

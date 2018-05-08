@@ -108,35 +108,37 @@
 </style>
 <template>
   <view class="container">
-    <searchbar :pagefrom.sync="pageTile"></searchbar>
-    <view class="category-bg">
-      <repeat for="{{categoryImg}}" item="item" index="index" key="index">
-        <image src="{{item}}" class="{{index === currentTab ? 'active' : ''}}" style="z-index:{{index === currentTab ? '999' : index}}"></image>
-      </repeat>
-    </view>
-    <view class="category-tab">
-      <repeat for="{{categoryTab}}" item="item" index="index" key="index">
-        <view class="category-tab-list {{currentTab === index ? 'active' : ''}}" @tap="changeTab({{index}}, {{item.id}})">
-          <view class="category-tab-title">{{item.title}}</view>
-        </view>
-      </repeat>
-    </view>
-    <view class="category-tab-item">
-      <repeat for="{{categoryTab}}" item="item" index="index" key="index">
-        <scroll-view class="category-tab-page {{showMore === index ? 'more' : ''}}" wx:if="{{currentTab === index}}" scroll-x>
-          <repeat for="{{item.child}}" item="item" index="index" key="index">
-            <view class="catrgory-tab-link {{currentItem === index ? 'current' : ''}}" id="{{item.id}}" @tap="reqCategory({{index}}, {{item.id}})"><text>{{item.name}}</text></view>
-          </repeat>
-        </scroll-view>
-      </repeat>
-    </view>
     <view class="defect" wx:if="{{isNull}}">
       <defectImage><view slot="lost-category"></view></defectImage>
     </view>
-    <view class="content" wx:else>
-      <Categoods :goodsItem.sync="goods" @goodsTap.user="goDetail"></Categoods>
+    <view wx:else>
+      <searchbar :pagefrom.sync="pageTile"></searchbar>
+      <view class="category-bg">
+        <repeat for="{{categoryImg}}" item="item" index="index" key="index">
+          <image src="{{item}}" class="{{index === currentTab ? 'active' : ''}}" style="z-index:{{index === currentTab ? '999' : index}}"></image>
+        </repeat>
+      </view>
+      <view class="category-tab">
+        <repeat for="{{categoryTab}}" item="item" index="index" key="index">
+          <view class="category-tab-list {{currentTab === index ? 'active' : ''}}" @tap="changeTab({{index}}, {{item.id}})">
+            <view class="category-tab-title">{{item.title}}</view>
+          </view>
+        </repeat>
+      </view>
+      <view class="category-tab-item">
+        <repeat for="{{categoryTab}}" item="item" index="index" key="index">
+          <scroll-view class="category-tab-page {{showMore === index ? 'more' : ''}}" wx:if="{{currentTab === index}}" scroll-x>
+            <repeat for="{{item.child}}" item="item" index="index" key="index">
+              <view class="catrgory-tab-link {{currentItem === index ? 'current' : ''}}" id="{{item.id}}" @tap="reqCategory({{index}}, {{item.id}})"><text>{{item.name}}</text></view>
+            </repeat>
+          </scroll-view>
+        </repeat>
+      </view>
+      <view class="content">
+        <Categoods :goodsItem.sync="goods" @goodsTap.user="goDetail"></Categoods>
+      </view>
+      <isDown wx:if="{{isDown}}"></isDown>
     </view>
-    <isDown wx:if="{{isDown}}"></isDown>
   </view>
 </template>
 
@@ -286,7 +288,7 @@
             _this.isNull = true
           } else {
             _this.isNull = false
-            if (data.length < this.pageSize) {
+            if (data.totalCount <= this.pageSize) {
               _this.isDown = true
             } else {
               _this.isDown = false

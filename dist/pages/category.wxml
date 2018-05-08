@@ -1,34 +1,5 @@
 
   <view class="container">
-    
-  <view class="searchbar" bindtap="$searchbar$goSearch">
-    <view class="searchinput">
-      <image src="../image/search.png"/>
-      <text>搜索商品</text>
-    </view>
-  </view>
-
-    <view class="category-bg">
-      <block wx:for="{{categoryImg}}" wx:for-index="index" wx:for-item="item" wx:key="index">
-        <image src="{{item}}" class="{{index === currentTab ? 'active' : ''}}" style="z-index:{{index === currentTab ? '999' : index}}"/>
-      </block>
-    </view>
-    <view class="category-tab">
-      <block wx:for="{{categoryTab}}" wx:for-index="index" wx:for-item="item" wx:key="index">
-        <view class="category-tab-list {{currentTab === index ? 'active' : ''}}" bindtap="changeTab" data-wpychangetab-a="{{index}}" data-wpychangetab-b="{{item.id}}">
-          <view class="category-tab-title">{{item.title}}</view>
-        </view>
-      </block>
-    </view>
-    <view class="category-tab-item">
-      <block wx:for="{{categoryTab}}" wx:for-index="index" wx:for-item="item" wx:key="index">
-        <scroll-view class="category-tab-page {{showMore === index ? 'more' : ''}}"  wx:if="{{currentTab === index}}" scroll-x>
-          <block wx:for="{{item.child}}" wx:for-index="index" wx:for-item="item" wx:key="index">
-            <view class="catrgory-tab-link {{currentItem === index ? 'current' : ''}}" id="{{item.id}}" bindtap="reqCategory" data-wpyreqcategory-a="{{index}}" data-wpyreqcategory-b="{{item.id}}"><text>{{item.name}}</text></view>
-          </block>
-        </scroll-view>
-      </block>
-    </view>
     <view class="defect"  wx:if="{{isNull}}">
       
   <view>
@@ -42,8 +13,38 @@
   </view>
 
     </view>
-    <view class="content" wx:else>
+    <view  wx:else>
       
+  <view class="searchbar" bindtap="$searchbar$goSearch">
+    <view class="searchinput">
+      <image src="../image/search.png"/>
+      <text>搜索商品</text>
+    </view>
+  </view>
+
+      <view class="category-bg">
+        <block wx:for="{{categoryImg}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+          <image src="{{item}}" class="{{index === currentTab ? 'active' : ''}}" style="z-index:{{index === currentTab ? '999' : index}}"/>
+        </block>
+      </view>
+      <view class="category-tab">
+        <block wx:for="{{categoryTab}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+          <view class="category-tab-list {{currentTab === index ? 'active' : ''}}" bindtap="changeTab" data-wpychangetab-a="{{index}}" data-wpychangetab-b="{{item.id}}">
+            <view class="category-tab-title">{{item.title}}</view>
+          </view>
+        </block>
+      </view>
+      <view class="category-tab-item">
+        <block wx:for="{{categoryTab}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+          <scroll-view class="category-tab-page {{showMore === index ? 'more' : ''}}" wx:if="{{currentTab === index}}" scroll-x>
+            <block wx:for="{{item.child}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+              <view class="catrgory-tab-link {{currentItem === index ? 'current' : ''}}" id="{{item.id}}" bindtap="reqCategory" data-wpyreqcategory-a="{{index}}" data-wpyreqcategory-b="{{item.id}}"><text>{{item.name}}</text></view>
+            </block>
+          </scroll-view>
+        </block>
+      </view>
+      <view class="content">
+        
   <view class="goods-layer">
     <block wx:for="{{$Categoods$goodsItem}}" wx:for-index="$Categoods$index" wx:for-item="$Categoods$item" wx:key="$Categoods$key">
       <view class="goods" bindtap="$Categoods$tap" id="{{$Categoods$item.id}}" data-wpytap-a="{{$Categoods$item.id}}">
@@ -70,12 +71,13 @@
     </block>
   </view>
 
-    </view>
-    
+      </view>
+      
   <view wx:if="{{isDown}}">
     <view class="isDown">
       <text>—————————— 到底啦 ——————————</text>
     </view>
   </view>
 
+    </view>
   </view>

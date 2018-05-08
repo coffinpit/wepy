@@ -578,8 +578,6 @@
             this.addCartCount += parseInt(this.cartNum)
             // 发送添加购物车请求
             this.addCartData()
-            // 关闭浮层并清空数据
-            this.methods.closeCart.apply(this)
           }
         } else {
           console.log(this.cartResult)
@@ -587,6 +585,7 @@
             url: './paybuy?id=' + this.cartResult.id + '&type=' + this.cartResult.type + '&count=' + this.cartNum
           })
         }
+        this.methods.closeCart.apply(this)
       },
       goRules () {
         wepy.navigateTo({

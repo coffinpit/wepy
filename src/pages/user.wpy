@@ -182,7 +182,7 @@
         <text class="iconfont icon-rightsj"></text>
         <text class="notice">2</text>
       </view>
-      <view class="setting-layer">
+      <view class="setting-layer" @tap="goOrder">
         <text class="iconfont icon-me_dd"></text>
         <text>我的订单</text>
         <text class="iconfont icon-rightsj"></text>
@@ -207,7 +207,7 @@
       </view>
     </view>
     <view class="setting-container">
-      <view class="setting-layer">
+      <view class="setting-layer" @tap="goCollect">
         <text class="iconfont icon-me_sc"></text>
         <text>我的收藏</text>
         <text class="iconfont icon-rightsj"></text>
@@ -255,6 +255,16 @@
           url: './address'
         })
       },
+      goCollect () {
+        wepy.navigateTo({
+          url: './collect'
+        })
+      },
+      goOrder () {
+        wepy.navigateTo({
+          url: './order'
+        })
+      },
       clear () {
         wepy.getStorageInfo({
           success: (res) => {
@@ -292,6 +302,7 @@
       })
     }
     initUserOrder () {
+      this.$parent.showLoading()
       var _this = this
       var data = {
         token: this.token
@@ -316,6 +327,9 @@
       } else if (this.$parent.globalData.userLevel === 1) {
         this.isVip = true
       }
+      this.$apply()
+    }
+    onShow () {
       this.initUserData()
       this.initUserOrder()
       this.$apply()

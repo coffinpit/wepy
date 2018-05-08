@@ -39,7 +39,7 @@
         width:100%;
         padding:10rpx 20rpx; 
         z-index:5;
-        transition: 0.5s left ease-in;
+        transition: 0.3s left ease-in;
         background:#fff;
         &.animate{
           left: 10%;
@@ -62,7 +62,7 @@
   }
   .vip-tip{
     width:100%;
-    margin:10rpx 0 20rpx;
+    margin:20rpx 0;
     background:#fff;
     padding:10rpx 20rpx;
     .iconfont{
@@ -141,7 +141,7 @@
     left:0;
     box-sizing:border-box; 
     overflow:hidden;
-    transition: 0.5s left ease-in;
+    transition: 0.3s left ease-in;
     &.animate{
       left: 10%;
     }
@@ -170,7 +170,7 @@
     transform:translateX(120rpx)
   } 
   .inner-layer{
-    width:400rpx;
+    width:460rpx;
     overflow:hidden;
     position:absolute;
     top:20rpx;
@@ -218,7 +218,7 @@
     float:left;
     width:50rpx;
     height:150rpx;
-    z-index:999999999;
+    z-index:999999;
     .counter-btn{
       display:block;
       height:50rpx;
@@ -246,8 +246,14 @@
     width:100%;
     height:120rpx;
     background:#fff;
-    border-top:2rpx #fc5e43 solid;
-    z-index:99999;
+    z-index:99999999;
+    image{
+      position:absolute;
+      top:0;
+      left:0;
+      height:8rpx;
+      width:77%;
+    }
     .title{
       width:13%;
       text-align:center;
@@ -266,7 +272,7 @@
     }
     .del-cart{
       float:right;
-      width:17%;
+      width:23%;
       background:#ccc;
       color:#fff;
       height:120rpx;
@@ -282,7 +288,7 @@
       font-size:32rpx;
       line-height:120rpx;
       display:inline-block;
-      width: 65%;
+      width: 60%;
       text-align:right;
       float:right;
       padding-right:2%;
@@ -328,20 +334,23 @@
     top:0;
     z-index:-1;
     background:rgba(204,204,204,0.2);
-    transition: 0.5s opacity ease-in;
+    transition: 0.3s opacity ease-in;
     opacity:0;
     &.animate{
       left:10%;
       opacity:1;
-      z-index:999999999;
+      z-index:9999999;
     }
   }
 </style>
 <template>
   <view class="container">
     <view wx:if="{{!isNull}}">
-      <view class="cart-status" wx:if="{{!userLevel && cartStatus.totalprice}}">
-        <text class="title">已购￥{{cartStatus.totalprice}}，成为会员立减 <text class="title link font-bold">￥{{cartStatus.discount}}</text></text>
+      <view class="cart-status" wx:if="{{userLevel}}">
+        <text class="font-normal">尊敬的优价会员，本单已为您节省 <text class="font-normal link font-bold">￥{{cartStatus.discount}}</text></text>
+      </view>
+      <view class="cart-status" wx:else>
+        <text class="font-normal">已购￥{{cartStatus.totalprice}}，成为会员仅需 <text class="font-normal link font-bold">￥{{cartStatus.memberPrice}}</text></text>
         <view class="default-button">加入会员</view>
       </view>
       <repeat for="{{cartList}}" item="item" index="index">
@@ -383,18 +392,19 @@
           </view>                 
         </view>
       </repeat>
-      <view class="cart-bottom" wx:if="{{cartList != false}}">
+      <view class="cart-bottom" wx:if="{{!isNull}}">
+        <image src="../image/dz_bgbl.png"></image>
         <text class="title link edit" @tap="editTap">{{isEdit ? '取消' : '编辑'}}</text>
         <view class="title link all" @tap.stop="checkAll" wx:if="{{isEdit}}">全选</view>
         <text class="title link edit" @tap="deleteTap" wx:if="{{isEdit}}">删除</text>
         <text @tap.stop="goOrder" class="del-cart {{isEdit ? '' : 'active'}}">去结算</text>
         <text class="cart-info"><text class="tips">(含运费￥{{freight}})</text> 合计: <text class="link">￥{{finalprice}}</text></text>
       </view>
-      <view class="vip-tip" wx:if="{{userLevel && cartList != false}}">
+      <view class="vip-tip" wx:if="{{userLevel && !isNull}}">
         <text class="iconfont icon-vip link"></text>
         <text class="title">尊敬的优价会员，生鲜购满2公斤才可包邮哦</text>
       </view>
-      <view class="vip-tip no-active" wx:elif="{{cartList != false}}">
+      <view class="vip-tip no-active" wx:elif="{{!isNull}}">
         <text class="iconfont icon-vip"></text>
         <text class="title">成为会员，生鲜购满2公斤全场包邮</text>
       </view>
@@ -670,11 +680,8 @@
           var data = res.data.data
           this.cartStatus.totalprice = data.price
           this.cartStatus.discount = data.reduction
-          if (_this.$parent.globalData.userLevel === 0) {
-            this.finalprice = data.finalPrice
-          } else if (_this.$parent.globalData.userLevel === 1) {
-            this.finalprice = data.finalPrice
-          }
+          this.cartStatus.memberPrice = data.memberPrice
+          this.finalprice = data.finalPrice
           this.freight = data.freight
           data.childOrders.forEach((item) => {
             var obj = {}

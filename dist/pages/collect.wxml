@@ -1,0 +1,63 @@
+
+  <view class="container">
+    <view class="collect" style="height:{{dataLength * 262}}rpx"  wx:if="{{!isNull}}">
+      <view class="collect-list {{isEdit ? 'animate' : ''}}">
+        
+  <view class="goods-layer">
+    <block wx:for="{{$collectGood$goodsItem}}" wx:for-index="$collectGood$index" wx:for-item="$collectGood$item" wx:key="$collectGood$key">
+      <view class="goods" bindtap="$collectGood$tap" id="{{$collectGood$item.id}}" data-wpytap-a="{{$collectGood$item.id}}">
+        <view class="goods-image {{$collectGood$item.noSales ? 'no-salse' : ''}}"><image src="{{$collectGood$item.path}}" mode="aspectFit" lazy-load="true"/></view>
+        <view class="goods-detail">
+          <view class="goods-detail-title">{{$collectGood$item.title}}</view>
+          <view class="goods-detail-price">
+            会员价:<text class="price">￥{{$collectGood$item.price}} (优惠￥{{$collectGood$item.reduction}})</text>
+          </view>
+          <view class="goods-detail-oldprice">原价:{{$collectGood$item.oldprice}}</view>
+          <view class="goods-promot">
+            <view class="goods-promot-image">
+              <image src="../image/icon-xian.png"/>
+            </view>
+            <view class="goods-info">
+              {{$collectGood$item.descript}}
+              <view class="goods-end">
+                <image src="../image/probq_bg.png" mode="right"/>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+      </view>
+      <block wx:for="{{collectList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="cover {{isEdit ? 'animate' : ''}}" style="top: {{index * 262}}rpx"/>
+        <view class="collect-check {{isEdit ? 'show' : ''}}" style="top: {{index * 262}}rpx">
+          <view catchtap="checked" data-wpychecked-a="{{index}}">
+            <text class="font-normal">删除</text>
+          </view>
+        </view>
+      </block>
+    </view>
+    
+  <view wx:else>
+    
+      <view class="lost-goods">
+        <image src="../image/lost-goods.png"/>
+        <text>暂无数据</text>
+      </view>
+    
+    <view/>
+  </view>
+
+    
+  <view wx:if="{{isDown}}">
+    <view class="isDown">
+      <text>—————————— 到底啦 ——————————</text>
+    </view>
+  </view>
+
+    <view class="collect-bottom"  wx:if="{{!isNull}}">
+      <button class="default-button" hover-class="default-button-hover" bindtap="editAll">{{isEdit ? '取消': '编辑'}}</button>
+    </view>
+  </view>

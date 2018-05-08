@@ -142,6 +142,7 @@
       }
     }
     initAdd () {
+      this.$parent.showLoading()
       var _this = this
       var data = {
         token: this.token

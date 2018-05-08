@@ -6,8 +6,11 @@
       <text class="iconfont icon-rightsj"/>
       <text class="user">{{user.name}} {{user.phone}}</text>
     </view>
-    <view class="cart-status" wx:if="{{!isNull}}">
-      <text class="title">成为优价会员，本单可省 <text class="title link font-bold">￥{{reduction}}</text></text>
+    <view class="cart-status" wx:if="{{userLevel}}">
+      <text class="font-normal">尊敬的优价会员，本单已为您节省 <text class="font-normal link font-bold">￥{{reduction}}</text></text>
+    </view>
+    <view class="cart-status" wx:eles="wx:eles">
+      <text class="font-normal">成为优价会员，本单仅需 <text class="font-normal link font-bold">￥{{memberPrice}}</text></text>
       <view class="default-button">加入会员</view>
     </view>
     <block wx:for="{{order}}" wx:for-index="index" wx:for-item="item" wx:key="key">
@@ -62,6 +65,7 @@
       <text class="title order-list-right link">￥{{finalprice}}</text>
     </view>
     <view class="order-bottom">
+      <image src="../image/dz_bgbl.png"/>
       <text class="title">合计:￥<text class="link">{{pay}}</text><text class="tips">（含运费 ￥{{freight}}）</text></text>
       <text class="go-pay" bindtap="goPay">去付款</text>
     </view>
