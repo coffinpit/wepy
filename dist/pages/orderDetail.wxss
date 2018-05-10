@@ -1,0 +1,142 @@
+@import "./../components/orderlist.wxss";
+.container {
+  min-height: calc(100vh);
+  display: block;
+}
+.orderStatus {
+  padding: 10rpx 20rpx 10rpx 0;
+  border-bottom: 1px #eee solid;
+  background: #fff;
+}
+.orderStatus .icon-bgicon {
+  font-size: 120rpx;
+  position: relative;
+  display: inline-block;
+  margin-right: 24rpx;
+  vertical-align: middle;
+}
+.orderStatus .icon-bgicon .icon-more {
+  position: absolute;
+  top: 70rpx;
+  right: -4rpx;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: #fc5e43;
+  color: #fff;
+  font-size: 24rpx;
+  text-align: center;
+  line-height: 40rpx;
+  vertical-align: middle;
+}
+.orderStatus .icon-ksj_dz {
+  font-size: 60rpx;
+  margin-right: 64rpx;
+  vertical-align: middle;
+}
+.orderStatus .font-normal {
+  line-height: 28rpx;
+}
+.orderStatus .gray {
+  color: #999;
+}
+.orderStatus .block {
+  display: block;
+  margin-left: 124rpx;
+}
+.orderStatus .txt-status {
+  float: right;
+}
+.orderStatus .txt-status.remain {
+  margin-top: 20rpx;
+}
+.orderStatus .txt-status.remain .font-normal {
+  line-height: 44rpx;
+  display: block;
+}
+.orderStatus.address {
+  padding: 20rpx 20rpx 30rpx;
+}
+.orderStatus.address .font-normal {
+  line-height: 80rpx;
+}
+.orderStatus.address .block {
+  line-height: 44rpx;
+}
+.orderStatus.address .gray {
+  display: inline-block;
+  margin-left: 20rpx;
+}
+.orderStatus.address .blank-button {
+  float: right;
+  margin-top: 16rpx;
+}
+.cart-list {
+  width: 100%;
+  margin-top: 20rpx;
+  box-sizing: border-box;
+}
+.cart-list .content {
+  margin-bottom: 0;
+  height: 100rpx;
+  padding: 20rpx;
+}
+.cart-list .content .title {
+  padding: 10rpx 0;
+}
+.cart-list .content .close {
+  color: #999;
+}
+.cart-list .iconfont {
+  font-size: 80rpx;
+  vertical-align: middle;
+  margin-right: 20rpx;
+}
+.item-box {
+  width: 100%;
+  background-color: #fff;
+}
+.items {
+  width: 100%;
+  padding-bottom: 20rpx;
+}
+.orderInfo {
+  padding: 20rpx;
+  background: #fff;
+  border-top: 1px #eee solid;
+}
+.orderInfo .label {
+  color: #999;
+}
+.orderInfo .right {
+  float: right;
+  margin-top: 10rpx;
+}
+.spacing {
+  margin-top: 20rpx;
+  border-top: none;
+  border-bottom: 1px #eee solid;
+}
+.orderTotal {
+  padding: 20rpx;
+  background: #fff;
+  text-align: right;
+}
+.edit-button {
+  margin-top: 20rpx;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 10rpx;
+}
+.edit-button button {
+  margin: 0;
+  float: right;
+  margin-left: 20rpx;
+}
+.edit-button .blank-button {
+  border: 1px #999 solid;
+  color: #999;
+}
+.edit-button .default-button {
+  padding: 0 20rpx;
+}

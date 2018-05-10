@@ -108,10 +108,7 @@
 </style>
 <template>
   <view class="container">
-    <view class="defect" wx:if="{{isNull}}">
-      <defectImage><view slot="lost-category"></view></defectImage>
-    </view>
-    <view wx:else>
+    <view>
       <searchbar :pagefrom.sync="pageTile"></searchbar>
       <view class="category-bg">
         <repeat for="{{categoryImg}}" item="item" index="index" key="index">
@@ -134,8 +131,11 @@
           </scroll-view>
         </repeat>
       </view>
-      <view class="content">
+      <view class="content" wx:if="{{!isNull}}">
         <Categoods :goodsItem.sync="goods" @goodsTap.user="goDetail"></Categoods>
+      </view>
+      <view class="defect" wx:else>
+        <defectImage type="1"></defectImage>
       </view>
       <isDown wx:if="{{isDown}}"></isDown>
     </view>
@@ -261,8 +261,14 @@
             obj.id = item.id
             child.push(obj)
           })
+        } else {
+          _this.isNull = true
+          _this.$parent.showFail()
         }
         _this.$apply()
+      }).catch(() => {
+        _this.isNull = true
+        _this.$parent.showFail()
       })
       return child
     }
@@ -282,6 +288,7 @@
           _this.goods = []
         }
         if (res.data.error === 0) {
+          _this.$parent.showSuccess()
           _this.totalPageNum = res.data.data.totalPageNum
           var data = res.data.data.spus
           if (data.length === 0) {
@@ -308,10 +315,12 @@
           })
         } else {
           _this.isNull = true
+          _this.$parent.showFail()
         }
         _this.$apply()
       }).catch(() => {
         _this.isNull = true
+        _this.$parent.showFail()
       })
     }
     onLoad () {

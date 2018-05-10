@@ -33,7 +33,8 @@ class HttpRequest extends wepy.app{
 			getMarkUser: 'r=mark/api-get-collectors',
 			getOrder: 'r=order/api-get-detail',
 			getMarkSpu: 'r=mark/api-get-mark-spu',
-			getOrderStatus: 'r=order/api-get-orders'
+			getOrderStatus: 'r=order/api-get-orders',
+			getOrderDetail: 'r=order/api-get-detail'
 		}
 		this.$$pathHtml = {
 			rules: 'distribution_rules.html'
@@ -69,7 +70,7 @@ class HttpRequest extends wepy.app{
 			})
 		})
 	}
-	UserLogin (param) {
+	UserLogin (param, cb) {
 		var _this = this
         return new Promise((resolve, reject) => {
         	_this.getTime().then((res) => {
@@ -86,10 +87,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 	            })
+        	}).catch(() => {
+        		cb && cb()
         	})
         })
 	}
-	IndexHttp (param) {
+	IndexHttp (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -106,10 +109,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	DetailHttp (param) {
+	DetailHttp (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -127,9 +132,12 @@ class HttpRequest extends wepy.app{
 					}
 				})
 			})
+			.catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	AddCartHttp (param) {
+	AddCartHttp (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -146,10 +154,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	GetTopCategory (param) {
+	GetTopCategory (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -166,10 +176,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	GetChildCategory (param) {
+	GetChildCategory (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -186,10 +198,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	GetSpuHttp (param) {
+	GetSpuHttp (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -206,10 +220,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	SetMarkHttp (param) {
+	SetMarkHttp (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -226,10 +242,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	CancelMarkHttp (param) {
+	CancelMarkHttp (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -246,10 +264,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	GetMarkUser (param) {
+	GetMarkUser (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -266,10 +286,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	GetMarkSpu (param) {
+	GetMarkSpu (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -286,10 +308,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	GetCartHttp (param) {
+	GetCartHttp (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -306,10 +330,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	DeleteCartHttp (param) {
+	DeleteCartHttp (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -327,10 +353,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	GetUserInfo (param) {
+	GetUserInfo (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -347,10 +375,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	GetUserOrder (param) {
+	GetUserOrder (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -367,10 +397,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	CreateUserOrder (param) {
+	CreateUserOrder (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -387,10 +419,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	CreateOrderBuy (param) {
+	CreateOrderBuy (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -407,10 +441,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	GetAddress (param) {
+	GetAddress (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -427,10 +463,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	EditAddress (param) {
+	EditAddress (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -447,10 +485,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	DeleteAddress (param) {
+	DeleteAddress (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -467,10 +507,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	ApplyOrderHttp (param) {
+	ApplyOrderHttp (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -487,10 +529,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	ApplyOrderBuy (param) {
+	ApplyOrderBuy (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -507,10 +551,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	GetOrderHttp (param) {
+	GetOrderHttp (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -527,10 +573,12 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
-	GetOrderStatus (param) {
+	GetOrderStatus (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -547,7 +595,31 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
+	GetOrderDetail (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.getOrderDetail,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
 	GetTopArea () {
@@ -565,7 +637,7 @@ class HttpRequest extends wepy.app{
 			})
 		})
 	}
-	SearchHttp (param) {
+	SearchHttp (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
@@ -583,7 +655,9 @@ class HttpRequest extends wepy.app{
 					  reject(error)
 					}
 				})
-			})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
 }

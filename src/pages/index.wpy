@@ -133,7 +133,7 @@
         <view class="goods-title"><image src="../image/rmsp_img.png"></image></view>
         <hotGoods :goodsItem.sync="goods" @goodsTap.user="goDetail"></hotGoods>
     </view>
-    <defect wx:if="{{isNull}}"><view slot="lost-category"></view></defect>
+    <defect wx:if="{{isNull}}" type="1"></defect>
     <isDown wx:if="{{isDown}}"></isDown>
   </view>  
 </template>
@@ -230,9 +230,13 @@
         token: token,
         pageSize: '5'
       }
-      parent.HttpRequest.IndexHttp(data).then((res) => {
+      parent.HttpRequest.IndexHttp(data, () => {
+        _this.$parent.showFail()
+        _this.isNull = true
+      }).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
+          _this.$parent.showSuccess()
           _this.totalPageNum = res.data.data.totalPageNum
           var data = res.data.data.spus
           if (data.length === 0) {
@@ -263,6 +267,7 @@
         }
         _this.$apply()
       }).catch(() => {
+        _this.$parent.showFail()
         _this.isNull = true
       })
     }

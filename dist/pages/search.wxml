@@ -43,13 +43,11 @@
     </view>
     
   <view wx:else>
-    
-      <view class="lost-goods">
-        <image src="../image/lost-goods.png"/>
-        <text>暂无数据</text>
-      </view>
-    
-    <view/>
+    <view class="lost-goods">
+      <image src="../image/lost-goods.png"/>
+      <text class="iconfont {{$defect$typeIcon}}"/>
+      <text class="font-normal">{{$defect$typeTxt}}</text>
+    </view>
   </view>
 
   </view>

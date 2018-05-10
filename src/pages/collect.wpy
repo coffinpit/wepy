@@ -170,6 +170,7 @@
       this.$parent.HttpRequest.GetMarkSpu(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
+          _this.$parent.showSuccess()
           var data = res.data.data
           _this.totalPageNum = data.totalPageNum
           _this.dataLength += data.spus.length
@@ -191,8 +192,12 @@
             good.markId = item.markId
             _this.collectList.push(good)
           })
+        } else {
+          _this.$parent.showFail()
         }
         _this.$apply()
+      }).catch(() => {
+        _this.$parent.showFail()
       })
     }
     CancelMark (markId, cb) {

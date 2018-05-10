@@ -7,10 +7,10 @@
       <view class="cart-list"  wx:if="{{!item.isNull}}">
         <view class="content order-title">
           <text class="font-normal order-num">订单编号：{{item.title}}</text>
-          <text class="font-normal link">{{item.status}}</text>
+          <text class="font-normal order-status-txt {{item.status === 1 || item.status === 2? 'link' : ''}} {{item.status === 3? 'close' : ''}}">{{item.statusTxt}}</text>
         </view>
         <view class="item-box">
-          <view class="items">
+          <view class="items {{isMore? 'show' : ''}}">
             <block wx:for="{{item.orderDetail}}" wx:for-index="index" wx:for-item="item" wx:key="index">
               <view class="item-list">
                 <view class="inner txt">
@@ -26,6 +26,21 @@
                 </view>
               </view>
             </block>
+            <view class="more" bindtap="goDetail" data-wpygodetail-a="{{item.id}}">
+              <text class="font-normal">查看全部 ({{item.count}}) <text class="iconfont icon-rightsj"/></text>
+            </view>
+          </view>
+          <view class="order-edit">
+            <text class="iconfont icon-me_dd"/>
+            <text class="font-normal">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+            <view class="edit-button">
+              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}">修改地址</button>
+              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}">取消订单</button>
+              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 3}}">删除订单</button>
+              <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
+              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}">查看物流</button>
+              <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}">付款</button>
+            </view>
           </view>
         </view>
       </view>

@@ -1,3 +1,4 @@
+@import "./../components/orderlist.wxss";
 .container {
   min-height: calc(100vh);
   display: block;
@@ -57,6 +58,7 @@
 }
 .items {
   width: 100%;
+  padding-bottom: 20rpx;
 }
 .item-list {
   height: 200rpx;

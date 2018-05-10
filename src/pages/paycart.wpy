@@ -58,6 +58,7 @@
   }  
   .items{  
     width: 100%;  
+    padding-bottom: 20rpx;
   }  
   .item-list{  
     height: 200rpx;  
@@ -244,21 +245,7 @@
         </view>
         <view class="item-box">
           <view class="items">
-            <repeat for="{{item.coldlist}}" index="index" item="item" key="index">
-              <view class="item-list">
-                <view class="inner txt">
-                  <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
-                    <text class="title">{{item.title}}</text>
-                    <text class="font-small link">会员价：￥{{item.price}} </text>
-                    <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.oldprice}}</text>
-                    <text class="tips">{{item.detail}}</text>
-                  </view>
-                  <view class="inner-image">
-                    <image src="{{item.path}}" mode="aspectFill"></image>
-                  </view>
-                </view>
-              </view>
-            </repeat>
+            <orderList :orderList.sync="item.coldlist"></orderList>
           </view>
         </view>
       </view>
@@ -298,10 +285,14 @@
 
 <script>
   import wepy from 'wepy'
+  import OrderList from '../components/orderlist'
 
   export default class PayCart extends wepy.page {
     config = {
       navigationBarTitleText: '确认订单'
+    }
+    components = {
+      orderList: OrderList
     }
     computed = {
       userLevel () {
@@ -379,6 +370,7 @@
       this.$parent.HttpRequest.ApplyOrderHttp(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
+          _this.$parent.showSuccess()
           var data = res.data.data
           _this.orderHash = data.hash
           _this.reduction = data.reduction
@@ -390,14 +382,17 @@
             var obj = {}
             obj.title = item.title
             obj.freight = item.freight
-            obj.coldChecked = false
             obj.tempCold = []
             obj.coldlist = this.initChild(item.salesUnits)
             _this.order.push(obj)
             _this.$apply()
           })
           console.log(_this.order)
+        } else {
+          _this.$parent.showFail()
         }
+      }).catch(() => {
+        _this.$parent.showFail()
       })
     }
     initChild (parent) {

@@ -615,6 +615,7 @@
         console.log(res)
         this.detail.goodList = []
         if (res.data.error === 0) {
+          _this.$parent.showSuccess()
           var data = res.data.data
           if (!data.collectionId) {
             _this.collect = false
@@ -655,11 +656,14 @@
             _this.$apply()
             cb && cb()
           })
+        } else {
+          _this.$parent.showFail()
         }
+      }).catch(() => {
+        _this.$parent.showFail()
       })
     }
     addCartData () {
-      this.$parent.showLoading()
       var data = {
         token: this.token,
         sourceType: this.cartResult.type,

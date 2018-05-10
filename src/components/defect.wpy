@@ -1,135 +1,76 @@
 <style type="less">
-  .closed-signboard {
-      width: 400rpx;
-      height: 300rpx;
-      margin: 150rpx auto;
-      position: relative;
-      transform: scale(1);
-      animation: 1s init
-    }
-
-    .sign {
-      color: white;
-      font-family: "Lato", sans-serif;
-      font-size: 80rpx;
-      font-weight: bold;
-      text-align: center;
-      background: #ccc;
-      width: 100%;
-      height: 200rpx;
-      line-height: 200rpx;
-      position: absolute;
-      bottom: 0;
-      border-radius: 15rpx / 20rpx;
-      text-shadow: 0 2rpx #999;
-    }
-
-    .strings {
-      width: 150rpx;
-      height: 150rpx;
-      border: solid 5rpx #999;
-      border-bottom: none;
-      border-right: none;
-      position: absolute;
-      top: 38rpx;
-      left: 122rpx;
-      transform: rotatez(45deg);
-    }
-
-    .pin {
-      width: 25rpx;
-      height: 25rpx;
-      position: absolute;
-      border-radius: 25rpx;
-    }
-
-    .pin.pin1 {
-      background: #9f9f9f;
-      top: 0;
-      left: 187rpx;
-    }
-
-    .pin.pin2, .pin.pin3 {
-      background: #999;
-    }
-
-    .pin.pin2 {
-      top: 110rpx;
-      left: 80rpx;
-    }
-
-    .pin.pin3 {
-      top: 110rpx;
-      right: 80rpx;
-    }
-
-    @keyframes init {
-      from {
-        transform: scale(0);
-      }
-      to {
-        transform: scale(1);
-      }
-    }
-
-    .lost-goods{
-      padding:50rpx 0;
-      margin:0 auto;
+  .lost-goods{
+    padding:50rpx 0;
+    margin:0 auto;
+    width:330rpx;
+    height:200rpx;
+    position:relative;
+    text-align:center;
+    image{
       width:330rpx;
-      height:200rpx;
-      position:relative;
-      image{
-        width:330rpx;
-        height:170rpx;
-      }
-      text{
-        position:absolute;
-        top:130rpx;
-        left:50%;
-        transform:translate(-50%, 0);
-        background:#fff;
-        color:#999;
-        font-size:28rpx;
-        padding:5rpx 15rpx;
-        border-radius:60rpx;
-        min-width:120rpx;
-        border:1px #ccc solid;
-        text-align:center;
-      }
-      .blank-button{
-        width:40%;
-        position:absolute;
-        bottom: 0;
-        left:50%;
-        transform:translate(-50%, 0);
-        line-height:50rpx;
-        text-align:center;
-      }
+      height:170rpx;
     }
+    .blank-button{
+      width:40%;
+      position:absolute;
+      bottom: 0;
+      left:50%;
+      transform:translate(-50%, 0);
+      line-height:50rpx;
+      text-align:center;
+    }
+    text.icon-ksj_splb{
+      position:absolute;
+      top:80rpx;
+      left:50%;
+      transform:translate(-50%, 0);
+      background:rgba(204,204,204,0.8);
+      border-radius:50%;
+      width:140rpx;
+      height: 140rpx;
+      text-align:center;
+      font-size:120rpx;
+      color:#fff;
+      line-height:140rpx;
+    }
+    text.font-normal{
+      color:#999;
+    }
+  }
 </style>
 <template>
   <view>
-    <slot name="lost-goods">
-      <view class="lost-goods">
-        <image src="../image/lost-goods.png"></image>
-        <text>暂无数据</text>
-      </view>
-    </slot>
-    <slot name="lost-category">
-      <view class="closed-signboard">
-        <view class="sign">售罄</view>
-        <view class="strings"></view>
-        <view class="pin pin1"></view>
-        <view class="pin pin2"></view>
-        <view class="pin pin3"></view>
-      </view>
-    </slot>
+    <view class="lost-goods">
+      <image src="../image/lost-goods.png"></image>
+      <text class="iconfont {{typeIcon}}"></text>
+      <text class="font-normal">{{typeTxt}}</text>
+    </view>
   </view>
 </template>
 <script>
   import wepy from 'wepy'
 
   export default class Defect extends wepy.component {
+    props = {
+      type: {
+        type: String,
+        default: '1'
+      }
+    }
+    computed = {
+      typeIcon () {
+        if (this.type === '1') {
+          return 'icon-ksj_splb'
+        }
+      },
+      typeTxt () {
+        if (this.type === '1') {
+          return '商品都在拼命的跑过来'
+        }
+      }
+    }
+    data = {
+    }
     onLoad () {
       this.$apply()
     }

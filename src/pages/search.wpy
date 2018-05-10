@@ -155,6 +155,7 @@
       }
     }
     getResult () {
+      this.$parent.showLoading()
       var _this = this
       const token = this.$parent.getToken('search')
       var data = {
@@ -166,6 +167,7 @@
       this.$parent.HttpRequest.SearchHttp(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
+          _this.$parent.showSuccess()
           var data = res.data.data.spus
           data.forEach((item) => {
             var good = {}
@@ -177,8 +179,12 @@
             good.id = item.sourceId
             _this.goods.push(good)
           })
+        } else {
+          _this.$parent.showFail()
         }
         _this.$apply()
+      }).catch(() => {
+        _this.$parent.showFail()
       })
     }
     onLoad (parent) {

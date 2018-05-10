@@ -57,64 +57,8 @@
   background-color: #fff;
   }  
   .items{  
-    width: 100%;  
-  }  
-  .item-list{  
-    height: 200rpx;  
-    overflow: hidden;
-    padding:0 20rpx 20rpx;
-    box-sizing:border-box;
-  }
-  .inner.txt{
-    background-color: #f8f8f8;
-    padding:20rpx;
-    box-sizing:border-box; 
-    overflow:hidden;  
-  }  
-  .inner-left{
-    width:360rpx;
-    overflow:hidden;
-    white-space:break-all;
-    .place{
-      min-height: 108rpx;
-    }
-  }
-  .inner-layer{
-    width:460rpx;
-    overflow:hidden;
-    float:left;
-    .title{
-      min-height:76rpx;
-      height:76rpx;
-      line-height:38rpx;
-      overflow:hidden;
-      display:block;
-      font-size:28rpx;
-      margin-bottom:6rpx;
-    }
-    .tips, .title{
-      display:block;
-    }
-    .tips{
-      float:right;
-    }
-    .font-small{
-      float:left;
-      display:block;
-      width:260rpx;
-    }
-  }
-  .inner-image{
-    height:150rpx;
-    float:right;
-    image{
-      width:148rpx;
-      height:148rpx;
-      border:1px #eee solid;
-      box-sizing:border-box;
-      float:left;
-      border-right:none;
-    }
+    width: 100%;
+    padding-bottom: 20rpx;
   }
   .vip-tip{
     margin:20rpx 20rpx 0;
@@ -243,21 +187,7 @@
         </view>
         <view class="item-box">
           <view class="items">
-            <repeat for="{{item.coldlist}}" index="index" item="item" key="index">
-              <view class="item-list">
-                <view class="inner txt">
-                  <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
-                    <text class="title">{{item.title}}</text>
-                    <text class="font-small link">会员价：￥{{item.price}} </text>
-                    <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.oldprice}}</text>
-                    <text class="tips">{{item.detail}}</text>
-                  </view>
-                  <view class="inner-image">
-                    <image src="{{item.path}}" mode="aspectFill"></image>
-                  </view>
-                </view>
-              </view>
-            </repeat>
+            <orderList :orderList.sync="item.coldlist"></orderList>
           </view>
         </view>
       </view>
@@ -297,10 +227,14 @@
 
 <script>
   import wepy from 'wepy'
+  import OrderList from '../components/orderlist'
 
   export default class PayBuy extends wepy.page {
     config = {
       navigationBarTitleText: '确认订单'
+    }
+    components = {
+      orderList: OrderList
     }
     computed = {
       userLevel () {
@@ -353,7 +287,7 @@
         } else {
           var data = {
             token: this.token,
-            appType: 'ios',
+            appType: 'miniApp',
             sourceType: this.sourceType,
             sourceId: this.sourceId,
             buyCount: this.count,
@@ -361,9 +295,32 @@
             memo_main: this.memo,
             date_main: 4
           }
-          console.log(data)
           this.$parent.HttpRequest.CreateOrderBuy(data).then((res) => {
             console.log(res)
+            if (res.data.error === 0) {
+              var data = res.data.data
+              var timeStamp = data.timestamp.toString()
+              var nonceStr = data.noncestr
+              var prepayid = 'prepay_id=' + data.prepayid
+              var paySign = data.sign
+              console.log(prepayid)
+              wepy.requestPayment({
+                'timeStamp': timeStamp,
+                'nonceStr': nonceStr,
+                'package': prepayid,
+                'signType': 'MD5',
+                'paySign': paySign,
+                'success': (res) => {
+                  console.log('success')
+                },
+                'fail': (res) => {
+                  console.log('fail')
+                },
+                'complete': (res) => {
+                  console.log('complete')
+                }
+              })
+            }
           })
         }
       },
@@ -382,10 +339,9 @@
         sourceId: this.sourceId,
         buyCount: this.count
       }
-      console.log(data)
       this.$parent.HttpRequest.ApplyOrderBuy(data).then((res) => {
-        console.log(res)
         if (res.data.error === 0) {
+          _this.$parent.showSuccess()
           var data = res.data.data
           _this.reduction = data.reduction
           _this.freight = data.freight
@@ -396,14 +352,17 @@
             var obj = {}
             obj.title = item.title
             obj.freight = item.freight
-            obj.coldChecked = false
             obj.tempCold = []
             obj.coldlist = this.initChild(item.salesUnits)
             _this.order.push(obj)
             _this.$apply()
           })
           console.log(_this.order)
+        } else {
+          _this.$parent.showFail()
         }
+      }).catch(() => {
+        _this.$parent.showFail()
       })
     }
     initChild (parent) {

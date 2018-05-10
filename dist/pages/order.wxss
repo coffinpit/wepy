@@ -31,6 +31,9 @@
 .cart-list .order-title {
   border-bottom: 1px #eee solid;
 }
+.cart-list .order-title close {
+  color: #999;
+}
 .cart-list .content {
   margin-bottom: 0;
   height: 100rpx;
@@ -39,9 +42,12 @@
 .cart-list .content .order-num {
   color: #999;
 }
-.cart-list .content .link {
+.cart-list .content .order-status-txt {
   float: right;
   margin-top: 8rpx;
+}
+.cart-list .content .order-status-txt.close {
+  color: #999;
 }
 .cart-list .iconfont {
   font-size: 80rpx;
@@ -54,6 +60,7 @@
 }
 .items {
   width: 100%;
+  padding: 20rpx 0;
 }
 .item-list {
   height: 200rpx;
@@ -76,7 +83,7 @@
   min-height: 108rpx;
 }
 .inner-layer {
-  width: 400rpx;
+  width: 460rpx;
   overflow: hidden;
   float: left;
 }
@@ -101,6 +108,17 @@
   display: block;
   width: 260rpx;
 }
+.more {
+  margin: 0 20rpx;
+  padding: 20rpx;
+  background: #f8f8f8;
+}
+.more .icon-rightsj {
+  font-size: 40rpx;
+  float: right;
+  margin-top: 6rpx;
+  margin-right: 0;
+}
 .inner-image {
   height: 150rpx;
   float: right;
@@ -112,4 +130,36 @@
   box-sizing: border-box;
   float: left;
   border-right: none;
+}
+.order-edit {
+  border-top: 1px #eee solid;
+  padding: 20rpx 0;
+  overflow: hidden;
+}
+.order-edit .icon-me_dd {
+  font-size: 110rpx;
+  margin-left: -14rpx;
+  color: #eee;
+  float: left;
+}
+.order-edit .font-normal,
+.order-edit .edit-button {
+  float: right;
+  margin-right: 20rpx;
+}
+.order-edit .edit-button {
+  margin-top: 20rpx;
+  width: 80%;
+}
+.order-edit .edit-button button {
+  margin: 0;
+  float: right;
+  margin-left: 20rpx;
+}
+.order-edit .edit-button .blank-button {
+  border: 1px #999 solid;
+  color: #999;
+}
+.order-edit .edit-button .default-button {
+  padding: 0 20rpx;
 }

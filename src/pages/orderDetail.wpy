@@ -1,0 +1,318 @@
+<style lang="less">
+  .container {
+    min-height:calc(100vh);
+    display:block;
+  }
+  .orderStatus{
+    padding:10rpx 20rpx 10rpx 0;
+    border-bottom: 1px #eee solid;
+    background: #fff;
+    .icon-bgicon{
+      font-size:120rpx;
+      position: relative;
+      display: inline-block;
+      margin-right:24rpx;
+      vertical-align: middle;
+      .icon-more{
+        position: absolute;
+        top:70rpx;
+        right: -4rpx;
+        width:40rpx;
+        height: 40rpx;
+        border-radius: 50%;
+        background: #fc5e43;
+        color:#fff;
+        font-size:24rpx;
+        text-align: center;
+        line-height: 40rpx;
+        vertical-align: middle;
+      }
+    }
+    .icon-ksj_dz{
+      font-size:60rpx;
+      margin-right:64rpx;
+      vertical-align: middle;
+    }
+    .font-normal{
+      line-height:28rpx;
+    }
+    .gray{
+      color:#999;
+    }
+    .block{
+      display: block;
+      margin-left:124rpx;
+    }
+    .txt-status{
+      float: right;
+      &.remain{
+        margin-top:20rpx;
+        .font-normal{
+          line-height: 44rpx;
+          display: block;
+        }
+      }
+    }
+    &.address{
+      padding:20rpx 20rpx 30rpx;
+      .font-normal{
+        line-height:80rpx;
+      }
+      .block{
+        line-height: 44rpx;
+      }
+      .gray{
+        display: inline-block;
+        margin-left:20rpx;
+      }
+      .blank-button{
+        float: right;
+        margin-top:16rpx;
+      }
+    }
+  }
+  .cart-list{
+    width:100%;
+    margin-top:20rpx;
+    box-sizing:border-box;
+    .content{
+      margin-bottom:0;
+      height:100rpx;
+      padding:20rpx;
+      .title{
+        padding:10rpx 0; 
+      }
+      .close{
+        color:#999;
+      }
+    }
+    .iconfont{
+      font-size:80rpx;
+      vertical-align:middle;
+      margin-right:20rpx;
+    }
+  }
+  .item-box{  
+  width:100%;
+  background-color: #fff;
+  }  
+  .items{  
+    width: 100%;
+    padding-bottom: 20rpx;
+  }
+  .orderInfo{
+    padding:20rpx;
+    background: #fff;
+    border-top:1px #eee solid;
+    .label{
+      color:#999;
+    }
+    .right{
+      float:right;
+      margin-top:10rpx;
+    }
+  }
+  .spacing{
+    margin-top:20rpx;
+    border-top:none;
+    border-bottom: 1px #eee solid;
+  }
+  .orderTotal{
+    padding:20rpx;
+    background: #fff;
+    text-align: right;
+  }
+  .edit-button{
+    margin-top:20rpx;
+    width:100%;
+    overflow:hidden;
+    margin-bottom:10rpx;
+    button{
+      margin:0;
+      float:right;
+      margin-left:20rpx;
+    }
+    .blank-button{
+      border:1px #999 solid;
+      color:#999;
+    }
+    .default-button{
+      padding:0 20rpx;
+    }
+  }
+</style>
+<template>
+  <view class="container">
+    <view wx:if="{{!isNull}}">
+      <view class="orderStatus">
+        <text class="iconfont icon-bgicon"><text class="iconfont icon-more" wx:if="{{status !== 3}}"></text></text>
+        <text class="font-normal {{status === 3 ? 'gray' : ''}} {{status === 1 || status === 2 ? 'link' : ''}}">{{status === 1 && !remainTime ? '交易关闭' : statusTxt}}</text>
+        <text class="font-normal txt-status remain" wx:if="{{status === 1 && remainTime}}">
+          <text class="font-normal">仅剩余：{{remainTime}}</text>
+          <text class="font-normal">需付款：￥{{finalPrice}}</text>
+        </text>
+        <text class="font-normal txt-status" wx:elif="{{status === 1 && !remainTime}}">支付超时</text>
+        <text class="font-normal txt-status">
+          {{status === 2 && address != false ? '已送达' : ''}}
+          {{status === 3 ? '支付超时' : ''}}
+        </text>
+      </view>
+      <view class="orderStatus address" wx:if="{{address != false}}">
+        <text class="iconfont icon-ksj_dz"></text>
+        <text class="font-normal">{{address.name}}</text>
+        <text class="font-normal gray">{{address.phone}}</text>
+        <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 2 || status === 5 || status === 6}}">查看物流</button>
+        <text class="font-normal block">{{address.detail}}</text>
+      </view>
+      <repeat for="{{order}}" item="item" index="index">
+        <view class="cart-list" wx:if="{{!item.isNull}}">
+          <view class="content order-title">
+            <text class="title"><text class="iconfont icon-ys_ly"></text>{{item.title}}</text>
+          </view>
+          <view class="item-box">
+            <view class="items">
+              <orderList :orderList.sync="item.orderDetail"></orderList>
+            </view>
+          </view>
+        </view>
+      </repeat>
+      <view class="orderInfo">
+        <text class="font-normal label">订单编号：</text>
+        <text class="font-normal right">{{orderId}}</text>
+      </view>
+      <view class="orderInfo">
+        <text class="font-normal label">创建时间：</text>
+        <text class="font-normal right">{{createTime}}</text>
+      </view>
+      <view class="orderInfo">
+        <text class="font-normal label">备注：</text>
+        <text class="font-normal right">{{memo}}</text>
+      </view>
+      <view class="orderInfo spacing">
+        <text class="font-normal label">商品总额：</text>
+        <text class="font-normal right">￥{{pay}}</text>
+      </view>
+      <view class="orderTotal">
+        <text class="font-normal">需付款<text class="link">￥{{finalPrice}}</text> (含运费￥{{freight}})</text>
+        <view class="edit-button">
+          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}">修改地址</button>
+          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}">取消订单</button>
+          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 3}}">删除订单</button>
+          <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{status === 5 || status === 6}}">售后申请</button>
+          <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}">付款</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import OrderList from '../components/orderlist'
+
+  export default class OrderDetail extends wepy.page {
+    config = {
+      navigationBarTitleText: '订单详情'
+    }
+    data = {
+      token: '',
+      id: '',
+      orderStatus: ['异常', '待支付', '售后中', '订单关闭', '待发货', '待收货', '交易完成'],
+      statusTxt: '',
+      status: '',
+      address: {},
+      order: [],
+      orderId: '',
+      createTime: '',
+      memo: '',
+      pay: '',
+      finalPrice: '',
+      freight: '',
+      remainTime: ''
+    }
+    computed = {
+      isNull () {
+        if (this.order.length === 0) {
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+    components = {
+      orderList: OrderList
+    }
+    methods = {
+    }
+    initData () {
+      this.order = []
+      var _this = this
+      var data = {
+        token: this.token,
+        orderId: this.id
+      }
+      this.$parent.HttpRequest.GetOrderDetail(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          var data = res.data.data
+          _this.statusTxt = _this.orderStatus[data.status]
+          _this.status = data.status
+          _this.orderId = data.showId
+          _this.createTime = _this.$parent.dateFormat(data.createTime * 1000, 'Y-m-d H:i:s')
+          _this.memo = data.memo || ''
+          _this.pay = data.pay
+          _this.freight = data.freight
+          setInterval(() => {
+            data.payRemainingTime --
+            if (data.payRemainingTime > 0) {
+              _this.remainTime = (data.payRemainingTime - data.payRemainingTime % 60) / 60 + '分' + data.payRemainingTime % 60 + '秒'
+            } else {
+              _this.remainTime = null
+            }
+            _this.$apply()
+          }, 1000)
+          if (data.address) {
+            _this.address.name = data.address.name
+            _this.address.phone = data.address.phone
+            _this.address.detail = data.address.fullAreaName + data.address.address
+          }
+          _this.finalPrice = data.finalPrice
+          data.buyingRecords.forEach((item) => {
+            var obj = {}
+            obj.title = item.title
+            obj.orderDetail = _this.initChild(item.buyingRecords)
+            _this.order.push(obj)
+          })
+        }
+        _this.$apply()
+      })
+    }
+    initChild (parent) {
+      var child = []
+      parent.forEach((item) => {
+        var obj = {}
+        obj.path = item.cover
+        obj.title = item.productName
+        obj.price = item.memberPrice
+        obj.oldprice = item.price
+        obj.id = item.productId
+        obj.sourceType = item.salesUnitType
+        obj.sourceId = item.salesUnitId
+        obj.detail = item.title + '×' + item.buyingCount
+        obj.count = item.buyingCount
+        obj.checked = false
+        obj.totalCount = item.keepCount
+        child.push(obj)
+      })
+      return child
+    }
+    onLoad (param) {
+      this.id = param.id
+      this.token = this.$parent.getToken('orderDetail')
+      this.$apply()
+    }
+    onShow () {
+      this.initData()
+    }
+  }
+</script>

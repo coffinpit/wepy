@@ -20,21 +20,23 @@
         </view>
         <view class="item-box">
           <view class="items">
-            <block wx:for="{{item.coldlist}}" wx:for-index="index" wx:for-item="item" wx:key="index">
-              <view class="item-list">
-                <view class="inner txt">
-                  <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
-                    <text class="title">{{item.title}}</text>
-                    <text class="font-small link">会员价：￥{{item.price}} </text>
-                    <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.oldprice}}</text>
-                    <text class="tips">{{item.detail}}</text>
-                  </view>
-                  <view class="inner-image">
-                    <image src="{{item.path}}" mode="aspectFill"/>
-                  </view>
-                </view>
-              </view>
-            </block>
+            
+  <block wx:for="{{item.coldlist}}" wx:for-index="$orderList$index" wx:for-item="$orderList$item" wx:key="$orderList$index">
+    <view class="item-list">
+      <view class="inner txt">
+        <view class="inner-layer" data-index="{{$orderList$index}}" id="{{$orderList$item.sourceId}}">
+          <text class="title">{{$orderList$item.title}}</text>
+          <text class="font-small link">会员价：￥{{$orderList$item.price}} </text>
+          <text class="font-small {{$orderList$userLevel ? 'through' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
+          <text class="tips">{{$orderList$item.detail}}</text>
+        </view>
+        <view class="inner-image">
+          <image src="{{$orderList$item.path}}" mode="aspectFill"/>
+        </view>
+      </view>
+    </view>
+  </block>
+
           </view>
         </view>
       </view>

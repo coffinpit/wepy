@@ -280,3 +280,6 @@
 .through {
   text-decoration: line-through;
 }
+button::after {
+  border: none;
+}

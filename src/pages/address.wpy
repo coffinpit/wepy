@@ -151,6 +151,7 @@
       this.$parent.HttpRequest.GetAddress(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
+          _this.$parent.showSuccess()
           var data = res.data.data
           if (data.length === 0) {
             this.isNull = true
@@ -166,8 +167,12 @@
             obj.areaId = item.areaId
             _this.address.push(obj)
           })
+        } else {
+          _this.$parent.showFail()
         }
         _this.$apply()
+      }).catch(() => {
+        _this.$parent.showFail()
       })
     }
     deleteAdd (id) {

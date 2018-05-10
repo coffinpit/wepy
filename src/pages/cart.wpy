@@ -677,6 +677,7 @@
       this.$parent.HttpRequest.GetCartHttp(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
+          _this.$parent.showSuccess()
           var data = res.data.data
           this.cartStatus.totalprice = data.price
           this.cartStatus.discount = data.reduction
@@ -693,8 +694,12 @@
             _this.cartList.push(obj)
             _this.$apply()
           })
+        } else {
+          _this.$parent.showFail()
         }
         _this.$apply()
+      }).catch(() => {
+        _this.$parent.showFail()
       })
     }
     initChild (parent) {

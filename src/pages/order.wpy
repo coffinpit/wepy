@@ -30,6 +30,9 @@
     margin-top:20rpx;
     .order-title{
       border-bottom:1px #eee solid;
+      close{
+        color:#999;
+      }
     }
     .content{
       margin-bottom:0;
@@ -38,9 +41,12 @@
       .order-num{
         color:#999;
       }
-      .link{
+      .order-status-txt{
         float:right;
         margin-top:8rpx;
+        &.close{
+          color:#999;
+        }
       }
     }
     .iconfont{
@@ -54,7 +60,8 @@
     background-color: #fff;
   }  
   .items{  
-    width: 100%;  
+    width: 100%; 
+    padding:20rpx 0; 
   }  
   .item-list{  
     height: 200rpx;  
@@ -77,7 +84,7 @@
     }
   }
   .inner-layer{
-    width:400rpx;
+    width:460rpx;
     overflow:hidden;
     float:left;
     .title{
@@ -101,6 +108,17 @@
       width:260rpx;
     }
   }
+  .more{
+    margin: 0 20rpx;
+    padding:20rpx;
+    background: #f8f8f8;
+    .icon-rightsj{
+      font-size:40rpx;
+      float:right;
+      margin-top:6rpx;
+      margin-right:0;
+    }
+  }
   .inner-image{
     height:150rpx;
     float:right;
@@ -113,6 +131,37 @@
       border-right:none;
     }
   }
+  .order-edit{
+    border-top:1px #eee solid;
+    padding:20rpx 0;
+    overflow:hidden;
+    .icon-me_dd{
+      font-size:110rpx;
+      margin-left:-14rpx;
+      color:#eee;
+      float:left;
+    }
+    .font-normal, .edit-button{
+      float:right;
+      margin-right:20rpx;
+    }
+    .edit-button{
+      margin-top:20rpx;
+      width:80%;
+      button{
+        margin:0;
+        float:right;
+        margin-left:20rpx;
+      }
+      .blank-button{
+        border:1px #999 solid;
+        color:#999;
+      }
+      .default-button{
+        padding:0 20rpx;
+      }
+    }
+  }
 </style>
 <template>
   <view class="container">
@@ -123,10 +172,10 @@
       <view class="cart-list" wx:if="{{!item.isNull}}">
         <view class="content order-title">
           <text class="font-normal order-num">订单编号：{{item.title}}</text>
-          <text class="font-normal link">{{item.status}}</text>
+          <text class="font-normal order-status-txt {{item.status === 1 || item.status === 2? 'link' : ''}} {{item.status === 3? 'close' : ''}}">{{item.statusTxt}}</text>
         </view>
         <view class="item-box">
-          <view class="items">
+          <view class="items {{isMore? 'show' : ''}}">
             <repeat for="{{item.orderDetail}}" index="index" item="item" key="index">
               <view class="item-list">
                 <view class="inner txt">
@@ -142,6 +191,21 @@
                 </view>
               </view>
             </repeat>
+            <view class="more" @tap="showMore" @tap="goDetail({{item.id}})">
+              <text class="font-normal">查看全部 ({{item.count}}) <text class="iconfont icon-rightsj"></text></text>
+            </view>
+          </view>
+          <view class="order-edit">
+            <text class="iconfont icon-me_dd"></text>
+            <text class="font-normal">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+            <view class="edit-button">
+              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}">修改地址</button>
+              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}">取消订单</button>
+              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 3}}">删除订单</button>
+              <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
+              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}">查看物流</button>
+              <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}">付款</button>
+            </view>
           </view>
         </view>
       </view>
@@ -174,21 +238,31 @@
         title: '售后',
         type: 'refunding'
       }],
-      orderStatus: ['待支付', '待发货', '待收货', '售后'],
+      orderStatus: ['异常', '待支付', '售后中', '已关闭', '待发货', '待收货', '交易完成'],
       current: 0,
       orderType: 'all',
       orderList: [],
       pageSize: 5,
       pageNum: 1,
-      totalPageNum: 0
+      totalPageNum: 0,
+      isMore: false
     }
     methods = {
       checkPackage (index, type) {
         this.current = index
         this.orderType = type
+      },
+      goDetail (id) {
+        wepy.navigateTo({
+          url: './orderDetail?id=' + id
+        })
+      },
+      showMore () {
+        this.isMore = !this.isMore
       }
     }
     initOrder () {
+      this.$parent.showLoading()
       this.orderList = []
       this.pageNum = 1
       var _this = this
@@ -198,23 +272,30 @@
         pageNum: this.pageNum,
         status: this.orderType
       }
-      console.log(data)
       this.$parent.HttpRequest.GetOrderStatus(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
+          _this.$parent.showSuccess()
           var data = res.data.data
           _this.totalPageNum = data.totalPageNum
           data.orders.forEach((item) => {
             var obj = {}
+            obj.id = item.id
             obj.title = item.showId
             obj.pay = item.pay
             obj.freight = item.freight
-            obj.status = _this.orderStatus[item.status - 1]
-            obj.orderDetail = this.initChild(item.buyingRecords)
+            obj.status = item.status
+            obj.statusTxt = _this.orderStatus[item.status]
+            obj.count = item.buyingRecords.length
+            obj.orderDetail = _this.initChild(item.buyingRecords)
             _this.orderList.push(obj)
           })
+        } else {
+          _this.$parent.showFail()
         }
         _this.$apply()
+      }).catch(() => {
+        _this.$parent.showFail()
       })
     }
     initChild (parent) {

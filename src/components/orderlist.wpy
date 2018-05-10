@@ -1,0 +1,90 @@
+<style lang="less">
+  .item-list{  
+    height: 200rpx;  
+    overflow: hidden;
+    padding:0 20rpx 20rpx;
+    box-sizing:border-box;
+  }
+  .inner.txt{
+    background-color: #f8f8f8;
+    padding:20rpx;
+    box-sizing:border-box; 
+    overflow:hidden;  
+  }  
+  .inner-left{
+    width:360rpx;
+    overflow:hidden;
+    white-space:break-all;
+    .place{
+      min-height: 108rpx;
+    }
+  }
+  .inner-layer{
+    width:460rpx;
+    overflow:hidden;
+    float:left;
+    .title{
+      min-height:76rpx;
+      height:76rpx;
+      line-height:38rpx;
+      overflow:hidden;
+      display:block;
+      font-size:28rpx;
+      margin-bottom:6rpx;
+    }
+    .tips, .title{
+      display:block;
+    }
+    .tips{
+      float:right;
+    }
+    .font-small{
+      float:left;
+      display:block;
+      width:260rpx;
+    }
+  }
+  .inner-image{
+    height:150rpx;
+    float:right;
+    image{
+      width:148rpx;
+      height:148rpx;
+      border:1px #eee solid;
+      box-sizing:border-box;
+      float:left;
+      border-right:none;
+    }
+  }
+</style>
+<template>
+  <repeat for="{{orderList}}" index="index" item="item" key="index">
+    <view class="item-list">
+      <view class="inner txt">
+        <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
+          <text class="title">{{item.title}}</text>
+          <text class="font-small link">会员价：￥{{item.price}} </text>
+          <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.oldprice}}</text>
+          <text class="tips">{{item.detail}}</text>
+        </view>
+        <view class="inner-image">
+          <image src="{{item.path}}" mode="aspectFill"></image>
+        </view>
+      </view>
+    </view>
+  </repeat>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class OrderList extends wepy.component {
+    props = {
+      orderList: Array
+    }
+    methods = {
+    }
+    onLoad () {
+      this.$apply()
+    }
+  }
+</script>

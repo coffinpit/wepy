@@ -310,13 +310,18 @@
       this.$parent.HttpRequest.GetUserOrder(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
+          _this.$parent.showSuccess()
           var data = res.data.data
           _this.refunding = data.refunding
           _this.undelivered = data.undelivered
           _this.unpaid = data.unpaid
           _this.unreceipted = data.unreceipted
+        } else {
+          _this.$parent.showFail()
         }
         _this.$apply()
+      }).catch(() => {
+        _this.$parent.showFail()
       })
     }
     onLoad () {

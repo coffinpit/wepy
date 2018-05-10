@@ -1,3 +1,4 @@
+@import "./../components/orderlist.wxss";
 .container {
   min-height: calc(100vh);
   display: block;
@@ -57,64 +58,7 @@
 }
 .items {
   width: 100%;
-}
-.item-list {
-  height: 200rpx;
-  overflow: hidden;
-  padding: 0 20rpx 20rpx;
-  box-sizing: border-box;
-}
-.inner.txt {
-  background-color: #f8f8f8;
-  padding: 20rpx;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-.inner-left {
-  width: 360rpx;
-  overflow: hidden;
-  white-space: break-all;
-}
-.inner-left .place {
-  min-height: 108rpx;
-}
-.inner-layer {
-  width: 460rpx;
-  overflow: hidden;
-  float: left;
-}
-.inner-layer .title {
-  min-height: 76rpx;
-  height: 76rpx;
-  line-height: 38rpx;
-  overflow: hidden;
-  display: block;
-  font-size: 28rpx;
-  margin-bottom: 6rpx;
-}
-.inner-layer .tips,
-.inner-layer .title {
-  display: block;
-}
-.inner-layer .tips {
-  float: right;
-}
-.inner-layer .font-small {
-  float: left;
-  display: block;
-  width: 260rpx;
-}
-.inner-image {
-  height: 150rpx;
-  float: right;
-}
-.inner-image image {
-  width: 148rpx;
-  height: 148rpx;
-  border: 1px #eee solid;
-  box-sizing: border-box;
-  float: left;
-  border-right: none;
+  padding-bottom: 20rpx;
 }
 .vip-tip {
   margin: 20rpx 20rpx 0;

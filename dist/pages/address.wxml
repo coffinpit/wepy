@@ -22,13 +22,11 @@
     </block>
     
   <view wx:if="{{isNull}}">
-    
-      <view class="lost-goods">
-        <image src="../image/lost-goods.png"/>
-        <text>暂无数据</text>
-      </view>
-    
-    <view/>
+    <view class="lost-goods">
+      <image src="../image/lost-goods.png"/>
+      <text class="iconfont {{$defect$typeIcon}}"/>
+      <text class="font-normal">{{$defect$typeTxt}}</text>
+    </view>
   </view>
 
     <button class="default-button" bindtap="goNewAdd">新建地址</button>

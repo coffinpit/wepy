@@ -239,6 +239,9 @@
 .through{
   text-decoration: line-through;
 }
+button::after{
+  border: none;
+}
 </style>
 
 <script>
@@ -273,7 +276,8 @@ export default class extends wepy.app {
       'pages/user',
       'pages/collect',
       'pages/logistica',
-      'pages/order'
+      'pages/order',
+      'pages/orderDetail'
     ],
     window: {
       backgroundTextStyle: 'dark',
@@ -317,32 +321,6 @@ export default class extends wepy.app {
 
   // 判断tabbar回退页面
   pageRoot = false
-
-  constructor () {
-    super()
-    this.use('requestfix')
-    this.intercept('request', {
-      config (p) {
-        p.timestamp = +new Date()
-        return p
-      },
-      success (p) {
-        wepy.hideLoading()
-        return p
-      },
-      fail (p) {
-        wepy.hideLoading()
-        wepy.showToast({
-          title: '加载失败',
-          icon: 'none',
-          image: '../image/cancel.png'
-        })
-        return p
-      },
-      complete (p) {
-      }
-    })
-  }
 
   onLaunch() {
     this.testAsync()
@@ -457,7 +435,11 @@ export default class extends wepy.app {
       icon: 'loading'
     })
   }
+  showSuccess () {
+    wepy.hideLoading()
+  }
   showFail () {
+    wepy.hideLoading()
     wepy.showToast({
       title: '加载失败',
       icon: 'none',

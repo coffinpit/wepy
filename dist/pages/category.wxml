@@ -1,19 +1,6 @@
 
   <view class="container">
-    <view class="defect"  wx:if="{{isNull}}">
-      
-  <view>
-    
-      <view class="lost-goods">
-        <image src="../image/lost-goods.png"/>
-        <text>暂无数据</text>
-      </view>
-    
-    <view/>
-  </view>
-
-    </view>
-    <view  wx:else>
+    <view>
       
   <view class="searchbar" bindtap="$searchbar$goSearch">
     <view class="searchinput">
@@ -36,14 +23,14 @@
       </view>
       <view class="category-tab-item">
         <block wx:for="{{categoryTab}}" wx:for-index="index" wx:for-item="item" wx:key="index">
-          <scroll-view class="category-tab-page {{showMore === index ? 'more' : ''}}" wx:if="{{currentTab === index}}" scroll-x>
+          <scroll-view class="category-tab-page {{showMore === index ? 'more' : ''}}"  wx:if="{{currentTab === index}}" scroll-x>
             <block wx:for="{{item.child}}" wx:for-index="index" wx:for-item="item" wx:key="index">
               <view class="catrgory-tab-link {{currentItem === index ? 'current' : ''}}" id="{{item.id}}" bindtap="reqCategory" data-wpyreqcategory-a="{{index}}" data-wpyreqcategory-b="{{item.id}}"><text>{{item.name}}</text></view>
             </block>
           </scroll-view>
         </block>
       </view>
-      <view class="content">
+      <view class="content"  wx:if="{{!isNull}}">
         
   <view class="goods-layer">
     <block wx:for="{{$Categoods$goodsItem}}" wx:for-index="$Categoods$index" wx:for-item="$Categoods$item" wx:key="$Categoods$key">
@@ -69,6 +56,17 @@
         </view>
       </view>
     </block>
+  </view>
+
+      </view>
+      <view class="defect" wx:else>
+        
+  <view>
+    <view class="lost-goods">
+      <image src="../image/lost-goods.png"/>
+      <text class="iconfont {{$defectImage$typeIcon}}"/>
+      <text class="font-normal">{{$defectImage$typeTxt}}</text>
+    </view>
   </view>
 
       </view>
