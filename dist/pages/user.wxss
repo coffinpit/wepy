@@ -119,7 +119,7 @@
 }
 .setting-layer .notice {
   float: right;
-  margin: 10rpx 20rpx 0 0;
+  margin: 16rpx 20rpx 0 0;
   width: 40rpx;
   height: 40rpx;
   background: #fc5e43;

@@ -7,9 +7,9 @@
       <text class="user">{{user.name}} {{user.phone}}</text>
     </view>
     <view class="cart-status" wx:if="{{userLevel}}">
-      <text class="font-normal">尊敬的优价会员，本单已为您节省 <text class="font-normal link font-bold">￥{{reduction}}</text></text>
+      <text class="font-normal">尊敬的<text class="link">优价会员</text>，本单已为您节省 <text class="font-normal link font-bold">￥{{reduction}}</text></text>
     </view>
-    <view class="cart-status" wx:eles="wx:eles">
+    <view class="cart-status" wx:else>
       <text class="font-normal">成为优价会员，本单仅需 <text class="font-normal link font-bold">￥{{memberPrice}}</text></text>
       <view class="default-button">加入会员</view>
     </view>
@@ -23,11 +23,11 @@
             
   <block wx:for="{{item.coldlist}}" wx:for-index="$orderList$index" wx:for-item="$orderList$item" wx:key="$orderList$index">
     <view class="item-list">
-      <view class="inner txt">
+      <view class="inner txt" bindtap="$orderList$goDetail" data-com-index="{{index}}" data-wpygodetail-a="{{$orderList$item.id}}">
         <view class="inner-layer" data-index="{{$orderList$index}}" id="{{$orderList$item.sourceId}}">
           <text class="title">{{$orderList$item.title}}</text>
           <text class="font-small link">会员价：￥{{$orderList$item.price}} </text>
-          <text class="font-small {{$orderList$userLevel ? 'through' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
+          <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
           <text class="tips">{{$orderList$item.detail}}</text>
         </view>
         <view class="inner-image">
@@ -52,7 +52,7 @@
     </view>
     <view class="vip-tip" wx:if="{{userLevel}}">
       <text class="iconfont icon-vip link"/>
-      <text class="title">尊敬的优价会员，生鲜购满2公斤才可包邮哦</text>
+      <text class="title">尊敬的<text class="link">优价会员</text>，生鲜购满2公斤才可包邮哦</text>
     </view>
     <view class="vip-tip no-active" wx:else>
       <text class="iconfont icon-vip"/>

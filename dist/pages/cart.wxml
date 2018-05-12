@@ -70,9 +70,16 @@
         <text class="title">成为会员，生鲜购满2公斤全场包邮</text>
       </view>
     </view>
-    <view  wx:else class="blank">
-      <image src="../image/null.png" mode="aspectFit"/>
-      <text class="title">您的购物车空空如也</text>
+    <view  wx:elif="{{isNull && !isLoading}}" class="blank">
+      
+  <view>
+    <view class="lost-goods">
+      <image src="../image/lost-goods.png"/>
+      <text class="iconfont {{$defect$typeIcon}}"/>
+      <text class="font-normal">{{$defect$typeTxt}}</text>
+    </view>
+  </view>
+
       <view class="blank-button" hover-class="blank-button-hover" bindtap="goCategory">逛一逛</view>
     </view>
   </view>

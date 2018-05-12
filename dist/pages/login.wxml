@@ -1,6 +1,6 @@
 
   <view class="login-container">
-    <view class="login">
+    <view class="login"  wx:if="{{!isNull}}">
       <view class="app-info">
         <image class="app-logo" src="../image/login-bg.jpg" mode="widthFix"/>
         <text class="app-name">正善小程序</text>
@@ -11,7 +11,7 @@
         <view class="alert-desc">
           <view class="alert-text">获得你的公开信息（昵称、头像等）</view>
         </view>
-        <button class="login-btn" hover-class="login-btn-active" bindtap="login">确认登录</button>
+        <button class="login-btn" open-type="getUserInfo" hover-class="login-btn-active" bindgetuserinfo="login">确认登录</button>
       </view>
     </view>
   </view>

@@ -1,3 +1,4 @@
+@import "./../components/defect.wxss";
 @import "./../components/counter.wxss";
 view {
   box-sizing: border-box;
@@ -297,23 +298,11 @@ view {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.blank {
-  width: 400rpx;
-  margin: 0 auto;
-  padding-top: 50rpx;
-  text-align: center;
-}
-.blank image {
-  width: 200rpx;
-  height: 125rpx;
-}
-.blank text {
-  display: block;
-}
 .blank .blank-button {
-  width: 40%;
-  margin: 30rpx auto;
+  width: 200rpx;
+  margin: 100rpx auto;
   line-height: 50rpx;
+  text-align: center;
 }
 .hidden-temp .temp-input {
   display: none;

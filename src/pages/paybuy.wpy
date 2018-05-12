@@ -174,9 +174,9 @@
       <text class="user">{{user.name}} {{user.phone}}</text>
     </view>
     <view class="cart-status" wx:if="{{userLevel}}">
-      <text class="font-normal">尊敬的优价会员，本单已为您节省 <text class="font-normal link font-bold">￥{{reduction}}</text></text>
+      <text class="font-normal">尊敬的<text class="link">优价会员</text>，本单已为您节省 <text class="font-normal link font-bold">￥{{reduction}}</text></text>
     </view>
-    <view class="cart-status" wx:eles>
+    <view class="cart-status" wx:else>
       <text class="font-normal">成为优价会员，本单仅需 <text class="font-normal link font-bold">￥{{memberPrice}}</text></text>
       <view class="default-button">加入会员</view>
     </view>
@@ -187,7 +187,7 @@
         </view>
         <view class="item-box">
           <view class="items">
-            <orderList :orderList.sync="item.coldlist"></orderList>
+            <orderList :orderList.sync="item.coldlist" :userLevel.sync="userLevel"></orderList>
           </view>
         </view>
       </view>
@@ -203,7 +203,7 @@
     </view>
     <view class="vip-tip" wx:if="{{userLevel}}">
       <text class="iconfont icon-vip link"></text>
-      <text class="title">尊敬的优价会员，生鲜购满2公斤才可包邮哦</text>
+      <text class="title">尊敬的<text class="link">优价会员</text>，生鲜购满2公斤才可包邮哦</text>
     </view>
     <view class="vip-tip no-active" wx:else>
       <text class="iconfont icon-vip"></text>
@@ -391,7 +391,7 @@
       this.sourceId = param.id
       this.sourceType = param.type
       this.count = param.count
-      this.token = this.$parent.getToken('paybuy')
+      this.token = this.$parent.getToken()
       this.$apply()
     }
     onShow () {

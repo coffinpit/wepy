@@ -19,7 +19,7 @@
       line-height:50rpx;
       text-align:center;
     }
-    text.icon-ksj_splb{
+    text.iconfont{
       position:absolute;
       top:80rpx;
       left:50%;
@@ -32,6 +32,9 @@
       font-size:120rpx;
       color:#fff;
       line-height:140rpx;
+      &.icon-ksj_sc, &.icon-me_xx{
+        font-size: 100rpx;
+      }
     }
     text.font-normal{
       color:#999;
@@ -61,11 +64,31 @@
       typeIcon () {
         if (this.type === '1') {
           return 'icon-ksj_splb'
+        } else if (this.type === '2') {
+          return 'icon-ksj_gwc'
+        } else if (this.type === '3') {
+          return 'icon-ksj_dd'
+        } else if (this.type === '4') {
+          return 'icon-ksj_sc'
+        } else if (this.type === '5') {
+          return 'icon-ksj_dz'
+        } else if (this.type === '6') {
+          return 'icon-me_xx'
         }
       },
       typeTxt () {
         if (this.type === '1') {
           return '商品都在拼命的跑过来'
+        } else if (this.type === '2') {
+          return '购物车空空如也'
+        } else if (this.type === '3') {
+          return '暂无任何订单'
+        } else if (this.type === '4') {
+          return '暂无任何收藏'
+        } else if (this.type === '5') {
+          return '赶快添加第一个地址'
+        } else if (this.type === '6') {
+          return '暂无任何消息'
         }
       }
     }

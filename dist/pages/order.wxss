@@ -1,3 +1,5 @@
+@import "./../components/defect.wxss";
+@import "./../components/orderlist.wxss";
 .container {
   min-height: calc(100vh);
   display: block;
@@ -36,7 +38,6 @@
 }
 .cart-list .content {
   margin-bottom: 0;
-  height: 100rpx;
   padding: 20rpx;
 }
 .cart-list .content .order-num {
@@ -44,7 +45,7 @@
 }
 .cart-list .content .order-status-txt {
   float: right;
-  margin-top: 8rpx;
+  margin-top: 2rpx;
 }
 .cart-list .content .order-status-txt.close {
   color: #999;
@@ -61,52 +62,6 @@
 .items {
   width: 100%;
   padding: 20rpx 0;
-}
-.item-list {
-  height: 200rpx;
-  overflow: hidden;
-  padding: 0 20rpx 20rpx;
-  box-sizing: border-box;
-}
-.inner.txt {
-  background-color: #f8f8f8;
-  padding: 20rpx;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-.inner-left {
-  width: 360rpx;
-  overflow: hidden;
-  white-space: break-all;
-}
-.inner-left .place {
-  min-height: 108rpx;
-}
-.inner-layer {
-  width: 460rpx;
-  overflow: hidden;
-  float: left;
-}
-.inner-layer .title {
-  min-height: 76rpx;
-  height: 76rpx;
-  line-height: 38rpx;
-  overflow: hidden;
-  display: block;
-  font-size: 28rpx;
-  margin-bottom: 6rpx;
-}
-.inner-layer .tips,
-.inner-layer .title {
-  display: block;
-}
-.inner-layer .tips {
-  float: right;
-}
-.inner-layer .font-small {
-  float: left;
-  display: block;
-  width: 260rpx;
 }
 .more {
   margin: 0 20rpx;
@@ -162,4 +117,11 @@
 }
 .order-edit .edit-button .default-button {
   padding: 0 20rpx;
+}
+.order-edit .edit-button .blank-button-hover {
+  background: transparent;
+  border: 1px #fc5e44 solid;
+}
+.hidden {
+  display: none;
 }

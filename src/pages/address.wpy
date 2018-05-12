@@ -64,7 +64,7 @@
 <template>
   <view class="container">
     <repeat for="{{address}}" item="item" index="index" key="index">
-      <view class="address-container" @tap="backToOrder({{index}})">
+      <view class="address-container" @tap="backToOrder({{index}}, {{item.id}})">
         <view class="address-layer">
           <text class="title">{{item.name}}</text>
           <text class="phonenumer">{{item.phone}}</text>
@@ -83,7 +83,7 @@
         </view>
       </view>
     </repeat>
-    <defect wx:if="{{isNull}}"><view slot="lost-category"></view></defect>
+    <defect wx:if="{{isNull}}" type="5"></defect>
     <button class="default-button" @tap="goNewAdd">新建地址</button>
   </view>
 </template>
@@ -103,7 +103,8 @@
       prevPage: '',
       sourceType: '',
       sourceId: '',
-      count: ''
+      count: '',
+      orderId: ''
     }
     components = {
       defect: Defect
@@ -128,7 +129,7 @@
           }
         })
       },
-      backToOrder (index) {
+      backToOrder (index, id) {
         if (this.prevPage === 'paycart') {
           wepy.navigateTo({
             url: './paycart?user=' + JSON.stringify(this.address[index])
@@ -137,6 +138,20 @@
         if (this.prevPage === 'paybuy') {
           wepy.navigateTo({
             url: './paybuy?user=' + JSON.stringify(this.address[index]) + '&type=' + this.sourceType + '&id=' + this.sourceId + '&count=' + this.count
+          })
+        }
+        if (this.prevPage === 'order') {
+          this.editOrderAdd(id, () => {
+            wepy.navigateTo({
+              url: './order'
+            })
+          })
+        }
+        if (this.prevPage === 'orderdetail') {
+          this.editOrderAdd(id, () => {
+            wepy.navigateTo({
+              url: './orderDetail?id=' + this.orderId
+            })
           })
         }
       }
@@ -186,13 +201,27 @@
         _this.$apply()
       })
     }
+    editOrderAdd (id, cb) {
+      var data = {
+        token: this.token,
+        orderId: this.orderId,
+        addressId: id
+      }
+      this.$parent.HttpRequest.EditOrderAdd(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          cb && cb()
+        }
+      })
+    }
     onLoad (data) {
       console.log(data)
       this.prevPage = data.page
       this.sourceType = data.sourceType
       this.sourceId = data.sourceId
       this.count = data.count
-      this.token = this.$parent.getToken('address')
+      this.orderId = data.id
+      this.token = this.$parent.getToken()
       this.$apply()
     }
     onShow () {

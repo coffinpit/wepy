@@ -2,11 +2,11 @@
   .container{
     min-height:calc(100vh);
     display:block;
-    padding-top:20rpx;
     padding-bottom:108rpx;
   }
   .collect{
     position:relative;
+    margin-top:20rpx;
     .collect-list{
       width:100%;
       z-index:999;
@@ -70,26 +70,39 @@
       margin:0;
     }
   }
+  .blank{
+    .blank-button{
+      width:200rpx;
+      margin:0 auto;
+      line-height:50rpx;
+      text-align:center;
+    }
+  }
 </style>
 <template>
   <view class="container">
-    <view class="collect" style="height:{{dataLength * 262}}rpx" wx:if="{{!isNull}}">
-      <view class="collect-list {{isEdit ? 'animate' : ''}}">
-        <collectGood :goodsItem.sync="collectList" @goodsTap.user="goDetail"></collectGood>
-      </view>
-      <repeat for="{{collectList}}" item="item" index="index">
-        <view class="cover {{isEdit ? 'animate' : ''}}" style="top: {{index * 262}}rpx"></view>
-        <view class="collect-check {{isEdit ? 'show' : ''}}" style="top: {{index * 262}}rpx">
-          <view @tap.stop="checked({{index}})">
-            <text class="font-normal">删除</text>
-          </view>
+    <view wx:if="{{!isNull}}">
+      <view class="collect" style="height:{{dataLength * 262}}rpx">
+        <view class="collect-list {{isEdit ? 'animate' : ''}}">
+          <collectGood :goodsItem.sync="collectList" @goodsTap.user="goDetail"></collectGood>
         </view>
-      </repeat>
+        <repeat for="{{collectList}}" item="item" index="index">
+          <view class="cover {{isEdit ? 'animate' : ''}}" style="top: {{index * 262}}rpx"></view>
+          <view class="collect-check {{isEdit ? 'show' : ''}}" style="top: {{index * 262}}rpx">
+            <view @tap.stop="checked({{index}})">
+              <text class="font-normal">删除</text>
+            </view>
+          </view>
+        </repeat>
+      </view>
+      <isDown wx:if="{{isDown}}"></isDown>
+      <view class="collect-bottom">
+        <button class="default-button" hover-class="default-button-hover" @tap="editAll">{{isEdit ? '取消': '编辑'}}</button>
+      </view>
     </view>
-    <defect wx:else><view slot="lost-category"></view></defect>
-    <isDown wx:if="{{isDown}}"></isDown>
-    <view class="collect-bottom" wx:if="{{!isNull}}">
-      <button class="default-button" hover-class="default-button-hover" @tap="editAll">{{isEdit ? '取消': '编辑'}}</button>
+    <view wx:elif="{{isNull && !isLoading}}" class="blank">
+      <defect type="4"></defect>
+      <view class="blank-button" hover-class="blank-button-hover" @tap="goCategory">逛一逛</view>
     </view>
   </view>
 </template>
@@ -127,11 +140,17 @@
       isEdit: false,
       checkResult: '',
       isDown: false,
-      dataLength: 0
+      dataLength: 0,
+      isLoading: true
     }
     methods = {
       editAll () {
         this.isEdit = !this.isEdit
+      },
+      goCategory () {
+        wepy.switchTab({
+          url: './category'
+        })
       },
       checked (index) {
         this.checkResult = this.collectList[index].markId
@@ -161,6 +180,7 @@
       var _this = this
       this.isEdit = false
       this.isDown = false
+      this.isLoading = true
       var data = {
         token: this.token,
         markType: 1,
@@ -169,6 +189,7 @@
       }
       this.$parent.HttpRequest.GetMarkSpu(data).then((res) => {
         console.log(res)
+        _this.isLoading = false
         if (res.data.error === 0) {
           _this.$parent.showSuccess()
           var data = res.data.data
@@ -197,6 +218,7 @@
         }
         _this.$apply()
       }).catch(() => {
+        _this.isLoading = false
         _this.$parent.showFail()
       })
     }
@@ -225,7 +247,7 @@
       }
     }
     onLoad () {
-      this.token = this.$parent.getToken('collect')
+      this.token = this.$parent.getToken()
       this.$apply()
     }
     onShow () {

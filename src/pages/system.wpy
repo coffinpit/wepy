@@ -3,25 +3,167 @@
     min-height:calc(100vh);
     display:block;
   }
+  .notice-type{
+    width:100%;
+    white-space:nowrap;
+    line-height:90rpx;
+    font-size:28rpx;
+    color:#333;
+    height:90rpx;
+    border-bottom:1px #eee solid;
+    background:#fff;
+    margin-bottom: 20rpx;
+    view{
+      width:30%;
+      margin:0 10%;
+      box-sizing:border-box;
+      text-align:center;
+      display: inline-block;
+      &.active{
+        border-bottom: 2px #fe5946 solid;
+        color: #fe5946;
+      }
+    }
+  }
+  .notice{
+    padding:20rpx;
+    background: #fff;
+    overflow: hidden;
+    .icon-me_xx{
+      float:left;
+      width:60rpx;
+      height: 60rpx;
+      font-size: 40rpx;
+      line-height: 60rpx;
+      border-radius: 50%;
+      background: #fc5e43;
+      margin-right:20rpx;
+      text-align: center;
+      color:#fff;
+    }
+    .font-normal{
+      float: left;
+      width:630rpx;
+    }
+    .tips{
+      display: block;
+    }
+  }
 </style>
 <template>
   <view class="container">
+    <view class="notice-type">
+      <repeat for="{{noticeType}}" item="item" index="index"><view class="{{current === index ? 'active' : ''}}" @tap="changeType({{index}})">{{item}}</view></repeat>
+    </view>
+    <view>
+      <view wx:if="{{current === 0}}">
+        <repeat for="{{systemNotice}}" item="item" index="index">
+          <view class="notice">
+            <text class="iconfont icon-me_xx"></text>
+            <text class="font-normal">{{item.content}}<text class="tips">{{item.time}}</text></text>
+          </view>
+        </repeat>
+        <defect wx:if="{{systemIsNull}}" type="6"></defect>
+      </view>
+      <view wx:if="{{current === 1}}">
+        <repeat for="{{orderNotice}}" item="item" index="index">
+          <view class="notice">
+            <text class="iconfont icon-me_xx"></text>
+            <text class="font-normal">{{item.content}}<text class="tips">{{item.time}}</text></text>
+          </view>
+        </repeat>
+        <defect wx:if="{{orderIsNull}}" type="6"></defect>
+      </view>
+    </view>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import Defect from '../components/defect'
 
   export default class System extends wepy.page {
     config = {
       navigationBarTitleText: '系统消息'
     }
     data = {
+      token: '',
+      pageSize: 5,
+      pageNum: 1,
+      totalPageNum: '',
+      noticeType: ['系统通知', '订单通知'],
+      noticeList: [],
+      current: 0,
+      systemNotice: null,
+      orderNotice: null
     }
     methods = {
+      changeType (index) {
+        this.current = index
+      }
+    }
+    components = {
+      defect: Defect
+    }
+    computed = {
+      systemIsNull () {
+        if (this.systemNotice && this.systemNotice.length === 0) {
+          return true
+        } else {
+          return false
+        }
+      },
+      orderIsNull () {
+        if (this.orderNotice && this.orderNotice.length === 0) {
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+    initData () {
+      this.$parent.showLoading()
+      var _this = this
+      var data = {
+        token: this.token,
+        pageSize: this.pageSize,
+        pageNum: this.pageNum
+      }
+      this.$parent.HttpRequest.GetNotice(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          _this.$parent.showSuccess()
+          _this.systemNotice = []
+          _this.orderNotice = []
+          var data = res.data.data
+          _this.totalPageNum = data.totalPageNum
+          data.notice.forEach((item) => {
+            var obj = {}
+            obj.type = item.type
+            obj.content = item.content
+            obj.time = _this.$parent.dateFormat(item.createTime * 1000, 'Y-m-d H:m')
+            _this.noticeList.push(obj)
+          })
+          _this.orderNotice = _this.noticeList.filter((item) => {
+            return item.type === 1
+          })
+          _this.systemNotice = _this.noticeList.filter((item) => {
+            return item.type === 2
+          })
+        } else {
+          _this.$parent.showFail()
+        }
+        _this.$apply()
+      }).catch(() => {
+        _this.$parent.showFail()
+      })
     }
     onLoad () {
+      this.token = this.$parent.getToken()
       this.$apply()
+    }
+    onShow () {
+      this.initData()
     }
   }
 </script>

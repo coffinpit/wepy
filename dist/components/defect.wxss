@@ -19,7 +19,7 @@
   line-height: 50rpx;
   text-align: center;
 }
-.lost-goods text.icon-ksj_splb {
+.lost-goods text.iconfont {
   position: absolute;
   top: 80rpx;
   left: 50%;
@@ -32,6 +32,10 @@
   font-size: 120rpx;
   color: #fff;
   line-height: 140rpx;
+}
+.lost-goods text.iconfont.icon-ksj_sc,
+.lost-goods text.iconfont.icon-me_xx {
+  font-size: 100rpx;
 }
 .lost-goods text.font-normal {
   color: #999;

@@ -45,6 +45,7 @@
     }
     .txt-status{
       float: right;
+      line-height: 44rpx;
       &.remain{
         margin-top:20rpx;
         .font-normal{
@@ -109,7 +110,7 @@
     }
     .right{
       float:right;
-      margin-top:10rpx;
+      margin-top:4rpx;
     }
   }
   .spacing{
@@ -139,6 +140,10 @@
     .default-button{
       padding:0 20rpx;
     }
+    .blank-button-hover{
+      background: transparent;
+      border:1px #fc5e44 solid;
+    }
   }
 </style>
 <template>
@@ -151,10 +156,12 @@
           <text class="font-normal">仅剩余：{{remainTime}}</text>
           <text class="font-normal">需付款：￥{{finalPrice}}</text>
         </text>
-        <text class="font-normal txt-status" wx:elif="{{status === 1 && !remainTime}}">支付超时</text>
-        <text class="font-normal txt-status">
-          {{status === 2 && address != false ? '已送达' : ''}}
-          {{status === 3 ? '支付超时' : ''}}
+        <text class="font-normal txt-status" wx:elif="{{ remainTime === 0 && status === 1}}">支付超时</text>
+        <text class="font-normal txt-status" wx:elif="{{status === 2 && address != false}}">
+          已送达
+        </text>
+        <text class="font-normal txt-status" wx:elif="{{status === 3}}">
+          支付超时
         </text>
       </view>
       <view class="orderStatus address" wx:if="{{address != false}}">
@@ -171,14 +178,14 @@
           </view>
           <view class="item-box">
             <view class="items">
-              <orderList :orderList.sync="item.orderDetail"></orderList>
+              <orderList :orderList.sync="item.orderDetail" :userLevel.sync="userLevel"></orderList>
             </view>
           </view>
         </view>
       </repeat>
       <view class="orderInfo">
         <text class="font-normal label">订单编号：</text>
-        <text class="font-normal right">{{orderId}}</text>
+        <text class="font-normal right" selectable="true">{{orderId}}</text>
       </view>
       <view class="orderInfo">
         <text class="font-normal label">创建时间：</text>
@@ -192,16 +199,16 @@
         <text class="font-normal label">商品总额：</text>
         <text class="font-normal right">￥{{pay}}</text>
       </view>
-      <view class="orderTotal">
+      <view class="orderTotal" wx:if="{{!isHidden}}">
         <text class="font-normal">需付款<text class="link">￥{{finalPrice}}</text> (含运费￥{{freight}})</text>
         <view class="edit-button">
-          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}">修改地址</button>
-          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}">取消订单</button>
-          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 3}}">删除订单</button>
+          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" @tap="goAddress">修改地址</button>
+          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" @tap="cancel">取消订单</button>
           <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{status === 5 || status === 6}}">售后申请</button>
           <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}">付款</button>
         </view>
       </view>
+      <view class="orderTotal" wx:else><text class="font-normal">订单已取消</text></view>
     </view>
   </view>
 </template>
@@ -228,7 +235,8 @@
       pay: '',
       finalPrice: '',
       freight: '',
-      remainTime: ''
+      remainTime: '',
+      isHidden: false
     }
     computed = {
       isNull () {
@@ -237,12 +245,37 @@
         } else {
           return false
         }
+      },
+      userLevel () {
+        if (this.$parent.globalData.userLevel === 0) {
+          return false
+        } else if (this.$parent.globalData.userLevel === 1) {
+          return true
+        }
       }
     }
     components = {
       orderList: OrderList
     }
     methods = {
+      cancel () {
+        wepy.showModal({
+          title: '提示',
+          content: '确认取消订单',
+          success: (res) => {
+            if (res.confirm) {
+              this.cancelOrder(() => {
+                this.isHidden = true
+              })
+            }
+          }
+        })
+      },
+      goAddress () {
+        wepy.navigateTo({
+          url: './address?page=orderdetail&id=' + this.id
+        })
+      }
     }
     initData () {
       this.order = []
@@ -267,7 +300,7 @@
             if (data.payRemainingTime > 0) {
               _this.remainTime = (data.payRemainingTime - data.payRemainingTime % 60) / 60 + '分' + data.payRemainingTime % 60 + '秒'
             } else {
-              _this.remainTime = null
+              _this.remainTime = 0
             }
             _this.$apply()
           }, 1000)
@@ -306,9 +339,22 @@
       })
       return child
     }
+    cancelOrder (cb) {
+      var data = {
+        token: this.token,
+        orderId: this.id
+      }
+      console.log(data)
+      this.$parent.HttpRequest.CancelOrder(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          cb && cb()
+        }
+      })
+    }
     onLoad (param) {
       this.id = param.id
-      this.token = this.$parent.getToken('orderDetail')
+      this.token = this.$parent.getToken()
       this.$apply()
     }
     onShow () {

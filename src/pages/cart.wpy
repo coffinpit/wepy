@@ -299,22 +299,11 @@
     }
   }
   .blank{
-    width:400rpx;
-    text-align:center;
-    margin:0 auto; 
-    padding-top: 50rpx;
-    text-align:center;
-    image{
-      width:200rpx;
-      height:125rpx;
-    }
-    text{
-      display:block;
-    }
     .blank-button{
-      width:40%;
-      margin:30rpx auto;
+      width:200rpx;
+      margin:100rpx auto;
       line-height:50rpx;
+      text-align:center;
     }
   }
   .hidden-temp{
@@ -409,9 +398,8 @@
         <text class="title">成为会员，生鲜购满2公斤全场包邮</text>
       </view>
     </view>
-    <view wx:else class="blank">
-      <image src="../image/null.png" mode="aspectFit"></image>
-      <text class="title">您的购物车空空如也</text>
+    <view wx:elif="{{isNull && !isLoading}}" class="blank">
+      <defect type="2"></defect>
       <view class="blank-button" hover-class="blank-button-hover" @tap="goCategory">逛一逛</view>
     </view>
   </view>
@@ -420,6 +408,7 @@
 <script>
   import wepy from 'wepy'
   import Counte from '../components/counter'
+  import Defect from '../components/defect'
 
   export default class Cart extends wepy.page {
     config = {
@@ -427,7 +416,8 @@
     }
     components = {
       counteCold: Counte,
-      counteNormal: Counte
+      counteNormal: Counte,
+      defect: Defect
     }
     data = {
       token: '',
@@ -444,7 +434,8 @@
       isEdit: false,
       isNull: false,
       finalprice: 0,
-      freight: 0
+      freight: 0,
+      isLoading: true
     }
     computed = {
       userLevel () {
@@ -671,11 +662,13 @@
         token: this.token
       }
       this.cartList = []
+      _this.isLoading = true
       this.finalprice = 0
       this.freight = 0
       this.cartStatus = {}
       this.$parent.HttpRequest.GetCartHttp(data).then((res) => {
         console.log(res)
+        _this.isLoading = false
         if (res.data.error === 0) {
           _this.$parent.showSuccess()
           var data = res.data.data
@@ -699,6 +692,7 @@
         }
         _this.$apply()
       }).catch(() => {
+        _this.isLoading = false
         _this.$parent.showFail()
       })
     }
@@ -742,7 +736,7 @@
       })
     }
     onLoad () {
-      this.token = this.$parent.getToken('cart')
+      this.token = this.$parent.getToken()
       console.log(this.$parent.globalData.userLevel)
       // 判断用户memberHash
       this.$apply()

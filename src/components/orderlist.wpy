@@ -60,7 +60,7 @@
 <template>
   <repeat for="{{orderList}}" index="index" item="item" key="index">
     <view class="item-list">
-      <view class="inner txt">
+      <view class="inner txt" @tap="goDetail({{item.id}})">
         <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
           <text class="title">{{item.title}}</text>
           <text class="font-small link">会员价：￥{{item.price}} </text>
@@ -79,9 +79,18 @@
 
   export default class OrderList extends wepy.component {
     props = {
-      orderList: Array
+      orderList: Array,
+      userLevel: {
+        type: Boolean,
+        default: false
+      }
     }
     methods = {
+      goDetail (id) {
+        wepy.navigateTo({
+          url: './detail?id=' + id
+        })
+      }
     }
     onLoad () {
       this.$apply()

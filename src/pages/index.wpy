@@ -148,7 +148,7 @@
 
   export default class Main extends wepy.page {
     config = {
-      navigationBarTitleText: '推荐',
+      navigationBarTitleText: '正善牛肉',
       usingComponents: {
         'wxc-toast': '../../packages/@minui/wxc-toast/dist/index',
         'wxc-flex': '../../packages/@minui/wxc-flex/dist/index'
@@ -223,7 +223,7 @@
       this.isDown = false
       var parent = this.$parent
       var _this = this
-      const token = this.$parent.getToken('index')
+      const token = this.$parent.getToken()
       var data = {
         pageNum: this.pageNum,
         recommendType: this.currentPage + 1,

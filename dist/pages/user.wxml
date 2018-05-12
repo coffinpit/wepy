@@ -58,7 +58,7 @@
         <text>收货地址</text>
         <text class="iconfont icon-rightsj"/>
       </view>
-      <view class="setting-layer">
+      <view class="setting-layer" bindtap="goSystem">
         <text class="iconfont icon-me_xx"/>
         <text>消息通知</text>
         <text class="iconfont icon-rightsj"/>

@@ -476,7 +476,7 @@
       overflow: false,
       winHeight: 0,
       collectTxt: '未收藏',
-      collectednum: 0,
+      collectednum: ' ',
       goodsDetail: [{
         title: '商品名称',
         detail: '美国自然牛USDA PRIMA极佳级肉眼牛排'
@@ -675,7 +675,7 @@
       })
     }
     getMarkUser (id, type) {
-      this.collectednum = 0
+      this.collectednum = ' '
       var _this = this
       var data = {
         token: this.token,
@@ -724,7 +724,7 @@
     }
     onLoad (id) {
       this.pageId = id.id
-      this.token = this.$parent.getToken('detail')
+      this.token = this.$parent.getToken()
       this.initData(this.pageId)
       this.$parent.pageRoot = true
       var _this = this

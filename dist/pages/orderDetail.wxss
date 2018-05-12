@@ -46,6 +46,7 @@
 }
 .orderStatus .txt-status {
   float: right;
+  line-height: 44rpx;
 }
 .orderStatus .txt-status.remain {
   margin-top: 20rpx;
@@ -110,7 +111,7 @@
 }
 .orderInfo .right {
   float: right;
-  margin-top: 10rpx;
+  margin-top: 4rpx;
 }
 .spacing {
   margin-top: 20rpx;
@@ -139,4 +140,8 @@
 }
 .edit-button .default-button {
   padding: 0 20rpx;
+}
+.edit-button .blank-button-hover {
+  background: transparent;
+  border: 1px #fc5e44 solid;
 }

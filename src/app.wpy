@@ -260,8 +260,8 @@ setStore(store)
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/start',
       'pages/login',
+      'pages/start',
       'pages/detail',
       'pages/index',
       'pages/cart',
@@ -338,58 +338,12 @@ export default class extends wepy.app {
     const data = await this.sleep(3)
     console.log(data)
   }
-  getUserInfo(page, cb) {
-    const that = this
-    if (wepy.getStorageSync('token')) {
-      wepy.switchTab({
-        url: './index'
-      })
-    }
+
+  getLogin () {
     wepy.login({
       success: (res) => {
         console.log(res.code)
-        wepy.getUserInfo({
-          success: (data) => {
-            that.globalData.userInfo = data.userInfo
-            that.HttpRequest.UserLogin({phone: '13402155751'}).then((res) => {
-              var token = res.data.data.token
-              wepy.setStorageSync('token', token)
-              that.HttpRequest.GetUserInfo({token: token}).then((res) => {
-                if (res.data.error === 0) {
-                  that.globalData.userLevel = res.data.data.level
-                  that.globalData.userHash = res.data.data.hash
-                }
-              })
-              cb && cb(res.userInfo)
-            })
-          },
-          fail (res) {
-            wepy.showModal({
-              title: '警告',
-              content: '请检查网络连接，并重新开启授权',
-              success: (res) => {
-                if (res.confirm) {
-                  wepy.openSetting({
-                    success: (res) => {
-                      if (res.authSetting['scope.userInfo']) {
-                        console.log(res.authSetting['scope.userInfo'])
-                      } else {
-                        wepy.showModal({
-                          'title': '登录失败'
-                        })
-                      }
-                    },
-                    fail: function () {
-                      wepy.showModal({
-                        'title': '拒绝授权将无法使用小程序部分功能，请重新开启授权'
-                      })
-                    }
-                  })
-                }
-              }
-            })
-          }
-        })
+        // 发送code
       },
       fail: () => {
         wepy.showToast({
@@ -400,34 +354,107 @@ export default class extends wepy.app {
       }
     })
   }
-  getToken (page) {
-    if (wepy.getStorageSync('token') !== '') {
-      return wepy.getStorageSync('token')
+
+  getUserInfo(e, cb) {
+    // this.globalData.userInfo = e.detail.userInfo
+    console.log(e)
+    // 发送后台同时获取手机号/token/过期时间
+    // 如果token过期 通过手机号 发送requestToken重置global数据 模拟数据{phone: '13402155751'}
+    this.requestToken({phone: '13402155751'}, cb)
+    // wepy.getUserInfo({
+    //   success: (data) => {
+    //     that.globalData.userInfo = data.userInfo
+    //     that.HttpRequest.UserLogin({phone: '13402155751'}).then((res) => {
+    //       var token = res.data.data.token
+    //       wepy.setStorageSync('token', token)
+    //       that.HttpRequest.GetUserInfo({token: token}).then((res) => {
+    //         if (res.data.error === 0) {
+    //           that.globalData.userLevel = res.data.data.level
+    //           that.globalData.userHash = res.data.data.hash
+    //         }
+    //       })
+    //       cb && cb(res.userInfo)
+    //     })
+    //   },
+    //   fail (res) {
+    //     wepy.showModal({
+    //       title: '警告',
+    //       content: '请检查网络连接，并重新开启授权',
+    //       success: (res) => {
+    //         if (res.confirm) {
+    //           wepy.openSetting({
+    //             success: (res) => {
+    //               if (res.authSetting['scope.userInfo']) {
+    //                 console.log(res.authSetting['scope.userInfo'])
+    //               } else {
+    //                 wepy.showModal({
+    //                   'title': '登录失败'
+    //                 })
+    //               }
+    //             },
+    //             fail: function () {
+    //               wepy.showModal({
+    //                 'title': '拒绝授权将无法使用小程序部分功能，请重新开启授权'
+    //               })
+    //             }
+    //           })
+    //         }
+    //       }
+    //     })
+    //   }
+    // })
+  }
+  // 已有手机号获取token
+  requestToken (data, cb) {
+    this.HttpRequest.UserLogin(data).then((res) => {
+      var token = res.data.data.token
+      wepy.setStorageSync('token', token)
+      // 设置global的user level 和 hash
+      this.storageUser(token)
+      cb && cb(res.userInfo)
+    })
+  }
+  // 判断token是否过期
+  refreshToken () {
+    // 判断token是否过期 如果没过期直接返回token值
+    if (wepy.getStorageSync('token') === '') {
+      return false
     } else {
-      wepy.showModal({
-        title: '获取登录状态失败',
-        content: '请点击确认重新登录',
-        success: (res) => {
-          if (res.confirm) {
-            wepy.navigateTo({
-              url: './login?page=' + page
-            })
-          }
-        }
-      })
+      return true
     }
   }
+  // 返回当前token
+  getToken () {
+    if (!this.refreshToken()) {
+      // 重新发送请求获取新的token 模拟数据{phone: '13402155751'}
+      this.requestToken({phone: '13402155751'})
+    }
+    return wepy.getStorageSync('token')
+  }
+  // 获取 user level 和 hash
+  getUserLevel (token) {
+    var _this = this
+    this.HttpRequest.GetUserInfo({token: token}).then((res) => {
+      if (res.data.error === 0) {
+        _this.globalData.userLevel = res.data.data.level
+        _this.globalData.userHash = res.data.data.hash
+      }
+    })
+  }
+  // 判断当前user hash是否需要重置
   resetUserLevel (hash, token) {
     if (hash !== this.globalData.userHash) {
-      var _this = this
-      var data = {
-        token: token
-      }
-      this.HttpRequest.GetUserInfo(data).then((res) => {
-        _this.globalData.userLevel = res.data.data.level
-        _this.$apply()
-      })
+      this.getUserLevel(token)
     }
+  }
+  // 存用户global信息
+  storageUser (token) {
+    wepy.getUserInfo({
+      success: (res) => {
+        this.globalData.userInfo = res.userInfo
+      }
+    })
+    this.getUserLevel(token)
   }
   showLoading () {
     wepy.showLoading({

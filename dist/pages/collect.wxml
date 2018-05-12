@@ -1,8 +1,9 @@
 
   <view class="container">
-    <view class="collect" style="height:{{dataLength * 262}}rpx"  wx:if="{{!isNull}}">
-      <view class="collect-list {{isEdit ? 'animate' : ''}}">
-        
+    <view  wx:if="{{!isNull}}">
+      <view class="collect" style="height:{{dataLength * 262}}rpx">
+        <view class="collect-list {{isEdit ? 'animate' : ''}}">
+          
   <view class="goods-layer">
     <block wx:for="{{$collectGood$goodsItem}}" wx:for-index="$collectGood$index" wx:for-item="$collectGood$item" wx:key="$collectGood$key">
       <view class="goods" bindtap="$collectGood$tap" id="{{$collectGood$item.id}}" data-wpytap-a="{{$collectGood$item.id}}">
@@ -29,18 +30,30 @@
     </block>
   </view>
 
-      </view>
-      <block wx:for="{{collectList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
-        <view class="cover {{isEdit ? 'animate' : ''}}" style="top: {{index * 262}}rpx"/>
-        <view class="collect-check {{isEdit ? 'show' : ''}}" style="top: {{index * 262}}rpx">
-          <view catchtap="checked" data-wpychecked-a="{{index}}">
-            <text class="font-normal">删除</text>
-          </view>
         </view>
-      </block>
+        <block wx:for="{{collectList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="cover {{isEdit ? 'animate' : ''}}" style="top: {{index * 262}}rpx"/>
+          <view class="collect-check {{isEdit ? 'show' : ''}}" style="top: {{index * 262}}rpx">
+            <view catchtap="checked" data-wpychecked-a="{{index}}">
+              <text class="font-normal">删除</text>
+            </view>
+          </view>
+        </block>
+      </view>
+      
+  <view wx:if="{{isDown}}">
+    <view class="isDown">
+      <text>—————————— 到底啦 ——————————</text>
     </view>
-    
-  <view wx:else>
+  </view>
+
+      <view class="collect-bottom">
+        <button class="default-button" hover-class="default-button-hover" bindtap="editAll">{{isEdit ? '取消': '编辑'}}</button>
+      </view>
+    </view>
+    <view  wx:elif="{{isNull && !isLoading}}" class="blank">
+      
+  <view>
     <view class="lost-goods">
       <image src="../image/lost-goods.png"/>
       <text class="iconfont {{$defect$typeIcon}}"/>
@@ -48,14 +61,6 @@
     </view>
   </view>
 
-    
-  <view wx:if="{{isDown}}">
-    <view class="isDown">
-      <text>—————————— 到底啦 ——————————</text>
-    </view>
-  </view>
-
-    <view class="collect-bottom"  wx:if="{{!isNull}}">
-      <button class="default-button" hover-class="default-button-hover" bindtap="editAll">{{isEdit ? '取消': '编辑'}}</button>
+      <view class="blank-button" hover-class="blank-button-hover" bindtap="goCategory">逛一逛</view>
     </view>
   </view>

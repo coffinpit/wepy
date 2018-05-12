@@ -220,12 +220,14 @@
       }
     }
     getTopCate () {
+      this.$parent.showLoading()
       var _this = this
       var data = {
         token: this.token
       }
       this.$parent.HttpRequest.GetTopCategory(data).then((res) => {
         if (res.data.error === 0) {
+          _this.$parent.showSuccess()
           var data = res.data.data
           data.forEach((item) => {
             var obj = {}
@@ -236,8 +238,14 @@
           })
           _this.sourceId = _this.categoryTab[0].id
           _this.getSpu(_this.sourceId)
+        } else {
+          _this.isNull = true
+          _this.$parent.showFail()
         }
         _this.$apply()
+      }).catch(() => {
+        _this.isNull = true
+        _this.$parent.showFail()
       })
       console.log(this.goods)
     }
@@ -263,12 +271,10 @@
           })
         } else {
           _this.isNull = true
-          _this.$parent.showFail()
         }
         _this.$apply()
       }).catch(() => {
         _this.isNull = true
-        _this.$parent.showFail()
       })
       return child
     }
@@ -324,7 +330,7 @@
       })
     }
     onLoad () {
-      this.token = this.$parent.getToken('category')
+      this.token = this.$parent.getToken()
       this.getTopCate()
       this.getShowMore()
       this.$apply()

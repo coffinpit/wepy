@@ -4,11 +4,11 @@
 .container {
   min-height: calc(100vh);
   display: block;
-  padding-top: 20rpx;
   padding-bottom: 108rpx;
 }
 .collect {
   position: relative;
+  margin-top: 20rpx;
 }
 .collect .collect-list {
   width: 100%;
@@ -70,4 +70,10 @@
   height: 88rpx;
   line-height: 88rpx;
   margin: 0;
+}
+.blank .blank-button {
+  width: 200rpx;
+  margin: 0 auto;
+  line-height: 50rpx;
+  text-align: center;
 }

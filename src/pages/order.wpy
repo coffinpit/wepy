@@ -36,14 +36,13 @@
     }
     .content{
       margin-bottom:0;
-      height:100rpx;
       padding:20rpx;
       .order-num{
         color:#999;
       }
       .order-status-txt{
         float:right;
-        margin-top:8rpx;
+        margin-top:2rpx;
         &.close{
           color:#999;
         }
@@ -63,51 +62,6 @@
     width: 100%; 
     padding:20rpx 0; 
   }  
-  .item-list{  
-    height: 200rpx;  
-    overflow: hidden;
-    padding:0 20rpx 20rpx;
-    box-sizing:border-box;
-  }
-  .inner.txt{
-    background-color: #f8f8f8;
-    padding:20rpx;
-    box-sizing:border-box; 
-    overflow:hidden;  
-  }  
-  .inner-left{
-    width:360rpx;
-    overflow:hidden;
-    white-space:break-all;
-    .place{
-      min-height: 108rpx;
-    }
-  }
-  .inner-layer{
-    width:460rpx;
-    overflow:hidden;
-    float:left;
-    .title{
-      min-height:76rpx;
-      height:76rpx;
-      line-height:38rpx;
-      overflow:hidden;
-      display:block;
-      font-size:28rpx;
-      margin-bottom:6rpx;
-    }
-    .tips, .title{
-      display:block;
-    }
-    .tips{
-      float:right;
-    }
-    .font-small{
-      float:left;
-      display:block;
-      width:260rpx;
-    }
-  }
   .more{
     margin: 0 20rpx;
     padding:20rpx;
@@ -160,65 +114,82 @@
       .default-button{
         padding:0 20rpx;
       }
+      .blank-button-hover{
+        background: transparent;
+        border:1px #fc5e44 solid;
+      }
     }
+  }
+  .hidden{
+    display: none;
   }
 </style>
 <template>
   <view class="container">
-    <view class="order-status">
-      <repeat for="{{package}}" item="item" index="index"><view class="{{current === index ? 'active' : ''}}" @tap="checkPackage({{index}}, {{item.type}})">{{item.title}}</view></repeat>
-    </view>
-    <repeat for="{{orderList}}" item="item" index="index">
-      <view class="cart-list" wx:if="{{!item.isNull}}">
-        <view class="content order-title">
-          <text class="font-normal order-num">订单编号：{{item.title}}</text>
-          <text class="font-normal order-status-txt {{item.status === 1 || item.status === 2? 'link' : ''}} {{item.status === 3? 'close' : ''}}">{{item.statusTxt}}</text>
-        </view>
-        <view class="item-box">
-          <view class="items {{isMore? 'show' : ''}}">
-            <repeat for="{{item.orderDetail}}" index="index" item="item" key="index">
-              <view class="item-list">
-                <view class="inner txt">
-                  <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
-                    <text class="title">{{item.title}}</text>
-                    <text class="font-small link">会员价：￥{{item.price}} </text>
-                    <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.oldprice}}</text>
-                    <text class="tips">{{item.detail}}</text>
-                  </view>
-                  <view class="inner-image">
-                    <image src="{{item.path}}" mode="aspectFill"></image>
-                  </view>
+      <view class="order-status">
+        <repeat for="{{package}}" item="item" index="index"><view class="{{current === index ? 'active' : ''}}" @tap="checkPackage({{index}}, {{item.type}})">{{item.title}}</view></repeat>
+      </view>
+      <view wx:if="{{!isNull}}">
+        <repeat for="{{orderList}}" item="item" index="index">
+          <view class="cart-list" wx:if="{{!item.isNull}}">
+            <view class="content order-title">
+              <text class="font-normal order-num">订单编号：<text selectable="true">{{item.title}}</text></text>
+              <text class="font-normal order-status-txt {{item.status === 1 || item.status === 2? 'link' : ''}} {{item.status === 3? 'close' : ''}}">{{item.statusTxt}}</text>
+            </view>
+            <view class="item-box">
+              <view class="items">
+                <orderList :orderList.sync="item.orderDetail" :userLevel.sync="userLevel"></orderList>
+                <view class="more" @tap="goDetail({{item.id}})">
+                  <text class="font-normal">查看全部 ({{item.count}}) <text class="iconfont icon-rightsj"></text></text>
                 </view>
               </view>
-            </repeat>
-            <view class="more" @tap="showMore" @tap="goDetail({{item.id}})">
-              <text class="font-normal">查看全部 ({{item.count}}) <text class="iconfont icon-rightsj"></text></text>
+              <view class="order-edit">
+                <text class="iconfont icon-me_dd {{item.status === 3 ? 'hidden' : ''}}"></text>
+                <text class="font-normal">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+                <view class="edit-button {{item.status === 3 ? 'hidden' : ''}}">
+                  <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="goAddress({{item.id}})">修改地址</button>
+                  <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="cancel({{item.id}})">取消订单</button>
+                  <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
+                  <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}">查看物流</button>
+                  <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}">付款</button>
+                </view>
+              </view>
             </view>
           </view>
-          <view class="order-edit">
-            <text class="iconfont icon-me_dd"></text>
-            <text class="font-normal">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
-            <view class="edit-button">
-              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}">修改地址</button>
-              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}">取消订单</button>
-              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 3}}">删除订单</button>
-              <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
-              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}">查看物流</button>
-              <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}">付款</button>
-            </view>
-          </view>
-        </view>
+        </repeat>
       </view>
-    </repeat>
+      <defect wx:elif="{{isNull && !isLoading}}" type="3"></defect>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import OrderList from '../components/orderlist'
+  import Defect from '../components/defect'
 
   export default class Order extends wepy.page {
     config = {
       navigationBarTitleText: '我的订单'
+    }
+    components = {
+      orderList: OrderList,
+      defect: Defect
+    }
+    computed = {
+      isNull () {
+        if (this.orderList.length === 0) {
+          return true
+        } else {
+          return false
+        }
+      },
+      userLevel () {
+        if (this.$parent.globalData.userLevel === 0) {
+          return false
+        } else if (this.$parent.globalData.userLevel === 1) {
+          return true
+        }
+      }
     }
     data = {
       token: '',
@@ -245,26 +216,42 @@
       pageSize: 5,
       pageNum: 1,
       totalPageNum: 0,
-      isMore: false
+      isLoading: true
     }
     methods = {
       checkPackage (index, type) {
         this.current = index
         this.orderType = type
+        this.initOrder()
       },
       goDetail (id) {
         wepy.navigateTo({
           url: './orderDetail?id=' + id
         })
       },
-      showMore () {
-        this.isMore = !this.isMore
+      cancel (id) {
+        wepy.showModal({
+          title: '提示',
+          content: '确认取消订单',
+          success: (res) => {
+            if (res.confirm) {
+              this.cancelOrder(id, () => {
+                this.initOrder()
+              })
+            }
+          }
+        })
+      },
+      goAddress (id) {
+        wepy.navigateTo({
+          url: './address?page=order&id=' + id
+        })
       }
     }
     initOrder () {
       this.$parent.showLoading()
       this.orderList = []
-      this.pageNum = 1
+      this.isLoading = true
       var _this = this
       var data = {
         token: this.token,
@@ -274,6 +261,7 @@
       }
       this.$parent.HttpRequest.GetOrderStatus(data).then((res) => {
         console.log(res)
+        _this.isLoading = false
         if (res.data.error === 0) {
           _this.$parent.showSuccess()
           var data = res.data.data
@@ -295,6 +283,7 @@
         }
         _this.$apply()
       }).catch(() => {
+        _this.isLoading = false
         _this.$parent.showFail()
       })
     }
@@ -317,8 +306,21 @@
       })
       return child
     }
+    cancelOrder (id, cb) {
+      var data = {
+        token: this.token,
+        orderId: id
+      }
+      console.log(data)
+      this.$parent.HttpRequest.CancelOrder(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          cb && cb()
+        }
+      })
+    }
     onLoad () {
-      this.token = this.$parent.getToken('order')
+      this.token = this.$parent.getToken()
       this.$apply()
     }
     onShow () {

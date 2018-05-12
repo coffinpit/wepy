@@ -34,7 +34,10 @@ class HttpRequest extends wepy.app{
 			getOrder: 'r=order/api-get-detail',
 			getMarkSpu: 'r=mark/api-get-mark-spu',
 			getOrderStatus: 'r=order/api-get-orders',
-			getOrderDetail: 'r=order/api-get-detail'
+			getOrderDetail: 'r=order/api-get-detail',
+			cancelOrder: 'r=order/api-cancel',
+			orderEditAdd: 'r=order/api-change-address',
+			getNotice: 'r=notice/api-get-notice'
 		}
 		this.$$pathHtml = {
 			rules: 'distribution_rules.html'
@@ -446,6 +449,50 @@ class HttpRequest extends wepy.app{
         	})
 		})
 	}
+	CancelOrder (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.cancelOrder,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+	                data: data,
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
+	EditOrderAdd (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.orderEditAdd,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
 	GetAddress (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
@@ -635,6 +682,28 @@ class HttpRequest extends wepy.app{
 				  reject(error)
 				}
 			})
+		})
+	}
+	GetNotice (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.getNotice,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
 	SearchHttp (param, cb) {

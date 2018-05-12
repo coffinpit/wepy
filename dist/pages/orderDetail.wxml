@@ -8,10 +8,12 @@
           <text class="font-normal">仅剩余：{{remainTime}}</text>
           <text class="font-normal">需付款：￥{{finalPrice}}</text>
         </text>
-        <text class="font-normal txt-status" wx:elif="{{status === 1 && !remainTime}}">支付超时</text>
-        <text class="font-normal txt-status">
-          {{status === 2 && address != false ? '已送达' : ''}}
-          {{status === 3 ? '支付超时' : ''}}
+        <text class="font-normal txt-status" wx:elif="{{ remainTime === 0 && status === 1}}">支付超时</text>
+        <text class="font-normal txt-status" wx:elif="{{status === 2 && address != false}}">
+          已送达
+        </text>
+        <text class="font-normal txt-status" wx:elif="{{status === 3}}">
+          支付超时
         </text>
       </view>
       <view class="orderStatus address" wx:if="{{address != false}}">
@@ -31,11 +33,11 @@
               
   <block wx:for="{{item.orderDetail}}" wx:for-index="$orderList$index" wx:for-item="$orderList$item" wx:key="$orderList$index">
     <view class="item-list">
-      <view class="inner txt">
+      <view class="inner txt" bindtap="$orderList$goDetail" data-com-index="{{index}}" data-wpygodetail-a="{{$orderList$item.id}}">
         <view class="inner-layer" data-index="{{$orderList$index}}" id="{{$orderList$item.sourceId}}">
           <text class="title">{{$orderList$item.title}}</text>
           <text class="font-small link">会员价：￥{{$orderList$item.price}} </text>
-          <text class="font-small {{$orderList$userLevel ? 'through' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
+          <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
           <text class="tips">{{$orderList$item.detail}}</text>
         </view>
         <view class="inner-image">
@@ -51,7 +53,7 @@
       </block>
       <view class="orderInfo">
         <text class="font-normal label">订单编号：</text>
-        <text class="font-normal right">{{orderId}}</text>
+        <text class="font-normal right" selectable="true">{{orderId}}</text>
       </view>
       <view class="orderInfo">
         <text class="font-normal label">创建时间：</text>
@@ -65,15 +67,15 @@
         <text class="font-normal label">商品总额：</text>
         <text class="font-normal right">￥{{pay}}</text>
       </view>
-      <view class="orderTotal">
+      <view class="orderTotal" wx:if="{{!isHidden}}">
         <text class="font-normal">需付款<text class="link">￥{{finalPrice}}</text> (含运费￥{{freight}})</text>
         <view class="edit-button">
-          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}">修改地址</button>
-          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}">取消订单</button>
-          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 3}}">删除订单</button>
+          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" bindtap="goAddress">修改地址</button>
+          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" bindtap="cancel">取消订单</button>
           <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{status === 5 || status === 6}}">售后申请</button>
           <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}">付款</button>
         </view>
       </view>
+      <view class="orderTotal" wx:else><text class="font-normal">订单已取消</text></view>
     </view>
   </view>

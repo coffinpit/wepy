@@ -78,7 +78,7 @@
 </style>
 <template>
   <view class="login-container">
-    <view class="login">
+    <view class="login" wx:if="{{!isNull}}">
       <view class="app-info">
         <image class="app-logo" src="../image/login-bg.jpg" mode="widthFix"></image>
         <text class="app-name">正善小程序</text>
@@ -89,7 +89,7 @@
         <view class="alert-desc">
           <view class="alert-text">获得你的公开信息（昵称、头像等）</view>
         </view>
-        <button class="login-btn" hover-class="login-btn-active" @tap="login">确认登录</button>
+        <button class="login-btn" open-type="getUserInfo" hover-class="login-btn-active" @getuserinfo="login">确认登录</button>
       </view>
     </view>
   </view>
@@ -103,39 +103,38 @@
       navigationBarTitleText: '欢迎'
     }
     data = {
-      page: null
+      isNull: true
     }
     methods = {
-      login () {
-        this.$parent.getUserInfo(this.page, () => {
-          this.goIndex(this.page)
+      login (e) {
+        this.$parent.getUserInfo(e, () => {
+          this.goIndex()
         })
       }
     }
-    goIndex (page) {
-      if (page) {
-        if (page === 'index' || page === 'category' || page === 'cart' || page === 'user') {
-          wepy.switchTab({
-            url: './' + page
-          })
-        } else {
-          wepy.switchTab({
-            url: './index'
-          })
-        }
-      } else {
-        wepy.switchTab({
-          url: './index'
-        })
-      }
+    goIndex () {
+      wepy.switchTab({
+        url: './index'
+      })
     }
-    onLoad (page) {
+    onLoad () {
       // 获取跳转页面来源
-      console.log(page)
-      if (page) {
-        this.page = page.page
-      }
-      this.$apply()
+      this.$parent.getLogin()
+      wepy.getSetting({
+        success: (res) => {
+          if (res.authSetting['scope.userInfo']) {
+            this.isNull = true
+            // 已经授权，获取新的token
+            this.$parent.requestToken({phone: '13402155751'}, () => {
+              this.goIndex()
+            })
+          } else {
+            this.isNull = false
+            console.log(this.isNull)
+          }
+          this.$apply()
+        }
+      })
     }
     onShow () {
     }

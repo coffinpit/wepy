@@ -1,4 +1,51 @@
+@import "./../components/defect.wxss";
 .container {
   min-height: calc(100vh);
+  display: block;
+}
+.notice-type {
+  width: 100%;
+  white-space: nowrap;
+  line-height: 90rpx;
+  font-size: 28rpx;
+  color: #333;
+  height: 90rpx;
+  border-bottom: 1px #eee solid;
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+.notice-type view {
+  width: 30%;
+  margin: 0 10%;
+  box-sizing: border-box;
+  text-align: center;
+  display: inline-block;
+}
+.notice-type view.active {
+  border-bottom: 2px #fe5946 solid;
+  color: #fe5946;
+}
+.notice {
+  padding: 20rpx;
+  background: #fff;
+  overflow: hidden;
+}
+.notice .icon-me_xx {
+  float: left;
+  width: 60rpx;
+  height: 60rpx;
+  font-size: 40rpx;
+  line-height: 60rpx;
+  border-radius: 50%;
+  background: #fc5e43;
+  margin-right: 20rpx;
+  text-align: center;
+  color: #fff;
+}
+.notice .font-normal {
+  float: left;
+  width: 630rpx;
+}
+.notice .tips {
   display: block;
 }

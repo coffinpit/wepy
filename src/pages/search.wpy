@@ -157,7 +157,7 @@
     getResult () {
       this.$parent.showLoading()
       var _this = this
-      const token = this.$parent.getToken('search')
+      const token = this.$parent.getToken()
       var data = {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
