@@ -110,7 +110,7 @@
           </swiper-item>
       </repeat>
     </swiper>
-    <view class="index-promot">
+    <view class="index-promot" @tap="goApplyVip">
       <image class="index-promot-img" src="../image/syvip_bg.png" mode="aspectFill"></image>
       <view class="index-promot-content">
         <view class="index-promot-title">
@@ -199,6 +199,11 @@
       goDetail (id) {
         wepy.navigateTo({
           url: './detail?id=' + id
+        })
+      },
+      goApplyVip () {
+        wepy.navigateTo({
+          url: './applyVip'
         })
       }
     }

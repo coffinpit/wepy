@@ -130,7 +130,6 @@
 .detail-collect .detail-collect-icon {
   width: 18%;
   text-align: center;
-  margin-top: 16rpx;
 }
 .detail-collect .detail-collect-icon text {
   display: block;
@@ -301,4 +300,7 @@
 }
 .popup_layer radio {
   float: right;
+}
+.disable {
+  background: #999;
 }

@@ -19,7 +19,7 @@
     }
     .userinfo-nickname{
       float:left;
-      width:500rpx;
+      width:320rpx;
       height:100rpx;
       overflow:hidden;
       padding-top:30rpx;
@@ -30,6 +30,12 @@
       text{
         display:block
       }
+    }
+    .blank-button{
+      float: right;
+      border:1px #fff solid;
+      color:#fff;
+      margin-top:38rpx;
     }
     .validation{
       font-size:28rpx;
@@ -164,6 +170,7 @@
       <view class="userinfo-nickname">
         <text>{{ userInfo.nickName }}</text>
       </view>
+      <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" class="blank-button" wx:if="{{isLogin}}">绑定微信账号</button>
     </view>
     <view class="user-level">
       <text class="iconfont icon-vip {{!isVip ? '' : 'vip'}}"></text>
@@ -188,19 +195,19 @@
         <text class="iconfont icon-rightsj"></text>
       </view>
       <view class="setting-layer order-layer">
-        <view class="order-list">
+        <view class="order-list" @tap="goUnpaid">
           <text>{{unpaid}}</text>
           <text>待付款</text>
         </view>
-        <view class="order-list">
+        <view class="order-list" @tap="goUndelivered">
           <text>{{undelivered}}</text>
           <text>待发货</text>
         </view>
-        <view class="order-list">
+        <view class="order-list" @tap="goUnreceipted">
           <text>{{unreceipted}}</text>
           <text>待收货</text>
         </view>
-        <view class="order-list">
+        <view class="order-list" @tap="goRefunding">
           <text>{{refunding}}</text>
           <text>售后</text>
         </view>
@@ -247,7 +254,8 @@
       refunding: '',
       undelivered: '',
       unpaid: '',
-      unreceipted: ''
+      unreceipted: '',
+      isLogin: false
     }
     methods = {
       goAddress () {
@@ -269,6 +277,39 @@
         wepy.navigateTo({
           url: './system'
         })
+      },
+      goUnpaid () {
+        wepy.navigateTo({
+          url: './order?orderType=unpaid'
+        })
+      },
+      goUndelivered () {
+        wepy.navigateTo({
+          url: './order?orderType=undelivered'
+        })
+      },
+      goUnreceipted () {
+        wepy.navigateTo({
+          url: './order?orderType=unreceipted'
+        })
+      },
+      goRefunding () {
+        wepy.navigateTo({
+          url: './order?orderType=refunding'
+        })
+      },
+      bindGetUserInfo (e) {
+        if (e.detail.userInfo) {
+          this.isLogin = false
+          this.$parent.globalData.userInfo = e.detail.userInfo
+          this.userInfo = e.detail.userInfo
+        } else {
+          this.isLogin = true
+          wepy.showModal({
+            title: '提示',
+            content: '拒绝授权将无法获取用户信息'
+          })
+        }
       },
       clear () {
         wepy.getStorageInfo({
@@ -331,13 +372,27 @@
     }
     onLoad () {
       this.token = this.$parent.getToken('user')
-      this.userInfo = this.$parent.globalData.userInfo
-      console.log(this.$parent.globalData.userInfo)
+      var _this = this
+      wepy.getSetting({
+        success: (res) => {
+          if (res.authSetting['scope.userInfo']) {
+            _this.isLogin = false
+            // 已经授权，获取新的token
+            _this.$parent.getUser(() => {
+              _this.userInfo = this.$parent.globalData.userInfo
+            })
+          } else {
+            _this.isLogin = true
+          }
+          _this.$apply()
+        }
+      })
       if (this.$parent.globalData.userLevel === 0) {
         this.isVip = false
       } else if (this.$parent.globalData.userLevel === 1) {
         this.isVip = true
       }
+      console.log(this.$parent.globalData.userLevel)
       this.$apply()
     }
     onShow () {

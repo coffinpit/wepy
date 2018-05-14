@@ -54,7 +54,7 @@
     }
   }
   .default-button{
-    position:absolute;
+    position:fixed;
     bottom:0;
     left:0;
     width:100%;
@@ -63,6 +63,7 @@
 </style>
 <template>
   <view class="container">
+    {{detail}}
     <repeat for="{{address}}" item="item" index="index" key="index">
       <view class="address-container" @tap="backToOrder({{index}}, {{item.id}})">
         <view class="address-layer">
@@ -104,7 +105,8 @@
       sourceType: '',
       sourceId: '',
       count: '',
-      orderId: ''
+      orderId: '',
+      detail: ''
     }
     components = {
       defect: Defect

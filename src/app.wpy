@@ -195,6 +195,7 @@
     top:2px;
     left:10px;
     z-index:1;
+    min-width:100rpx;
   }
   .goods-end{
     position:absolute;
@@ -277,7 +278,9 @@ export default class extends wepy.app {
       'pages/collect',
       'pages/logistica',
       'pages/order',
-      'pages/orderDetail'
+      'pages/orderDetail',
+      'pages/invoice',
+      'pages/applyVip'
     ],
     window: {
       backgroundTextStyle: 'dark',
@@ -316,7 +319,8 @@ export default class extends wepy.app {
   globalData = {
     userInfo: null,
     userLevel: null,
-    userHash: null
+    userHash: null,
+    code: null
   }
 
   // 判断tabbar回退页面
@@ -339,10 +343,11 @@ export default class extends wepy.app {
     console.log(data)
   }
 
-  getLogin () {
+  getLogin (cb) {
     wepy.login({
       success: (res) => {
         console.log(res.code)
+        cb && cb(res.code)
         // 发送code
       },
       fail: () => {
@@ -355,12 +360,29 @@ export default class extends wepy.app {
     })
   }
 
-  getUserInfo(e, cb) {
+  getUserInfo(e, code, cb) {
     // this.globalData.userInfo = e.detail.userInfo
-    console.log(e)
+    console.log(e, code)
+    var data = {
+      jsCode: code,
+      encryptedData: e.detail.encryptedData,
+      iv: e.detail.iv
+    }
+    console.log(data)
+    this.HttpRequest.SendCode(data).then((res) => {
+      console.log(res)
+      if (res.data.error === 0) {
+        wepy.setStorageSync('phone', res.data.data.purePhoneNumber)
+        var phoneNumber = res.data.data.purePhoneNumber
+        var data = {
+          phone: phoneNumber
+        }
+        this.requestToken(data, cb)
+      }
+    })
     // 发送后台同时获取手机号/token/过期时间
     // 如果token过期 通过手机号 发送requestToken重置global数据 模拟数据{phone: '13402155751'}
-    this.requestToken({phone: '13402155751'}, cb)
+    // this.requestToken({phone: '13402155751'}, cb)
     // wepy.getUserInfo({
     //   success: (data) => {
     //     that.globalData.userInfo = data.userInfo
@@ -410,7 +432,7 @@ export default class extends wepy.app {
       var token = res.data.data.token
       wepy.setStorageSync('token', token)
       // 设置global的user level 和 hash
-      this.storageUser(token)
+      this.getUserLevel(token)
       cb && cb(res.userInfo)
     })
   }
@@ -427,7 +449,10 @@ export default class extends wepy.app {
   getToken () {
     if (!this.refreshToken()) {
       // 重新发送请求获取新的token 模拟数据{phone: '13402155751'}
-      this.requestToken({phone: '13402155751'})
+      var data = {
+        phone: this.getStorageSync('phone')
+      }
+      this.requestToken(data)
     }
     return wepy.getStorageSync('token')
   }
@@ -448,13 +473,13 @@ export default class extends wepy.app {
     }
   }
   // 存用户global信息
-  storageUser (token) {
+  getUser (cb) {
     wepy.getUserInfo({
       success: (res) => {
         this.globalData.userInfo = res.userInfo
+        cb && cb()
       }
     })
-    this.getUserLevel(token)
   }
   showLoading () {
     wepy.showLoading({
@@ -471,6 +496,12 @@ export default class extends wepy.app {
       title: '加载失败',
       icon: 'none',
       image: '../image/cancel.png'
+    })
+  }
+  disableApi () {
+    wepy.showModal({
+      title: '提示',
+      content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
     })
   }
   dateFormat (timestamp, formats) {

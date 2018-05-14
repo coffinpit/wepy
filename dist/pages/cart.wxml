@@ -6,7 +6,7 @@
       </view>
       <view class="cart-status" wx:else>
         <text class="font-normal">已购￥{{cartStatus.totalprice}}，成为会员仅需 <text class="font-normal link font-bold">￥{{cartStatus.memberPrice}}</text></text>
-        <view class="default-button">加入会员</view>
+        <view class="default-button" bindtap="goApplyVip">加入会员</view>
       </view>
       <block wx:for="{{cartList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
         <view class="cart-list">
@@ -35,8 +35,8 @@
                       <image src="{{item.path}}" mode="aspectFill" catchtap="goDetail" data-wpygodetail-a="{{item.id}}"/>
                       
   <view class="counter">
-    <view catchtap="$counteCold$plusTap" class="counter-btn {{$counteCold$disable ? 'disable' : ''}}" data-id="{{item.sourceId}}" data-com-index="{{index}}">  +  </view>
-    <input type="number" bindinput="$counteCold$inputTap" bindblur="$counteCold$blurTap" class="counter-btn number" value="{{item.count}}" focus="{{$counteCold$autoFocus}}" data-id="{{item.sourceId}}" data-com-index="{{index}}"/> 
+    <view catchtap="$counteCold$plusTap" class="counter-btn {{$counteCold$isDisabled || $counteCold$disable ? 'disable' : ''}}" data-id="{{item.sourceId}}" data-com-index="{{index}}">  +  </view>
+    <input type="number" bindinput="$counteCold$inputTap" bindblur="$counteCold$blurTap" class="counter-btn number {{$counteCold$isDisabled ? 'disable' : ''}}" value="{{item.count}}" focus="{{$counteCold$autoFocus}}" data-id="{{item.sourceId}}" disabled="{{$counteCold$isDisabled}}" data-com-index="{{index}}"/> 
     <view catchtap="$counteCold$minusTap" class="counter-btn minusBtn {{$counteCold$able ? 'able' : ''}}" data-id="{{item.sourceId}}" data-com-index="{{index}}">  -  </view>
   </view>
   

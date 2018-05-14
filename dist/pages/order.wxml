@@ -30,7 +30,7 @@
   </block>
 
                 <view class="more" bindtap="goDetail" data-wpygodetail-a="{{item.id}}">
-                  <text class="font-normal">查看全部 ({{item.count}}) <text class="iconfont icon-rightsj"/></text>
+                  <text class="font-normal">查看全部详情 ({{item.count}}) <text class="iconfont icon-rightsj"/></text>
                 </view>
               </view>
               <view class="order-edit">
@@ -40,7 +40,6 @@
                   <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" bindtap="goAddress" data-wpygoaddress-a="{{item.id}}">修改地址</button>
                   <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" bindtap="cancel" data-wpycancel-a="{{item.id}}">取消订单</button>
                   <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
-                  <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}">查看物流</button>
                   <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}">付款</button>
                 </view>
               </view>

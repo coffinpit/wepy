@@ -32,7 +32,7 @@
       font-size:120rpx;
       color:#fff;
       line-height:140rpx;
-      &.icon-ksj_sc, &.icon-me_xx{
+      &.icon-ksj_sc, &.icon-me_xx, &.icon-dz_sc{
         font-size: 100rpx;
       }
     }
@@ -74,7 +74,9 @@
           return 'icon-ksj_dz'
         } else if (this.type === '6') {
           return 'icon-me_xx'
-        }
+        } else if (this.type === '7') {
+          return 'icon-dz_sc'
+        } 
       },
       typeTxt () {
         if (this.type === '1') {
@@ -89,6 +91,8 @@
           return '赶快添加第一个地址'
         } else if (this.type === '6') {
           return '暂无任何消息'
+        } else if (this.type === '7') {
+          return '暂无发票信息'
         }
       }
     }

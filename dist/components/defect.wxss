@@ -34,7 +34,8 @@
   line-height: 140rpx;
 }
 .lost-goods text.iconfont.icon-ksj_sc,
-.lost-goods text.iconfont.icon-me_xx {
+.lost-goods text.iconfont.icon-me_xx,
+.lost-goods text.iconfont.icon-dz_sc {
   font-size: 100rpx;
 }
 .lost-goods text.font-normal {

@@ -15,7 +15,7 @@
           </swiper-item>
       </block>
     </swiper>
-    <view class="index-promot">
+    <view class="index-promot" bindtap="goApplyVip">
       <image class="index-promot-img" src="../image/syvip_bg.png" mode="aspectFill"/>
       <view class="index-promot-content">
         <view class="index-promot-title">

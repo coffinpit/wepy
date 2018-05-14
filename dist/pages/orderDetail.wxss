@@ -30,8 +30,8 @@
   vertical-align: middle;
 }
 .orderStatus .icon-ksj_dz {
-  font-size: 60rpx;
-  margin-right: 64rpx;
+  font-size: 80rpx;
+  margin-right: 44rpx;
   vertical-align: middle;
 }
 .orderStatus .font-normal {

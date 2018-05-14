@@ -1,0 +1,153 @@
+<style lang="less">
+  .main {
+    overflow: hidden;
+  }
+  image{
+    width:100%;
+    float:left;
+  }
+  .default-button{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    line-height:100rpx;
+  }
+  .popup{
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:99;
+    &.active{
+      bottom:0;
+    }
+  }
+  .popup-content{
+    width:600rpx;
+    height:800rpx;
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    z-index:-1;
+    background: #fff;
+    transition:.5s all ease-in;
+    z-index: 999;
+    &.show{
+      opacity: 1;
+    }
+    .popup-title{
+      padding:20rpx;
+      border-bottom: 1px #eee solid;
+    }
+    .popup-detail{
+      padding:20rpx;
+      .popup-type{
+        border:1px #eee solid;
+        padding:20rpx;
+        .font-normal{
+          width:50%;
+          display: inline-block;
+        }
+        .link{
+          text-align: right;
+        }
+        &.light{
+          border:1px #fca743 solid;
+          box-shadow: 0 0 10rpx #ffc98a;
+        }
+      }
+      .radio-group{
+        .link{
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+</style>
+<template>
+  <view class="main" style="height: {{isShow ? winHeight : 'auto'}}">
+    <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_01.jpg" mode="widthFix"></image>
+    <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_02.jpg" mode="widthFix"></image>
+    <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_03.jpg" mode="widthFix"></image>
+    <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_04.jpg" mode="widthFix"></image>
+    <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_06.jpg" mode="widthFix"></image>
+    <button class="default-button" @tap="buyVip">购买会员</button>
+    <view class="popup" wx:if="{{isShow}}"></view>
+    <view class="popup-content {{isShow ? 'show' : ''}}">
+      <view class="popup-title"><text class="font-normal">请选择支付类型</text></view>
+      <repeat for="{{typeList}}" item="item" index="index">
+        <view class="popup-detail" @tap="chooseType">
+          <view class="popup-type {{current === index ? 'light' : ''}}"><text class="font-normal">{{item.title}}</text><text class="font-normal link">￥{{item.price}}</text></view>
+        </view>
+      </repeat>
+      <view class="popup-detail">
+        <radio-group class="radio-group" bindchange="radioChange">
+          <radio value="isRead" checked="checked" color="#fc5e43"/> <text class="font-normal">我已阅读<text class="link">会员服务协议</text></text>
+        </radio-group>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class ApplyVip extends wepy.page {
+    config = {
+      navigationBarTitleText: '身份购买'
+    }
+    data = {
+      token: '',
+      isShow: false,
+      winHeight: '',
+      current: 0,
+      typeList: [],
+      isRead: false,
+      checked: false
+    }
+    methods = {
+      buyVip () {
+        this.isShow = true
+      }
+    }
+    getService () {
+      var _this = this
+      var data = {
+        token: this.token
+      }
+      this.$parent.HttpRequest.GetService(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          var data = res.data.data
+          data.forEach((item) => {
+            var obj = {}
+            obj.title = item.productName
+            obj.price = item.price
+            obj.id = item.sourceId
+            obj.type = item.sourceType
+            _this.typeList.push(obj)
+          })
+        }
+        _this.$apply()
+      })
+    }
+    onLoad () {
+      this.token = this.$parent.getToken()
+      var _this = this
+      wepy.getSystemInfo({
+        success: function (res) {
+          _this.winHeight = res.windowHeight + 'px'
+        }
+      })
+      this.$apply()
+    }
+    onShow () {
+      this.getService()
+    }
+  }
+</script>

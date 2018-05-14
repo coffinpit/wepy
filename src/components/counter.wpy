@@ -30,6 +30,10 @@
       width:67rpx;
       height:70rpx;
       vertical-align:middle;
+      &.disabled{
+        background:#f8f8f8;
+        color:#999;
+      }
     }
     .minusBtn{
       background:#f8f8f8;
@@ -48,8 +52,8 @@
 </style>
 <template>
   <view class="counter">
-    <view @tap.stop="plusTap" class="counter-btn {{disable ? 'disable' : ''}}" data-id="{{sourceId}}">  +  </view>
-    <input type="number" @input="inputTap" @blur="blurTap" class="counter-btn number" value="{{num}}" focus="{{autoFocus}}" data-id="{{sourceId}}"/> 
+    <view @tap.stop="plusTap" class="counter-btn {{isDisabled || disable ? 'disable' : ''}}" data-id="{{sourceId}}">  +  </view>
+    <input type="number" @input="inputTap" @blur="blurTap" class="counter-btn number {{isDisabled ? 'disable' : ''}}" value="{{num}}" focus="{{autoFocus}}" data-id="{{sourceId}}" disabled="{{isDisabled}}"/> 
     <view @tap.stop="minusTap" class="counter-btn minusBtn {{able ? 'able' : ''}}" data-id="{{sourceId}}">  -  </view>
   </view>
 </template>
@@ -66,6 +70,10 @@
       sourceId: {
         type: Number,
         default: null
+      },
+      isDisabled: {
+        type: Boolean,
+        default: false
       }
     }
     computed = {
@@ -102,6 +110,7 @@
       }
     }
     onLoad () {
+      console.log(this.isDisabled)
       this.$apply()
     }
   }

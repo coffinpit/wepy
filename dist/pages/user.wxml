@@ -5,6 +5,7 @@
       <view class="userinfo-nickname">
         <text>{{ userInfo.nickName }}</text>
       </view>
+      <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="blank-button"  wx:if="{{isLogin}}">绑定微信账号</button>
     </view>
     <view class="user-level">
       <text class="iconfont icon-vip {{!isVip ? '' : 'vip'}}"/>
@@ -12,7 +13,7 @@
         <text class="title">成为 <text class="link">优价会员</text> 获取超值优惠</text>
         <button class="default-button">会员申请</button>
       </view>
-      <view  wx:else>
+      <view wx:else>
         <text class="title">您的 <text class="link">优价会员</text> 将于 {{validation}} 到期</text>
       </view>
     </view>
@@ -29,19 +30,19 @@
         <text class="iconfont icon-rightsj"/>
       </view>
       <view class="setting-layer order-layer">
-        <view class="order-list">
+        <view class="order-list" bindtap="goUnpaid">
           <text>{{unpaid}}</text>
           <text>待付款</text>
         </view>
-        <view class="order-list">
+        <view class="order-list" bindtap="goUndelivered">
           <text>{{undelivered}}</text>
           <text>待发货</text>
         </view>
-        <view class="order-list">
+        <view class="order-list" bindtap="goUnreceipted">
           <text>{{unreceipted}}</text>
           <text>待收货</text>
         </view>
-        <view class="order-list">
+        <view class="order-list" bindtap="goRefunding">
           <text>{{refunding}}</text>
           <text>售后</text>
         </view>

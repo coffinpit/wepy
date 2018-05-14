@@ -8,6 +8,7 @@ class HttpRequest extends wepy.app{
 		this.$$baseHtml = 'https://zstest.zsbutcher.cn/smartShopping/h5/'
 		this.$$path = {
 			time:'r=test',
+			sendCode: 'https://zstest.zsbutcher.cn/smartWb/store/web/index.php?r=forlulu/encrypte-data',
 			userlogin: 'r=member/api-get-token-by-phone',
 			indexList: 'r=recommend/api-get-spus',
 			detail: 'r=product/api-get-spu-detail',
@@ -37,7 +38,8 @@ class HttpRequest extends wepy.app{
 			getOrderDetail: 'r=order/api-get-detail',
 			cancelOrder: 'r=order/api-cancel',
 			orderEditAdd: 'r=order/api-change-address',
-			getNotice: 'r=notice/api-get-notice'
+			getNotice: 'r=notice/api-get-notice',
+			getService: 'r=virtual-item/api-get-virtual-item'
 		}
 		this.$$pathHtml = {
 			rules: 'distribution_rules.html'
@@ -72,6 +74,28 @@ class HttpRequest extends wepy.app{
 				}
 			})
 		})
+	}
+	SendCode (param, cb) {
+		var _this = this
+        return new Promise((resolve, reject) => {
+        	_this.getTime().then((res) => {
+        		var data = _this.getData(res, param)
+        		wepy.request({
+	            	url: this.$$path.sendCode,
+	            	method: 'POST',
+	            	header: {'content-type': 'application/x-www-form-urlencoded'},
+	            	data: data,
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+	            })
+        	}).catch(() => {
+        		cb && cb()
+        	})
+        })
 	}
 	UserLogin (param, cb) {
 		var _this = this
@@ -691,6 +715,50 @@ class HttpRequest extends wepy.app{
 				var data = _this.getData(res, param)
 				wepy.request({
 					url: this.$$base + this.$$path.getNotice,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
+	GetService (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.getService,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
+	GetLogistica (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: 'http://192.168.8.126/smartWb/store/web/index.php?r=zs-api/get-logistics-trace',
 					data: data,
 					method: 'GET',
 	                header: {'content-type': 'application/json'},

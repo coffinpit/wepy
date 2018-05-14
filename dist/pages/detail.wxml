@@ -137,8 +137,8 @@
           <text class="title link">价格：￥{{totalCart}}</text>
           
   <view class="counter calculate">
-    <view catchtap="$counterCart$plusTap" class="counter-btn {{$counterCart$disable ? 'disable' : ''}}" data-id="{{$counterCart$sourceId}}">  +  </view>
-    <input type="number" bindinput="$counterCart$inputTap" bindblur="$counterCart$blurTap" class="counter-btn number" value="{{$counterCart$num}}" focus="{{$counterCart$autoFocus}}" data-id="{{$counterCart$sourceId}}"/> 
+    <view catchtap="$counterCart$plusTap" class="counter-btn {{$counterCart$isDisabled || $counterCart$disable ? 'disable' : ''}}" data-id="{{$counterCart$sourceId}}">  +  </view>
+    <input type="number" bindinput="$counterCart$inputTap" bindblur="$counterCart$blurTap" class="counter-btn number {{$counterCart$isDisabled ? 'disable' : ''}}" value="{{$counterCart$num}}" focus="{{$counterCart$autoFocus}}" data-id="{{$counterCart$sourceId}}" disabled="{{$counterCart$isDisabled}}"/> 
     <view catchtap="$counterCart$minusTap" class="counter-btn minusBtn {{$counterCart$able ? 'able' : ''}}" data-id="{{$counterCart$sourceId}}">  -  </view>
   </view>
 
@@ -149,10 +149,10 @@
         <block wx:for="{{detail.goodList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
           <view class="popup_layer">
             <view class="goods-name {{item.num === 0 ? 'none' : ''}}">{{item.name}}</view>
-            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="#fc5e43" checked="{{item.checked}}" disabled="{{item.num === 0? true : false}}"/></view>
+            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="{{item.num === 0? '#ccc' : '#fc5e43'}}" checked="{{item.checked}}" disabled="{{item.num === 0? true : false}}"/></view>
           </view>
         </block>
       </radio-group>
-      <button class="default-button size-full" catchtap="goCart">{{isAddCart ? '加入购物车' : '立即购买'}}</button>
+      <button class="default-button size-full {{cartResult.num === 0 ? 'disable' : ''}}" catchtap="goCart">{{isAddCart ? '加入购物车' : '立即购买'}}</button>
     </view>
   </view>

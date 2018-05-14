@@ -31,6 +31,10 @@
   height: 70rpx;
   vertical-align: middle;
 }
+.counter .number.disabled {
+  background: #f8f8f8;
+  color: #999;
+}
 .counter .minusBtn {
   background: #f8f8f8;
   color: #999;

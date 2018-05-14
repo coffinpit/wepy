@@ -1,0 +1,42 @@
+@import "./../components/defect.wxss";
+.container {
+  min-height: calc(100vh);
+  display: block;
+}
+.invoice-container {
+  margin-top: 20rpx;
+  float: left;
+  width: 100%;
+}
+.invoice-layer {
+  padding: 26rpx 20rpx;
+  background: #fff;
+  overflow: hidden;
+  border-bottom: 1px #eee solid;
+}
+.invoice-layer.last-child {
+  border-bottom: none;
+}
+.invoice-layer .title {
+  float: left;
+  width: 150rpx;
+}
+.invoice-layer .detail {
+  float: right;
+  width: 540rpx;
+}
+.blank-button {
+  width: 280rpx;
+  margin: 20rpx auto;
+}
+.blank-button.right {
+  float: right;
+  margin-right: 20rpx;
+}
+.default-button {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  line-height: 100rpx;
+}

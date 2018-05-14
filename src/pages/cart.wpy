@@ -340,7 +340,7 @@
       </view>
       <view class="cart-status" wx:else>
         <text class="font-normal">已购￥{{cartStatus.totalprice}}，成为会员仅需 <text class="font-normal link font-bold">￥{{cartStatus.memberPrice}}</text></text>
-        <view class="default-button">加入会员</view>
+        <view class="default-button" @tap="goApplyVip">加入会员</view>
       </view>
       <repeat for="{{cartList}}" item="item" index="index">
         <view class="cart-list">
@@ -538,6 +538,11 @@
             url: './paycart'
           })
         }
+      },
+      goApplyVip () {
+        wepy.navigateTo({
+          url: './applyVip'
+        })
       },
       coldCheck (e) {
         var value = e.currentTarget.dataset.value

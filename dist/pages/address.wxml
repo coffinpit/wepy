@@ -1,5 +1,6 @@
 
   <view class="container">
+    {{detail}}
     <block wx:for="{{address}}" wx:for-index="index" wx:for-item="item" wx:key="index">
       <view class="address-container" bindtap="backToOrder" data-wpybacktoorder-a="{{index}}" data-wpybacktoorder-b="{{item.id}}">
         <view class="address-layer">

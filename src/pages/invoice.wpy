@@ -1,0 +1,122 @@
+<style lang="less">
+  .container {
+    min-height:calc(100vh);
+    display:block;
+  }
+  .invoice-container{
+    margin-top:20rpx;
+    float: left;
+    width: 100%;
+  }
+  .invoice-layer{
+    padding:26rpx 20rpx;
+    background: #fff;
+    overflow: hidden;
+    border-bottom: 1px #eee solid;
+    &.last-child{
+      border-bottom: none;
+    }
+    .title{
+      float: left;
+      width: 150rpx;
+    }
+    .detail{
+      float: right;
+      width: 540rpx;
+    }
+  }
+  .blank-button{
+    width:280rpx;
+    margin:20rpx auto;
+    &.right{
+      float: right;
+      margin-right: 20rpx;
+    }
+  }
+  .default-button{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    line-height:100rpx;
+  }
+</style>
+<template>
+  <view class="container">
+    <view class="invoice-container">
+      <view class="invoice-layer" wx:if="{{invoiceList.type}}">
+        <text class="font-normal title">抬头类型 :</text>
+        <text class="font-normal detail">{{invoiceList.type}}</text>
+      </view>
+      <view class="invoice-layer" wx:if="{{invoiceList.title}}">
+        <text class="font-normal title">抬头名称 :</text>
+        <text class="font-normal detail">{{invoiceList.title}}</text>
+      </view>
+      <view class="invoice-layer" wx:if="{{invoiceList.taxNumber}}">
+        <text class="font-normal title">抬头税号 :</text>
+        <text class="font-normal detail">{{invoiceList.taxNumber}}</text>
+      </view>
+      <view class="invoice-layer" wx:if="{{invoiceList.companyAddress}}">
+        <text class="font-normal title">单位地址 :</text>
+        <text class="font-normal detail">{{invoiceList.companyAddress}}</text>
+      </view>
+      <view class="invoice-layer" wx:if="{{invoiceList.telephone}}">
+        <text class="font-normal title">手机号码 :</text>
+        <text class="font-normal detail">{{invoiceList.telephone}}</text>
+      </view>
+      <view class="invoice-layer" wx:if="{{invoiceList.bankName}}">
+        <text class="font-normal title">银行名称 :</text>
+        <text class="font-normal detail">{{invoiceList.bankName}}</text>
+      </view>
+      <view class="invoice-layer" wx:if="{{invoiceList.bankAccount}}">
+        <text class="font-normal title">银行账号 :</text>
+        <text class="font-normal detail">{{invoiceList.bankAccount}}</text>
+      </view>
+    </view>
+    <defect wx:if="{{!invoiceList}}" type="7"></defect>
+    <button class="blank-button {{invoiceList ? 'right' : ''}}" hover-class-"blank-button-hover" @tap="addInvoice">添加/修改发票信息</button>
+    <button class="default-button">确认发票信息</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Defect from '../components/defect'
+
+  export default class Invoice extends wepy.page {
+    config = {
+      navigationBarTitleText: '发票中心'
+    }
+    data = {
+      invoiceList: null
+    }
+    components = {
+      defect: Defect
+    }
+    methods = {
+      addInvoice () {
+        var _this = this
+        wepy.chooseInvoiceTitle({
+          success(res) {
+            _this.invoiceList = {}
+            if (res.type === '0') {
+              _this.invoiceList.type = '单位'
+            } else if (res.type === '1') {
+              _this.invoiceList.type = '个人'
+            }
+            _this.invoiceList.title = res.title
+            _this.invoiceList.taxNumber = res.taxNumber
+            _this.invoiceList.companyAddress = res.companyAddress
+            _this.invoiceList.telephone = res.telephone
+            _this.invoiceList.bankName = res.bankName
+            _this.invoiceList.bankAccount = res.bankAccount
+            _this.$apply()
+          }
+        })
+      }
+    }
+    onload () {
+      this.$apply()
+    }
+  }
+</script>

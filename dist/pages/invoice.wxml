@@ -1,0 +1,44 @@
+
+  <view class="container">
+    <view class="invoice-container">
+      <view class="invoice-layer"  wx:if="{{invoiceList.type}}">
+        <text class="font-normal title">抬头类型 :</text>
+        <text class="font-normal detail">{{invoiceList.type}}</text>
+      </view>
+      <view class="invoice-layer"  wx:if="{{invoiceList.title}}">
+        <text class="font-normal title">抬头名称 :</text>
+        <text class="font-normal detail">{{invoiceList.title}}</text>
+      </view>
+      <view class="invoice-layer" wx:if="{{invoiceList.taxNumber}}">
+        <text class="font-normal title">抬头税号 :</text>
+        <text class="font-normal detail">{{invoiceList.taxNumber}}</text>
+      </view>
+      <view class="invoice-layer" wx:if="{{invoiceList.companyAddress}}">
+        <text class="font-normal title">单位地址 :</text>
+        <text class="font-normal detail">{{invoiceList.companyAddress}}</text>
+      </view>
+      <view class="invoice-layer" wx:if="{{invoiceList.telephone}}">
+        <text class="font-normal title">手机号码 :</text>
+        <text class="font-normal detail">{{invoiceList.telephone}}</text>
+      </view>
+      <view class="invoice-layer" wx:if="{{invoiceList.bankName}}">
+        <text class="font-normal title">银行名称 :</text>
+        <text class="font-normal detail">{{invoiceList.bankName}}</text>
+      </view>
+      <view class="invoice-layer" wx:if="{{invoiceList.bankAccount}}">
+        <text class="font-normal title">银行账号 :</text>
+        <text class="font-normal detail">{{invoiceList.bankAccount}}</text>
+      </view>
+    </view>
+    
+  <view wx:if="{{!invoiceList}}">
+    <view class="lost-goods">
+      <image src="../image/lost-goods.png"/>
+      <text class="iconfont {{$defect$typeIcon}}"/>
+      <text class="font-normal">{{$defect$typeTxt}}</text>
+    </view>
+  </view>
+
+    <button class="blank-button {{invoiceList ? 'right' : ''}}" hover-class-="blank-button-hover" bindtap="addInvoice">添加/修改发票信息</button>
+    <button class="default-button">确认发票信息</button>
+  </view>

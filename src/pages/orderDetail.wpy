@@ -29,8 +29,8 @@
       }
     }
     .icon-ksj_dz{
-      font-size:60rpx;
-      margin-right:64rpx;
+      font-size:80rpx;
+      margin-right:44rpx;
       vertical-align: middle;
     }
     .font-normal{
@@ -169,6 +169,7 @@
         <text class="font-normal">{{address.name}}</text>
         <text class="font-normal gray">{{address.phone}}</text>
         <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 2 || status === 5 || status === 6}}">查看物流</button>
+        <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" @tap="goAddress">修改地址</button>
         <text class="font-normal block">{{address.detail}}</text>
       </view>
       <repeat for="{{order}}" item="item" index="index">
@@ -202,7 +203,6 @@
       <view class="orderTotal" wx:if="{{!isHidden}}">
         <text class="font-normal">需付款<text class="link">￥{{finalPrice}}</text> (含运费￥{{freight}})</text>
         <view class="edit-button">
-          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" @tap="goAddress">修改地址</button>
           <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" @tap="cancel">取消订单</button>
           <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{status === 5 || status === 6}}">售后申请</button>
           <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}">付款</button>
@@ -295,6 +295,7 @@
           _this.memo = data.memo || ''
           _this.pay = data.pay
           _this.freight = data.freight
+          // _this.initLogistica('shunfeng', data.showId)
           setInterval(() => {
             data.payRemainingTime --
             if (data.payRemainingTime > 0) {
@@ -350,6 +351,15 @@
         if (res.data.error === 0) {
           cb && cb()
         }
+      })
+    }
+    initLogistica (com, num) {
+      var data = {
+        com: com,
+        num: num
+      }
+      this.$parent.HttpRequest.GetLogistica(data).then((res) => {
+        console.log(res)
       })
     }
     onLoad (param) {

@@ -140,7 +140,7 @@
               <view class="items">
                 <orderList :orderList.sync="item.orderDetail" :userLevel.sync="userLevel"></orderList>
                 <view class="more" @tap="goDetail({{item.id}})">
-                  <text class="font-normal">查看全部 ({{item.count}}) <text class="iconfont icon-rightsj"></text></text>
+                  <text class="font-normal">查看全部详情 ({{item.count}}) <text class="iconfont icon-rightsj"></text></text>
                 </view>
               </view>
               <view class="order-edit">
@@ -150,7 +150,6 @@
                   <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="goAddress({{item.id}})">修改地址</button>
                   <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="cancel({{item.id}})">取消订单</button>
                   <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
-                  <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}">查看物流</button>
                   <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}">付款</button>
                 </view>
               </view>
@@ -210,7 +209,7 @@
         type: 'refunding'
       }],
       orderStatus: ['异常', '待支付', '售后中', '已关闭', '待发货', '待收货', '交易完成'],
-      current: 0,
+      current: null,
       orderType: 'all',
       orderList: [],
       pageSize: 5,
@@ -319,8 +318,18 @@
         }
       })
     }
-    onLoad () {
+    onLoad (param) {
       this.token = this.$parent.getToken()
+      if (param.orderType) {
+        this.orderType = param.orderType
+        this.package.forEach((item, index) => {
+          if (item.type === param.orderType) {
+            this.current = index
+          }
+        })
+      } else {
+        this.current = 0
+      }
       this.$apply()
     }
     onShow () {
