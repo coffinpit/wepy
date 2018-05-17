@@ -11,11 +11,11 @@ image {
   width: 100%;
 }
 .index-swiper {
-  height: 400rpx;
+  height: 347rpx;
   border-bottom: 3px #fe5946 solid;
 }
 .index-swiper image {
-  height: 400rpx;
+  height: 347rpx;
 }
 .wrap {
   display: block;

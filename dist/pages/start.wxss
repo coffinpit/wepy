@@ -1,9 +1,93 @@
-.start {
-  width: 100%;
+@import "./../components/loading.wxss";
+.login-container {
   height: 100%;
-  position: absolute;
-  overflow: hidden;
+  background: #fff;
 }
-.start_bg {
+.app-info {
+  position: relative;
+  text-align: center;
+  padding-bottom: 20px;
+}
+.app-info .app-logo {
+  display: block;
   width: 100%;
+  margin-bottom: 20px;
+}
+.app-info .app-name {
+  font-size: 18px;
+  color: #333;
+}
+.alert {
+  padding: 0 20px;
+  text-align: center;
+}
+.alert .input-title {
+  margin: 0 auto 20rpx;
+  position: relative;
+  width: 100%;
+  border-bottom: 1px #eee solid;
+}
+.alert .input-title input {
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: 32rpx;
+  width: 400rpx;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 9;
+}
+.alert .input-title .code {
+  position: absolute;
+  right: 0;
+  top: 16rpx;
+  padding: 10rpx 20rpx;
+  min-width: 60rpx;
+  z-index: 9999;
+}
+.alert .input-title .code.unavailable {
+  background: #ccc;
+}
+.placeholder {
+  font-size: 32rpx;
+  color: #ccc;
+}
+.alert-desc {
+  display: block;
+  list-style: disc inside none;
+  margin-top: 10px;
+}
+.alert .alert-text {
+  display: list-item;
+  text-align: -webkit-match-parent;
+  font-size: 14px;
+  color: #999;
+}
+.login-btn {
+  background: #fe5946;
+  border-radius: 0;
+  color: #fff;
+  line-height: 45px;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+}
+.login-btn-active {
+  background: #e8412d;
+  color: #f6eceb;
+}
+.logged {
+  margin-top: 100px;
+}
+.logged .logged-icon {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 20px auto;
+}
+.logged .logged-text {
+  font-size: 14px;
+  color: #000;
+  text-align: center;
+  margin: 10px 0;
 }

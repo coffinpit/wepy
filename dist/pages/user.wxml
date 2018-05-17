@@ -11,7 +11,7 @@
       <text class="iconfont icon-vip {{!isVip ? '' : 'vip'}}"/>
       <view  wx:if="{{!isVip}}">
         <text class="title">成为 <text class="link">优价会员</text> 获取超值优惠</text>
-        <button class="default-button">会员申请</button>
+        <button class="default-button" bindtap="goApplyVip">会员申请</button>
       </view>
       <view wx:else>
         <text class="title">您的 <text class="link">优价会员</text> 将于 {{validation}} 到期</text>

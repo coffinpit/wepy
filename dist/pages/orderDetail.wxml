@@ -16,7 +16,7 @@
           支付超时
         </text>
       </view>
-      <view class="orderStatus address" wx:if="{{address != false}}">
+      <view class="orderStatus address" wx:if="{{Object.keys(address).length}}">
         <text class="iconfont icon-ksj_dz"/>
         <text class="font-normal">{{address.name}}</text>
         <text class="font-normal gray">{{address.phone}}</text>
@@ -73,7 +73,7 @@
         <view class="edit-button">
           <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" bindtap="cancel">取消订单</button>
           <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{status === 5 || status === 6}}">售后申请</button>
-          <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}">付款</button>
+          <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}" bindtap="goPay">付款</button>
         </view>
       </view>
       <view class="orderTotal" wx:else><text class="font-normal">订单已取消</text></view>

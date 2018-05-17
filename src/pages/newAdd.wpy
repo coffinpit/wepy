@@ -30,7 +30,7 @@
         margin-right:0
       }
       picker{
-        width:160rpx;
+        width:510rpx;
         height:52rpx;
         line-height:52rpx;
       }
@@ -62,8 +62,8 @@
       <view class="address-layer">
         <text class="title">收货地址</text>
         <view class="picker">
-          <picker bindchange="bindRegionChange" value="{{index}}" range="{{topArea}}">
-            <view>{{array[index]}}</view>
+          <picker mode="multiSelector" @change="topArea" @columnchange="childArea" @cancel="cancel" value="{{multiIndex}}" range="{{multiArray}}">
+            <view>{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}</view>
           </picker>
           <text class="iconfont icon-xlsanjiao"></text>
         </view>
@@ -82,24 +82,59 @@
     }
     data = {
       token: '',
-      index: 0,
-      topArea: []
+      num: 0,
+      multiArray: [
+        ['北京市', '上海市', '广东省', '江西省'],
+        ['市辖区', '县'],
+        ['东城区', '西城区', '崇文区']
+      ],
+      multiIndex: [0, 0, 0],
+      multiAreaId: [
+        ['100001', '100002', '100003', '100004'],
+        ['200001', '200002'],
+        ['300001', '300002', '300003']
+      ]
+    }
+    computed = {
+      multiValue () {
+        var tempArr = []
+        this.multiAreaId.forEach((item, index) => {
+          tempArr.push(item[0])
+        })
+        return tempArr
+      }
     }
     methods = {
-      bindRegionChange (e) {
+      topArea (e) {
         console.log(e.detail.value)
-        this.index = e.detail.value
+        this.multiIndex = e.detail.value
+        var temp = []
+        temp = this.multiValue.map((item, index) => {
+          return this.multiAreaId[index][this.multiIndex[index]]
+        })
+        this.multiValue = temp
+        console.log(this.multiValue)
+      },
+      childArea (e) {
+        this.num ++
+        console.log('Send Request:' + this.num)
+        this.multiIndex[e.detail.column] = e.detail.value
+        switch (e.detail.column) {
+          case 0:
+            // 选择省
+            // temp[0] 作为top areaId 发送请求获取市
+            this.getCity()
+            break
+          case 1:
+            // 选择市
+            // temp[1] 作为areaId 发送请求获取区
+            this.getArea()
+            break
+        }
+      },
+      cancel () {
+        this.initDefault()
       }
-    }
-    deleteAdd (id) {
-      var _this = this
-      var data = {
-        token: this.token,
-        addressId: id
-      }
-      this.$parent.HttpRequest.DeleteAddress(data).then((res) => {
-        _this.$apply()
-      })
     }
     initTopArea () {
       var data = {}
@@ -107,8 +142,32 @@
         console.log(res)
       })
     }
+    initDefault () {
+      this.multiArray = [
+        ['北京市', '上海市', '广东省', '江西省'],
+        ['市辖区', '县'],
+        ['东城区', '西城区', '崇文区']
+      ]
+      this.multiIndex = [0, 0, 0]
+      this.multiAreaId = [
+        ['100001', '100002', '100003', '100004'],
+        ['200001', '200002'],
+        ['300001', '300002', '300003']
+      ]
+    }
+    getCity () {
+      this.multiArray[1] = ['广州', '深圳', '珠海', '汕头']
+      this.multiAreaId[1] = ['200001B', '200002B', '200003B', '200004B']
+      this.multiIndex[1] = 0
+      this.getArea()
+    }
+    getArea () {
+      this.multiIndex[2] = 0
+      this.multiArray[2] = ['静安区', '黄浦区', '徐汇区', '青浦区', '卢湾区', '浦东新区', '徐汇区']
+      this.multiAreaId[2] = ['300001B', '300002B', '300003B', '300004B', '300005B', '300006B', '300007B']
+    }
     onLoad () {
-      this.initTopArea()
+      // this.initTopArea()
       this.token = this.$parent.getToken('newAdd')
       this.$apply()
     }

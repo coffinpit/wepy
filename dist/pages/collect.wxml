@@ -6,8 +6,8 @@
           
   <view class="goods-layer">
     <block wx:for="{{$collectGood$goodsItem}}" wx:for-index="$collectGood$index" wx:for-item="$collectGood$item" wx:key="$collectGood$key">
-      <view class="goods" bindtap="$collectGood$tap" id="{{$collectGood$item.id}}" data-wpytap-a="{{$collectGood$item.id}}">
-        <view class="goods-image {{$collectGood$item.noSales ? 'no-salse' : ''}}"><image src="{{$collectGood$item.path}}" mode="aspectFit" lazy-load="true"/></view>
+      <view class="goods {{$collectGood$item.noSales ? 'expire' : ''}}" bindtap="$collectGood$tap" id="{{$collectGood$item.id}}" data-wpytap-a="{{$collectGood$item.id}}" data-wpytap-b="{{$collectGood$item.noSales}}">
+        <view class="goods-image"><view class="expire-layer"  wx:if="{{$collectGood$item.noSales}}">商品失效</view><image src="{{$collectGood$item.path}}" mode="aspectFit" lazy-load="true"/></view>
         <view class="goods-detail">
           <view class="goods-detail-title">{{$collectGood$item.title}}</view>
           <view class="goods-detail-price">

@@ -74,7 +74,7 @@
       </view>
     </view>
     <defect wx:if="{{!invoiceList}}" type="7"></defect>
-    <button class="blank-button {{invoiceList ? 'right' : ''}}" hover-class-"blank-button-hover" @tap="addInvoice">添加/修改发票信息</button>
+    <button class="blank-button {{invoiceList ? 'right' : ''}}" hover-class="blank-button-hover" @tap="addInvoice">添加/修改发票信息</button>
     <button class="default-button">确认发票信息</button>
   </view>
 </template>
@@ -96,23 +96,27 @@
     methods = {
       addInvoice () {
         var _this = this
-        wepy.chooseInvoiceTitle({
-          success(res) {
-            _this.invoiceList = {}
-            if (res.type === '0') {
-              _this.invoiceList.type = '单位'
-            } else if (res.type === '1') {
-              _this.invoiceList.type = '个人'
+        if (wepy.chooseInvoiceTitle) {
+          wepy.chooseInvoiceTitle({
+            success(res) {
+              _this.invoiceList = {}
+              if (res.type === '0') {
+                _this.invoiceList.type = '单位'
+              } else if (res.type === '1') {
+                _this.invoiceList.type = '个人'
+              }
+              _this.invoiceList.title = res.title
+              _this.invoiceList.taxNumber = res.taxNumber
+              _this.invoiceList.companyAddress = res.companyAddress
+              _this.invoiceList.telephone = res.telephone
+              _this.invoiceList.bankName = res.bankName
+              _this.invoiceList.bankAccount = res.bankAccount
+              _this.$apply()
             }
-            _this.invoiceList.title = res.title
-            _this.invoiceList.taxNumber = res.taxNumber
-            _this.invoiceList.companyAddress = res.companyAddress
-            _this.invoiceList.telephone = res.telephone
-            _this.invoiceList.bankName = res.bankName
-            _this.invoiceList.bankAccount = res.bankAccount
-            _this.$apply()
-          }
-        })
+          })
+        } else {
+          this.$parent.disableApi()
+        }
       }
     }
     onload () {

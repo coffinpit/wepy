@@ -169,10 +169,13 @@
           }
         })
       },
-      goDetail (id) {
-        wepy.navigateTo({
-          url: './detail?id=' + id
-        })
+      goDetail (id, type) {
+        console.log(type)
+        if (!type) {
+          wepy.navigateTo({
+            url: './detail?id=' + id
+          })
+        }
       }
     }
     initCollect () {
@@ -211,6 +214,11 @@
             good.id = item.sourceId
             good.descript = item.desc
             good.markId = item.markId
+            if (!item.isAllowSale) {
+              good.noSales = true
+            } else {
+              good.noSales = false
+            }
             _this.collectList.push(good)
           })
         } else {

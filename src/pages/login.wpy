@@ -143,7 +143,10 @@
           if (wepy.getStorageSync('token')) {
             this.isNull = true
             // 已经授权，获取新的token
-            this.$parent.requestToken({phone: '13402155751'}, () => {
+            var data = {
+              phone: wepy.getStorageSync('phone')
+            }
+            this.$parent.requestToken(data, () => {
               this.goIndex()
             })
           } else {

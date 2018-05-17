@@ -54,7 +54,7 @@
   <view class="counter">
     <view @tap.stop="plusTap" class="counter-btn {{isDisabled || disable ? 'disable' : ''}}" data-id="{{sourceId}}">  +  </view>
     <input type="number" @input="inputTap" @blur="blurTap" class="counter-btn number {{isDisabled ? 'disable' : ''}}" value="{{num}}" focus="{{autoFocus}}" data-id="{{sourceId}}" disabled="{{isDisabled}}"/> 
-    <view @tap.stop="minusTap" class="counter-btn minusBtn {{able ? 'able' : ''}}" data-id="{{sourceId}}">  -  </view>
+    <view @tap.stop="minusTap" class="counter-btn minusBtn {{isDisabled || !isAble ? '' : 'able'}}" data-id="{{sourceId}}">  -  </view>
   </view>
 </template>
 <script>
@@ -77,7 +77,7 @@
       }
     }
     computed = {
-      able () {
+      isAble () {
         if (this.num <= 1) {
           return false
         } else {
@@ -110,7 +110,6 @@
       }
     }
     onLoad () {
-      console.log(this.isDisabled)
       this.$apply()
     }
   }

@@ -9,6 +9,25 @@
     &:last-child{
       border-bottom:none;
     }
+    &.expire{
+      position: relative;
+      .expire-layer {
+        position: absolute;
+        width:100%;
+        height:100%;
+        z-index:99;
+        line-height:200rpx;
+        text-align: center;
+        font-size:28rpx;
+        color:#fff;
+        background: rgba(0,0,0,0.2);
+      }
+      .goods-detail{
+        .goods-detail-title, .goods-detail-price{
+          color:#999;
+        }
+      }
+    }
     .goods-image{
       width:200rpx;
       border:1px #eee solid;
@@ -19,14 +38,6 @@
       image{
         height:100%;
         width:200rpx;
-      }
-      &.no-sales {
-        position:absolute;
-        top:0;
-        left:0;
-        width:100%;
-        height:100%;
-        backgrond:rgba(0,0,0,0.2);
       }
     }
     .goods-detail{
@@ -57,8 +68,8 @@
 <template>
   <view class="goods-layer">
     <repeat for="{{goodsItem}}" item="item">
-      <view class="goods" @tap="tap({{item.id}})" id="{{item.id}}">
-        <view class="goods-image {{item.noSales ? 'no-salse' : ''}}"><image src="{{item.path}}" mode="aspectFit" lazy-load="true"></image></view>
+      <view class="goods {{item.noSales ? 'expire' : ''}}" @tap="tap({{item.id}}, {{item.noSales}})" id="{{item.id}}">
+        <view class="goods-image"><view class="expire-layer" wx:if="{{item.noSales}}">商品失效</view><image src="{{item.path}}" mode="aspectFit" lazy-load="true"></image></view>
         <view class="goods-detail">
           <view class="goods-detail-title">{{item.title}}</view>
           <view class="goods-detail-price">
@@ -89,8 +100,8 @@
       goodsItem: Array
     }
     methods = {
-      tap (id) {
-        this.$emit('goodsTap', id)
+      tap (id, type) {
+        this.$emit('goodsTap', id, type)
       }
     }
     onLoad () {

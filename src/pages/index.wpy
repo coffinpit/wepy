@@ -6,10 +6,10 @@
     width:100%;
   }
   .index-swiper{
-    height:400rpx;
+    height:347rpx;
     border-bottom: 3px #fe5946 solid;
     image{
-      height:400rpx;
+      height:347rpx;
     }
   }
   .wrap {
@@ -101,12 +101,12 @@
   }
 </style>
 <template>
-  <view class="container">
+  <view class="container" wx:if="{{isLoading}}">
     <searchbar :pagefrom.sync="pageTitle"></searchbar>
     <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" @change.stop="changeBanner" class="index-swiper">
       <repeat for="{{bannerLink}}" index="index" item="item" key="key">
           <swiper-item>
-            <image src="{{item.path}}" mode="aspectFill"></image>
+            <navigator url="./detail?id={{item.detailId}}"><image src="{{item.path}}" mode="aspectFill"></image></navigator>
           </swiper-item>
       </repeat>
     </swiper>
@@ -163,8 +163,9 @@
       isDown: Reachdown
     }
     data = {
+      token: '',
       pageTitle: 'index',
-      bannerLink: [{path: '../image/bg-bannerA@2x.jpg', id: 'png1'}, {path: '../image/bg-bannerB@2x.jpg', id: 'png2'}, {path: '../image/bg-bannerC@2x.jpg', id: 'png3'}, {path: '../image/bg-bannerD@2x.jpg', id: 'png4'}],
+      bannerLink: [],
       topnavigation: ['推荐', '热门'],
       currentPage: 0,
       pageauto: false,
@@ -182,7 +183,8 @@
       pageNum: 1,
       totalPageNum: '',
       isNull: true,
-      isDown: false
+      isDown: false,
+      isLoading: false
     }
 
     methods = {
@@ -209,7 +211,9 @@
     }
     onShow () {
       this.currentPage = 0
+      this.isLoading = false
       this.initPage()
+      this.getBanner()
     }
     onReachBottom () {
       // 显示加载状态
@@ -228,11 +232,10 @@
       this.isDown = false
       var parent = this.$parent
       var _this = this
-      const token = this.$parent.getToken()
       var data = {
         pageNum: this.pageNum,
         recommendType: this.currentPage + 1,
-        token: token,
+        token: this.token,
         pageSize: '5'
       }
       parent.HttpRequest.IndexHttp(data, () => {
@@ -282,7 +285,43 @@
       this.isNull = false
       this.getInitData()
     }
+    getBanner () {
+      this.bannerLink = []
+      var _this = this
+      var data = {
+        token: this.token,
+        siteNo: 'index'
+      }
+      this.$parent.HttpRequest.GetBanner(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          var data = res.data.data
+          data.forEach((item) => {
+            var obj = {}
+            obj.path = item.image
+            obj.id = item.id
+            obj.sortId = item.sort
+            obj.detailId = item.uri.split(',')[1]
+            _this.bannerLink.push(obj)
+            _this.bannerLink.sort((obj1, obj2) => {
+              var val1 = obj1.sortId
+              var val2 = obj2.sortId
+              if (val1 < val2) {
+                return -1
+              } else if (val1 > val2) {
+                return 1
+              } else {
+                return 0
+              }
+            })
+          })
+        }
+        _this.isLoading = true
+        _this.$apply()
+      })
+    }
     onLoad () {
+      this.token = this.$parent.getToken()
       this.$apply()
     }
   }

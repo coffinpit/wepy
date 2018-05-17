@@ -11,6 +11,7 @@ class HttpRequest extends wepy.app{
 			sendCode: 'https://zstest.zsbutcher.cn/smartWb/store/web/index.php?r=forlulu/encrypte-data',
 			userlogin: 'r=member/api-get-token-by-phone',
 			indexList: 'r=recommend/api-get-spus',
+			getBanner: 'r=banner/api-get-banner',
 			detail: 'r=product/api-get-spu-detail',
 			search: 'r=product/api-search-spu',
 			addcart: 'r=shopping-cart/api-update',
@@ -39,10 +40,14 @@ class HttpRequest extends wepy.app{
 			cancelOrder: 'r=order/api-cancel',
 			orderEditAdd: 'r=order/api-change-address',
 			getNotice: 'r=notice/api-get-notice',
-			getService: 'r=virtual-item/api-get-virtual-item'
+			getService: 'r=virtual-item/api-get-virtual-item',
+			payService: 'r=buying/api-apply-pay',
+			getSignCode: 'r=member/api-apply-sign-in-by-phone',
+			loginByPhone: 'r=member/api-sign-up-or-sign-in'
 		}
 		this.$$pathHtml = {
-			rules: 'distribution_rules.html'
+			rules: 'distribution_rules.html',
+			service: 'vip_service_agreement.html'
 		}
 	}
 	getData (res, param) {
@@ -126,6 +131,28 @@ class HttpRequest extends wepy.app{
 				var data = _this.getData(res, param)
 				wepy.request({
 					url: this.$$base + this.$$path.indexList,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
+	GetBanner (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.getBanner,
 					data: data,
 					method: 'GET',
 	                header: {'content-type': 'application/json'},
@@ -752,6 +779,28 @@ class HttpRequest extends wepy.app{
         	})
 		})
 	}
+	PayService (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.payService,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
 	GetLogistica (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
@@ -785,6 +834,50 @@ class HttpRequest extends wepy.app{
 					method: 'POST',
 	                header: {'content-type': 'application/x-www-form-urlencoded'},
 	                data: data,
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
+	GetSignCode (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.getSignCode,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
+	LoginByPhone (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.loginByPhone,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
 					success: (data) => {
 					  resolve(data)
 					},

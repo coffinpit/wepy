@@ -34,8 +34,8 @@
         
   <view class="goods-layer">
     <block wx:for="{{$Categoods$goodsItem}}" wx:for-index="$Categoods$index" wx:for-item="$Categoods$item" wx:key="$Categoods$key">
-      <view class="goods" bindtap="$Categoods$tap" id="{{$Categoods$item.id}}" data-wpytap-a="{{$Categoods$item.id}}">
-        <view class="goods-image {{$Categoods$item.noSales ? 'no-salse' : ''}}"><image src="{{$Categoods$item.path}}" mode="aspectFit" lazy-load="true"/></view>
+      <view class="goods {{$Categoods$item.noSales ? 'expire' : ''}}" bindtap="$Categoods$tap" id="{{$Categoods$item.id}}" data-wpytap-a="{{$Categoods$item.id}}" data-wpytap-b="{{$Categoods$item.noSales}}">
+        <view class="goods-image"><view class="expire-layer"  wx:if="{{$Categoods$item.noSales}}">商品失效</view><image src="{{$Categoods$item.path}}" mode="aspectFit" lazy-load="true"/></view>
         <view class="goods-detail">
           <view class="goods-detail-title">{{$Categoods$item.title}}</view>
           <view class="goods-detail-price">
@@ -59,7 +59,7 @@
   </view>
 
       </view>
-      <view class="defect" wx:else>
+      <view class="defect"  wx:else>
         
   <view>
     <view class="lost-goods">

@@ -150,7 +150,7 @@
                   <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="goAddress({{item.id}})">修改地址</button>
                   <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="cancel({{item.id}})">取消订单</button>
                   <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
-                  <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}">付款</button>
+                  <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" @tap="goPay({{item.id}})">付款</button>
                 </view>
               </view>
             </view>
@@ -244,6 +244,17 @@
       goAddress (id) {
         wepy.navigateTo({
           url: './address?page=order&id=' + id
+        })
+      },
+      goPay (id) {
+        var data = {
+          token: this.token,
+          orderId: id,
+          appType: 'ios'
+        }
+        this.$parent.HttpRequest.PayService(data).then((res) => {
+          console.log(res)
+          // 调微信支付弹窗
         })
       }
     }

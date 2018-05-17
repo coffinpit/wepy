@@ -16,8 +16,8 @@
       
   <view class="goods-layer">
     <block wx:for="{{$searchResult$goodsItem}}" wx:for-index="$searchResult$index" wx:for-item="$searchResult$item" wx:key="$searchResult$key">
-      <view class="goods" bindtap="$searchResult$tap" id="{{$searchResult$item.id}}" data-wpytap-a="{{$searchResult$item.id}}">
-        <view class="goods-image {{$searchResult$item.noSales ? 'no-salse' : ''}}"><image src="{{$searchResult$item.path}}" mode="aspectFit" lazy-load="true"/></view>
+      <view class="goods {{$searchResult$item.noSales ? 'expire' : ''}}" bindtap="$searchResult$tap" id="{{$searchResult$item.id}}" data-wpytap-a="{{$searchResult$item.id}}" data-wpytap-b="{{$searchResult$item.noSales}}">
+        <view class="goods-image"><view class="expire-layer"  wx:if="{{$searchResult$item.noSales}}">商品失效</view><image src="{{$searchResult$item.path}}" mode="aspectFit" lazy-load="true"/></view>
         <view class="goods-detail">
           <view class="goods-detail-title">{{$searchResult$item.title}}</view>
           <view class="goods-detail-price">
@@ -47,6 +47,13 @@
       <image src="../image/lost-goods.png"/>
       <text class="iconfont {{$defect$typeIcon}}"/>
       <text class="font-normal">{{$defect$typeTxt}}</text>
+    </view>
+  </view>
+
+    
+  <view wx:if="{{isDown}}">
+    <view class="isDown">
+      <text>—————————— 到底啦 ——————————</text>
     </view>
   </view>
 

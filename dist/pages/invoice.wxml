@@ -39,6 +39,6 @@
     </view>
   </view>
 
-    <button class="blank-button {{invoiceList ? 'right' : ''}}" hover-class-="blank-button-hover" bindtap="addInvoice">添加/修改发票信息</button>
+    <button class="blank-button {{invoiceList ? 'right' : ''}}" hover-class="blank-button-hover" bindtap="addInvoice">添加/修改发票信息</button>
     <button class="default-button">确认发票信息</button>
   </view>

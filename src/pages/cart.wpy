@@ -54,6 +54,21 @@
         text-align:center;
       }
     }
+    .expire-content{
+      background: #f5f5f5;
+      border-top:1px #eee solid;
+      .title{
+        background: #f5f5f5;
+        width:50%
+      }
+      .clear{
+        position: absolute;
+        right:20rpx;
+        top:26rpx;
+        width:50%;
+        text-align: right;
+      }
+    }
     .iconfont{
       font-size:80rpx;
       vertical-align:middle;
@@ -84,7 +99,6 @@
   }
   .item-box{  
     width:100%;
-    background-color: #fff;
   }  
   .items{  
     width: 100%;  
@@ -94,6 +108,23 @@
     border-top: 2rpx solid #eee;  
     height: 200rpx;  
     overflow: hidden;
+    background-color: #fff;
+    &.expire{
+      .inner.txt{
+        background: #f5f5f5;
+      }
+      .inner-image {
+        background-color: #f5f5f5;
+        image{
+          opacity: 0.7;
+        }
+      }
+      .inner-layer{
+        .title, .font-small{
+          color: #999
+        }
+      }
+    }
   }
   .item-list:last-child{  
       border-bottom: 2rpx solid #eee;  
@@ -339,12 +370,12 @@
         <text class="font-normal">尊敬的优价会员，本单已为您节省 <text class="font-normal link font-bold">￥{{cartStatus.discount}}</text></text>
       </view>
       <view class="cart-status" wx:else>
-        <text class="font-normal">已购￥{{cartStatus.totalprice}}，成为会员仅需 <text class="font-normal link font-bold">￥{{cartStatus.memberPrice}}</text></text>
+        <text class="font-normal">已购￥{{cartStatus.totalprice}}, 会员价<text class="font-normal link font-bold">￥{{cartStatus.memberPrice}}</text></text>
         <view class="default-button" @tap="goApplyVip">加入会员</view>
       </view>
       <repeat for="{{cartList}}" item="item" index="index">
         <view class="cart-list">
-          <view class="content">
+          <view class="content" wx:if="{{item.showTitle}}">
             <view class="unedit-layer {{isEdit ? 'animate' : ''}}"></view>
             <text class="title {{isEdit ? 'animate' : ''}}"><text class="iconfont icon-ys_ly"></text>{{item.title}}</text>
             <view class="check-layer">
@@ -356,7 +387,7 @@
           <view class="item-box">  
             <view class="items">
                 <repeat for="{{item.coldlist}}" index="index" item="item" key="index">  
-                <view class="item-list">
+                <view class="item-list {{item.disable ? 'expire' : ''}}">
                   <view class="unedit-layer {{isEdit ? 'animate' : ''}}"></view>
                   <view class="inner txt {{isEdit ? 'animate' : ''}}"> 
                     <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
@@ -367,7 +398,7 @@
                     </view>
                     <view class="inner-image">
                       <image src="{{item.path}}" mode="aspectFill"  @tap.stop="goDetail({{item.id}})"></image>
-                      <counteCold :num.sync="item.count" @plusEdit.user="plusCold" @minusEdit.user="minCold" @keyEdit.user="keyCold" :sourceId.sync="item.sourceId" @blurEdit.user="blurCold"></counteCold>  
+                      <counteCold :num.sync="item.count" @plusEdit.user="plusCold" @minusEdit.user="minCold" @keyEdit.user="keyCold" :sourceId.sync="item.sourceId" @blurEdit.user="blurCold" :isDisabled.sync="item.disable"></counteCold>  
                     </view>
                   </view>
                   <view data-index="{{index}}" class="inner del" @tap.stop="coldCheck" data-value="{{item.sourceId}}">
@@ -381,6 +412,30 @@
           </view>                 
         </view>
       </repeat>
+      <view class="cart-list" wx:if="{{hasExpire}}">
+        <view class="content expire-content"><text class="title">失效商品</text><text class="font-normal clear link" @tap.stop="clearExpire">一键清空</text></view>
+        <view class="item-box">
+          <view class="items">
+            <repeat for="{{expire}}" index="index" item="item" key="index">
+              <view class="item-list {{item.disable ? 'expire' : ''}}">
+                <view class="inner txt">
+                  <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
+                    <text class="title">{{item.title}}</text>
+                    <text class="font-small link">会员价：￥{{item.memberPrice}} </text>
+                    <text class="tips" wx:if="{{item.disable}}">库存不足</text>
+                    <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.price}}</text>
+                    <text class="tips">{{item.viceTitle + '×' + item.buyCount}}</text>
+                  </view>
+                  <view class="inner-image">
+                    <image src="{{item.cover}}" mode="aspectFill"></image>
+                    <counteCold :num.sync="item.buyCount" @plusEdit.user="plusCold" @minusEdit.user="minCold" @keyEdit.user="keyCold" :sourceId.sync="item.sourceId" @blurEdit.user="blurCold" :isDisabled.sync="item.disable"></counteCold>
+                  </view>
+                </view>
+              </view>
+            </repeat>
+          </view>
+        </view>
+      </view>
       <view class="cart-bottom" wx:if="{{!isNull}}">
         <image src="../image/dz_bgbl.png"></image>
         <text class="title link edit" @tap="editTap">{{isEdit ? '取消' : '编辑'}}</text>
@@ -435,7 +490,9 @@
       isNull: false,
       finalprice: 0,
       freight: 0,
-      isLoading: true
+      isLoading: true,
+      validateCount: 0,
+      expire: []
     }
     computed = {
       userLevel () {
@@ -451,6 +508,13 @@
         } else {
           return false
         }
+      },
+      hasExpire () {
+        if (this.expire.length === 0) {
+          return false
+        } else {
+          return true
+        }
       }
     }
     methods = {
@@ -461,7 +525,7 @@
         var sourceId = e.currentTarget.dataset.id
         this.cartList.forEach((item) => {
           item.coldlist.forEach((val) => {
-            if (val.sourceId === sourceId) {
+            if (val.sourceId === sourceId && val.totalCount > this.validateCount) {
               val.count ++
               if (val.count > val.totalCount) {
                 val.count = val.totalCount
@@ -481,7 +545,7 @@
         var sourceId = e.currentTarget.dataset.id
         this.cartList.forEach((item) => {
           item.coldlist.forEach((val) => {
-            if (val.sourceId === sourceId) {
+            if (val.sourceId === sourceId && val.totalCount > this.validateCount) {
               val.count --
               if (val.count < 1) {
                 val.count = 1
@@ -506,17 +570,20 @@
             if (val.sourceId === sourceId) {
               if (keyVal <= 0) {
                 val.count = 1
-              } else if (keyVal > val.totalCount) {
+              } else if (val.totalCount > this.validateCount && keyVal > val.totalCount) {
                 val.count = val.totalCount
                 this.maxModal('数量已达上限')
+              } else if (val.totalCount <= this.validateCount) {
+                val.count = 0
               } else {
                 val.count = keyVal
               }
+              if (!val.disable) {
+                this.addCartData(val, val.count - val.initCount, () => {
+                  this.initPageData()
+                })
+              }
             }
-            console.log(val.initCount)
-            this.addCartData(val, val.count - val.initCount, () => {
-              this.initPageData()
-            })
             return val.count
           })
         })
@@ -534,8 +601,20 @@
       },
       goOrder () {
         if (!this.isEdit) {
-          wepy.navigateTo({
-            url: './paycart'
+          if (!this.hasExpire) {
+            wepy.navigateTo({
+              url: './paycart'
+            })
+          } else {
+            wepy.showToast({
+              title: '请先清空失效商品，再提交订单',
+              icon: 'none'
+            })
+          }
+        } else {
+          wepy.showToast({
+            title: '请先退出编辑状态',
+            icon: 'none'
           })
         }
       },
@@ -601,10 +680,25 @@
           }
         })
       },
+      clearExpire () {
+        var result = []
+        this.expire.forEach((item) => {
+          var obj = {}
+          obj.sourceType = item.salesUnitType
+          obj.sourceId = item.salesUnitId
+          result.push(obj)
+        })
+        console.log(result)
+        this.deleteData(result, () => {
+          this.initPageData()
+          this.$apply()
+        })
+      },
       deleteTap () {
         var that = this
         var result = []
         this.cartList.forEach((item) => {
+          console.log(item.tempCold)
           item.tempCold.forEach((source) => {
             var obj = {}
             obj.sourceType = source.sourceType
@@ -667,6 +761,7 @@
         token: this.token
       }
       this.cartList = []
+      this.expire = []
       _this.isLoading = true
       this.finalprice = 0
       this.freight = 0
@@ -689,9 +784,15 @@
             obj.coldChecked = false
             obj.tempCold = []
             obj.coldlist = this.initChild(item.salesUnits)
+            if (obj.coldlist.length === 0) {
+              obj.showTitle = false
+            } else {
+              obj.showTitle = true
+            }
             _this.cartList.push(obj)
             _this.$apply()
           })
+          console.log(this.cartList)
         } else {
           _this.$parent.showFail()
         }
@@ -701,9 +802,25 @@
         _this.$parent.showFail()
       })
     }
+    filterList (parent) {
+      var tempArr = []
+      var tempExpire = []
+      tempExpire = parent.filter((item) => {
+        return item.keepCount <= this.validateCount || !item.isAllowSale || item.buyCount > item.keepCount
+      })
+      tempExpire.forEach((item) => {
+        item.disable = true
+        this.expire.push(item)
+      })
+      tempArr = parent.filter((item) => {
+        return item.keepCount > this.validateCount && item.isAllowSale && item.buyCount <= item.keepCount
+      })
+      return tempArr
+    }
     initChild (parent) {
       var child = []
-      parent.forEach((item) => {
+      var tempExpire = this.filterList(parent)
+      tempExpire.forEach((item) => {
         var obj = {}
         obj.path = item.cover
         obj.title = item.title
@@ -712,15 +829,9 @@
         obj.id = item.productId
         obj.sourceType = item.salesUnitType
         obj.sourceId = item.salesUnitId
-        if (item.buyCount <= item.keepCount) {
-          obj.detail = item.viceTitle + '×' + item.buyCount
-          obj.count = item.buyCount
-          obj.initCount = item.buyCount
-        } else {
-          obj.detail = item.viceTitle + '×' + item.keepCount
-          obj.count = item.keepCount
-          obj.initCount = item.keepCount
-        }
+        obj.detail = item.viceTitle + '×' + item.buyCount
+        obj.count = item.buyCount
+        obj.initCount = item.buyCount
         obj.checked = false
         obj.totalCount = item.keepCount
         child.push(obj)
@@ -737,7 +848,10 @@
       console.log(data)
       this.$parent.HttpRequest.AddCartHttp(data).then((res) => {
         console.log(res)
-        cb && cb()
+        if (res.data.error === 0) {
+          cb && cb()
+        }
+        this.$apply()
       })
     }
     onLoad () {

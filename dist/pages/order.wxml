@@ -40,7 +40,7 @@
                   <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" bindtap="goAddress" data-wpygoaddress-a="{{item.id}}">修改地址</button>
                   <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" bindtap="cancel" data-wpycancel-a="{{item.id}}">取消订单</button>
                   <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
-                  <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}">付款</button>
+                  <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" bindtap="goPay" data-wpygopay-a="{{item.id}}">付款</button>
                 </view>
               </view>
             </view>

@@ -280,7 +280,8 @@ export default class extends wepy.app {
       'pages/order',
       'pages/orderDetail',
       'pages/invoice',
-      'pages/applyVip'
+      'pages/applyVip',
+      'pages/service'
     ],
     window: {
       backgroundTextStyle: 'dark',
@@ -320,28 +321,15 @@ export default class extends wepy.app {
     userInfo: null,
     userLevel: null,
     userHash: null,
-    code: null
+    code: null,
+    nickName: null,
+    userImage: null
   }
 
   // 判断tabbar回退页面
   pageRoot = false
 
-  onLaunch() {
-    this.testAsync()
-  }
-
-  sleep (s) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve('promise resolved')
-      }, s * 1000)
-    })
-  }
-
-  async testAsync () {
-    const data = await this.sleep(3)
-    console.log(data)
-  }
+  onLaunch() {}
 
   getLogin (cb) {
     wepy.login({
@@ -368,7 +356,6 @@ export default class extends wepy.app {
       encryptedData: e.detail.encryptedData,
       iv: e.detail.iv
     }
-    console.log(data)
     this.HttpRequest.SendCode(data).then((res) => {
       console.log(res)
       if (res.data.error === 0) {
@@ -430,7 +417,9 @@ export default class extends wepy.app {
   requestToken (data, cb) {
     this.HttpRequest.UserLogin(data).then((res) => {
       var token = res.data.data.token
+      var timeOut = res.data.data.timeOut
       wepy.setStorageSync('token', token)
+      wepy.setStorageSync('timeout', timeOut)
       // 设置global的user level 和 hash
       this.getUserLevel(token)
       cb && cb(res.userInfo)
@@ -439,7 +428,9 @@ export default class extends wepy.app {
   // 判断token是否过期
   refreshToken () {
     // 判断token是否过期 如果没过期直接返回token值
-    if (wepy.getStorageSync('token') === '') {
+    var nowTime = Math.floor(new Date().getTime() / 1000)
+    var timeOut = wepy.getStorageSync('timeout')
+    if (wepy.getStorageSync('token') === '' || nowTime > timeOut) {
       return false
     } else {
       return true
@@ -450,7 +441,7 @@ export default class extends wepy.app {
     if (!this.refreshToken()) {
       // 重新发送请求获取新的token 模拟数据{phone: '13402155751'}
       var data = {
-        phone: this.getStorageSync('phone')
+        phone: wepy.getStorageSync('phone')
       }
       this.requestToken(data)
     }

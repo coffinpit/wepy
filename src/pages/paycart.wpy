@@ -252,11 +252,11 @@
     </repeat>
     <view class="memo">
       <view class="memo-left">
-        <text class="title">订单备注:</text>
+        <text class="title">订单备注:{{memo}}</text>
         <text class="tips">{{txtLength}}/100</text>
       </view>
       <view class="memo-right">
-        <textarea placeholder="请输入备注" placeholder-class="placeholder" maxlength="100" @input="inputTap"/>
+        <textarea placeholder="请输入备注" placeholder-class="placeholder" maxlength="100" @input="inputTap" @confirm="blurTap"/>
       </view>
     </view>
     <view class="vip-tip" wx:if="{{userLevel}}">
@@ -346,12 +346,25 @@
             appType: 'ios',
             hash: this.orderHash,
             address_main: this.user.id,
-            memo_main: this.memo,
+            memo_main: encodeURI(this.memo),
             date_main: 4
           }
           console.log(data)
           this.$parent.HttpRequest.CreateUserOrder(data).then((res) => {
-            console.log(res)
+            if (res.data.error !== 0) {
+              wepy.hideLoading()
+              wepy.showModal({
+                title: '支付订单失败',
+                content: '请点击确认返回购物车',
+                success: (res) => {
+                  if (res.confirm) {
+                    wepy.switchTab({
+                      url: './cart'
+                    })
+                  }
+                }
+              })
+            }
           })
         }
       },
@@ -389,7 +402,18 @@
           })
           console.log(_this.order)
         } else {
-          _this.$parent.showFail()
+          wepy.hideLoading()
+          wepy.showModal({
+            title: '创建订单失败',
+            content: '请点击确认返回购物车',
+            success: (res) => {
+              if (res.confirm) {
+                wepy.switchTab({
+                  url: './cart'
+                })
+              }
+            }
+          })
         }
       }).catch(() => {
         _this.$parent.showFail()
@@ -421,8 +445,8 @@
       this.$apply()
     }
     onShow () {
-      this.$apply()
       this.applyOrder()
+      this.$apply()
     }
   }
 </script>

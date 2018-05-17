@@ -1,4 +1,28 @@
 
-  <view class="start">
-    <image class="start_bg" src="../image/login-bg.jpg" mode="widthFix" bindload="getLoad"/>
+  <view class="login-container">
+    <view class="login">
+      <view class="app-info">
+        <image class="app-logo" src="../image/login-bg.jpg" mode="widthFix"/>
+        <text class="app-name">正善小程序</text>
+      </view>
+      <view class="alert"  wx:if="{{!isNull}}">
+        <view class="input-title">
+          <input type="number" placeholder="请填写手机号" placeholder-class="placeholder" bindinput="inputPhone" bindblur="blurPhone"/>
+          <view class="default-button code {{isSending ? '' : 'unavailable'}}" bindtap="sendCode">{{codeText}}</view>
+        </view>
+        <view class="input-title"><input type="number" placeholder="请填写验证码" placeholder-class="placeholder" bindblur="blurCode"/></view>
+        <button class="login-btn" hover-class="login-btn-active" bindtap="login">确认登录</button>
+      </view>
+      <view class="loading"  wx:else>
+        
+  <view id="loading-center">
+    <view id="loading-center-absolute">
+      <view class="object" id="object_one"/>
+      <view class="object" id="object_two"/>
+      <view class="object" id="object_three"/>
+    </view>
+  </view>
+
+      </view>
+    </view>
   </view>

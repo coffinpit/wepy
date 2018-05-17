@@ -5,9 +5,10 @@
   }
   .search-layer{
     width:100%;
-    height:80rpx;
-    padding:10rpx 20rpx;
+    height:100rpx;
+    padding:20rpx;
     box-sizing:border-box;
+    border-bottom:1px #eee solid;
     .search-input{
       border-radius: 30rpx;
       background:#fff;
@@ -81,9 +82,10 @@
       </view>
     </view>
     <view class="content" wx:if="{{isNull}}">
-      <searchResult goodsItem.sync="goods" @goodsTap.user="goDetail"></searchResult>
+      <searchResult :goodsItem.sync="goods" @goodsTap.user="goDetail"></searchResult>
     </view>
     <defect wx:else><view slot="lost-category"></view></defect>
+    <isDown wx:if="{{isDown}}"></isDown>
   </view>
 </template>
 
@@ -91,6 +93,7 @@
   import wepy from 'wepy'
   import Goods from '../components/goods'
   import Defect from '../components/defect'
+  import Reachdown from '../components/reachdown'
 
   export default class Search extends wepy.page {
     config = {
@@ -98,14 +101,17 @@
     }
     components = {
       searchResult: Goods,
-      defect: Defect
+      defect: Defect,
+      isDown: Reachdown
     }
     data = {
       parentTab: '',
       goods: [],
       keywords: '',
       pageSize: 5,
-      pageNum: 1
+      pageNum: 1,
+      isDown: false,
+      totalPageNum: ''
     }
     onShow () {
     }
@@ -133,13 +139,13 @@
       },
       clearInput () {
         this.keywords = ''
-        console.log(this.keywords)
       },
       keySearch (e) {
         this.keywords = e.detail.value
       },
       doSearch () {
         if (this.isSearch) {
+          this.goods = []
           this.getResult()
         } else {
           if (this.parentTab === 'category') {
@@ -154,8 +160,21 @@
         }
       }
     }
+    onReachBottom () {
+      // 显示加载状态
+      if (this.pageNum < this.totalPageNum) {
+        // 显示下一页数据
+        this.pageNum ++
+        this.getInitData()
+      } else {
+        if (this.goods.length !== 0) {
+          this.isDown = true
+        }
+      }
+    }
     getResult () {
       this.$parent.showLoading()
+      this.isDown = false
       var _this = this
       const token = this.$parent.getToken()
       var data = {
@@ -168,7 +187,18 @@
         console.log(res)
         if (res.data.error === 0) {
           _this.$parent.showSuccess()
+          _this.totalPageNum = res.data.data.totalPageNum
           var data = res.data.data.spus
+          if (data.length === 0) {
+            _this.isNull = true
+          } else {
+            _this.isNull = false
+            if (res.data.data.totalCount <= this.pageSize) {
+              _this.isDown = true
+            } else {
+              _this.isDown = false
+            }
+          }
           data.forEach((item) => {
             var good = {}
             good.path = item.cover
@@ -176,6 +206,7 @@
             good.price = item.memberPrice
             good.oldprice = item.price
             good.reduction = item.reduction
+            good.descript = item.desc
             good.id = item.sourceId
             _this.goods.push(good)
           })

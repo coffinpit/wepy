@@ -292,7 +292,7 @@
             sourceId: this.sourceId,
             buyCount: this.count,
             address_main: this.user.id,
-            memo_main: this.memo,
+            memo_main: encodeURI(this.memo),
             date_main: 4
           }
           this.$parent.HttpRequest.CreateOrderBuy(data).then((res) => {
@@ -318,6 +318,19 @@
                 },
                 'complete': (res) => {
                   console.log('complete')
+                }
+              })
+            } else {
+              wepy.hideLoading()
+              wepy.showModal({
+                title: '支付订单失败',
+                content: '请点击确认返回购物车',
+                success: (res) => {
+                  if (res.confirm) {
+                    wepy.switchTab({
+                      url: './cart'
+                    })
+                  }
                 }
               })
             }
@@ -359,7 +372,18 @@
           })
           console.log(_this.order)
         } else {
-          _this.$parent.showFail()
+          wepy.hideLoading()
+          wepy.showModal({
+            title: '创建订单失败',
+            content: '请点击确认返回购物车',
+            success: (res) => {
+              if (res.confirm) {
+                wepy.switchTab({
+                  url: './cart'
+                })
+              }
+            }
+          })
         }
       }).catch(() => {
         _this.$parent.showFail()
@@ -395,8 +419,8 @@
       this.$apply()
     }
     onShow () {
-      this.$apply()
       this.applyOrder()
+      this.$apply()
     }
   }
 </script>

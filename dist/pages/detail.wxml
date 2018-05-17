@@ -26,7 +26,7 @@
         </view>
         <view class="detail-txt-price">
           <text>原价</text>
-          <text class="through">￥{{detail.oldprice}}</text>
+          <text class="{{userLevel === 0 ? '' : 'through'}}">￥{{detail.oldprice}}</text>
           <navigator url="" class="detail-link">成为会员?</navigator>
         </view>
         <view class="detail-txt-price express">
@@ -139,7 +139,7 @@
   <view class="counter calculate">
     <view catchtap="$counterCart$plusTap" class="counter-btn {{$counterCart$isDisabled || $counterCart$disable ? 'disable' : ''}}" data-id="{{$counterCart$sourceId}}">  +  </view>
     <input type="number" bindinput="$counterCart$inputTap" bindblur="$counterCart$blurTap" class="counter-btn number {{$counterCart$isDisabled ? 'disable' : ''}}" value="{{$counterCart$num}}" focus="{{$counterCart$autoFocus}}" data-id="{{$counterCart$sourceId}}" disabled="{{$counterCart$isDisabled}}"/> 
-    <view catchtap="$counterCart$minusTap" class="counter-btn minusBtn {{$counterCart$able ? 'able' : ''}}" data-id="{{$counterCart$sourceId}}">  -  </view>
+    <view catchtap="$counterCart$minusTap" class="counter-btn minusBtn {{$counterCart$isDisabled || !$counterCart$isAble ? '' : 'able'}}" data-id="{{$counterCart$sourceId}}">  -  </view>
   </view>
 
           <text wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>

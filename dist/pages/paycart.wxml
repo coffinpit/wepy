@@ -43,11 +43,11 @@
     </block>
     <view class="memo">
       <view class="memo-left">
-        <text class="title">订单备注:</text>
+        <text class="title">订单备注:{{memo}}</text>
         <text class="tips">{{txtLength}}/100</text>
       </view>
       <view class="memo-right">
-        <textarea placeholder="请输入备注" placeholder-class="placeholder" maxlength="100" bindinput="inputTap"/>
+        <textarea placeholder="请输入备注" placeholder-class="placeholder" maxlength="100" bindinput="inputTap" bindconfirm="blurTap"/>
       </view>
     </view>
     <view class="vip-tip" wx:if="{{userLevel}}">

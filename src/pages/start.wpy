@@ -1,54 +1,242 @@
 <style lang="less">
-  .start{
-    width:100%;
-    height:100%;
-    position: absolute;
-    overflow: hidden;
+  .login-container {
+    height: 100%;
+    background: #fff;
   }
-  .start_bg{
+  .app-info {
+    position: relative;
+    text-align: center;
+    padding-bottom:20px;
+  }
+  .app-info .app-logo {
+    display: block;
+    width: 100%;
+    margin-bottom:20px;
+  }
+
+  .app-info .app-name {
+    font-size: 18px;
+    color: #333;
+  }
+
+  .alert {
+    padding: 0 20px;
+    text-align: center
+  }
+
+  .alert .input-title {
+    margin:0 auto 20rpx;
+    position: relative;
     width:100%;
+    border-bottom: 1px #eee solid;
+    input {
+      height: 100rpx;
+      line-height:100rpx;
+      font-size:32rpx;
+      width:400rpx;
+      margin:0 auto;
+      text-align: center;
+      position:relative;
+      z-index: 9;
+    }
+    .code{
+      position: absolute;
+      right:0;
+      top: 16rpx;
+      padding:10rpx 20rpx;
+      min-width:60rpx;
+      z-index:9999;
+      &.unavailable{
+        background: #ccc;
+      }
+    }
+  }
+  .placeholder{
+    font-size:32rpx;
+    color:#ccc;
+  }
+  .alert-desc {
+    display: block;
+    list-style: disc inside none;
+    margin-top:10px;
+  }
+
+  .alert .alert-text {
+    display: list-item;
+    text-align: -webkit-match-parent;
+    font-size: 14px;
+    color: #999;
+  }
+  
+  .login-btn{
+    background:#fe5946;
+    border-radius: 0;
+    color:#fff;
+    line-height: 45px;
+    text-align: center;
+    margin-top:20px;
+    font-size:16px;
+  }
+  .login-btn-active{
+    background:#e8412d;
+    color:#f6eceb;
+  }
+  .logged {
+    margin-top: 100px;
+  }
+
+  .logged .logged-icon {
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 20px auto;
+  }
+
+  .logged .logged-text {
+    font-size: 14px;
+    color: #000;
+    text-align: center;
+    margin: 10px 0;
   }
 </style>
 <template>
-  <view class="start">
-    <image class="start_bg" src="../image/login-bg.jpg" mode="widthFix" @load="getLoad"></image>
+  <view class="login-container">
+    <view class="login">
+      <view class="app-info">
+        <image class="app-logo" src="../image/login-bg.jpg" mode="widthFix"></image>
+        <text class="app-name">正善小程序</text>
+      </view>
+      <view class="alert" wx:if="{{!isNull}}">
+        <view class="input-title">
+          <input type="number" placeholder="请填写手机号" placeholder-class="placeholder" @input="inputPhone" @blur="blurPhone"/>
+          <view class="default-button code {{isSending ? '' : 'unavailable'}}" @tap="sendCode" >{{codeText}}</view>
+        </view>
+        <view class="input-title"><input type="number" placeholder="请填写验证码" placeholder-class="placeholder" @blur="blurCode"/></view>
+        <button class="login-btn" hover-class="login-btn-active" @tap="login">确认登录</button>
+      </view>
+      <view class="loading" wx:else>
+        <loading></loading>
+      </view>
+    </view>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import Loading from '../components/loading'
 
   export default class Start extends wepy.page {
     config = {
       navigationBarTitleText: '欢迎'
     }
     data = {
-
+      codeText: '发送验证码',
+      phoneNumber: '',
+      code: '',
+      myreg: /^[1][3,4,5,7,8][0-9]{9}$/,
+      orderId: '',
+      isSending: true,
+      time: 60,
+      isNull: true
+    }
+    components = {
+      loading: Loading
     }
     methods = {
-      getLoad () {
-        setTimeout(() => {
-          if (wepy.getStorageSync('token')) {
-            this.$parent.getUserInfo('start', () => {
-              this.methods.goIndex()
+      inputPhone (e) {
+        this.phoneNumber = e.detail.value
+        return this.phoneNumber
+      },
+      blurPhone (e) {
+        this.phoneNumber = e.detail.value
+        return this.phoneNumber
+      },
+      blurCode (e) {
+        this.code = e.detail.value
+        return this.blurCode
+      },
+      sendCode () {
+        var _this = this
+        if (this.myreg.test(this.phoneNumber)) {
+          if (this.isSending) {
+            var data = {
+              phone: this.phoneNumber
+            }
+            this.$parent.HttpRequest.GetSignCode(data).then((res) => {
+              console.log(res)
+              if (res.data.error === 0) {
+                _this.isSending = false
+                var countTime = setInterval(() => {
+                  _this.time = _this.time - 1
+                  _this.codeText = this.time + 's'
+                  if (_this.time <= 0) {
+                    _this.time = 60
+                    _this.codeText = '发送验证码'
+                    _this.isSending = true
+                    clearInterval(countTime)
+                  }
+                  _this.$apply()
+                }, 1000)
+                _this.orderId = res.data.data.orderId
+              }
+              _this.$apply()
             })
-          } else {
-            this.methods.goLogin()
           }
-        }, 3000)
+        } else {
+          wepy.showToast({
+            title: '请输入正确的手机号',
+            icon: 'none'
+          })
+        }
       },
-      goIndex () {
-        wepy.switchTab({
-          url: './index'
-        })
-      },
-      goLogin () {
-        wepy.navigateTo({
-          url: './login'
+      login () {
+        this.$parent.showLoading()
+        var _this = this
+        var data = {
+          orderId: this.orderId,
+          identifyingCode: this.code
+        }
+        this.$parent.HttpRequest.LoginByPhone(data).then((res) => {
+          console.log(res)
+          if (res.data.error === 0) {
+            _this.$parent.showSuccess()
+            var token = res.data.data.token
+            var timeOut = res.data.data.timeOut
+            wepy.setStorageSync('token', token)
+            wepy.setStorageSync('phone', _this.phoneNumber)
+            wepy.setStorageSync('timeout', timeOut)
+            _this.$parent.getUserLevel(token)
+            _this.goIndex()
+          } else {
+            _this.$parent.showSuccess()
+            wepy.showToast({
+              title: '登录失败',
+              icon: 'none',
+              image: '../image/cancel.png'
+            })
+          }
+        }).catch(() => {
+          _this.$parent.showFail()
         })
       }
     }
-    onload () {
+    goIndex () {
+      wepy.switchTab({
+        url: './index'
+      })
+    }
+    onLoad () {
+      if (wepy.getStorageSync('token')) {
+        this.isNull = true
+        var data = {
+          phone: wepy.getStorageSync('phone')
+        }
+        this.$parent.requestToken(data, () => {
+          this.goIndex()
+        })
+      } else {
+        this.isNull = false
+      }
       this.$apply()
     }
   }

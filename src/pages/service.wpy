@@ -1,0 +1,26 @@
+<style lang="less">
+</style>
+<template>
+  <view>
+    <web-view src="{{url}}"></web-view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Service extends wepy.page {
+    config = {
+      navigationBarTitleText: '会员服务协议'
+    }
+    data = {
+      url: ''
+    }
+    methods = {
+    }
+    onLoad () {
+      this.url = this.$parent.HttpRequest.$$baseHtml + this.$parent.HttpRequest.$$pathHtml.service
+      this.$apply()
+    }
+  }
+</script>

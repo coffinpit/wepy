@@ -164,7 +164,7 @@
           支付超时
         </text>
       </view>
-      <view class="orderStatus address" wx:if="{{address != false}}">
+      <view class="orderStatus address" wx:if="{{Object.keys(address).length}}">
         <text class="iconfont icon-ksj_dz"></text>
         <text class="font-normal">{{address.name}}</text>
         <text class="font-normal gray">{{address.phone}}</text>
@@ -205,7 +205,7 @@
         <view class="edit-button">
           <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" @tap="cancel">取消订单</button>
           <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{status === 5 || status === 6}}">售后申请</button>
-          <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}">付款</button>
+          <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}" @tap="goPay">付款</button>
         </view>
       </view>
       <view class="orderTotal" wx:else><text class="font-normal">订单已取消</text></view>
@@ -275,6 +275,17 @@
         wepy.navigateTo({
           url: './address?page=orderdetail&id=' + this.id
         })
+      },
+      goPay () {
+        var data = {
+          token: this.token,
+          orderId: this.id,
+          appType: 'ios'
+        }
+        this.$parent.HttpRequest.PayService(data).then((res) => {
+          console.log(res)
+          // 调微信支付弹窗
+        })
       }
     }
     initData () {
@@ -292,7 +303,7 @@
           _this.status = data.status
           _this.orderId = data.showId
           _this.createTime = _this.$parent.dateFormat(data.createTime * 1000, 'Y-m-d H:i:s')
-          _this.memo = data.memo || ''
+          _this.memo = data.memo ? data.memo[0].val : ''
           _this.pay = data.pay
           _this.freight = data.freight
           // _this.initLogistica('shunfeng', data.showId)

@@ -158,6 +158,18 @@
         _this.$parent.showFail()
       })
     }
+    onReachBottom () {
+      // 显示加载状态
+      if (this.pageNum < this.totalPageNum) {
+        // 显示下一页数据
+        this.pageNum ++
+        this.initData()
+      } else {
+        if (this.collectList.length !== 0) {
+          this.isDown = true
+        }
+      }
+    }
     onLoad () {
       this.token = this.$parent.getToken()
       this.$apply()

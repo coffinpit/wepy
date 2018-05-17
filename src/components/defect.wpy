@@ -76,7 +76,7 @@
           return 'icon-me_xx'
         } else if (this.type === '7') {
           return 'icon-dz_sc'
-        } 
+        }
       },
       typeTxt () {
         if (this.type === '1') {
