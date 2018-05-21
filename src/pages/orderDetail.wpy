@@ -35,6 +35,8 @@
     }
     .font-normal{
       line-height:28rpx;
+      width:280rpx;
+      display: inline-block;
     }
     .gray{
       color:#999;
@@ -44,10 +46,10 @@
       margin-left:124rpx;
     }
     .txt-status{
-      float: right;
-      line-height: 44rpx;
+      width:300rpx;
+      text-align: right;
       &.remain{
-        margin-top:20rpx;
+        vertical-align: middle;
         .font-normal{
           line-height: 44rpx;
           display: block;
@@ -151,7 +153,7 @@
     <view wx:if="{{!isNull}}">
       <view class="orderStatus">
         <text class="iconfont icon-bgicon"><text class="iconfont icon-more" wx:if="{{status !== 3}}"></text></text>
-        <text class="font-normal {{status === 3 ? 'gray' : ''}} {{status === 1 || status === 2 ? 'link' : ''}}">{{status === 1 && !remainTime ? '交易关闭' : statusTxt}}</text>
+        <text class="font-normal {{status === 3 ? 'gray' : ''}} {{status === 1 || status === 2 ? 'link' : ''}}">{{status === 1 && !remainTime ? initTxt : statusTxt}}</text>
         <text class="font-normal txt-status remain" wx:if="{{status === 1 && remainTime}}">
           <text class="font-normal">仅剩余：{{remainTime}}</text>
           <text class="font-normal">需付款：￥{{finalPrice}}</text>
@@ -236,7 +238,8 @@
       finalPrice: '',
       freight: '',
       remainTime: '',
-      isHidden: false
+      isHidden: false,
+      initTxt: '待支付'
     }
     computed = {
       isNull () {
@@ -307,12 +310,14 @@
           _this.pay = data.pay
           _this.freight = data.freight
           // _this.initLogistica('shunfeng', data.showId)
-          setInterval(() => {
+          var time = setInterval(() => {
             data.payRemainingTime --
             if (data.payRemainingTime > 0) {
               _this.remainTime = (data.payRemainingTime - data.payRemainingTime % 60) / 60 + '分' + data.payRemainingTime % 60 + '秒'
             } else {
               _this.remainTime = 0
+              _this.initTxt = '交易关闭'
+              clearInterval(time)
             }
             _this.$apply()
           }, 1000)

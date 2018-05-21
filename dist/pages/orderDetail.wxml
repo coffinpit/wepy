@@ -3,7 +3,7 @@
     <view  wx:if="{{!isNull}}">
       <view class="orderStatus">
         <text class="iconfont icon-bgicon"><text class="iconfont icon-more" wx:if="{{status !== 3}}"/></text>
-        <text class="font-normal {{status === 3 ? 'gray' : ''}} {{status === 1 || status === 2 ? 'link' : ''}}">{{status === 1 && !remainTime ? '交易关闭' : statusTxt}}</text>
+        <text class="font-normal {{status === 3 ? 'gray' : ''}} {{status === 1 || status === 2 ? 'link' : ''}}">{{status === 1 && !remainTime ? initTxt : statusTxt}}</text>
         <text class="font-normal txt-status remain" wx:if="{{status === 1 && remainTime}}">
           <text class="font-normal">仅剩余：{{remainTime}}</text>
           <text class="font-normal">需付款：￥{{finalPrice}}</text>

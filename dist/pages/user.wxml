@@ -64,11 +64,13 @@
         <text>消息通知</text>
         <text class="iconfont icon-rightsj"/>
       </view>
+      <!--
       <view class="setting-layer">
-        <text class="iconfont icon-kf_bq"/>
+        <text class="iconfont icon-kf_bq"></text>
         <text>关于我们</text>
-        <text class="iconfont icon-rightsj"/>
+        <text class="iconfont icon-rightsj"></text>
       </view>
+      -->
       <button class="default-button" hover-class="default-button-hover" bindtap="clear">清空缓存</button>
     </view>
   </view>

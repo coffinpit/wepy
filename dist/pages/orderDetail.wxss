@@ -36,6 +36,8 @@
 }
 .orderStatus .font-normal {
   line-height: 28rpx;
+  width: 280rpx;
+  display: inline-block;
 }
 .orderStatus .gray {
   color: #999;
@@ -45,11 +47,11 @@
   margin-left: 124rpx;
 }
 .orderStatus .txt-status {
-  float: right;
-  line-height: 44rpx;
+  width: 300rpx;
+  text-align: right;
 }
 .orderStatus .txt-status.remain {
-  margin-top: 20rpx;
+  vertical-align: middle;
 }
 .orderStatus .txt-status.remain .font-normal {
   line-height: 44rpx;

@@ -14,7 +14,7 @@
             <text class="iconfont icon-dz_sc"/>
             <text class="title">删除</text>
           </view>
-          <view class="edit-layer" bindtap="editAdd">
+          <view class="edit-layer" bindtap="editAdd" data-wpyeditadd-a="{{item}}">
             <text class="iconfont icon-dz_bj"/>
             <text class="title">编辑</text>
           </view>

@@ -20,17 +20,13 @@
       width:200rpx;
       line-height:48rpx;
     }
-    input{
+    input, textarea, .picker{
       width:510rpx;
     }
     .picker{
-      margin-right:30rpx;
       display:flex;
-      &.last-child{
-        margin-right:0
-      }
       picker{
-        width:510rpx;
+        width:480rpx;
         height:52rpx;
         line-height:52rpx;
       }
@@ -38,6 +34,7 @@
         font-size:28rpx;
         color:#999;
         vertical-align:middle;
+        line-height: 54rpx;
       }
     }
   }
@@ -68,6 +65,10 @@
           <text class="iconfont icon-xlsanjiao"></text>
         </view>
       </view>
+      <view class="address-layer">
+        <text class="title">详细地址</text>
+        <textarea>{{userAdd}}</textarea>
+      </view>
     </view>
     <button class="default-button">新建地址</button>
   </view>
@@ -76,11 +77,14 @@
 <script>
   import wepy from 'wepy'
 
-  export default class NewAddress extends wepy.page {
+  export default class EditAddress extends wepy.page {
     config = {
-      navigationBarTitleText: '新增地址'
+      navigationBarTitleText: '编辑地址'
     }
     data = {
+      userName: '',
+      userPhone: '',
+      userAdd: '',
       token: '',
       num: 0,
       multiArray: [
@@ -88,7 +92,7 @@
         ['市辖区', '县'],
         ['东城区', '西城区', '崇文区']
       ],
-      multiIndex: [0, 0, 0],
+      multiIndex: [],
       multiAreaId: [
         ['100001', '100002', '100003', '100004'],
         ['200001', '200002'],
@@ -133,7 +137,7 @@
         }
       },
       cancel () {
-        // this.initDefault()
+        this.initDefault()
       }
     }
     initTopArea () {
@@ -166,8 +170,21 @@
       this.multiArray[2] = ['静安区', '黄浦区', '徐汇区', '青浦区', '卢湾区', '浦东新区', '徐汇区']
       this.multiAreaId[2] = ['300001B', '300002B', '300003B', '300004B', '300005B', '300006B', '300007B']
     }
-    onLoad () {
+    onLoad (param) {
       // this.initTopArea()
+      var address = JSON.parse(param.detail)
+      this.userName = address.name
+      this.userPhone = address.phone
+      this.userAdd = address.add
+      var addArray = address.areaFullName.split(',')
+      addArray.forEach((item) => {
+        this.multiArray.forEach((area, index) => {
+          if (area.indexOf(item) > -1) {
+            this.multiIndex.push(area.indexOf(item))
+          }
+        })
+      })
+      console.log(this.multiIndex)
       this.token = this.$parent.getToken('newAdd')
       this.$apply()
     }

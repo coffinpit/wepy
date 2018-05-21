@@ -1,0 +1,25 @@
+
+  <view class="container">
+    <view class="address-container">
+      <view class="address-layer">
+        <text class="title">收货人</text><input type="text" value="{{userName}}"/>
+      </view>
+      <view class="address-layer">
+        <text class="title">联系电话</text><input type="text" value="{{userPhone}}"/>
+      </view>
+      <view class="address-layer">
+        <text class="title">收货地址</text>
+        <view class="picker">
+          <picker mode="multiSelector" bindchange="topArea" bindcolumnchange="childArea" bindcancel="cancel" value="{{multiIndex}}" range="{{multiArray}}">
+            <view>{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}</view>
+          </picker>
+          <text class="iconfont icon-xlsanjiao"/>
+        </view>
+      </view>
+      <view class="address-layer">
+        <text class="title">详细地址</text>
+        <textarea>{{userAdd}}</textarea>
+      </view>
+    </view>
+    <button class="default-button">新建地址</button>
+  </view>

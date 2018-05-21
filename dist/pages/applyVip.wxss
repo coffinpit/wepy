@@ -87,3 +87,81 @@ image {
   width: 50%;
   text-align: center;
 }
+.vip-bg {
+  background: #202020;
+  position: relative;
+  overflow: hidden;
+}
+.vip-bg image {
+  position: absolute;
+  left: 20rpx;
+  top: 20rpx;
+  width: 710rpx;
+  height: 364rpx;
+}
+.vip-bg .vip-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100rpx;
+}
+.vip-bg .vip-title .icon-vip {
+  color: #fdd798;
+  font-size: 120rpx;
+}
+.vip-bg .vip-detail {
+  position: absolute;
+  bottom: 140rpx;
+  left: 20rpx;
+  width: 710rpx;
+}
+.vip-bg .vip-detail .title {
+  display: inline-block;
+  width: 50%;
+  color: #a1a1a1;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+}
+.vip-bg .vip-detail .title:last-child {
+  text-align: right;
+}
+.vip-bg .vip-button-layer {
+  position: absolute;
+  top: 364rpx;
+  left: 20rpx;
+  width: 710rpx;
+  background: #3c3c3c;
+  overflow: hidden;
+  height: 70rpx;
+  padding: 20rpx 0;
+}
+.vip-bg .vip-button-layer .vip-button-container {
+  width: 50%;
+  padding: 0 10rpx 0 20rpx;
+  box-sizing: border-box;
+  display: inline-block;
+}
+.vip-bg .vip-button-layer .vip-button-container:last-child {
+  padding: 0 20rpx 0 10rpx;
+}
+.vip-bg .vip-button-layer .vip-button-container button {
+  width: 100%;
+  text-align: center;
+  line-height: 70rpx;
+  border-radius: 0;
+  color: #fff;
+  padding: 0;
+  font-size: 28rpx;
+}
+.vip-pay {
+  background: #fd6d55;
+}
+.vip-pay-hover {
+  background: #fe5946;
+}
+.vip-refund {
+  background: #303030;
+}
+.vip-refund-hover {
+  background: #222222;
+}

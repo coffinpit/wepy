@@ -77,7 +77,7 @@
             <text class="iconfont icon-dz_sc"></text>
             <text class="title">删除</text>
           </view>
-          <view class="edit-layer" @tap="editAdd">
+          <view class="edit-layer" @tap="editAdd({{item}})">
             <text class="iconfont icon-dz_bj"></text>
             <text class="title">编辑</text>
           </view>
@@ -112,7 +112,10 @@
       defect: Defect
     }
     methods = {
-      editAdd () {
+      editAdd (param) {
+        wepy.navigateTo({
+          url: './editAdd?detail=' + JSON.stringify(param)
+        })
       },
       goNewAdd () {
         wepy.navigateTo({
@@ -182,6 +185,8 @@
             obj.add = item.address
             obj.id = item.id
             obj.areaId = item.areaId
+            obj.areaFullName = item.areaFullName
+            obj.areaFullId = item.areaFullId
             _this.address.push(obj)
           })
         } else {

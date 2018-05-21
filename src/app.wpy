@@ -271,6 +271,7 @@ export default class extends wepy.app {
       'pages/search',
       'pages/address',
       'pages/newAdd',
+      'pages/editAdd',
       'pages/paycart',
       'pages/paybuy',
       'pages/rules',
@@ -451,9 +452,12 @@ export default class extends wepy.app {
   getUserLevel (token) {
     var _this = this
     this.HttpRequest.GetUserInfo({token: token}).then((res) => {
+      console.log(res)
       if (res.data.error === 0) {
         _this.globalData.userLevel = res.data.data.level
         _this.globalData.userHash = res.data.data.hash
+        _this.globalData.vipEnd = res.data.data.vipEnd
+        _this.globalData.reduction = res.data.data.reduction
       }
     })
   }

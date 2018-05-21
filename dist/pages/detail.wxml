@@ -27,7 +27,7 @@
         <view class="detail-txt-price">
           <text>原价</text>
           <text class="{{userLevel === 0 ? '' : 'through'}}">￥{{detail.oldprice}}</text>
-          <navigator url="" class="detail-link">成为会员?</navigator>
+          <navigator url="./applyVip" class="detail-link">成为会员?</navigator>
         </view>
         <view class="detail-txt-price express">
           <text>快递￥{{detail.express}}</text>
@@ -59,7 +59,6 @@
         <view class="detail-collect-user">
           <view class="detail-collect-detail">
             <text class="section">已有{{collectednum}}人收藏了本商品</text>
-            <text class="iconfont icon-more"/>
           </view>
           <view class="detail-collect-list"  wx:if="{{collect}}">
             <text class="iconfont icon-leftsj collect"/><text class="un-collect collect">收藏成功</text>
