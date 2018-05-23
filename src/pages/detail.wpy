@@ -251,7 +251,6 @@
     .popup_image{
       border:1px #eee solid;
       width:200rpx;
-      height:200rpx;
       overflow:hidden;
       image{
         width:100%;
@@ -260,14 +259,14 @@
     }
     .popup_goods{
       padding-left: 44rpx;
-      padding-top:20rpx;
       width:550rpx;
       box-sizing: border-box;
       .link{
         display:block;
+        margin-top:10rpx;
         &.inline{
           float:left;
-          margin-top:52rpx;
+          margin-top:50rpx;
         }
       }
       .calculate{
@@ -289,16 +288,20 @@
     .goods-name{
       width:70%;
       font-size:28rpx;
+      line-height: 56rpx;
     }
     .goods-num{
       width:30%;
       font-size:28rpx;
+      line-height: 56rpx;
+      text-align: right;
     }
     .none{
       color:#999;
     }
     radio{
       float:right;
+      margin-left:20rpx;
     }
   }
   .disable{
@@ -415,7 +418,7 @@
           </view>
           <text class="title link">价格：￥{{totalCart}}</text>
           <counterCart @plusEdit.user="plusCart" @minusEdit.user="minusCart" @keyEdit.user="keyCart" class="calculate" :num.sync="cartNum" @blurEdit.user="blurCart" :isDisabled.sync="noSales"></counterCart>
-          <text wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
+          <text wx:if="{{maxtip}}" class="title link inline">数量已达上限</text>
         </view>
       </view>
       <radio-group @change="addCartGoods">
@@ -455,13 +458,11 @@
         }
       },
       maxtip () {
-        var maxtip = false
         if (this.cartNum >= this.cartResult.num) {
-          maxtip = true
+          return true
         } else {
-          maxtip = false
+          return false
         }
-        return maxtip
       },
       noSales () {
         if (this.cartResult.num > 0) {
@@ -742,6 +743,13 @@
         cb && cb()
         _this.$apply()
       })
+    }
+    // 转发
+    onShareAppMessage (res) {
+      return {
+        title: this.detail.title,
+        path: '/pages/detail?id=' + this.pageId
+      }
     }
     onLoad (id) {
       this.userLevel = this.$parent.globalData.userLevel

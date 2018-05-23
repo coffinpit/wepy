@@ -312,6 +312,26 @@
                 'paySign': paySign,
                 'success': (res) => {
                   console.log('success')
+                  if (res.errMsg === 'requestPayment:ok') {
+                    // 用户支付成功跳转首页
+                    wepy.switchTab({
+                      url: './index'
+                    })
+                  } else if (res.errMsg === 'requestPayment:cancel') {
+                    // 用户取消支付跳转订单列表
+                    wepy.showModal({
+                      title: '提示',
+                      content: '支付失败',
+                      showCancel: false,
+                      success: (res) => {
+                        if (res.confirm) {
+                          wepy.redirectTo({
+                            url: './order'
+                          })
+                        }
+                      }
+                    })
+                  }
                 },
                 'fail': (res) => {
                   console.log('fail')

@@ -183,11 +183,13 @@
       </view>
     </view>
     <view class="setting-container">
-      <view class="setting-layer" wx:if="{{isVip}}">
+      <view class="setting-layer" wx:if="{{isVip}}" @tap="goService">
         <text class="iconfont icon-me_fw"></text>
         <text>我的服务</text>
+        <!--
         <text class="iconfont icon-rightsj"></text>
         <text class="notice">2</text>
+        -->
       </view>
       <view class="setting-layer" @tap="goOrder">
         <text class="iconfont icon-me_dd"></text>
@@ -260,6 +262,11 @@
       isLogin: false
     }
     methods = {
+      goService () {
+        wepy.navigateTo({
+          url: './applyVip'
+        })
+      },
       goAddress () {
         wepy.navigateTo({
           url: './address'

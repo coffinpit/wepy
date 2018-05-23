@@ -1,4 +1,7 @@
 <style lang="less">
+  page{
+    background: #fff;
+  }
   .login-container {
     height: 100%;
     background: #fff;

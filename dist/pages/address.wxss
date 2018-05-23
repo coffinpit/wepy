@@ -42,8 +42,8 @@
 }
 .address-edit .edit-layer .iconfont,
 .address-edit .delete-layer .iconfont {
-  font-size: 40rpx;
-  margin-right: 40rpx;
+  font-size: 36rpx;
+  margin-right: 20rpx;
   color: #333;
   vertical-align: center;
 }

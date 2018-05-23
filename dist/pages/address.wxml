@@ -12,11 +12,11 @@
           <text class="iconfont icon-me_dz"/>
           <view class="delete-layer" bindtap="deleteAdd" data-wpydeleteadd-a="{{item.id}}">
             <text class="iconfont icon-dz_sc"/>
-            <text class="title">删除</text>
+            <text class="font-normal">删除</text>
           </view>
           <view class="edit-layer" bindtap="editAdd" data-wpyeditadd-a="{{item}}">
             <text class="iconfont icon-dz_bj"/>
-            <text class="title">编辑</text>
+            <text class="font-normal">编辑</text>
           </view>
         </view>
       </view>

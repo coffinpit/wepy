@@ -18,11 +18,13 @@
       </view>
     </view>
     <view class="setting-container">
-      <view class="setting-layer" wx:if="{{isVip}}">
+      <view class="setting-layer" wx:if="{{isVip}}" bindtap="goService">
         <text class="iconfont icon-me_fw"/>
         <text>我的服务</text>
-        <text class="iconfont icon-rightsj"/>
+        <!--
+        <text class="iconfont icon-rightsj"></text>
         <text class="notice">2</text>
+        -->
       </view>
       <view class="setting-layer" bindtap="goOrder">
         <text class="iconfont icon-me_dd"/>

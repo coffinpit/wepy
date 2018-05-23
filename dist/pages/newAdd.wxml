@@ -16,6 +16,10 @@
           <text class="iconfont icon-xlsanjiao"/>
         </view>
       </view>
+      <view class="address-layer">
+        <text class="title">详细地址</text>
+        <textarea>{{userAdd}}</textarea>
+      </view>
     </view>
     <button class="default-button">新建地址</button>
   </view>

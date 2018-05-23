@@ -103,13 +103,15 @@
 
 .icon-me_dz:before { content: "\e641"; }
 
+page{
+  background:#f8f8f8;
+}
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  background:#f8f8f8;
 }
 .content{
   padding:20rpx;
@@ -286,6 +288,7 @@ export default class extends wepy.app {
     ],
     window: {
       backgroundTextStyle: 'dark',
+      backgroundColor: '#f8f8f8',
       navigationBarBackgroundColor: '#fc5e43',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'white'
@@ -353,20 +356,26 @@ export default class extends wepy.app {
     // this.globalData.userInfo = e.detail.userInfo
     console.log(e, code)
     var data = {
-      jsCode: code,
+      jscode: code,
       encryptedData: e.detail.encryptedData,
       iv: e.detail.iv
     }
     this.HttpRequest.SendCode(data).then((res) => {
       console.log(res)
       if (res.data.error === 0) {
-        wepy.setStorageSync('phone', res.data.data.purePhoneNumber)
-        var phoneNumber = res.data.data.purePhoneNumber
+        wepy.setStorageSync('phone', res.data.data.phone)
+        var phoneNumber = res.data.data.phone
         var data = {
           phone: phoneNumber
         }
         this.requestToken(data, cb)
       }
+    }).catch(() => {
+      wepy.showModal({
+        title: '登录失败',
+        content: '请检查网络连接',
+        showCancel: false
+      })
     })
     // 发送后台同时获取手机号/token/过期时间
     // 如果token过期 通过手机号 发送requestToken重置global数据 模拟数据{phone: '13402155751'}
@@ -415,15 +424,15 @@ export default class extends wepy.app {
     // })
   }
   // 已有手机号获取token
-  requestToken (data, cb) {
-    this.HttpRequest.UserLogin(data).then((res) => {
+  async requestToken (data, cb) {
+    await this.HttpRequest.UserLogin(data).then((res) => {
       var token = res.data.data.token
       var timeOut = res.data.data.timeOut
       wepy.setStorageSync('token', token)
       wepy.setStorageSync('timeout', timeOut)
       // 设置global的user level 和 hash
       this.getUserLevel(token)
-      cb && cb(res.userInfo)
+      cb && cb(token)
     })
   }
   // 判断token是否过期
@@ -431,23 +440,33 @@ export default class extends wepy.app {
     // 判断token是否过期 如果没过期直接返回token值
     var nowTime = Math.floor(new Date().getTime() / 1000)
     var timeOut = wepy.getStorageSync('timeout')
-    if (wepy.getStorageSync('token') === '' || nowTime > timeOut) {
+    if (nowTime > timeOut) {
       return false
     } else {
       return true
     }
   }
+
   // 返回当前token
-  getToken () {
-    if (!this.refreshToken()) {
-      // 重新发送请求获取新的token 模拟数据{phone: '13402155751'}
-      var data = {
-        phone: wepy.getStorageSync('phone')
+  getToken (error) {
+    if (wepy.getStorageSync('token') === '') {
+      wepy.navigateTo({
+        url: './login'
+      })
+    } else {
+      if (!this.refreshToken() || error === -1) {
+        // token过期 重新发送请求获取新的token
+        var data = {
+          phone: wepy.getStorageSync('phone')
+        }
+        this.requestToken(data)
+        return wepy.getStorageSync('token')
+      } else {
+        return wepy.getStorageSync('token')
       }
-      this.requestToken(data)
     }
-    return wepy.getStorageSync('token')
   }
+
   // 获取 user level 和 hash
   getUserLevel (token) {
     var _this = this
@@ -485,10 +504,10 @@ export default class extends wepy.app {
   showSuccess () {
     wepy.hideLoading()
   }
-  showFail () {
+  showFail (error) {
     wepy.hideLoading()
     wepy.showToast({
-      title: '加载失败',
+      title: error || '加载失败',
       icon: 'none',
       image: '../image/cancel.png'
     })

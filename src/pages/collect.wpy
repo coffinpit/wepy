@@ -203,7 +203,6 @@
           } else {
             _this.isDown = false
           }
-          console.log(_this.isDown)
           data.spus.forEach((item) => {
             var good = {}
             good.path = item.cover

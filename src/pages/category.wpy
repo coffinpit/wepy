@@ -1,10 +1,12 @@
 <style lang="less">
+  page{
+    margin-top:80rpx;
+  }
   .container{
     min-height:calc(100vh);
     width:100%;
     overflow:hidden;
     display:block;
-    margin-top:80rpx;
   }
   .content{
     padding:0 20rpx;
@@ -108,7 +110,7 @@
 </style>
 <template>
   <view class="container">
-    <view>
+    <view wx:if="{{isLoading}}">
       <searchbar :pagefrom.sync="pageTile"></searchbar>
       <view class="category-bg">
         <repeat for="{{categoryImg}}" item="item" index="index" key="index">
@@ -177,7 +179,9 @@
       pageNum: 1,
       sourceId: '',
       totalPageNum: '',
-      isDown: false
+      isDown: false,
+      isLoading: false,
+      getTokenTime: 0
     }
     getShowMore () {
       this.categoryTab.forEach((item, index) => {
@@ -227,6 +231,7 @@
       }
       this.$parent.HttpRequest.GetTopCategory(data).then((res) => {
         if (res.data.error === 0) {
+          _this.isLoading = true
           _this.$parent.showSuccess()
           var data = res.data.data
           data.forEach((item) => {
@@ -240,7 +245,17 @@
           _this.getSpu(_this.sourceId)
         } else {
           _this.isNull = true
-          _this.$parent.showFail()
+          if (res.data.error === -1 && res.data.msg === 'miss token') {
+            _this.getTokenTime ++
+            if (_this.getTokenTime < 3) {
+              _this.token = this.$parent.getToken()
+              _this.getTopCate()
+            } else {
+              _this.$parent.showFail()
+            }
+          } else if (res.data.error === -2) {
+            _this.$parent.showFail(res.data.msg)
+          }
         }
         _this.$apply()
       }).catch(() => {
@@ -301,7 +316,7 @@
             _this.isNull = true
           } else {
             _this.isNull = false
-            if (data.totalCount <= this.pageSize) {
+            if (res.data.data.totalCount <= this.pageSize) {
               _this.isDown = true
             } else {
               _this.isDown = false
@@ -336,6 +351,7 @@
       this.$apply()
     }
     onShow () {
+      this.getTokenTime = 0
       if (this.$parent.pageRoot) {
         this.$parent.pageRoot = false
       } else {

@@ -235,7 +235,8 @@
       isLoading: true,
       vipEnd: '1526611071',
       vipreduction: '123.00',
-      userLevel: 0
+      userLevel: 0,
+      getTokenTime: 0
     }
     methods = {
       imageLoad () {
@@ -245,7 +246,7 @@
         this.isShow = true
       },
       goRules () {
-        wepy.navigateTo({
+        wepy.goRules({
           url: './rules'
         })
       },
@@ -314,6 +315,18 @@
             _this.typeList.push(obj)
             _this.resultList = _this.typeList[0]
           })
+        } else {
+          if (res.data.error === -1 && res.data.msg === 'miss token') {
+            _this.getTokenTime ++
+            if (_this.getTokenTime < 3) {
+              _this.token = this.$parent.getToken()
+              _this.getService()
+            } else {
+              _this.$parent.showFail()
+            }
+          } else if (res.data.error === -2) {
+            _this.$parent.showFail(res.data.msg)
+          }
         }
         _this.$apply()
       })
@@ -332,6 +345,7 @@
       this.$apply()
     }
     onShow () {
+      this.getTokenTime = 0
       this.getService()
     }
   }

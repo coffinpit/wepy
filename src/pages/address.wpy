@@ -38,8 +38,8 @@
       color:#333;
       margin-top:30rpx;
       .iconfont{
-        font-size:40rpx;
-        margin-right:40rpx;
+        font-size:36rpx;
+        margin-right:20rpx;
         color:#333;
         vertical-align:center;
       }
@@ -75,11 +75,11 @@
           <text class="iconfont icon-me_dz"></text>
           <view class="delete-layer" @tap="deleteAdd({{item.id}})">
             <text class="iconfont icon-dz_sc"></text>
-            <text class="title">删除</text>
+            <text class="font-normal">删除</text>
           </view>
           <view class="edit-layer" @tap="editAdd({{item}})">
             <text class="iconfont icon-dz_bj"></text>
-            <text class="title">编辑</text>
+            <text class="font-normal">编辑</text>
           </view>
         </view>
       </view>
@@ -106,7 +106,8 @@
       sourceId: '',
       count: '',
       orderId: '',
-      detail: ''
+      detail: '',
+      getTokenTime: 0
     }
     components = {
       defect: Defect
@@ -174,9 +175,9 @@
           _this.$parent.showSuccess()
           var data = res.data.data
           if (data.length === 0) {
-            this.isNull = true
+            _this.isNull = true
           } else {
-            this.isNull = false
+            _this.isNull = false
           }
           data.forEach((item) => {
             var obj = {}
@@ -190,10 +191,22 @@
             _this.address.push(obj)
           })
         } else {
-          _this.$parent.showFail()
+          _this.isNull = true
+          if (res.data.error === -1 && res.data.msg === 'miss token') {
+            _this.getTokenTime ++
+            if (_this.getTokenTime < 3) {
+              _this.token = this.$parent.getToken()
+              _this.initAdd()
+            } else {
+              _this.$parent.showFail()
+            }
+          } else if (res.data.error === -2) {
+            _this.$parent.showFail(res.data.msg)
+          }
         }
         _this.$apply()
       }).catch(() => {
+        _this.isNull = true
         _this.$parent.showFail()
       })
     }
@@ -232,6 +245,7 @@
       this.$apply()
     }
     onShow () {
+      this.getTokenTime = 0
       this.initAdd()
     }
   }

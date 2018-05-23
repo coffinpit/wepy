@@ -254,7 +254,6 @@
 .popup_layer .popup_image {
   border: 1px #eee solid;
   width: 200rpx;
-  height: 200rpx;
   overflow: hidden;
 }
 .popup_layer .popup_image image {
@@ -263,16 +262,16 @@
 }
 .popup_layer .popup_goods {
   padding-left: 44rpx;
-  padding-top: 20rpx;
   width: 550rpx;
   box-sizing: border-box;
 }
 .popup_layer .popup_goods .link {
   display: block;
+  margin-top: 10rpx;
 }
 .popup_layer .popup_goods .link.inline {
   float: left;
-  margin-top: 52rpx;
+  margin-top: 50rpx;
 }
 .popup_layer .popup_goods .calculate {
   margin-top: 20rpx;
@@ -292,16 +291,20 @@
 .popup_layer .goods-name {
   width: 70%;
   font-size: 28rpx;
+  line-height: 56rpx;
 }
 .popup_layer .goods-num {
   width: 30%;
   font-size: 28rpx;
+  line-height: 56rpx;
+  text-align: right;
 }
 .popup_layer .none {
   color: #999;
 }
 .popup_layer radio {
   float: right;
+  margin-left: 20rpx;
 }
 .disable {
   background: #999;

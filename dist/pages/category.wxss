@@ -2,12 +2,14 @@
 @import "./../components/searchbar.wxss";
 @import "./../components/defect.wxss";
 @import "./../components/goods.wxss";
+page {
+  margin-top: 80rpx;
+}
 .container {
   min-height: calc(100vh);
   width: 100%;
   overflow: hidden;
   display: block;
-  margin-top: 80rpx;
 }
 .content {
   padding: 0 20rpx;

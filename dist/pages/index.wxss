@@ -78,11 +78,11 @@ image {
   top: 50%;
   width: 68%;
   transform: translateY(-50%);
-  color: #ffd05a;
+  color: #ffbe89;
 }
 .index-promot .index-promot-content .index-promot-title {
   font-size: 36rpx;
-  border-bottom: 1px #ffd05a solid;
+  border-bottom: 1px #ffbe89 solid;
   line-height: 80rpx;
   margin-bottom: 20rpx;
 }
@@ -99,8 +99,10 @@ image {
   width: 140px;
   height: 25px;
 }
-::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-  color: transparent;
-}
+/*
+  ::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+    color: transparent;
+  }
+  */

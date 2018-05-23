@@ -141,7 +141,7 @@
     <view catchtap="$counterCart$minusTap" class="counter-btn minusBtn {{$counterCart$isDisabled || !$counterCart$isAble ? '' : 'able'}}" data-id="{{$counterCart$sourceId}}">  -  </view>
   </view>
 
-          <text wx:if="{{maxtip}}" class="title link inline">数量已到上限</text>
+          <text wx:if="{{maxtip}}" class="title link inline">数量已达上限</text>
         </view>
       </view>
       <radio-group bindchange="addCartGoods">

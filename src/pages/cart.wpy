@@ -492,7 +492,8 @@
       freight: 0,
       isLoading: true,
       validateCount: 0,
-      expire: []
+      expire: [],
+      getTokenTime: 0
     }
     computed = {
       userLevel () {
@@ -520,6 +521,9 @@
     methods = {
       editTap () {
         this.isEdit = !this.isEdit
+        if (this.isEdit) {
+          this.clearList()
+        }
       },
       plusCold (e) {
         var sourceId = e.currentTarget.dataset.id
@@ -794,7 +798,17 @@
           })
           console.log(this.cartList)
         } else {
-          _this.$parent.showFail()
+          if (res.data.error === -1 && res.data.msg === 'miss token') {
+            _this.getTokenTime ++
+            if (_this.getTokenTime < 3) {
+              _this.token = this.$parent.getToken()
+              _this.initPageData()
+            } else {
+              _this.$parent.showFail()
+            }
+          } else if (res.data.error === -2) {
+            _this.$parent.showFail(res.data.msg)
+          }
         }
         _this.$apply()
       }).catch(() => {
@@ -854,6 +868,15 @@
         this.$apply()
       })
     }
+    clearList () {
+      this.cartList.forEach((item) => {
+        item.coldlist.forEach((i) => {
+          i.checked = false
+        })
+        item.coldChecked = false
+        item.tempCold = []
+      })
+    }
     onLoad () {
       this.token = this.$parent.getToken()
       console.log(this.$parent.globalData.userLevel)
@@ -861,6 +884,9 @@
       this.$apply()
     }
     onShow () {
+      this.isEdit = false
+      this.getTokenTime = 0
+      this.clearList()
       this.initPageData()
       this.$apply()
     }
