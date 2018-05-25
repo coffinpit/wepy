@@ -334,6 +334,7 @@
         })
       },
       goPay () {
+        this.token = this.$parent.getToken()
         if (!this.user.areaId) {
           wepy.showToast({
             title: '请选择收货地址',
@@ -351,20 +352,12 @@
           }
           console.log(data)
           this.$parent.HttpRequest.CreateUserOrder(data).then((res) => {
-            if (res.data.error !== 0) {
-              wepy.hideLoading()
-              wepy.showModal({
-                title: '支付订单失败',
-                content: '请点击确认返回购物车',
-                success: (res) => {
-                  if (res.confirm) {
-                    wepy.switchTab({
-                      url: './cart'
-                    })
-                  }
-                }
-              })
+            if (res.data.error === 0) {
+            } else {
+              this.$parent.payFail()
             }
+          }).catch(() => {
+            this.$parent.payFail()
           })
         }
       },
@@ -374,6 +367,7 @@
       }
     }
     applyOrder () {
+      this.token = this.$parent.getToken()
       this.$parent.showLoading()
       this.order = []
       var _this = this
@@ -406,6 +400,7 @@
           wepy.showModal({
             title: '创建订单失败',
             content: '请点击确认返回购物车',
+            showCancel: false,
             success: (res) => {
               if (res.confirm) {
                 wepy.switchTab({
@@ -441,7 +436,6 @@
       if (param.user) {
         this.user = JSON.parse(param.user)
       }
-      this.token = this.$parent.getToken()
       this.$apply()
     }
     onShow () {

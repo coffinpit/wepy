@@ -330,6 +330,50 @@ export default class extends wepy.app {
     userImage: null
   }
 
+  missToken = false
+  getTokenTime = 0
+
+  constructor () {
+    super()
+    this.use('requestfix')
+    this.intercept('request', {
+      config (p) {
+        return p
+      },
+      success (p) {
+        if (p.statusCode === 200) {
+          if (p.data.error && p.data.error === -1 && p.data.msg === 'miss token') {
+            console.log('miss token')
+            this.getTokenTime++
+            if (this.getTokenTime < 3) {
+              this.missToken = true
+            } else {
+              this.missToken = false
+              this.showFail()
+            }
+          } else if (p.data.error && p.data.error === -2) {
+            this.showFail(p.data.msg)
+          } else if (p.data.error && p.data.error === 0) {
+            this.missToken = false
+            this.getTokenTime = 0
+          }
+        } else {
+          this.missToken = false
+          this.getTokenTime = 0
+          this.showFail()
+        }
+        console.log('request success: ', p)
+        return p
+      },
+      fail (p) {
+        return p
+      },
+      complete (p) {
+        return p
+      }
+    })
+  }
+
   // 判断tabbar回退页面
   pageRoot = false
 
@@ -424,15 +468,22 @@ export default class extends wepy.app {
     // })
   }
   // 已有手机号获取token
-  async requestToken (data, cb) {
+  async requestToken (data, cb, fail) {
     await this.HttpRequest.UserLogin(data).then((res) => {
-      var token = res.data.data.token
-      var timeOut = res.data.data.timeOut
-      wepy.setStorageSync('token', token)
-      wepy.setStorageSync('timeout', timeOut)
-      // 设置global的user level 和 hash
-      this.getUserLevel(token)
-      cb && cb(token)
+      console.log(res)
+      if (res.data.error === 0) {
+        var token = res.data.data.token
+        var timeOut = res.data.data.timeOut
+        wepy.setStorageSync('token', token)
+        wepy.setStorageSync('timeout', timeOut)
+        // 设置global的user level 和 hash
+        this.getUserLevel(token)
+        cb && cb(token)
+      } else {
+        fail && fail()
+      }
+    }).catch(() => {
+      fail && fail()
     })
   }
   // 判断token是否过期
@@ -510,6 +561,20 @@ export default class extends wepy.app {
       title: error || '加载失败',
       icon: 'none',
       image: '../image/cancel.png'
+    })
+  }
+  payFail () {
+    wepy.showModal({
+      title: '提示',
+      content: '支付失败',
+      showCancel: false,
+      success: (res) => {
+        if (res.confirm) {
+          wepy.redirectTo({
+            url: './order'
+          })
+        }
+      }
     })
   }
   disableApi () {

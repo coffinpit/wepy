@@ -292,6 +292,8 @@
       }
     }
     initData () {
+      this.token = this.$parent.getToken()
+      this.$parent.showLoading()
       this.order = []
       var _this = this
       var data = {
@@ -301,6 +303,7 @@
       this.$parent.HttpRequest.GetOrderDetail(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
+          _this.$parent.showSuccess()
           var data = res.data.data
           _this.statusTxt = _this.orderStatus[data.status]
           _this.status = data.status
@@ -333,8 +336,15 @@
             obj.orderDetail = _this.initChild(item.buyingRecords)
             _this.order.push(obj)
           })
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.initData()
+          }
         }
         _this.$apply()
+      }).catch(() => {
+        _this.$parent.showFail()
       })
     }
     initChild (parent) {
@@ -357,6 +367,8 @@
       return child
     }
     cancelOrder (cb) {
+      this.token = this.$parent.getToken()
+      var _this = this
       var data = {
         token: this.token,
         orderId: this.id
@@ -366,21 +378,32 @@
         console.log(res)
         if (res.data.error === 0) {
           cb && cb()
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+          }
         }
       })
     }
     initLogistica (com, num) {
+      this.token = this.$parent.getToken()
+      var _this = this
       var data = {
         com: com,
         num: num
       }
       this.$parent.HttpRequest.GetLogistica(data).then((res) => {
         console.log(res)
+        if (res.data.error === 0) {
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+          }
+        }
       })
     }
     onLoad (param) {
       this.id = param.id
-      this.token = this.$parent.getToken()
       this.$apply()
     }
     onShow () {

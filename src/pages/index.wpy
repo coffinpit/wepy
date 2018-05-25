@@ -186,8 +186,7 @@
       totalPageNum: '',
       isNull: true,
       isDown: false,
-      isLoading: false,
-      getTokenTime: 0
+      isLoading: false
     }
 
     methods = {
@@ -214,7 +213,6 @@
     }
     onShow () {
       this.currentPage = 0
-      this.getTokenTime = 0
       this.isLoading = false
       this.initPage()
       this.getBanner()
@@ -232,6 +230,7 @@
       }
     }
     getInitData (cb) {
+      this.token = this.$parent.getToken()
       this.$parent.showLoading()
       this.isDown = false
       var parent = this.$parent
@@ -275,16 +274,9 @@
           })
         } else {
           _this.isNull = true
-          if (res.data.error === -1 && res.data.msg === 'miss token') {
-            _this.getTokenTime ++
-            if (_this.getTokenTime < 3) {
-              _this.token = this.$parent.getToken(res.data.error)
-              _this.getInitData()
-            } else {
-              _this.$parent.showFail()
-            }
-          } else if (res.data.error === -2) {
-            _this.$parent.showFail(res.data.msg)
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.getInitData()
           }
         }
         _this.$apply()
@@ -300,6 +292,7 @@
       this.getInitData()
     }
     getBanner () {
+      this.token = this.$parent.getToken()
       this.bannerLink = []
       var _this = this
       var data = {
@@ -330,16 +323,9 @@
             })
           })
         } else {
-          if (res.data.error === -1 && res.data.msg === 'miss token') {
-            _this.getTokenTime ++
-            if (_this.getTokenTime < 3) {
-              _this.token = this.$parent.getToken()
-              _this.getBanner()
-            } else {
-              _this.$parent.showFail()
-            }
-          } else if (res.data.error === -2) {
-            _this.$parent.showFail(res.data.msg)
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken()
+            _this.getBanner()
           }
         }
         _this.isLoading = true
@@ -347,7 +333,6 @@
       })
     }
     onLoad () {
-      // this.token = this.$parent.getToken()
       this.$apply()
     }
   }

@@ -123,6 +123,7 @@
     }
     initData () {
       this.$parent.showLoading()
+      this.token = this.$parent.getToken()
       var _this = this
       var data = {
         token: this.token,
@@ -151,7 +152,10 @@
             return item.type === 2
           })
         } else {
-          _this.$parent.showFail()
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.initData()
+          }
         }
         _this.$apply()
       }).catch(() => {
@@ -171,10 +175,11 @@
       }
     }
     onLoad () {
-      this.token = this.$parent.getToken()
       this.$apply()
     }
     onShow () {
+      this.current = 0
+      this.pageNum = 1
       this.initData()
     }
   }

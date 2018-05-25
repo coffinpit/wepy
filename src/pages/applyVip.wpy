@@ -235,8 +235,7 @@
       isLoading: true,
       vipEnd: '1526611071',
       vipreduction: '123.00',
-      userLevel: 0,
-      getTokenTime: 0
+      userLevel: 0
     }
     methods = {
       imageLoad () {
@@ -268,6 +267,8 @@
       },
       confirmTap () {
         console.log(this.resultList)
+        this.token = this.$parent.getToken()
+        var _this = this
         if (this.checked) {
           var data = {
             token: this.token,
@@ -280,7 +281,54 @@
             date_main: 4
           }
           this.$parent.HttpRequest.CreateOrderBuy(data).then((res) => {
-            console.log(res)
+            if (res.data.error === 0) {
+              var data = res.data.data
+              var timeStamp = data.timestamp.toString()
+              var nonceStr = data.noncestr
+              var prepayid = 'prepay_id=' + data.prepayid
+              var paySign = data.sign
+              console.log(prepayid)
+              wepy.requestPayment({
+                'timeStamp': timeStamp,
+                'nonceStr': nonceStr,
+                'package': prepayid,
+                'signType': 'MD5',
+                'paySign': paySign,
+                'success': (res) => {
+                  console.log('success')
+                  if (res.errMsg === 'requestPayment:ok') {
+                    // 用户支付成功跳转首页
+                    wepy.switchTab({
+                      url: './index'
+                    })
+                  } else if (res.errMsg === 'requestPayment:cancel') {
+                    // 用户取消支付跳转订单列表
+                    wepy.showModal({
+                      title: '提示',
+                      content: '支付失败',
+                      showCancel: false,
+                      success: (res) => {
+                        if (res.confirm) {
+                          wepy.redirectTo({
+                            url: './order'
+                          })
+                        }
+                      }
+                    })
+                  }
+                },
+                'fail': (res) => {
+                  console.log('fail')
+                },
+                'complete': (res) => {
+                  console.log('complete')
+                }
+              })
+            } else {
+              if (_this.$parent.missToken) {
+                _this.token = this.$parent.getToken(res.data.error)
+              }
+            }
           })
         } else {
           wepy.showToast({
@@ -297,6 +345,7 @@
       this.checked = false
     }
     getService () {
+      this.token = this.$parent.getToken()
       this.initData()
       this.typeList = []
       var _this = this
@@ -316,23 +365,15 @@
             _this.resultList = _this.typeList[0]
           })
         } else {
-          if (res.data.error === -1 && res.data.msg === 'miss token') {
-            _this.getTokenTime ++
-            if (_this.getTokenTime < 3) {
-              _this.token = this.$parent.getToken()
-              _this.getService()
-            } else {
-              _this.$parent.showFail()
-            }
-          } else if (res.data.error === -2) {
-            _this.$parent.showFail(res.data.msg)
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.getService()
           }
         }
         _this.$apply()
       })
     }
     onLoad () {
-      this.token = this.$parent.getToken()
       this.userLevel = this.$parent.globalData.userLevel
       console.log(this.userLevel)
       this.vipEnd = this.$parent.dateFormat(this.vipEnd * 1000, 'Y-m-d')
@@ -345,7 +386,6 @@
       this.$apply()
     }
     onShow () {
-      this.getTokenTime = 0
       this.getService()
     }
   }

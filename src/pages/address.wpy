@@ -163,6 +163,7 @@
       }
     }
     initAdd () {
+      this.token = this.$parent.getToken()
       this.$parent.showLoading()
       var _this = this
       var data = {
@@ -192,16 +193,9 @@
           })
         } else {
           _this.isNull = true
-          if (res.data.error === -1 && res.data.msg === 'miss token') {
-            _this.getTokenTime ++
-            if (_this.getTokenTime < 3) {
-              _this.token = this.$parent.getToken()
-              _this.initAdd()
-            } else {
-              _this.$parent.showFail()
-            }
-          } else if (res.data.error === -2) {
-            _this.$parent.showFail(res.data.msg)
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.initAdd()
           }
         }
         _this.$apply()
@@ -211,17 +205,26 @@
       })
     }
     deleteAdd (id) {
+      this.token = this.$parent.getToken()
       var _this = this
       var data = {
         token: this.token,
         addressId: id
       }
       this.$parent.HttpRequest.DeleteAddress(data).then((res) => {
-        _this.initAdd()
+        if (res.data.error === 0) {
+          _this.initAdd()
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+          }
+        }
         _this.$apply()
       })
     }
     editOrderAdd (id, cb) {
+      this.token = this.$parent.getToken()
+      var _this = this
       var data = {
         token: this.token,
         orderId: this.orderId,
@@ -231,6 +234,10 @@
         console.log(res)
         if (res.data.error === 0) {
           cb && cb()
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+          }
         }
       })
     }
@@ -241,11 +248,9 @@
       this.sourceId = data.sourceId
       this.count = data.count
       this.orderId = data.id
-      this.token = this.$parent.getToken()
       this.$apply()
     }
     onShow () {
-      this.getTokenTime = 0
       this.initAdd()
     }
   }

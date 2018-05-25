@@ -492,8 +492,7 @@
       freight: 0,
       isLoading: true,
       validateCount: 0,
-      expire: [],
-      getTokenTime: 0
+      expire: []
     }
     computed = {
       userLevel () {
@@ -749,24 +748,32 @@
       })
     }
     deleteData (json, cb) {
+      this.token = this.$parent.getToken()
+      var _this = this
       var data = {
         token: this.token,
         sourceList: JSON.stringify(json)
       }
       this.$parent.HttpRequest.DeleteCartHttp(data).then((res) => {
-        console.log(res)
-        cb && cb()
+        if (res.data.error === 0) {
+          cb && cb()
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+          }
+        }
       })
     }
     initPageData () {
       this.$parent.showLoading()
+      this.token = this.$parent.getToken()
       var _this = this
       var data = {
         token: this.token
       }
       this.cartList = []
       this.expire = []
-      _this.isLoading = true
+      this.isLoading = true
       this.finalprice = 0
       this.freight = 0
       this.cartStatus = {}
@@ -776,18 +783,18 @@
         if (res.data.error === 0) {
           _this.$parent.showSuccess()
           var data = res.data.data
-          this.cartStatus.totalprice = data.price
-          this.cartStatus.discount = data.reduction
-          this.cartStatus.memberPrice = data.memberPrice
-          this.finalprice = data.finalPrice
-          this.freight = data.freight
+          _this.cartStatus.totalprice = data.price
+          _this.cartStatus.discount = data.reduction
+          _this.cartStatus.memberPrice = data.memberPrice
+          _this.finalprice = data.finalPrice
+          _this.freight = data.freight
           data.childOrders.forEach((item) => {
             var obj = {}
             obj.title = item.title
             obj.freight = item.freight
             obj.coldChecked = false
             obj.tempCold = []
-            obj.coldlist = this.initChild(item.salesUnits)
+            obj.coldlist = _this.initChild(item.salesUnits)
             if (obj.coldlist.length === 0) {
               obj.showTitle = false
             } else {
@@ -796,18 +803,10 @@
             _this.cartList.push(obj)
             _this.$apply()
           })
-          console.log(this.cartList)
         } else {
-          if (res.data.error === -1 && res.data.msg === 'miss token') {
-            _this.getTokenTime ++
-            if (_this.getTokenTime < 3) {
-              _this.token = this.$parent.getToken()
-              _this.initPageData()
-            } else {
-              _this.$parent.showFail()
-            }
-          } else if (res.data.error === -2) {
-            _this.$parent.showFail(res.data.msg)
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.initPageData()
           }
         }
         _this.$apply()
@@ -853,6 +852,8 @@
       return child
     }
     addCartData (good, val, cb) {
+      this.token = this.$parent.getToken()
+      var _this = this
       var data = {
         token: this.token,
         sourceType: good.sourceType,
@@ -864,8 +865,12 @@
         console.log(res)
         if (res.data.error === 0) {
           cb && cb()
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = _this.$parent.getToken(res.data.error)
+          }
         }
-        this.$apply()
+        _this.$apply()
       })
     }
     clearList () {
@@ -878,14 +883,12 @@
       })
     }
     onLoad () {
-      this.token = this.$parent.getToken()
       console.log(this.$parent.globalData.userLevel)
       // 判断用户memberHash
       this.$apply()
     }
     onShow () {
       this.isEdit = false
-      this.getTokenTime = 0
       this.clearList()
       this.initPageData()
       this.$apply()

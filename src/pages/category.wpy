@@ -180,8 +180,7 @@
       sourceId: '',
       totalPageNum: '',
       isDown: false,
-      isLoading: false,
-      getTokenTime: 0
+      isLoading: false
     }
     getShowMore () {
       this.categoryTab.forEach((item, index) => {
@@ -225,6 +224,7 @@
     }
     getTopCate () {
       this.$parent.showLoading()
+      this.token = this.$parent.getToken()
       var _this = this
       var data = {
         token: this.token
@@ -245,16 +245,9 @@
           _this.getSpu(_this.sourceId)
         } else {
           _this.isNull = true
-          if (res.data.error === -1 && res.data.msg === 'miss token') {
-            _this.getTokenTime ++
-            if (_this.getTokenTime < 3) {
-              _this.token = this.$parent.getToken()
-              _this.getTopCate()
-            } else {
-              _this.$parent.showFail()
-            }
-          } else if (res.data.error === -2) {
-            _this.$parent.showFail(res.data.msg)
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.getTopCate()
           }
         }
         _this.$apply()
@@ -262,9 +255,9 @@
         _this.isNull = true
         _this.$parent.showFail()
       })
-      console.log(this.goods)
     }
     getChildCate (sourceId) {
+      this.token = this.$parent.getToken()
       var _this = this
       var data = {
         token: this.token,
@@ -286,6 +279,9 @@
           })
         } else {
           _this.isNull = true
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+          }
         }
         _this.$apply()
       }).catch(() => {
@@ -294,6 +290,7 @@
       return child
     }
     getSpu (sourceId, cb) {
+      this.token = this.$parent.getToken()
       this.$parent.showLoading()
       this.isDown = false
       var _this = this
@@ -336,7 +333,9 @@
           })
         } else {
           _this.isNull = true
-          _this.$parent.showFail()
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+          }
         }
         _this.$apply()
       }).catch(() => {
@@ -345,13 +344,11 @@
       })
     }
     onLoad () {
-      this.token = this.$parent.getToken()
       this.getTopCate()
       this.getShowMore()
       this.$apply()
     }
     onShow () {
-      this.getTokenTime = 0
       if (this.$parent.pageRoot) {
         this.$parent.pageRoot = false
       } else {

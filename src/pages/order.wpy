@@ -247,6 +247,7 @@
         })
       },
       goPay (id) {
+        this.token = this.$parent.getToken()
         var data = {
           token: this.token,
           orderId: id,
@@ -260,6 +261,7 @@
     }
     initOrder () {
       this.$parent.showLoading()
+      this.token = this.$parent.getToken()
       this.orderList = []
       this.isLoading = true
       var _this = this
@@ -289,7 +291,10 @@
             _this.orderList.push(obj)
           })
         } else {
-          _this.$parent.showFail()
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.initOrder()
+          }
         }
         _this.$apply()
       }).catch(() => {
@@ -317,20 +322,24 @@
       return child
     }
     cancelOrder (id, cb) {
+      this.token = this.$parent.getToken()
+      var _this = this
       var data = {
         token: this.token,
         orderId: id
       }
-      console.log(data)
       this.$parent.HttpRequest.CancelOrder(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
           cb && cb()
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+          }
         }
       })
     }
     onLoad (param) {
-      this.token = this.$parent.getToken()
       if (param.orderType) {
         this.orderType = param.orderType
         this.package.forEach((item, index) => {

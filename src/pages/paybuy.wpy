@@ -278,6 +278,7 @@
         })
       },
       goPay () {
+        this.token = this.$parent.getToken()
         if (!this.user.areaId) {
           wepy.showToast({
             title: '请选择收货地址',
@@ -319,18 +320,7 @@
                     })
                   } else if (res.errMsg === 'requestPayment:cancel') {
                     // 用户取消支付跳转订单列表
-                    wepy.showModal({
-                      title: '提示',
-                      content: '支付失败',
-                      showCancel: false,
-                      success: (res) => {
-                        if (res.confirm) {
-                          wepy.redirectTo({
-                            url: './order'
-                          })
-                        }
-                      }
-                    })
+                    this.$parent.payFail()
                   }
                 },
                 'fail': (res) => {
@@ -341,19 +331,10 @@
                 }
               })
             } else {
-              wepy.hideLoading()
-              wepy.showModal({
-                title: '支付订单失败',
-                content: '请点击确认返回购物车',
-                success: (res) => {
-                  if (res.confirm) {
-                    wepy.switchTab({
-                      url: './cart'
-                    })
-                  }
-                }
-              })
+              this.$parent.payFail()
             }
+          }).catch(() => {
+            this.$parent.payFail()
           })
         }
       },
@@ -363,6 +344,7 @@
       }
     }
     applyOrder () {
+      this.token = this.$parent.getToken()
       this.$parent.showLoading()
       this.order = []
       var _this = this
@@ -396,6 +378,7 @@
           wepy.showModal({
             title: '创建订单失败',
             content: '请点击确认返回购物车',
+            showCancel: false,
             success: (res) => {
               if (res.confirm) {
                 wepy.switchTab({
@@ -435,7 +418,6 @@
       this.sourceId = param.id
       this.sourceType = param.type
       this.count = param.count
-      this.token = this.$parent.getToken()
       this.$apply()
     }
     onShow () {

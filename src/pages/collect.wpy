@@ -179,6 +179,7 @@
       }
     }
     initCollect () {
+      this.token = this.$parent.getToken()
       this.$parent.showLoading()
       var _this = this
       this.isEdit = false
@@ -221,7 +222,10 @@
             _this.collectList.push(good)
           })
         } else {
-          _this.$parent.showFail()
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.initCollect()
+          }
         }
         _this.$apply()
       }).catch(() => {
@@ -230,14 +234,20 @@
       })
     }
     CancelMark (markId, cb) {
+      this.token = this.$parent.getToken()
       var _this = this
       var data = {
         markId: markId,
         token: this.token
       }
       this.$parent.HttpRequest.CancelMarkHttp(data).then((res) => {
-        console.log(res)
-        cb && cb()
+        if (res.data.error === 0) {
+          cb && cb()
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+          }
+        }
         _this.$apply()
       })
     }
@@ -254,10 +264,10 @@
       }
     }
     onLoad () {
-      this.token = this.$parent.getToken()
       this.$apply()
     }
     onShow () {
+      this.getTokenTime = 0
       this.initCollect()
     }
   }

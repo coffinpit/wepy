@@ -342,6 +342,7 @@
       }
     }
     initUserData () {
+      this.token = this.$parent.getToken()
       var _this = this
       this.$parent.showLoading()
       var data = {
@@ -357,11 +358,17 @@
             _this.isVip = true
           }
           this.validation = this.$parent.dateFormat(res.data.vipEnd, 'Y年m月d日')
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.initUserData()
+          }
         }
         _this.$apply()
       })
     }
     initUserOrder () {
+      this.token = this.$parent.getToken()
       this.$parent.showLoading()
       var _this = this
       var data = {
@@ -377,7 +384,10 @@
           _this.unpaid = data.unpaid
           _this.unreceipted = data.unreceipted
         } else {
-          _this.$parent.showFail()
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.initUserOrder()
+          }
         }
         _this.$apply()
       }).catch(() => {
@@ -385,7 +395,6 @@
       })
     }
     onLoad () {
-      this.token = this.$parent.getToken('user')
       var _this = this
       wepy.getSetting({
         success: (res) => {

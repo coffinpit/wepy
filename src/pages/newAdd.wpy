@@ -140,9 +140,17 @@
       }
     }
     initTopArea () {
+      this.token = this.$parent.getToken()
+      var _this = this
       var data = {}
       this.$parent.HttpRequest.GetTopArea(data).then((res) => {
-        console.log(res)
+        if (res.data.error === 0) {
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.initTopArea()
+          }
+        }
       })
     }
     initDefault () {
@@ -171,7 +179,6 @@
     }
     onLoad () {
       // this.initTopArea()
-      this.token = this.$parent.getToken('newAdd')
       this.$apply()
     }
   }

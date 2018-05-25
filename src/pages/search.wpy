@@ -211,7 +211,10 @@
             _this.goods.push(good)
           })
         } else {
-          _this.$parent.showFail()
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.getResult()
+          }
         }
         _this.$apply()
       }).catch(() => {

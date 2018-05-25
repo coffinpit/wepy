@@ -151,6 +151,12 @@
             }
             this.$parent.requestToken(data, () => {
               this.goIndex()
+            }, () => {
+              wepy.showToast({
+                title: '加载失败',
+                icon: 'none',
+                image: '../image/cancel.png'
+              })
             })
           } else {
             this.isNull = false

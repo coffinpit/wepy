@@ -544,7 +544,7 @@
         }
         this.overflow = true
         this.cartModal = true
-        this.initData(this.pageId, this.initCartResult())
+        this.initData(this.initCartResult())
       },
       closeCart () {
         this.overflow = false
@@ -622,12 +622,13 @@
       this.cartResult = result.length > 0 ? result[0] : this.detail.goodList[0]
       this.cartNum = result.length > 0 ? 1 : 0
     }
-    initData (id, cb) {
+    initData (cb) {
+      this.token = this.$parent.getToken()
       this.$parent.showLoading()
       var _this = this
       var data = {
         token: this.token,
-        spuId: id
+        spuId: this.pageId
       }
       this.$parent.HttpRequest.DetailHttp(data).then((res) => {
         console.log(res)
@@ -679,13 +680,18 @@
             cb && cb()
           })
         } else {
-          _this.$parent.showFail()
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.initData(cb)
+          }
         }
       }).catch(() => {
         _this.$parent.showFail()
       })
     }
     addCartData () {
+      this.token = this.$parent.getToken()
+      var _this = this
       var data = {
         token: this.token,
         sourceType: this.cartResult.type,
@@ -693,11 +699,17 @@
         count: this.cartNum
       }
       this.$parent.HttpRequest.AddCartHttp(data).then((res) => {
-        console.log(res)
+        if (res.data.error === 0) {
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+          }
+        }
       })
     }
     getMarkUser (id, type) {
       this.collectednum = ' '
+      this.token = this.$parent.getToken()
       var _this = this
       var data = {
         token: this.token,
@@ -710,12 +722,17 @@
         if (res.data.error === 0) {
           var data = res.data.data
           _this.collectednum = data.length
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+          }
         }
         _this.$apply()
       })
     }
     setMark (cb) {
       var _this = this
+      this.token = this.$parent.getToken()
       var data = {
         token: this.token,
         markType: 1,
@@ -728,19 +745,30 @@
           _this.markId = res.data.data
           _this.getMarkUser(_this.detail.id, this.detail.type)
           cb && cb()
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+          }
         }
         _this.$apply()
       })
     }
     CancelMark (cb) {
+      this.token = this.$parent.getToken()
       var _this = this
       var data = {
         markId: this.markId || this.detail.collectId,
         token: this.token
       }
       this.$parent.HttpRequest.CancelMarkHttp(data).then((res) => {
-        _this.getMarkUser(_this.detail.id, this.detail.type)
-        cb && cb()
+        if (res.data.error === 0) {
+          _this.getMarkUser(_this.detail.id, this.detail.type)
+          cb && cb()
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+          }
+        }
         _this.$apply()
       })
     }
@@ -754,8 +782,7 @@
     onLoad (id) {
       this.userLevel = this.$parent.globalData.userLevel
       this.pageId = id.id
-      this.token = this.$parent.getToken()
-      this.initData(this.pageId)
+      this.initData()
       this.$parent.pageRoot = true
       var _this = this
       wepy.getSystemInfo({
