@@ -303,14 +303,21 @@
               var timeStamp = data.timestamp.toString()
               var nonceStr = data.noncestr
               var prepayid = 'prepay_id=' + data.prepayid
-              var paySign = data.sign
-              console.log(prepayid)
+              var signData = {
+                'appId': 'wx4fadd384b39658cd',
+                'timeStamp': timeStamp,
+                'nonceStr': nonceStr,
+                'package': prepayid,
+                'signType': 'MD5'
+              }
+              var sign = this.$parent.HttpRequest.getPaySign(signData)
+              console.log(sign)
               wepy.requestPayment({
                 'timeStamp': timeStamp,
                 'nonceStr': nonceStr,
                 'package': prepayid,
                 'signType': 'MD5',
-                'paySign': paySign,
+                'paySign': sign,
                 'success': (res) => {
                   console.log('success')
                   if (res.errMsg === 'requestPayment:ok') {

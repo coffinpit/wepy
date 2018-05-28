@@ -2,13 +2,13 @@
   <view class="container">
     <view class="address-container">
       <view class="address-layer">
-        <text class="title">收货人</text><input type="text" value="{{userName}}"/>
+        <text class="title"><text class="iconfont icon-shoucang"/>收货人</text><input type="text" placeholder="姓名" placeholder-class="placeholder" value="{{userName}}" bindblur="nameTap"/>
       </view>
       <view class="address-layer">
-        <text class="title">联系电话</text><input type="text" value="{{userPhone}}"/>
+        <text class="title"><text class="iconfont icon-shoucang"/>联系手机</text><input type="number" placeholder="手机号码" placeholder-class="placeholder" value="{{userPhone}}" bindblur="phoneTap"/>
       </view>
       <view class="address-layer">
-        <text class="title">收货地址</text>
+        <text class="title"><text class="iconfont icon-shoucang"/>收货地址</text>
         <view class="picker">
           <picker mode="multiSelector" bindchange="topArea" bindcolumnchange="childArea" bindcancel="cancel" value="{{multiIndex}}" range="{{multiArray}}">
             <view>{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}</view>
@@ -17,9 +17,12 @@
         </view>
       </view>
       <view class="address-layer">
-        <text class="title">详细地址</text>
-        <textarea>{{userAdd}}</textarea>
+        <text class="title"><text class="iconfont icon-shoucang"/>详细地址</text>
+        <textarea value="{{userAdd}}" placeholder="详细地址：如道路、街区、门牌号等" placeholder-class="placeholder" bindinput="userAddTap"/>
+      </view>
+      <view class="address-layer">
+        <text class="title"><text class="iconfont icon-shoucang disable"/>邮编</text><input type="number" placeholder="邮政编号" placeholder-class="placeholder" value="{{postcode}}" maxlength="6" bindblur="postTap"/>
       </view>
     </view>
-    <button class="default-button">新建地址</button>
+    <button class="default-button" bindtap="confirm">确认修改</button>
   </view>

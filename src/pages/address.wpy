@@ -184,7 +184,8 @@
             var obj = {}
             obj.name = item.name
             obj.phone = item.phone
-            obj.add = item.address
+            obj.add = item.areaFullName + item.address
+            obj.detail = item.address
             obj.id = item.id
             obj.areaId = item.areaId
             obj.areaFullName = item.areaFullName

@@ -165,7 +165,7 @@
       if (this.pageNum < this.totalPageNum) {
         // 显示下一页数据
         this.pageNum ++
-        this.getInitData()
+        this.getResult()
       } else {
         if (this.goods.length !== 0) {
           this.isDown = true

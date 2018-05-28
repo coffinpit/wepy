@@ -362,7 +362,6 @@ export default class extends wepy.app {
           this.getTokenTime = 0
           this.showFail()
         }
-        console.log('request success: ', p)
         return p
       },
       fail (p) {

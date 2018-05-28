@@ -48,18 +48,30 @@
     width:100%;
     line-height:100rpx;
   }
+  .placeholder{
+    color:#999;
+  }
+  .icon-shoucang{
+    color:#fc5e44;
+    font-size:28rpx;
+    display: inline-block;
+    margin-right: 10rpx;
+    &.disable{
+      opacity: 0;
+    }
+  }
 </style>
 <template>
   <view class="container">
     <view class="address-container">
       <view class="address-layer">
-        <text class="title">收货人</text><input type="text" value="{{userName}}"/>
+        <text class="title"><text class="iconfont icon-shoucang"></text>收货人</text><input type="text" placeholder="姓名" placeholder-class="placeholder" value="{{userName}}" @blur="nameTap"/>
       </view>
       <view class="address-layer">
-        <text class="title">联系电话</text><input type="text" value="{{userPhone}}"/>
+        <text class="title"><text class="iconfont icon-shoucang"></text>联系手机</text><input type="number" placeholder="手机号码" placeholder-class="placeholder" value="{{userPhone}}" @blur="phoneTap"/>
       </view>
       <view class="address-layer">
-        <text class="title">收货地址</text>
+        <text class="title"><text class="iconfont icon-shoucang"></text>收货地址</text>
         <view class="picker">
           <picker mode="multiSelector" @change="topArea" @columnchange="childArea" @cancel="cancel" value="{{multiIndex}}" range="{{multiArray}}">
             <view>{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}</view>
@@ -68,11 +80,14 @@
         </view>
       </view>
       <view class="address-layer">
-        <text class="title">详细地址</text>
-        <textarea>{{userAdd}}</textarea>
+        <text class="title"><text class="iconfont icon-shoucang"></text>详细地址</text>
+        <textarea value="{{userAdd}}" placeholder="详细地址：如道路、街区、门牌号等" placeholder-class="placeholder" @input="userAddTap"></textarea>
+      </view>
+      <view class="address-layer">
+        <text class="title"><text class="iconfont icon-shoucang disable"></text>邮编</text><input type="number" placeholder="邮政编号" placeholder-class="placeholder" value="{{postcode}}" maxlength="6" @blur="postTap"/>
       </view>
     </view>
-    <button class="default-button">新建地址</button>
+    <button class="default-button" @tap="confirm">确认添加</button>
   </view>
 </template>
 
@@ -85,100 +100,179 @@
     }
     data = {
       token: '',
-      num: 0,
-      multiArray: [
-        ['北京市', '上海市', '广东省', '江西省'],
-        ['市辖区', '县'],
-        ['东城区', '西城区', '崇文区']
-      ],
+      multiArray: [],
       multiIndex: [0, 0, 0],
-      multiAreaId: [
-        ['100001', '100002', '100003', '100004'],
-        ['200001', '200002'],
-        ['300001', '300002', '300003']
-      ]
+      multiValue: '',
+      multiAreaId: [],
+      userName: '',
+      userPhone: '',
+      postcode: '',
+      myreg: /^[1][3,4,5,7,8][0-9]{9}$/,
+      userAdd: ''
     }
     computed = {
-      multiValue () {
-        var tempArr = []
-        this.multiAreaId.forEach((item, index) => {
-          tempArr.push(item[0])
-        })
-        return tempArr
-      }
+      // multiValue () {
+      //   var tempArr = []
+      //   this.multiAreaId.forEach((item, index) => {
+      //     tempArr.push(item[0])
+      //   })
+      //   return tempArr
+      // }
     }
     methods = {
+      nameTap (e) {
+        this.userName = e.detail.value
+        return this.userName
+      },
+      phoneTap (e) {
+        this.userPhone = e.detail.value
+        return this.userPhone
+      },
+      postTap (e) {
+        this.postcode = e.detail.value
+        return this.postcode
+      },
+      userAddTap (e) {
+        this.userAdd = e.detail.value
+      },
       topArea (e) {
-        console.log(e.detail.value)
         this.multiIndex = e.detail.value
-        var temp = []
-        temp = this.multiValue.map((item, index) => {
-          return this.multiAreaId[index][this.multiIndex[index]]
-        })
-        this.multiValue = temp
-        console.log(this.multiValue)
+        // var temp = []
+        // temp = this.multiValue.map((item, index) => {
+        //   return this.multiAreaId[index][this.multiIndex[index]]
+        // })
+        // this.multiValue = temp
+        // console.log(this.multiValue)
       },
       childArea (e) {
-        this.num ++
-        console.log('Send Request:' + this.num)
         this.multiIndex[e.detail.column] = e.detail.value
         switch (e.detail.column) {
           case 0:
             // 选择省
-            // temp[0] 作为top areaId 发送请求获取市
-            this.getCity()
+            this.getCity(this.multiAreaId[0][e.detail.value], () => {
+              this.getArea(this.multiAreaId[1][0])
+            })
             break
           case 1:
             // 选择市
-            // temp[1] 作为areaId 发送请求获取区
-            this.getArea()
+            console.log(this.multiAreaId[1][e.detail.value])
+            this.getArea(this.multiAreaId[1][e.detail.value])
+            break
+          case 2:
+            this.multiIndex[2] = e.detail.value
+            this.multiValue = this.multiAreaId[2][e.detail.value]
             break
         }
       },
       cancel () {
-        // this.initDefault()
+        this.initTopArea()
+      },
+      confirm () {
+        console.log(this.multiValue)
+        this.token = this.$parent.getToken()
+        if (this.userName && this.userPhone && this.userAdd) {
+          if (this.myreg.test(this.userPhone)) {
+            var data = {
+              token: this.token,
+              name: this.userName,
+              phone: this.userPhone,
+              areaId: this.multiValue,
+              detail: this.userAdd,
+              postCode: this.postcode
+            }
+            this.$parent.HttpRequest.AddAddress(data).then((res) => {
+              console.log(res)
+              if (res.data.error === 0) {
+                wepy.redirectTo({
+                  url: './address'
+                })
+              } else {
+                if (this.$parent.missToken) {
+                  this.token = this.$parent.getToken(res.data.error)
+                }
+              }
+            })
+          } else {
+            wepy.showToast({
+              title: '请输入正确的手机号',
+              icon: 'none'
+            })
+          }
+        } else {
+          wepy.showToast({
+            title: '请填写完整收货信息',
+            icon: 'none'
+          })
+        }
       }
     }
     initTopArea () {
-      this.token = this.$parent.getToken()
-      var _this = this
-      var data = {}
-      this.$parent.HttpRequest.GetTopArea(data).then((res) => {
-        if (res.data.error === 0) {
-        } else {
-          if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
-            _this.initTopArea()
-          }
-        }
+      this.multiArray[0] = []
+      this.multiAreaId[0] = []
+      this.getAreaData(0, (res) => {
+        var data = res.data.data
+        data.forEach((item) => {
+          this.multiArray[0].push(item.area_name)
+          this.multiAreaId[0].push(item.area_id)
+          this.multiIndex = [0, 0, 0]
+        })
+        this.getCity(this.multiAreaId[0][0], () => {
+          this.getArea(this.multiAreaId[1][0])
+        })
       })
     }
-    initDefault () {
-      this.multiArray = [
-        ['北京市', '上海市', '广东省', '江西省'],
-        ['市辖区', '县'],
-        ['东城区', '西城区', '崇文区']
-      ]
-      this.multiIndex = [0, 0, 0]
-      this.multiAreaId = [
-        ['100001', '100002', '100003', '100004'],
-        ['200001', '200002'],
-        ['300001', '300002', '300003']
-      ]
+    getAreaData (id, cb) {
+      var data = {
+        parentId: id
+      }
+      this.$parent.HttpRequest.GetTopArea(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          cb && cb(res)
+        }
+        this.$apply()
+      })
     }
-    getCity () {
-      this.multiArray[1] = ['广州', '深圳', '珠海', '汕头']
-      this.multiAreaId[1] = ['200001B', '200002B', '200003B', '200004B']
-      this.multiIndex[1] = 0
-      this.getArea()
+    getChildData (id, cb) {
+      var data = {
+        areaId: id
+      }
+      this.$parent.HttpRequest.GetDetailArea(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          cb && cb(res)
+        }
+        this.$apply()
+      })
     }
-    getArea () {
-      this.multiIndex[2] = 0
-      this.multiArray[2] = ['静安区', '黄浦区', '徐汇区', '青浦区', '卢湾区', '浦东新区', '徐汇区']
-      this.multiAreaId[2] = ['300001B', '300002B', '300003B', '300004B', '300005B', '300006B', '300007B']
+    getCity (id, cb) {
+      this.multiArray[1] = []
+      this.multiAreaId[1] = []
+      this.getAreaData(id, (res) => {
+        var data = res.data.data
+        data.forEach((item) => {
+          this.multiArray[1].push(item.area_name)
+          this.multiAreaId[1].push(item.area_id)
+        })
+        this.multiIndex[1] = 0
+        cb && cb()
+      })
+    }
+    getArea (id) {
+      this.multiArray[2] = []
+      this.multiAreaId[2] = []
+      this.getAreaData(id, (res) => {
+        var data = res.data.data
+        data.forEach((item) => {
+          this.multiArray[2].push(item.area_name)
+          this.multiAreaId[2].push(item.area_id)
+        })
+        this.multiIndex[2] = 0
+        this.multiValue = this.multiAreaId[2][0]
+      })
     }
     onLoad () {
-      // this.initTopArea()
+      this.initTopArea()
       this.$apply()
     }
   }

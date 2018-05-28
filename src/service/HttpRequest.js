@@ -26,7 +26,8 @@ class HttpRequest extends wepy.app{
 			deleteAddress: 'r=address/api-del-address',
 			getCart: 'r=shopping-cart/api-get-shopping-cart',
 			deleteCart: 'r=shopping-cart/api-del',
-			topArea: 'r=area/api-get-top-areas',
+			topArea: 'r=area/api-get-child-areas',
+			detailArea: 'r=area/api-get-area&areaId',
 			applyOrder: 'r=buying/api-apply-create-order-by-shopping-cart',
 			createOrder: 'r=buying/api-create-order-by-shopping-cart',
 			applyOrderBuy: 'r=buying/api-apply-create-order-by-fast-buying',
@@ -44,12 +45,31 @@ class HttpRequest extends wepy.app{
 			getService: 'r=virtual-item/api-get-virtual-item',
 			payService: 'r=buying/api-apply-pay',
 			getSignCode: 'r=member/api-apply-sign-in-by-phone',
-			loginByPhone: 'r=member/api-sign-up-or-sign-in'
+			loginByPhone: 'r=member/api-sign-up-or-sign-in',
+			addAddress: 'r=address/api-add-address'
 		}
 		this.$$pathHtml = {
 			rules: 'distribution_rules.html',
 			service: 'vip_service_agreement.html'
 		}
+	}
+	getPaySign (param) {
+		console.log(param)
+		for (var key in param) {
+			param[key] = param[key].toString()
+		}
+		var newKey = Object.keys(param).sort()
+		var newParam = {}
+		newKey.forEach((item) => {
+			newParam[item] = param[item]
+		})
+		var str = ''
+		for (var key in newParam) {
+			str +=  key + '=' + newParam[key] + '&'
+		}
+		str += 'key=dzpkU5ItaFi4I5Goraehd8amhs5pZh1w'
+		var sign = Md5.hexMD5(str).toUpperCase()
+		return sign
 	}
 	getData (res, param) {
 		var time = res.data.toString()
@@ -567,6 +587,28 @@ class HttpRequest extends wepy.app{
         	})
 		})
 	}
+	AddAddress (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.addAddress,
+					method: 'POST',
+	                header: {'content-type': 'application/x-www-form-urlencoded'},
+	                data: data,
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
 	EditAddress (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
@@ -574,9 +616,9 @@ class HttpRequest extends wepy.app{
 				var data = _this.getData(res, param)
 				wepy.request({
 					url: this.$$base + this.$$path.editAddress,
-					data: data,
-					method: 'GET',
-	                header: {'content-type': 'application/json'},
+					method: 'POST',
+	                header: {'content-type': 'application/x-www-form-urlencoded'},
+	                data: data,
 					success: (data) => {
 					  resolve(data)
 					},
@@ -721,19 +763,48 @@ class HttpRequest extends wepy.app{
         	})
 		})
 	}
-	GetTopArea () {
+	GetTopArea (param, cb) {
+		var _this = this
 		return new Promise((resolve, reject) => {
-			wepy.request({
-				url: 'https://app1.zhengshan.store/smartArea/backend/web/index.php',
-				method: 'GET',
-                header: {'content-type': 'application/json'},
-				success: (data) => {
-				  resolve(data)
-				},
-				fail: (error) => {
-				  reject(error)
-				}
-			})
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.topArea,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
+	GetDetailArea (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.detailArea,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
 		})
 	}
 	GetNotice (param, cb) {

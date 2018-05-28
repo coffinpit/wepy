@@ -49,3 +49,15 @@
   width: 100%;
   line-height: 100rpx;
 }
+.placeholder {
+  color: #999;
+}
+.icon-shoucang {
+  color: #fc5e44;
+  font-size: 28rpx;
+  display: inline-block;
+  margin-right: 10rpx;
+}
+.icon-shoucang.disable {
+  opacity: 0;
+}
