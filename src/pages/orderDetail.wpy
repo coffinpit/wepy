@@ -1,164 +1,16 @@
-<style lang="less">
-  .container {
-    min-height:calc(100vh);
-    display:block;
-  }
-  .orderStatus{
-    padding:10rpx 20rpx 10rpx 0;
-    border-bottom: 1px #eee solid;
-    background: #fff;
-    .icon-bgicon{
-      font-size:120rpx;
-      position: relative;
-      display: inline-block;
-      margin-right:24rpx;
-      vertical-align: middle;
-      .icon-more{
-        position: absolute;
-        top:70rpx;
-        right: -4rpx;
-        width:40rpx;
-        height: 40rpx;
-        border-radius: 50%;
-        background: #fc5e43;
-        color:#fff;
-        font-size:24rpx;
-        text-align: center;
-        line-height: 40rpx;
-        vertical-align: middle;
-      }
-    }
-    .icon-ksj_dz{
-      font-size:80rpx;
-      margin-right:44rpx;
-      vertical-align: middle;
-    }
-    .font-normal{
-      line-height:28rpx;
-      width:280rpx;
-      display: inline-block;
-    }
-    .gray{
-      color:#999;
-    }
-    .block{
-      display: block;
-      margin-left:124rpx;
-    }
-    .txt-status{
-      width:300rpx;
-      text-align: right;
-      &.remain{
-        vertical-align: middle;
-        .font-normal{
-          line-height: 44rpx;
-          display: block;
-        }
-      }
-    }
-    &.address{
-      padding:20rpx 20rpx 30rpx;
-      .font-normal{
-        line-height:80rpx;
-      }
-      .block{
-        line-height: 44rpx;
-      }
-      .gray{
-        display: inline-block;
-        margin-left:20rpx;
-      }
-      .blank-button{
-        float: right;
-        margin-top:16rpx;
-      }
-    }
-  }
-  .cart-list{
-    width:100%;
-    margin-top:20rpx;
-    box-sizing:border-box;
-    .content{
-      margin-bottom:0;
-      height:100rpx;
-      padding:20rpx;
-      .title{
-        padding:10rpx 0; 
-      }
-      .close{
-        color:#999;
-      }
-    }
-    .iconfont{
-      font-size:80rpx;
-      vertical-align:middle;
-      margin-right:20rpx;
-    }
-  }
-  .item-box{  
-  width:100%;
-  background-color: #fff;
-  }  
-  .items{  
-    width: 100%;
-    padding-bottom: 20rpx;
-  }
-  .orderInfo{
-    padding:20rpx;
-    background: #fff;
-    border-top:1px #eee solid;
-    .label{
-      color:#999;
-    }
-    .right{
-      float:right;
-      margin-top:4rpx;
-    }
-  }
-  .spacing{
-    margin-top:20rpx;
-    border-top:none;
-    border-bottom: 1px #eee solid;
-  }
-  .orderTotal{
-    padding:20rpx;
-    background: #fff;
-    text-align: right;
-  }
-  .edit-button{
-    margin-top:20rpx;
-    width:100%;
-    overflow:hidden;
-    margin-bottom:10rpx;
-    button{
-      margin:0;
-      float:right;
-      margin-left:20rpx;
-    }
-    .blank-button{
-      border:1px #999 solid;
-      color:#999;
-    }
-    .default-button{
-      padding:0 20rpx;
-    }
-    .blank-button-hover{
-      background: transparent;
-      border:1px #fc5e44 solid;
-    }
-  }
-</style>
+<style lang="less" src="../less/orderDetail.less"></style>
+
 <template>
   <view class="container">
     <view wx:if="{{!isNull}}">
       <view class="orderStatus">
         <text class="iconfont icon-bgicon"><text class="iconfont icon-more" wx:if="{{status !== 3}}"></text></text>
         <text class="font-normal {{status === 3 ? 'gray' : ''}} {{status === 1 || status === 2 ? 'link' : ''}}">{{status === 1 && !remainTime ? initTxt : statusTxt}}</text>
-        <text class="font-normal txt-status remain" wx:if="{{status === 1 && remainTime}}">
+        <text class="font-normal txt-status remain" wx:if="{{status === 1 && remainTime && !isStop}}">
           <text class="font-normal">仅剩余：{{remainTime}}</text>
           <text class="font-normal">需付款：￥{{finalPrice}}</text>
         </text>
-        <text class="font-normal txt-status" wx:elif="{{ remainTime === 0 && status === 1}}">支付超时</text>
+        <text class="font-normal txt-status" wx:elif="{{ remainTime === 0 && status === 1 && isStop}}">支付超时</text>
         <text class="font-normal txt-status" wx:elif="{{status === 2 && address != false}}">
           已送达
         </text>
@@ -239,7 +91,8 @@
       freight: '',
       remainTime: '',
       isHidden: false,
-      initTxt: '待支付'
+      initTxt: '待支付',
+      isStop: false
     }
     computed = {
       isNull () {
@@ -287,7 +140,47 @@
         }
         this.$parent.HttpRequest.PayService(data).then((res) => {
           console.log(res)
-          // 调微信支付弹窗
+          if (res.data.error === 0) {
+            var data = res.data.data
+            var timeStamp = data.timestamp.toString()
+            var nonceStr = data.noncestr
+            var prepayid = 'prepay_id=' + data.prepayid
+            var signData = {
+              'appId': 'wx4fadd384b39658cd',
+              'timeStamp': timeStamp,
+              'nonceStr': nonceStr,
+              'package': prepayid,
+              'signType': 'MD5'
+            }
+            var sign = this.$parent.HttpRequest.getPaySign(signData)
+            wepy.requestPayment({
+              'timeStamp': timeStamp,
+              'nonceStr': nonceStr,
+              'package': prepayid,
+              'signType': 'MD5',
+              'paySign': sign,
+              'success': (res) => {
+                if (res.errMsg === 'requestPayment:ok') {
+                  // 用户支付成功跳转首页
+                  wepy.switchTab({
+                    url: './index'
+                  })
+                } else if (res.errMsg === 'requestPayment:cancel') {
+                  // 用户取消支付跳转订单列表
+                  this.$parent.payFail()
+                }
+              },
+              'fail': (res) => {
+                this.$parent.payFail()
+              },
+              'complete': (res) => {
+              }
+            })
+          } else {
+            this.$parent.payFail()
+          }
+        }).catch(() => {
+          this.$parent.payFail()
         })
       }
     }
@@ -377,12 +270,14 @@
       this.$parent.HttpRequest.CancelOrder(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
+          _this.isStop = true
           cb && cb()
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
+            _this.token = _this.$parent.getToken(res.data.error)
           }
         }
+        _this.$apply()
       })
     }
     initLogistica (com, num) {

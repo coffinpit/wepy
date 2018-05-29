@@ -1,0 +1,54 @@
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
+.container {
+  min-height: calc(100vh);
+  display: block;
+}
+.notice-type {
+  width: 100%;
+  white-space: nowrap;
+  line-height: 90rpx;
+  font-size: 28rpx;
+  color: #333333;
+  height: 90rpx;
+  border-bottom: 1px #eeeeee solid;
+  background: #ffffff;
+  margin-bottom: 20rpx;
+}
+.notice-type view {
+  width: 30%;
+  margin: 0 10%;
+  box-sizing: border-box;
+  text-align: center;
+  display: inline-block;
+}
+.notice-type view.active {
+  border-bottom: 2px #fc5e43 solid;
+  color: #fc5e43;
+}
+.notice {
+  padding: 20rpx;
+  background: #ffffff;
+  overflow: hidden;
+}
+.notice .icon-me_xx {
+  float: left;
+  width: 60rpx;
+  height: 60rpx;
+  font-size: 40rpx;
+  line-height: 60rpx;
+  border-radius: 50%;
+  background: #fc5e43;
+  margin-right: 20rpx;
+  text-align: center;
+  color: #ffffff;
+}
+.notice .font-normal {
+  float: left;
+  width: 630rpx;
+}
+.notice .tips {
+  display: block;
+}

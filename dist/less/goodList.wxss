@@ -1,0 +1,49 @@
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
+.goods-promot {
+  position: relative;
+  margin-top: 8rpx;
+  height: 44rpx;
+}
+.goods-promot .goods-promot-image {
+  width: 40rpx;
+  height: 40rpx;
+  border: 1px #fc5e43 solid;
+  border-radius: 50%;
+  background: #ffffff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+.goods-promot .goods-promot-image image {
+  width: 32rpx;
+  height: 28rpx;
+  position: absolute;
+  left: 6rpx;
+  top: 6rpx;
+}
+.goods-promot .goods-info {
+  background: #fc5e43;
+  color: #ffffff;
+  font-size: 24rpx;
+  line-height: 36rpx;
+  height: 36rpx;
+  padding-left: 30rpx;
+  position: absolute;
+  top: 4rpx;
+  left: 20rpx;
+  z-index: 1;
+  min-width: 100rpx;
+}
+.goods-promot .goods-end {
+  position: absolute;
+  right: -30rpx;
+  top: 0;
+}
+.goods-promot .goods-end image {
+  width: 30rpx;
+  height: 36rpx;
+}

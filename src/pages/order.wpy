@@ -1,163 +1,39 @@
-<style lang="less">
-  .container {
-    min-height:calc(100vh);
-    display:block;
-  }
-  .order-status{
-    width:100%;
-    white-space:nowrap;
-    line-height:90rpx;
-    font-size:28rpx;
-    color:#333;
-    height:90rpx;
-    border-bottom:1px #eee solid;
-    background:#fff;
-    view{
-      width:12%;
-      margin:0 4%;
-      box-sizing:border-box;
-      text-align:center;
-      float:left;
-      &.active{
-        border-bottom: 2px #fe5946 solid;
-        color: #fe5946;
-      }
-    }
-  }
-  .cart-list{
-    width:100%;
-    box-sizing:border-box;
-    margin-top:20rpx;
-    .order-title{
-      border-bottom:1px #eee solid;
-      close{
-        color:#999;
-      }
-    }
-    .content{
-      margin-bottom:0;
-      padding:20rpx;
-      .order-num{
-        color:#999;
-      }
-      .order-status-txt{
-        float:right;
-        margin-top:2rpx;
-        &.close{
-          color:#999;
-        }
-      }
-    }
-    .iconfont{
-      font-size:80rpx;
-      vertical-align:middle;
-      margin-right:20rpx;
-    }
-  }
-  .item-box{  
-    width:100%;
-    background-color: #fff;
-  }  
-  .items{  
-    width: 100%; 
-    padding:20rpx 0; 
-  }  
-  .more{
-    margin: 0 20rpx;
-    padding:20rpx;
-    background: #f8f8f8;
-    .icon-rightsj{
-      font-size:40rpx;
-      float:right;
-      margin-top:6rpx;
-      margin-right:0;
-    }
-  }
-  .inner-image{
-    height:150rpx;
-    float:right;
-    image{
-      width:148rpx;
-      height:148rpx;
-      border:1px #eee solid;
-      box-sizing:border-box;
-      float:left;
-      border-right:none;
-    }
-  }
-  .order-edit{
-    border-top:1px #eee solid;
-    padding:20rpx 0;
-    overflow:hidden;
-    .icon-me_dd{
-      font-size:110rpx;
-      margin-left:-14rpx;
-      color:#eee;
-      float:left;
-    }
-    .font-normal, .edit-button{
-      float:right;
-      margin-right:20rpx;
-    }
-    .edit-button{
-      margin-top:20rpx;
-      width:80%;
-      button{
-        margin:0;
-        float:right;
-        margin-left:20rpx;
-      }
-      .blank-button{
-        border:1px #999 solid;
-        color:#999;
-      }
-      .default-button{
-        padding:0 20rpx;
-      }
-      .blank-button-hover{
-        background: transparent;
-        border:1px #fc5e44 solid;
-      }
-    }
-  }
-  .hidden{
-    display: none;
-  }
-</style>
+<style lang="less" src="../less/order.less"></style>
 <template>
   <view class="container">
-      <view class="order-status">
-        <repeat for="{{package}}" item="item" index="index"><view class="{{current === index ? 'active' : ''}}" @tap="checkPackage({{index}}, {{item.type}})">{{item.title}}</view></repeat>
-      </view>
-      <view wx:if="{{!isNull}}">
-        <repeat for="{{orderList}}" item="item" index="index">
-          <view class="cart-list" wx:if="{{!item.isNull}}">
-            <view class="content order-title">
-              <text class="font-normal order-num">订单编号：<text selectable="true">{{item.title}}</text></text>
-              <text class="font-normal order-status-txt {{item.status === 1 || item.status === 2? 'link' : ''}} {{item.status === 3? 'close' : ''}}">{{item.statusTxt}}</text>
-            </view>
-            <view class="item-box">
-              <view class="items">
-                <orderList :orderList.sync="item.orderDetail" :userLevel.sync="userLevel"></orderList>
-                <view class="more" @tap="goDetail({{item.id}})">
-                  <text class="font-normal">查看全部详情 ({{item.count}}) <text class="iconfont icon-rightsj"></text></text>
-                </view>
+    <menuList></menuList>
+    <view class="order-status">
+      <repeat for="{{package}}" item="item" index="index"><view class="{{current === index ? 'active' : ''}}" @tap="checkPackage({{index}}, {{item.type}})">{{item.title}}</view></repeat>
+    </view>
+    <view wx:if="{{!isNull}}">
+      <repeat for="{{orderList}}" item="item" index="index">
+        <view class="cart-list" wx:if="{{!item.isNull}}">
+          <view class="content order-title">
+            <text class="font-normal order-num">订单编号：<text selectable="true">{{item.title}}</text></text>
+            <text class="font-normal order-status-txt {{item.status === 1 || item.status === 2? 'link' : ''}} {{item.status === 3? 'close' : ''}}">{{item.statusTxt}}</text>
+          </view>
+          <view class="item-box">
+            <view class="items">
+              <orderList :orderList.sync="item.orderDetail" :userLevel.sync="userLevel"></orderList>
+              <view class="more" @tap="goDetail({{item.id}})">
+                <text class="font-normal">查看全部详情 ({{item.count}}) <text class="iconfont icon-rightsj"></text></text>
               </view>
-              <view class="order-edit">
-                <text class="iconfont icon-me_dd {{item.status === 3 ? 'hidden' : ''}}"></text>
-                <text class="font-normal">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
-                <view class="edit-button {{item.status === 3 ? 'hidden' : ''}}">
-                  <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="goAddress({{item.id}})">修改地址</button>
-                  <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="cancel({{item.id}})">取消订单</button>
-                  <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
-                  <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" @tap="goPay({{item.id}})">付款</button>
-                </view>
+            </view>
+            <view class="order-edit">
+              <text class="iconfont icon-me_dd {{item.status === 3 ? 'hidden' : ''}}"></text>
+              <text class="font-normal">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+              <view class="edit-button {{item.status === 3 ? 'hidden' : ''}}">
+                <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1}}" @tap="goAddress({{item.id}})">修改地址</button>
+                <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="cancel({{item.id}})">取消订单</button>
+                <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
+                <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" @tap="goPay({{item.id}})">付款</button>
               </view>
             </view>
           </view>
-        </repeat>
-      </view>
-      <defect wx:elif="{{isNull && !isLoading}}" type="3"></defect>
+        </view>
+      </repeat>
+    </view>
+    <defect wx:elif="{{isNull && !isLoading}}" type="3"></defect>
   </view>
 </template>
 
@@ -165,6 +41,7 @@
   import wepy from 'wepy'
   import OrderList from '../components/orderlist'
   import Defect from '../components/defect'
+  import Menu from '../components/menu'
 
   export default class Order extends wepy.page {
     config = {
@@ -172,7 +49,8 @@
     }
     components = {
       orderList: OrderList,
-      defect: Defect
+      defect: Defect,
+      menuList: Menu
     }
     computed = {
       isNull () {
@@ -251,11 +129,51 @@
         var data = {
           token: this.token,
           orderId: id,
-          appType: 'ios'
+          appType: 'miniApp'
         }
         this.$parent.HttpRequest.PayService(data).then((res) => {
           console.log(res)
-          // 调微信支付弹窗
+          if (res.data.error === 0) {
+            var data = res.data.data
+            var timeStamp = data.timestamp.toString()
+            var nonceStr = data.noncestr
+            var prepayid = 'prepay_id=' + data.prepayid
+            var signData = {
+              'appId': 'wx4fadd384b39658cd',
+              'timeStamp': timeStamp,
+              'nonceStr': nonceStr,
+              'package': prepayid,
+              'signType': 'MD5'
+            }
+            var sign = this.$parent.HttpRequest.getPaySign(signData)
+            wepy.requestPayment({
+              'timeStamp': timeStamp,
+              'nonceStr': nonceStr,
+              'package': prepayid,
+              'signType': 'MD5',
+              'paySign': sign,
+              'success': (res) => {
+                if (res.errMsg === 'requestPayment:ok') {
+                  // 用户支付成功跳转首页
+                  wepy.switchTab({
+                    url: './index'
+                  })
+                } else if (res.errMsg === 'requestPayment:cancel') {
+                  // 用户取消支付跳转订单列表
+                  this.$parent.payFail()
+                }
+              },
+              'fail': (res) => {
+                this.$parent.payFail()
+              },
+              'complete': (res) => {
+              }
+            })
+          } else {
+            this.$parent.payFail()
+          }
+        }).catch(() => {
+          this.$parent.payFail()
         })
       }
     }

@@ -1,0 +1,167 @@
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
+.container {
+  min-height: calc(100vh);
+  display: block;
+  background: linear-gradient(#fc5e43 280rpx, #f8f8f8 380rpx);
+  padding-bottom: 120rpx;
+}
+.address {
+  color: #ffffff;
+  padding: 20rpx;
+}
+.address .address-title {
+  font-size: 24rpx;
+  display: block;
+  margin-bottom: 10rpx;
+}
+.address scroll-view {
+  width: 90%;
+  white-space: nowrap;
+  font-size: 40rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  display: inline-block;
+  vertical-align: middle;
+}
+.address .iconfont {
+  color: #ffffff;
+  font-size: 32rpx;
+  width: 10%;
+  text-align: right;
+  vertical-align: middle;
+  display: inline-block;
+}
+.address .user {
+  font-size: 28rpx;
+}
+.cart-list {
+  width: 100%;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+}
+.cart-list .content {
+  margin-bottom: 0;
+  height: 100rpx;
+  padding: 20rpx;
+}
+.cart-list .content .title {
+  padding: 10rpx 0;
+}
+.cart-list .iconfont {
+  font-size: 80rpx;
+  vertical-align: middle;
+  margin-right: 20rpx;
+}
+.item-box {
+  width: 100%;
+  background-color: #ffffff;
+}
+.items {
+  width: 100%;
+  padding-bottom: 20rpx;
+}
+.vip-tip {
+  margin: 20rpx 20rpx 0;
+  background: #ffffff;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+.vip-tip .iconfont {
+  font-size: 60rpx;
+  vertical-align: middle;
+  margin-right: 10rpx;
+}
+.vip-tip .title {
+  font-size: 28rpx;
+}
+.vip-tip.no-active .iconfont {
+  color: #999999;
+}
+.order-list {
+  margin: 0 20rpx;
+  border-top: 1px #eeeeee solid;
+  padding: 20rpx;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+.order-list .order-list-right {
+  float: right;
+  margin-top: 10rpx;
+}
+.cart-status {
+  background: #ffffff;
+  padding: 30rpx 20rpx;
+  display: flex;
+  margin: 20rpx;
+  justify-content: space-between;
+}
+.cart-status .title {
+  color: #333333;
+  vertical-align: middle;
+  line-height: 48rpx;
+}
+.cart-status .default-button {
+  padding: 0 20rpx;
+}
+.order-bottom {
+  margin-top: 20rpx;
+  background: #ffffff;
+  padding-left: 40rpx;
+  height: 120rpx;
+  line-height: 120rpx;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99999;
+  box-sizing: border-box;
+}
+.order-bottom image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 8rpx;
+  width: 79%;
+}
+.order-bottom .go-pay {
+  float: right;
+  width: 23%;
+  background: #fc5e43;
+  color: #ffffff;
+  height: 120rpx;
+  line-height: 120rpx;
+  font-size: 32rpx;
+  text-align: center;
+}
+.memo {
+  margin: 20rpx 20rpx 0;
+  background: #ffffff;
+  padding: 20rpx;
+  overflow: hidden;
+}
+.memo .memo-left {
+  float: left;
+  width: 150rpx;
+}
+.memo .memo-left text {
+  display: block;
+  line-height: 32rpx;
+  margin-top: 4rpx;
+}
+.memo .memo-right {
+  float: right;
+  width: 480rpx;
+  font-size: 28rpx;
+}
+.memo .memo-right textarea {
+  width: 480rpx;
+  height: 150rpx;
+  float: left;
+}
+.memo .placeholder {
+  color: #999999;
+  font-size: 28rpx;
+}

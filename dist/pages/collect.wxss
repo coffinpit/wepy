@@ -1,6 +1,10 @@
 @import "./../components/defect.wxss";
 @import "./../components/reachdown.wxss";
 @import "./../components/goods.wxss";
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
 .container {
   min-height: calc(100vh);
   display: block;
@@ -12,7 +16,7 @@
 }
 .collect .collect-list {
   width: 100%;
-  background: #fff;
+  background: #ffffff;
   position: absolute;
   right: 0;
   top: 0;
@@ -37,7 +41,7 @@
   transition: 0.3s right ease-in;
 }
 .collect .collect-check .font-normal {
-  color: #fff;
+  color: #ffffff;
 }
 .collect .collect-check.show {
   right: 0;

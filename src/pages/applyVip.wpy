@@ -1,175 +1,6 @@
-<style lang="less">
-  .main {
-    overflow: hidden;
-    padding-bottom: 100rpx;
-  }
-  image{
-    width:100%;
-    float:left;
-  }
-  .default-button{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    line-height:100rpx;
-  }
-  .popup{
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.6);
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:99;
-    &.active{
-      bottom:0;
-    }
-  }
-  .popup-content{
-    width:600rpx;
-    position:fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    z-index:-1;
-    background: #fff;
-    transition:.5s all ease-in;
-    z-index: -1;
-    &.show{
-      opacity: 1;
-      z-index: 999;
-    }
-    .popup-title{
-      padding:20rpx;
-      border-bottom: 1px #eee solid;
-    }
-    .popup-detail{
-      padding:20rpx 20rpx 0;
-      .popup-type{
-        border:1px #eee solid;
-        padding:20rpx;
-        .font-normal{
-          width:50%;
-          display: inline-block;
-        }
-        .link{
-          text-align: right;
-        }
-        &.light{
-          border:1px #fca743 solid;
-          box-shadow: 0 0 10rpx #ffc98a;
-        }
-      }
-      .checkbox{
-        text-align: center;
-        margin:10rpx 0 30rpx;
-        .rules{
-          display: inline-block;
-          margin-left:10rpx;
-        }
-        .link{
-          text-decoration: underline;
-        }
-      }
-    }
-    .button-layer{
-      padding:20rpx 0 26rpx;
-      border-top:1px #eee solid;
-      .cancel{
-        color:#999;
-        border-right: 1px #eee solid;
-      }
-      .font-normal{
-        display: inline-block;
-        box-sizing: border-box;
-        width:50%;
-        text-align: center;
-      }
-    }
-  }
-  .vip-bg{
-    background: #202020;
-    position: relative;
-    overflow: hidden;
-    image {
-      position: absolute;
-      left:20rpx;
-      top:20rpx;
-      width:710rpx;
-      height:364rpx;
-    }
-    .vip-title{
-      position: absolute;
-      left:50%;
-      transform:translateX(-50%);
-      top:100rpx;
-      .icon-vip{
-        color:#fdd798;
-        font-size:120rpx;
-      }
-    }
-    .vip-detail{
-      position: absolute;
-      bottom:140rpx;
-      left:20rpx;
-      width:710rpx;
-      .title{
-        display: inline-block;
-        width:50%;
-        color:#a1a1a1;
-        padding:0 20rpx;
-        box-sizing: border-box;
-        &:last-child{
-          text-align: right;
-        }
-      }
-    }
-    .vip-button-layer{
-      position: absolute;
-      top:364rpx;
-      left:20rpx;
-      width:710rpx;
-      background: #3c3c3c;
-      overflow: hidden;
-      height:70rpx;
-      padding:20rpx 0;
-      .vip-button-container{
-        width:50%;
-        padding:0 10rpx 0 20rpx;
-        box-sizing: border-box;
-        display: inline-block;
-        &:last-child{
-          padding:0 20rpx 0 10rpx;
-        }
-        button{
-          width:100%;
-          text-align: center;
-          line-height: 70rpx;
-          border-radius: 0;
-          color:#fff;
-          padding:0;
-          font-size: 28rpx;
-        }
-      }
-    }
-  }
-  .vip-pay{
-    background: #fd6d55;
-  }
-  .vip-pay-hover{
-    background: #fe5946;
-  }
-  .vip-refund{
-    background: #303030;
-  }
-  .vip-refund-hover{
-    background: #222222;
-  }
-</style>
+<style lang="less" src="../less/applyVip.less"></style>
 <template>
-  <view class="main" style="height: {{isShow ? winHeight : 'auto'}}">
+  <view class="main" style="height: {{isShow ? winHeight : 'auto'}}" class="{{userLevel === 1 ? 'vipMain' : ''}}">
     <view class="vip-bg" style="height: {{isLoading ? '' : '494rpx'}}" wx:if="{{userLevel === 1}}">
       <image src="../image/vip_bg.png" mode="aspectFit" @load="imageLoad"></image>
       <text class="vip-title">
@@ -184,7 +15,7 @@
           <button class="vip-pay" hover-class="vip-pay-hover" @tap="buyVip">续购服务</button>
         </view>
         <view class="vip-button-container">
-          <button class="vip-refund" hover-class="vip-refund-hover">退卡</button>
+          <button class="vip-refund" hover-class="vip-refund-hover" open-type="contact" session-from="vip">退卡</button>
         </view>
       </view>
     </view>
@@ -233,8 +64,8 @@
       checked: false,
       resultList: null,
       isLoading: true,
-      vipEnd: '1526611071',
-      vipreduction: '123.00',
+      vipEnd: '',
+      vipreduction: '',
       userLevel: 0
     }
     methods = {
@@ -272,7 +103,7 @@
         if (this.checked) {
           var data = {
             token: this.token,
-            appType: 'ios',
+            appType: 'miniApp',
             sourceType: this.resultList.type,
             sourceId: this.resultList.id,
             buyCount: 1,
@@ -286,42 +117,37 @@
               var timeStamp = data.timestamp.toString()
               var nonceStr = data.noncestr
               var prepayid = 'prepay_id=' + data.prepayid
-              var paySign = data.sign
-              console.log(prepayid)
+              var signData = {
+                'appId': 'wx4fadd384b39658cd',
+                'timeStamp': timeStamp,
+                'nonceStr': nonceStr,
+                'package': prepayid,
+                'signType': 'MD5'
+              }
+              var sign = this.$parent.HttpRequest.getPaySign(signData)
               wepy.requestPayment({
                 'timeStamp': timeStamp,
                 'nonceStr': nonceStr,
                 'package': prepayid,
                 'signType': 'MD5',
-                'paySign': paySign,
+                'paySign': sign,
                 'success': (res) => {
                   console.log('success')
                   if (res.errMsg === 'requestPayment:ok') {
                     // 用户支付成功跳转首页
+                    this.$parent.getUserLevel(this.token)
                     wepy.switchTab({
                       url: './index'
                     })
                   } else if (res.errMsg === 'requestPayment:cancel') {
                     // 用户取消支付跳转订单列表
-                    wepy.showModal({
-                      title: '提示',
-                      content: '支付失败',
-                      showCancel: false,
-                      success: (res) => {
-                        if (res.confirm) {
-                          wepy.redirectTo({
-                            url: './order'
-                          })
-                        }
-                      }
-                    })
+                    this.$parent.payFail()
                   }
                 },
                 'fail': (res) => {
-                  console.log('fail')
+                  this.$parent.payFail()
                 },
                 'complete': (res) => {
-                  console.log('complete')
                 }
               })
             } else {
@@ -375,8 +201,9 @@
     }
     onLoad () {
       this.userLevel = this.$parent.globalData.userLevel
-      console.log(this.userLevel)
-      this.vipEnd = this.$parent.dateFormat(this.vipEnd * 1000, 'Y-m-d')
+      console.log(this.$parent.globalData.vipEnd)
+      this.vipEnd = this.$parent.dateFormat(this.$parent.globalData.vipEnd * 1000, 'Y-m-d')
+      this.vipreduction = this.$parent.globalData.reduction
       var _this = this
       wepy.getSystemInfo({
         success: function (res) {

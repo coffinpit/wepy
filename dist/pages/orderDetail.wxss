@@ -1,12 +1,16 @@
 @import "./../components/orderlist.wxss";
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
 .container {
   min-height: calc(100vh);
   display: block;
 }
 .orderStatus {
   padding: 10rpx 20rpx 10rpx 0;
-  border-bottom: 1px #eee solid;
-  background: #fff;
+  border-bottom: 1px #eeeeee solid;
+  background: #ffffff;
 }
 .orderStatus .icon-bgicon {
   font-size: 120rpx;
@@ -23,7 +27,7 @@
   height: 40rpx;
   border-radius: 50%;
   background: #fc5e43;
-  color: #fff;
+  color: #ffffff;
   font-size: 24rpx;
   text-align: center;
   line-height: 40rpx;
@@ -40,7 +44,7 @@
   display: inline-block;
 }
 .orderStatus .gray {
-  color: #999;
+  color: #999999;
 }
 .orderStatus .block {
   display: block;
@@ -88,7 +92,7 @@
   padding: 10rpx 0;
 }
 .cart-list .content .close {
-  color: #999;
+  color: #999999;
 }
 .cart-list .iconfont {
   font-size: 80rpx;
@@ -97,7 +101,7 @@
 }
 .item-box {
   width: 100%;
-  background-color: #fff;
+  background-color: #ffffff;
 }
 .items {
   width: 100%;
@@ -105,11 +109,11 @@
 }
 .orderInfo {
   padding: 20rpx;
-  background: #fff;
-  border-top: 1px #eee solid;
+  background: #ffffff;
+  border-top: 1px #eeeeee solid;
 }
 .orderInfo .label {
-  color: #999;
+  color: #999999;
 }
 .orderInfo .right {
   float: right;
@@ -118,11 +122,11 @@
 .spacing {
   margin-top: 20rpx;
   border-top: none;
-  border-bottom: 1px #eee solid;
+  border-bottom: 1px #eeeeee solid;
 }
 .orderTotal {
   padding: 20rpx;
-  background: #fff;
+  background: #ffffff;
   text-align: right;
 }
 .edit-button {
@@ -137,13 +141,13 @@
   margin-left: 20rpx;
 }
 .edit-button .blank-button {
-  border: 1px #999 solid;
-  color: #999;
+  border: 1px #999999 solid;
+  color: #999999;
 }
 .edit-button .default-button {
   padding: 0 20rpx;
 }
 .edit-button .blank-button-hover {
   background: transparent;
-  border: 1px #fc5e44 solid;
+  border: 1px #fc5e43 solid;
 }

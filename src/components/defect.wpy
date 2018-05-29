@@ -1,46 +1,5 @@
-<style type="less">
-  .lost-goods{
-    padding:50rpx 0;
-    margin:0 auto;
-    width:330rpx;
-    height:200rpx;
-    position:relative;
-    text-align:center;
-    image{
-      width:330rpx;
-      height:170rpx;
-    }
-    .blank-button{
-      width:40%;
-      position:absolute;
-      bottom: 0;
-      left:50%;
-      transform:translate(-50%, 0);
-      line-height:50rpx;
-      text-align:center;
-    }
-    text.iconfont{
-      position:absolute;
-      top:80rpx;
-      left:50%;
-      transform:translate(-50%, 0);
-      background:rgba(204,204,204,0.8);
-      border-radius:50%;
-      width:140rpx;
-      height: 140rpx;
-      text-align:center;
-      font-size:120rpx;
-      color:#fff;
-      line-height:140rpx;
-      &.icon-ksj_sc, &.icon-me_xx, &.icon-dz_sc{
-        font-size: 100rpx;
-      }
-    }
-    text.font-normal{
-      color:#999;
-    }
-  }
-</style>
+<style type="less" src="../less/defect.less"></style>
+
 <template>
   <view>
     <view class="lost-goods">

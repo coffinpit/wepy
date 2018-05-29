@@ -1,0 +1,61 @@
+@import "variables.less";
+
+.container{
+  min-height:calc(100vh);
+  display:block;
+  padding-top:20rpx;
+}
+.address-container{
+  margin-bottom:20rpx;
+}
+.address-layer{
+  font-size:@baseSize;
+  color:@dark;
+  width:100%;
+  padding:30rpx 20rpx;
+  box-sizing:border-box;
+  background:@white;
+  .border-btm-gray(@lightgray);
+  display:flex;
+  .title{
+    width:200rpx;
+    line-height:@largeLine;
+  }
+  input, textarea, .picker{
+    width:510rpx;
+  }
+  .picker{
+    display:flex;
+    picker{
+      width:480rpx;
+      height:52rpx;
+      line-height:52rpx;
+    }
+    .iconfont{
+      font-size:@baseSize;
+      color:@darkgray;
+      vertical-align:middle;
+      line-height: 54rpx;
+    }
+  }
+}
+
+.default-button{
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  line-height:100rpx;
+}
+.placeholder{
+  color:@darkgray;
+}
+.icon-shoucang{
+  color:@orange;
+  font-size:@baseSize;
+  display: inline-block;
+  margin-right: 10rpx;
+  &.disable{
+    opacity: 0;
+  }
+}

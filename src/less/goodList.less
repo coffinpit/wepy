@@ -1,0 +1,47 @@
+@import "variables.less";
+
+.goods-promot{
+  position:relative;
+  margin-top:8rpx;
+  height:44rpx;
+  .goods-promot-image{
+    width:40rpx;
+    height:40rpx;
+    border:1px @orange solid;
+    border-radius:50%;
+    background:@white;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:99;
+    image{
+      width:32rpx;
+      height:28rpx;
+      position:absolute;
+      left:6rpx;
+      top:6rpx;
+    }
+  }
+  .goods-info{
+    background:@orange;
+    color:@white;
+    font-size:@smallSize;
+    line-height:@smallLine;
+    height:@smallLine;
+    padding-left:30rpx;
+    position:absolute;
+    top:4rpx;
+    left:20rpx;
+    z-index:1;
+    min-width:100rpx;
+  }
+  .goods-end{
+    position:absolute;
+    right:-30rpx;
+    top:0;
+    image{
+      width:30rpx;
+      height:36rpx;
+    }
+  }
+}

@@ -1,0 +1,150 @@
+@import "variables.less";
+
+.container {
+  min-height:calc(100vh);
+  display:block;
+}
+.orderStatus{
+  padding:10rpx 20rpx 10rpx 0;
+  .border-btm-gray(@lightgray);
+  background: @white;
+  .icon-bgicon{
+    font-size:120rpx;
+    position: relative;
+    display: inline-block;
+    margin-right:24rpx;
+    vertical-align: middle;
+    .icon-more{
+      position: absolute;
+      top:70rpx;
+      right: -4rpx;
+      width:40rpx;
+      height: 40rpx;
+      border-radius: 50%;
+      background: @orange;
+      color:@white;
+      font-size:@smallSize;
+      text-align: center;
+      line-height: 40rpx;
+      vertical-align: middle;
+    }
+  }
+  .icon-ksj_dz{
+    font-size:80rpx;
+    margin-right:44rpx;
+    vertical-align: middle;
+  }
+  .font-normal{
+    line-height:28rpx;
+    width:280rpx;
+    display: inline-block;
+  }
+  .gray{
+    color:@darkgray;
+  }
+  .block{
+    display: block;
+    margin-left:124rpx;
+  }
+  .txt-status{
+    width:300rpx;
+    text-align: right;
+    &.remain{
+      vertical-align: middle;
+      .font-normal{
+        line-height: @baseLine;
+        display: block;
+      }
+    }
+  }
+  &.address{
+    padding:20rpx 20rpx 30rpx;
+    .font-normal{
+      line-height:80rpx;
+    }
+    .block{
+      line-height: @baseLine;
+    }
+    .gray{
+      display: inline-block;
+      margin-left:20rpx;
+    }
+    .blank-button{
+      float: right;
+      margin-top:16rpx;
+    }
+  }
+}
+.cart-list{
+  width:100%;
+  margin-top:20rpx;
+  box-sizing:border-box;
+  .content{
+    margin-bottom:0;
+    height:100rpx;
+    padding:20rpx;
+    .title{
+      padding:10rpx 0; 
+    }
+    .close{
+      color:@darkgray;
+    }
+  }
+  .iconfont{
+    font-size:80rpx;
+    vertical-align:middle;
+    margin-right:20rpx;
+  }
+}
+.item-box{  
+  width:100%;
+  background-color: @white;
+}  
+.items{  
+  width: 100%;
+  padding-bottom: 20rpx;
+}
+.orderInfo{
+  padding:20rpx;
+  background: @white;
+  .border-tp-gray(@lightgray);
+  .label{
+    color:@darkgray;
+  }
+  .right{
+    float:right;
+    margin-top:4rpx;
+  }
+}
+.spacing{
+  margin-top:20rpx;
+  border-top:none;
+  .border-btm-gray(@lightgray);
+}
+.orderTotal{
+  padding:20rpx;
+  background: @white;
+  text-align: right;
+}
+.edit-button{
+  margin-top:20rpx;
+  width:100%;
+  overflow:hidden;
+  margin-bottom:10rpx;
+  button{
+    margin:0;
+    float:right;
+    margin-left:20rpx;
+  }
+  .blank-button{
+    .border-ard-gray(@darkgray);
+    color:@darkgray;
+  }
+  .default-button{
+    padding:0 20rpx;
+  }
+  .blank-button-hover{
+    background: transparent;
+    .border-ard-gray(@orange);
+  }
+}

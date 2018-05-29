@@ -1,0 +1,64 @@
+@import "variables.less";
+
+.container{
+    min-height:calc(100vh);
+    display:block;
+    padding-top:20rpx;
+    padding-bottom: 80rpx;
+  }
+  .address-container{
+    margin-bottom:20rpx;
+  }
+  .address-layer{
+    font-size:@baseSize;
+    color:@dark;
+    width:100%;
+    padding:30rpx 20rpx;
+    box-sizing:border-box;
+    background:@white;
+    .border-btm-gray;
+    .phonenumer{
+      float:right;
+      color:@darkgray;
+    }
+    .address-detail{
+      display:block;
+      margin-top:10rpx;
+    }
+  }
+  .address-edit{
+    background:@white;
+    .icon-me_dz{
+      font-size:100rpx;
+      color:@lightgray;
+      margin-left:-20rpx;
+    }
+    .edit-layer, .delete-layer{
+      float: right;
+      padding: 0 40rpx;
+      font-size:@baseSize;
+      color:@dark;
+      margin-top:30rpx;
+      .iconfont{
+        font-size:@titleSize;
+        margin-right:20rpx;
+        color:@dark;
+        vertical-align:center;
+      }
+    }
+    .edit-layer{
+      .border-rg-gray;
+    }
+    .actived{
+      text{
+        color:@orange;
+      }
+    }
+  }
+  .default-button{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    line-height:100rpx;
+  }

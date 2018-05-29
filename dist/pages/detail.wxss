@@ -1,6 +1,10 @@
 @import "./../components/menu.wxss";
 @import "./../components/counter.wxss";
 @import "./../components/bottombar.wxss";
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
 .container {
   overflow: hidden;
   padding-bottom: 116rpx;
@@ -13,7 +17,7 @@
 .detail-info .detail-img {
   width: 525rpx;
   height: 525rpx;
-  background: #fff;
+  background: #ffffff;
   padding: 20px 0;
   box-sizing: border-box;
   position: absolute;
@@ -38,7 +42,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #eee;
+  background: #eeeeee;
   position: absolute;
   left: 0;
   top: 0;
@@ -47,14 +51,14 @@
 .detail-info .detail-dots .detail-solid {
   width: 1px;
   height: 15px;
-  background: #fc5e44;
+  background: #fc5e43;
   position: absolute;
   left: 3px;
   top: 4px;
   z-index: 9999;
 }
 .detail-info .detail-dots .detail-dots-orange {
-  background: #fff;
+  background: #ffffff;
   top: 16px;
 }
 .detail-info .detail-txt {
@@ -63,7 +67,7 @@
   top: 25px;
   width: 225rpx;
   height: 525rpx;
-  background: #fff;
+  background: #ffffff;
   box-shadow: 2px 2px 2px #eee;
   z-index: 998;
   font-size: 32rpx;
@@ -78,7 +82,7 @@
   background-size: cover;
   width: 100%;
   height: 140rpx;
-  color: #fff;
+  color: #ffffff;
   position: relative;
 }
 .detail-info .detail-txt .detail-txt-layer .detail-txt-content {
@@ -92,23 +96,23 @@
 .detail-info .detail-txt .detail-txt-price {
   padding: 16rpx 30rpx 20rpx;
   text-align: center;
-  color: #333;
-  border-bottom: 1px #eee solid;
+  color: #333333;
+  border-bottom: 1px #eeeeee solid;
   font-size: 28rpx;
 }
 .detail-info .detail-txt .detail-txt-price:last-child {
   border-bottom: none;
 }
 .detail-info .detail-txt .detail-txt-price .detail-link {
-  border-bottom: 1px #fc5e44 solid;
-  color: #fc5e44;
+  border-bottom: 1px #fc5e43 solid;
+  color: #fc5e43;
   display: inline-block;
 }
 .detail-info .detail-txt .detail-txt-price.express {
   text-align: left;
 }
 .detail-info .detail-txt .detail-txt-price.express .tips {
-  color: #999;
+  color: #999999;
   font-size: 28rpx;
 }
 .detail-info .detail-txt .detail-txt-price .default-button {
@@ -121,7 +125,7 @@
   margin-bottom: 0;
 }
 .detail-title {
-  border-bottom: 1px #eee solid;
+  border-bottom: 1px #eeeeee solid;
   padding: 10rpx 0 20rpx;
   margin-bottom: 20rpx;
 }
@@ -141,7 +145,7 @@
   height: 69rpx;
 }
 .detail-collect .detail-collect-icon .collect-txt {
-  color: #666;
+  color: #666666;
   font-size: 28rpx;
 }
 .detail-collect .detail-collect-icon.collected .iconfont,
@@ -157,7 +161,7 @@
 }
 .detail-collect .detail-collect-user .detail-collect-detail .iconfont {
   font-size: 28rpx;
-  color: #999;
+  color: #999999;
   float: right;
   margin-top: 18rpx;
 }
@@ -171,7 +175,7 @@
 .detail-collect .detail-collect-user .detail-collect-list view {
   width: 74rpx;
   height: 74rpx;
-  background: #eee;
+  background: #eeeeee;
   margin-right: 5px;
   display: inline-block;
   overflow: hidden;
@@ -185,7 +189,7 @@
 }
 .detail-collect .un-collect {
   padding: 10rpx 20rpx;
-  color: #fff;
+  color: #ffffff;
   background: #ffa336;
   font-size: 24rpx;
 }
@@ -211,7 +215,7 @@
   display: flex;
   padding: 4rpx 0 4rpx 28rpx;
   font-size: 24rpx;
-  color: #333;
+  color: #333333;
   line-height: 36rpx;
 }
 .detail-container .detail-goods .detail-goods-title {
@@ -247,18 +251,23 @@
   text-align: right;
 }
 .popup_layer {
-  border-top: 1px #eee solid;
+  border-top: 1px #eeeeee solid;
   padding: 20rpx;
   display: flex;
 }
 .popup_layer .popup_image {
-  border: 1px #eee solid;
+  border: 1px #eeeeee solid;
   width: 200rpx;
   overflow: hidden;
+  position: relative;
 }
 .popup_layer .popup_image image {
   width: 100%;
-  height: 100%;
+  height: auto;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .popup_layer .popup_goods {
   padding-left: 44rpx;
@@ -300,12 +309,12 @@
   text-align: right;
 }
 .popup_layer .none {
-  color: #999;
+  color: #999999;
 }
 .popup_layer radio {
   float: right;
   margin-left: 20rpx;
 }
 .disable {
-  background: #999;
+  background: #999999;
 }

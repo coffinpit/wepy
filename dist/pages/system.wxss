@@ -1,4 +1,8 @@
 @import "./../components/defect.wxss";
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
 .container {
   min-height: calc(100vh);
   display: block;
@@ -8,10 +12,10 @@
   white-space: nowrap;
   line-height: 90rpx;
   font-size: 28rpx;
-  color: #333;
+  color: #333333;
   height: 90rpx;
-  border-bottom: 1px #eee solid;
-  background: #fff;
+  border-bottom: 1px #eeeeee solid;
+  background: #ffffff;
   margin-bottom: 20rpx;
 }
 .notice-type view {
@@ -22,12 +26,12 @@
   display: inline-block;
 }
 .notice-type view.active {
-  border-bottom: 2px #fe5946 solid;
-  color: #fe5946;
+  border-bottom: 2px #fc5e43 solid;
+  color: #fc5e43;
 }
 .notice {
   padding: 20rpx;
-  background: #fff;
+  background: #ffffff;
   overflow: hidden;
 }
 .notice .icon-me_xx {
@@ -40,7 +44,7 @@
   background: #fc5e43;
   margin-right: 20rpx;
   text-align: center;
-  color: #fff;
+  color: #ffffff;
 }
 .notice .font-normal {
   float: left;

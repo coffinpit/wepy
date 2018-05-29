@@ -1,0 +1,51 @@
+@import "variables.less";
+
+.counter {
+    display:flex;
+    position:relative;
+    .counter-btn{
+      .border-ard-gray(@lightgray);
+      width: 70rpx;
+      height: 70rpx;
+      font-size: @titleSize;
+      display:inline-block;
+      line-height:70rpx;
+      text-align:center;
+      background:@white;
+      float:left;
+    }
+    .temp-input{
+      color:@orange;
+      position:absolute;
+      left:98rpx;
+      top:2rpx;
+      border-left:0;
+      border-right:0;
+      z-index:99;
+      background:@white;
+      border:none;
+      width:20rpx
+    }
+    .number {
+      color:@orange;
+      width:67rpx;
+      height:70rpx;
+      vertical-align:middle;
+      &.disabled{
+        background:@whitegray;
+        color:@darkgray;
+      }
+    }
+    .minusBtn{
+      background:@whitegray;
+      color:@darkgray;
+      &.able{
+        background:@white;
+        color:@dark;
+      }
+    }
+    .disable {
+      background:@whitegray;
+      color:@darkgray;
+    }
+  }

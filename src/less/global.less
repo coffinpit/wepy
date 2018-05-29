@@ -1,0 +1,101 @@
+@import "variables.less";
+
+page{
+  background:@whitegray;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+.content{
+  padding:20rpx;
+  background: @white;
+  margin-bottom:10px;
+  width:100%;
+  box-sizing:border-box;
+  &:last-child{
+    margin-bottom:0;
+  }
+}
+.default-button{
+  background: @orange;
+  color: @white;
+  font-size:@baseSize;
+  line-height:@largeLine;
+  border-radius:0;
+  margin:0;
+}
+.default-button-hover{
+  background:@orangeHover;
+  color:@orangeHoverFont;
+}
+.blank-button{
+  border:1px @orange solid;
+  color:@orange;
+  font-size:@baseSize;
+  line-height:@baseLine;
+  border-radius:0;
+  margin:0;
+  background:transparent;
+  padding:0 20rpx;
+}
+.blank-button-hover{
+  background:@orange;
+  color:@white;
+}
+.white-button{
+  border:1px @orange solid;
+  background:@white;
+  color:@orange;
+  font-size:@baseSize;
+  line-height:@largeLine;
+  border-radius:0;
+  margin:0;
+  padding:0 20rpx;
+}
+.size-full{
+  width: 100%;
+  line-height:116rpx;
+  font-size: 32rpx;
+}
+
+/* 预设字体定义 color/font-size/line-height */
+.title{
+  .baseFont(@dark, @largeSize, @baseLine)
+}
+.font-normal{
+  .baseFont(@dark, @baseSize, @baseLine)
+}
+.font-small{
+  .baseFont(@dark, @smallSize, @smallLine)
+}
+.section{
+  .baseFont(@dark, @baseSize, @baseLine)
+}
+.link{
+  color:@orange !important;
+}
+.font-bold{
+  font-weight:700;
+}
+.tips{
+  font-size:@smallSize;
+  color:@darkgray;
+}
+.through{
+  text-decoration: line-through;
+}
+button::after{
+  border: none;
+}
+
+/*
+::-webkit-scrollbar{
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+*/

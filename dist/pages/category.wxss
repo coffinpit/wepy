@@ -2,6 +2,10 @@
 @import "./../components/searchbar.wxss";
 @import "./../components/defect.wxss";
 @import "./../components/goods.wxss";
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
 page {
   margin-top: 80rpx;
 }
@@ -46,7 +50,7 @@ page {
   padding: 0 2%;
   text-align: center;
   font-size: 32rpx;
-  color: #fff;
+  color: #ffffff;
   background: rgba(0, 0, 0, 0.5);
 }
 .category-tab .category-tab-list.active {
@@ -58,7 +62,7 @@ page {
 }
 .category-tab-item {
   width: 100%;
-  background: #fff;
+  background: #ffffff;
   position: absolute;
   top: 358rpx;
   left: 0;

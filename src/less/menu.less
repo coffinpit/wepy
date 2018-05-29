@@ -1,0 +1,40 @@
+@import "variables.less";
+
+.menu-layer{
+    position: fixed;
+    right:20rpx;
+    bottom:200rpx;
+    background:rgba(215,215,215,0.7);
+    width:80rpx;
+    height:80rpx;
+    border-radius:40rpx;
+    text-align:center;
+    line-height:70rpx;
+    transition:.5s height ease-in;
+    overflow:hidden;
+    z-index:9999999;
+    view{
+      width:80rpx;
+      height:80rpx;
+    }
+    image{
+      width:60rpx;
+      height:60rpx;
+      vertical-align:middle;
+    }
+    &.active{
+      height:340rpx;
+      .iconfont{
+        transform:rotateZ(90deg);
+      }
+    }
+    .iconfont{
+      color:@lightdark;
+      font-size:50rpx;
+      transform: rotateZ(-90deg);
+      display:inline-block;
+      vertical-align:middle;
+      margin-top:6rpx;
+    }
+  }
+  

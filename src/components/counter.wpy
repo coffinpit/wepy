@@ -1,55 +1,5 @@
-<style lang="less">
-  .counter {
-    display:flex;
-    position:relative;
-    .counter-btn{
-      border:1px #eee solid;
-      width: 70rpx;
-      height: 70rpx;
-      font-size: 36rpx;
-      display:inline-block;
-      line-height:70rpx;
-      text-align:center;
-      background:#fff;
-      float:left;
-    }
-    .temp-input{
-      color:#fc5e43;
-      position:absolute;
-      left:98rpx;
-      top:2rpx;
-      border-left:0;
-      border-right:0;
-      z-index:99;
-      background:#fff;
-      border:none;
-      width:20rpx
-    }
-    .number {
-      color:#fc5e43;
-      width:67rpx;
-      height:70rpx;
-      vertical-align:middle;
-      &.disabled{
-        background:#f8f8f8;
-        color:#999;
-      }
-    }
-    .minusBtn{
-      background:#f8f8f8;
-      color:#999;
-      &.able{
-        background:#fff;
-        color:#333
-      }
-    }
-    .disable {
-      background:#f8f8f8;
-      color:#999;
-    }
-  }
-  
-</style>
+<style lang="less" src="../less/counter.less"></style>
+
 <template>
   <view class="counter">
     <view @tap.stop="plusTap" class="counter-btn {{isDisabled || disable ? 'disable' : ''}}" data-id="{{sourceId}}">  +  </view>

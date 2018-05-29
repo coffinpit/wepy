@@ -1,0 +1,75 @@
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
+page {
+  background: #ffffff;
+}
+.login-container {
+  height: 100%;
+  background: #ffffff;
+}
+.app-info {
+  position: relative;
+  text-align: center;
+  padding-bottom: 40rpx;
+}
+.app-info .app-logo {
+  display: block;
+  width: 100%;
+  margin-bottom: 40rpx;
+}
+.app-info .app-name {
+  font-size: 36rpx;
+  color: #333333;
+}
+.alert {
+  padding: 40rpx;
+  text-align: center;
+  border-top: 1px #eeeeee solid;
+}
+.alert .alert-title {
+  font-weight: 400;
+  font-size: 32rpx;
+  color: #333333;
+  margin-bottm: 10rpx;
+}
+.alert-desc {
+  display: block;
+  list-style: disc inside none;
+  margin-top: 20rpx;
+}
+.alert .alert-text {
+  display: list-item;
+  text-align: -webkit-match-parent;
+  font-size: 28rpx;
+  color: #999999;
+}
+.login-btn {
+  background: #fe5946;
+  border-radius: 0;
+  color: #ffffff;
+  line-height: 90rpx;
+  text-align: center;
+  margin-top: 40rpx;
+  font-size: 32rpx;
+}
+.login-btn-active {
+  background: #e8412d;
+  color: #f6eceb;
+}
+.logged {
+  margin-top: 200rpx;
+}
+.logged .logged-icon {
+  display: block;
+  width: 128rpx;
+  height: 128rpx;
+  margin: 40rpx auto;
+}
+.logged .logged-text {
+  font-size: 28rpx;
+  color: #333333;
+  text-align: center;
+  margin: 20rpx 0;
+}

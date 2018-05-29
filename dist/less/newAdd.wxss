@@ -1,0 +1,67 @@
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
+.container {
+  min-height: calc(100vh);
+  display: block;
+  padding-top: 20rpx;
+}
+.address-container {
+  margin-bottom: 20rpx;
+}
+.address-layer {
+  font-size: 28rpx;
+  color: #333;
+  width: 100%;
+  padding: 30rpx 20rpx;
+  box-sizing: border-box;
+  background: #fff;
+  border-bottom: 1px #eee solid;
+  display: flex;
+}
+.address-layer .title {
+  width: 200rpx;
+  line-height: 48rpx;
+}
+.address-layer input,
+.address-layer textarea,
+.address-layer .picker {
+  width: 510rpx;
+}
+.address-layer .picker {
+  display: flex;
+}
+.address-layer .picker.last-child {
+  margin-right: 0;
+}
+.address-layer .picker picker {
+  width: 480rpx;
+  height: 52rpx;
+  line-height: 52rpx;
+}
+.address-layer .picker .iconfont {
+  font-size: 28rpx;
+  color: #999;
+  vertical-align: middle;
+  line-height: 54rpx;
+}
+.default-button {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  line-height: 100rpx;
+}
+.placeholder {
+  color: #999;
+}
+.icon-shoucang {
+  color: #fc5e44;
+  font-size: 28rpx;
+  display: inline-block;
+  margin-right: 10rpx;
+}
+.icon-shoucang.disable {
+  opacity: 0;
+}

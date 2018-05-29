@@ -19,10 +19,14 @@
       <image class="index-promot-img" src="../image/syvip_bg.png" mode="aspectFill"/>
       <view class="index-promot-content">
         <view class="index-promot-title">
-          优价会员
+          超级会员
         </view>
-        <view class="index-promot-txt">预计全年可帮您节省￥5690.0</view>
-        <view class="index-promot-txt">会员全场包邮(冷运品类需满两公斤包邮)</view>
+        <view wx:if="{{userLevel === 0}}">
+          <view class="index-promot-txt">预计全年可帮您节省￥5690.0</view>
+        </view>
+        <view wx:elif="{{userLevel === 1}}">
+          <view class="index-promot-txt">您的会员身份可持续至{{vipEnd}}</view>
+        </view>
       </view>
     </view>
     <wxc-flex cross="{{cross}}" class="top_nav-container">

@@ -1,228 +1,5 @@
-<style lang="less">
-  .container{
-    min-height:calc(100vh);
-    display:block;
-    background: linear-gradient(#fc5e43 280rpx, #f8f8f8 380rpx); 
-    padding-bottom:120rpx; 
-  }
-  .address {
-    color:#fff;
-    padding:20rpx;
-    .address-title{
-      font-size:24rpx;
-      display:block;
-      margin-bottom:10rpx;
-    }
-    scroll-view{
-      width:90%;
-      white-space:nowrap;
-      font-size:40rpx;
-      height:56rpx;
-      line-height:56rpx;
-      display:inline-block;
-      vertical-align:middle;
-    }
-    .iconfont{
-      color:#fff;
-      font-size:32rpx;
-      width:10%;
-      text-align:right;
-      vertical-align:middle;
-      display:inline-block;
-    }
-    .user{
-      font-size:28rpx;
-    }
-  }
-  .cart-list{
-    width:100%;
-    padding:0 20rpx;
-    box-sizing:border-box;
-    .content{
-      margin-bottom:0;
-      height:100rpx;
-      padding:20rpx;
-      .title{
-        padding:10rpx 0; 
-      }
-    }
-    .iconfont{
-      font-size:80rpx;
-      vertical-align:middle;
-      margin-right:20rpx;
-    }
-  }
-  .item-box{  
-    width:100%;
-    background-color: #fff;
-  }  
-  .items{  
-    width: 100%;  
-    padding-bottom: 20rpx;
-  }  
-  .item-list{  
-    height: 200rpx;  
-    overflow: hidden;
-    padding:0 20rpx 20rpx;
-    box-sizing:border-box;
-  }
-  .inner.txt{
-    background-color: #f8f8f8;
-    padding:20rpx;
-    box-sizing:border-box; 
-    overflow:hidden;  
-  }  
-  .inner-left{
-    width:360rpx;
-    overflow:hidden;
-    white-space:break-all;
-    .place{
-      min-height: 108rpx;
-    }
-  }
-  .inner-layer{
-    width:460rpx;
-    overflow:hidden;
-    float:left;
-    .title{
-      min-height:76rpx;
-      height:76rpx;
-      line-height:38rpx;
-      overflow:hidden;
-      display:block;
-      font-size:28rpx;
-      margin-bottom:6rpx;
-    }
-    .tips, .title{
-      display:block;
-    }
-    .tips{
-      float:right;
-    }
-    .font-small{
-      float:left;
-      display:block;
-      width:260rpx;
-    }
-  }
-  .inner-image{
-    height:150rpx;
-    float:right;
-    image{
-      width:148rpx;
-      height:148rpx;
-      border:1px #eee solid;
-      box-sizing:border-box;
-      float:left;
-      border-right:none;
-    }
-  }
-  .vip-tip{
-    margin:20rpx 20rpx 0;
-    background:#fff;
-    padding:20rpx;
-    box-sizing:border-box;
-    .iconfont{
-      font-size:60rpx;
-      vertical-align:middle;
-      margin-right:10rpx;
-    }
-    .title{
-      font-size:28rpx;
-    }
-    &.no-active{
-      .iconfont {
-        color:#999;
-      }
-    }
-  }
-  .order-list{
-    margin:0 20rpx;
-    border-top:1px #eee solid;
-    padding:20rpx;
-    box-sizing:border-box;
-    background:#fff;
-    .order-list-right{
-      float:right;
-      margin-top:10rpx;
-    }
-  }
-  .cart-status{
-    background:#fff;
-    padding:30rpx 20rpx;
-    display: flex;
-    margin:20rpx;
-    justify-content:space-between;
-    .title{
-      color:#fff;
-      vertical-align:middle;
-      line-height:48rpx;
-    }
-    .default-button{
-      padding:0 20rpx;
-    }
-  }
-  .order-bottom{
-    margin-top:20rpx;
-    background:#fff;
-    padding-left:40rpx;
-    height:120rpx;
-    line-height:120rpx;
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    z-index:99999;
-    box-sizing:border-box;
-    image{
-      position:absolute;
-      top:0;
-      left:0;
-      height:8rpx;
-      width:79%;
-    }
-    .go-pay{
-      float:right;
-      width:23%;
-      background:#fc5e43;
-      color:#fff;
-      height:120rpx;
-      line-height:120rpx;
-      font-size:32rpx;
-      text-align:center;
-    }
-  }
-  .memo{
-    margin:20rpx 20rpx 0;
-    background:#fff;
-    padding:20rpx;
-    overflow:hidden;
-    .memo-left{
-      float:left;
-      width:150rpx;
-      text{
-        display:block;
-        line-height:32rpx;
-        margin-top:4rpx;
-      }
-    }
-    .memo-right{
-      float:right;
-      width:480rpx;
-      font-size:28rpx;
-      margin-top:-8rpx;
-      textarea{
-        width:480rpx;
-        height:150rpx;
-        float:left;
-      }
-    }
-    .placeholder{
-      color:#999;
-      font-size:28rpx;
-    }
-  }
-</style>
+<style lang="less" src="../less/paybuy.less"></style>
+
 <template>
   <view class="container" wx:if="{{!isNull}}">
     <view class="address" @tap="goAddress">
@@ -232,10 +9,10 @@
       <text class="user">{{user.name}} {{user.phone}}</text>
     </view>
     <view class="cart-status" wx:if="{{userLevel}}">
-      <text class="font-normal">尊敬的<text class="link">优价会员</text>，本单已为您节省 <text class="font-normal link font-bold">￥{{reduction}}</text></text>
+      <text class="font-normal">尊敬的<text class="link">超级会员</text>，本单已为您节省 <text class="font-normal link font-bold">￥{{reduction}}</text></text>
     </view>
     <view class="cart-status" wx:else>
-      <text class="font-normal">成为优价会员，本单仅需 <text class="font-normal link font-bold">￥{{memberPrice}}</text></text>
+      <text class="font-normal">成为超级会员，本单仅需 <text class="font-normal link font-bold">￥{{memberPrice}}</text></text>
       <view class="default-button">加入会员</view>
     </view>
     <repeat for="{{order}}" item="item" index="index">
@@ -261,7 +38,7 @@
     </view>
     <view class="vip-tip" wx:if="{{userLevel}}">
       <text class="iconfont icon-vip link"></text>
-      <text class="title">尊敬的<text class="link">优价会员</text>，生鲜购满2公斤才可包邮哦</text>
+      <text class="title">尊敬的<text class="link">超级会员</text>，生鲜购满2公斤才可包邮哦</text>
     </view>
     <view class="vip-tip no-active" wx:else>
       <text class="iconfont icon-vip"></text>
@@ -329,7 +106,7 @@
     }
     methods = {
       goAddress () {
-        wepy.navigateTo({
+        wepy.redirectTo({
           url: './address?page=paycart'
         })
       },
@@ -344,15 +121,50 @@
         } else {
           var data = {
             token: this.token,
-            appType: 'ios',
+            appType: 'miniApp',
             hash: this.orderHash,
             address_main: this.user.id,
             memo_main: encodeURI(this.memo),
             date_main: 4
           }
-          console.log(data)
           this.$parent.HttpRequest.CreateUserOrder(data).then((res) => {
             if (res.data.error === 0) {
+              var data = res.data.data
+              var timeStamp = data.timestamp.toString()
+              var nonceStr = data.noncestr
+              var prepayid = 'prepay_id=' + data.prepayid
+              var signData = {
+                'appId': 'wx4fadd384b39658cd',
+                'timeStamp': timeStamp,
+                'nonceStr': nonceStr,
+                'package': prepayid,
+                'signType': 'MD5'
+              }
+              var sign = this.$parent.HttpRequest.getPaySign(signData)
+              wepy.requestPayment({
+                'timeStamp': timeStamp,
+                'nonceStr': nonceStr,
+                'package': prepayid,
+                'signType': 'MD5',
+                'paySign': sign,
+                'success': (res) => {
+                  console.log('success')
+                  if (res.errMsg === 'requestPayment:ok') {
+                    // 用户支付成功跳转首页
+                    wepy.switchTab({
+                      url: './index'
+                    })
+                  } else if (res.errMsg === 'requestPayment:cancel') {
+                    // 用户取消支付跳转订单列表
+                    this.$parent.payFail()
+                  }
+                },
+                'fail': (res) => {
+                  this.$parent.payFail()
+                },
+                'complete': (res) => {
+                }
+              })
             } else {
               this.$parent.payFail()
             }

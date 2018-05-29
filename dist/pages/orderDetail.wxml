@@ -4,11 +4,11 @@
       <view class="orderStatus">
         <text class="iconfont icon-bgicon"><text class="iconfont icon-more" wx:if="{{status !== 3}}"/></text>
         <text class="font-normal {{status === 3 ? 'gray' : ''}} {{status === 1 || status === 2 ? 'link' : ''}}">{{status === 1 && !remainTime ? initTxt : statusTxt}}</text>
-        <text class="font-normal txt-status remain" wx:if="{{status === 1 && remainTime}}">
+        <text class="font-normal txt-status remain" wx:if="{{status === 1 && remainTime && !isStop}}">
           <text class="font-normal">仅剩余：{{remainTime}}</text>
           <text class="font-normal">需付款：￥{{finalPrice}}</text>
         </text>
-        <text class="font-normal txt-status" wx:elif="{{ remainTime === 0 && status === 1}}">支付超时</text>
+        <text class="font-normal txt-status" wx:elif="{{ remainTime === 0 && status === 1 && isStop}}">支付超时</text>
         <text class="font-normal txt-status" wx:elif="{{status === 2 && address != false}}">
           已送达
         </text>
@@ -39,7 +39,7 @@
           <text class="title">{{$orderList$item.title}}</text>
           <text class="font-small link">会员价：￥{{$orderList$item.price}} </text>
           <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
-          <text class="tips">{{$orderList$item.detail}}</text>
+          <text class="tips">规格：{{$orderList$item.detail}}</text>
         </view>
         <view class="inner-image">
           <image src="{{$orderList$item.path}}" mode="aspectFill"/>

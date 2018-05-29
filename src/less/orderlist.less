@@ -1,0 +1,59 @@
+@import "variables.less";
+
+.item-list{  
+    height: 200rpx;  
+    overflow: hidden;
+    padding:0 20rpx 20rpx;
+    box-sizing:border-box;
+  }
+  .inner.txt{
+    background-color: @whitegray;
+    padding:20rpx;
+    box-sizing:border-box; 
+    overflow:hidden;  
+  }  
+  .inner-left{
+    width:360rpx;
+    overflow:hidden;
+    white-space:break-all;
+    .place{
+      min-height: 108rpx;
+    }
+  }
+  .inner-layer{
+    width:460rpx;
+    overflow:hidden;
+    float:left;
+    .title{
+      min-height:76rpx;
+      height:76rpx;
+      line-height:38rpx;
+      overflow:hidden;
+      display:block;
+      font-size:@baseSize;
+      margin-bottom:6rpx;
+    }
+    .tips, .title{
+      display:block;
+    }
+    .tips{
+      float:right;
+    }
+    .font-small{
+      float:left;
+      display:block;
+      width:260rpx;
+    }
+  }
+  .inner-image{
+    height:150rpx;
+    float:right;
+    image{
+      width:148rpx;
+      height:148rpx;
+      .border-ard-gray(@lightgray);
+      box-sizing:border-box;
+      float:left;
+      border-right:none;
+    }
+  }

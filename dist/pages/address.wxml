@@ -2,11 +2,12 @@
   <view class="container">
     {{detail}}
     <block wx:for="{{address}}" wx:for-index="index" wx:for-item="item" wx:key="index">
-      <view class="address-container" bindtap="backToOrder" data-wpybacktoorder-a="{{index}}" data-wpybacktoorder-b="{{item.id}}">
-        <view class="address-layer">
+      <view class="address-container">
+        <view class="address-layer" bindtap="backToOrder" data-wpybacktoorder-a="{{index}}" data-wpybacktoorder-b="{{item.id}}">
           <text class="title">{{item.name}}</text>
           <text class="phonenumer">{{item.phone}}</text>
           <text class="address-detail tips">{{item.add}}</text>
+          <text class="address-detail tips"  wx:if="{{item.postCode}}">邮编：{{item.postCode}}</text>
         </view>
         <view class="address-edit">
           <text class="iconfont icon-me_dz"/>

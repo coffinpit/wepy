@@ -1,0 +1,80 @@
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
+.container {
+  min-height: calc(100vh);
+  display: block;
+  padding-bottom: 108rpx;
+}
+.collect {
+  position: relative;
+  margin-top: 20rpx;
+}
+.collect .collect-list {
+  width: 100%;
+  background: #ffffff;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  z-index: 999;
+  transition: 0.3s right ease-in;
+}
+.collect .collect-list.animate {
+  right: 120rpx;
+}
+.collect .collect-check {
+  position: absolute;
+  right: -120rpx;
+  top: 0;
+  width: 120rpx;
+  height: 260rpx;
+  line-height: 260rpx;
+  text-align: center;
+  z-index: 1;
+  background: #fc5e43;
+  transition: 0.3s right ease-in;
+}
+.collect .collect-check .font-normal {
+  color: #ffffff;
+}
+.collect .collect-check.show {
+  right: 0;
+}
+.collect .cover {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 260rpx;
+  background: rgba(204, 204, 204, 0.3);
+  z-index: -1;
+  transition: 0.3s right ease-in;
+}
+.collect .cover.animate {
+  right: 120rpx;
+  z-index: 99999;
+}
+.collect-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  line-height: 88rpx;
+  height: 88rpx;
+  z-index: 99999;
+}
+.collect-bottom .default-button {
+  padding: 0;
+  height: 88rpx;
+  line-height: 88rpx;
+  margin: 0;
+}
+.blank .blank-button {
+  width: 200rpx;
+  margin: 0 auto;
+  line-height: 50rpx;
+  text-align: center;
+}

@@ -1,0 +1,171 @@
+@import "variables.less";
+
+.main {
+  overflow: hidden;
+  padding-bottom: 100rpx;
+  &.vipMain{
+    padding-bottom: 0;
+  }
+}
+image{
+  width:100%;
+  float:left;
+}
+.default-button{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  line-height:100rpx;
+}
+.popup{
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:99;
+  &.active{
+    bottom:0;
+  }
+}
+.popup-content{
+  width:600rpx;
+  position:fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  z-index:-1;
+  background: @white;
+  transition:.5s all ease-in;
+  z-index: -1;
+  &.show{
+    opacity: 1;
+    z-index: 999;
+  }
+  .popup-title{
+    padding:20rpx;
+    .border-btm-gray(@lightgray);
+  }
+  .popup-detail{
+    padding:20rpx 20rpx 0;
+    .popup-type{
+      .border-ard-gray(@lightgray);
+      padding:20rpx;
+      .font-normal{
+        width:50%;
+        display: inline-block;
+      }
+      .link{
+        text-align: right;
+      }
+      &.light{
+        border:1px #fca743 solid;
+        box-shadow: 0 0 10rpx #ffc98a;
+      }
+    }
+    .checkbox{
+      text-align: center;
+      margin:10rpx 0 30rpx;
+      .rules{
+        display: inline-block;
+        margin-left:10rpx;
+      }
+      .link{
+        text-decoration: underline;
+      }
+    }
+  }
+  .button-layer{
+    padding:20rpx 0 26rpx;
+    .border-tp-gray(@lightgray);
+    .cancel{
+      color:@darkgray;
+      .border-rg-gray(@lightgray);
+    }
+    .font-normal{
+      display: inline-block;
+      box-sizing: border-box;
+      width:50%;
+      text-align: center;
+    }
+  }
+}
+.vip-bg{
+  background: #202020;
+  position: relative;
+  overflow: hidden;
+  image {
+    position: absolute;
+    left:20rpx;
+    top:20rpx;
+    width:710rpx;
+    height:364rpx;
+  }
+  .vip-title{
+    position: absolute;
+    left:50%;
+    transform:translateX(-50%);
+    top:100rpx;
+    .icon-vip{
+      color:#fdd798;
+      font-size:120rpx;
+    }
+  }
+  .vip-detail{
+    position: absolute;
+    bottom:160rpx;
+    left:20rpx;
+    width:710rpx;
+    .title{
+      display: block;
+      width:100%;
+      color:#a1a1a1;
+      padding:0 20rpx;
+      box-sizing: border-box;
+      text-align: center;
+    }
+  }
+  .vip-button-layer{
+    position: absolute;
+    top:364rpx;
+    left:20rpx;
+    width:710rpx;
+    background: #3c3c3c;
+    overflow: hidden;
+    height:70rpx;
+    padding:20rpx 0;
+    .vip-button-container{
+      width:50%;
+      padding:0 10rpx 0 20rpx;
+      box-sizing: border-box;
+      display: inline-block;
+      &:last-child{
+        padding:0 20rpx 0 10rpx;
+      }
+      button{
+        width:100%;
+        text-align: center;
+        line-height: 70rpx;
+        border-radius: 0;
+        color:@white;
+        padding:0;
+        font-size: @baseSize;
+      }
+    }
+  }
+}
+.vip-pay{
+  background: #fd6d55;
+}
+.vip-pay-hover{
+  background: #fe5946;
+}
+.vip-refund{
+  background: #303030;
+}
+.vip-refund-hover{
+  background: @dark;
+}

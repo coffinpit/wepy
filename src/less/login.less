@@ -1,0 +1,81 @@
+@import "variables.less";
+
+page{
+  background: @white;
+}
+.login-container {
+  height: 100%;
+  background: @white;
+}
+.app-info {
+  position: relative;
+  text-align: center;
+  padding-bottom:40rpx;
+}
+.app-info .app-logo {
+  display: block;
+  width: 100%;
+  margin-bottom:40rpx;
+}
+
+.app-info .app-name {
+  font-size: @titleSize;
+  color: @dark;
+}
+
+.alert {
+  padding: 40rpx;
+  text-align: center;
+  .border-tp-gray(@lightgray);
+}
+
+.alert .alert-title {
+  font-weight: 400;
+  font-size: @largeSize;
+  color: @dark;
+  margin-bottm:10rpx;
+}
+
+.alert-desc {
+  display: block;
+  list-style: disc inside none;
+  margin-top:20rpx;
+}
+
+.alert .alert-text {
+  display: list-item;
+  text-align: -webkit-match-parent;
+  font-size: @baseSize;
+  color: @darkgray;
+}
+
+.login-btn{
+  background:#fe5946;
+  border-radius: 0;
+  color:@white;
+  line-height: 90rpx;
+  text-align: center;
+  margin-top:40rpx;
+  font-size:@largeSize;
+}
+.login-btn-active{
+  background:#e8412d;
+  color:#f6eceb;
+}
+.logged {
+  margin-top: 200rpx;
+}
+
+.logged .logged-icon {
+  display: block;
+  width: 128rpx;
+  height: 128rpx;
+  margin: 40rpx auto;
+}
+
+.logged .logged-text {
+  font-size: @baseSize;
+  color: @dark;
+  text-align: center;
+  margin: 20rpx 0;
+}

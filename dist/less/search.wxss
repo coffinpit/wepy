@@ -1,0 +1,71 @@
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
+.container {
+  min-height: calc(100vh);
+  display: block;
+}
+.search-layer {
+  width: 100%;
+  height: 100rpx;
+  padding: 20rpx;
+  box-sizing: border-box;
+  border-bottom: 1px #eeeeee solid;
+}
+.search-layer .search-input {
+  border-radius: 30rpx;
+  background: #ffffff;
+  padding: 10rpx 20rpx;
+  font-size: 28rpx;
+  height: 40rpx;
+  border: 1px #cccccc solid;
+  width: 74%;
+  float: left;
+}
+.search-layer .search-input image {
+  vertical-align: middle;
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 20rpx;
+  margin-top: 4rpx;
+  float: left;
+}
+.search-layer .search-input input {
+  width: 420rpx;
+  height: 40rpx;
+  min-height: 40rpx;
+  line-height: 40rpx;
+  float: left;
+  color: #333333;
+}
+.search-layer .search-input .placeholder {
+  color: #999999;
+}
+.search-layer .search-input .clear-btn {
+  width: 30rpx;
+  height: 30rpx;
+  float: right;
+  border-radius: 50%;
+  margin: 5rpx 0;
+  padding: 0;
+}
+.search-layer .search-input .clear-btn .iconfont {
+  color: #cccccc;
+  font-size: 30rpx;
+  line-height: 30rpx;
+  float: left;
+}
+.search-layer .search-button {
+  float: right;
+  padding: 0 5%;
+  text-align: center;
+  font-size: 28rpx;
+  line-height: 60rpx;
+}
+.search-layer .search-button .search-cancel {
+  color: #666666;
+}
+.search-layer .search-button .search-confirm {
+  color: #fc5e43;
+}

@@ -1,0 +1,66 @@
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
+.container {
+  min-height: calc(100vh);
+  display: block;
+  padding-top: 20rpx;
+  padding-bottom: 80rpx;
+}
+.address-container {
+  margin-bottom: 20rpx;
+}
+.address-layer {
+  font-size: 28rpx;
+  color: #333333;
+  width: 100%;
+  padding: 30rpx 20rpx;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-bottom: 1px #cccccc solid;
+}
+.address-layer .phonenumer {
+  float: right;
+  color: #999999;
+}
+.address-layer .address-detail {
+  display: block;
+  margin-top: 10rpx;
+}
+.address-edit {
+  background: #ffffff;
+}
+.address-edit .icon-me_dz {
+  font-size: 100rpx;
+  color: #eeeeee;
+  margin-left: -20rpx;
+}
+.address-edit .edit-layer,
+.address-edit .delete-layer {
+  float: right;
+  padding: 0 40rpx;
+  font-size: 28rpx;
+  color: #333333;
+  margin-top: 30rpx;
+}
+.address-edit .edit-layer .iconfont,
+.address-edit .delete-layer .iconfont {
+  font-size: 36rpx;
+  margin-right: 20rpx;
+  color: #333333;
+  vertical-align: center;
+}
+.address-edit .edit-layer {
+  border-right: 1px #cccccc solid;
+}
+.address-edit .actived text {
+  color: #fc5e43;
+}
+.default-button {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  line-height: 100rpx;
+}

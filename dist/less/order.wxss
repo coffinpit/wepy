@@ -1,0 +1,129 @@
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
+.container {
+  min-height: calc(100vh);
+  display: block;
+}
+.order-status {
+  width: 100%;
+  white-space: nowrap;
+  line-height: 90rpx;
+  font-size: 28rpx;
+  color: #333333;
+  height: 90rpx;
+  border-bottom: 1px #eeeeee solid;
+  background: #ffffff;
+}
+.order-status view {
+  width: 12%;
+  margin: 0 4%;
+  box-sizing: border-box;
+  text-align: center;
+  float: left;
+}
+.order-status view.active {
+  border-bottom: 2px #fc5e43 solid;
+  color: #fc5e43;
+}
+.cart-list {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 20rpx;
+}
+.cart-list .order-title {
+  border-bottom: 1px #eeeeee solid;
+}
+.cart-list .order-title close {
+  color: #999999;
+}
+.cart-list .content {
+  margin-bottom: 0;
+  padding: 20rpx;
+}
+.cart-list .content .order-num {
+  color: #999999;
+}
+.cart-list .content .order-status-txt {
+  float: right;
+  margin-top: 2rpx;
+}
+.cart-list .content .order-status-txt.close {
+  color: #999999;
+}
+.cart-list .iconfont {
+  font-size: 80rpx;
+  vertical-align: middle;
+  margin-right: 20rpx;
+}
+.item-box {
+  width: 100%;
+  background-color: #ffffff;
+}
+.items {
+  width: 100%;
+  padding: 20rpx 0;
+}
+.more {
+  margin: 0 20rpx;
+  padding: 20rpx;
+  background: #f8f8f8;
+}
+.more .icon-rightsj {
+  font-size: 40rpx;
+  float: right;
+  margin-top: 6rpx;
+  margin-right: 0;
+}
+.inner-image {
+  height: 150rpx;
+  float: right;
+}
+.inner-image image {
+  width: 148rpx;
+  height: 148rpx;
+  border: 1px #eee solid;
+  box-sizing: border-box;
+  float: left;
+  border-right: none;
+}
+.order-edit {
+  border: 1px #eeeeee solid;
+  padding: 20rpx 0;
+  overflow: hidden;
+}
+.order-edit .icon-me_dd {
+  font-size: 110rpx;
+  margin-left: -14rpx;
+  color: #eeeeee;
+  float: left;
+}
+.order-edit .font-normal,
+.order-edit .edit-button {
+  float: right;
+  margin-right: 20rpx;
+}
+.order-edit .edit-button {
+  margin-top: 20rpx;
+  width: 80%;
+}
+.order-edit .edit-button button {
+  margin: 0;
+  float: right;
+  margin-left: 20rpx;
+}
+.order-edit .edit-button .blank-button {
+  border: 1px #999999 solid;
+  color: #999999;
+}
+.order-edit .edit-button .default-button {
+  padding: 0 20rpx;
+}
+.order-edit .edit-button .blank-button-hover {
+  background: transparent;
+  border: 1px #fc5e43 solid;
+}
+.hidden {
+  display: none;
+}

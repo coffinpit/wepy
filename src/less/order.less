@@ -1,0 +1,126 @@
+@import "variables.less";
+
+.container {
+  min-height:calc(100vh);
+  display:block;
+}
+.order-status{
+  width:100%;
+  white-space:nowrap;
+  line-height:90rpx;
+  font-size:@baseSize;
+  color:@dark;
+  height:90rpx;
+  .border-btm-gray(@lightgray);
+  background:@white;
+  view{
+    width:12%;
+    margin:0 4%;
+    box-sizing:border-box;
+    text-align:center;
+    float:left;
+    &.active{
+      border-bottom: 2px @orange solid;
+      color: @orange;
+    }
+  }
+}
+.cart-list{
+  width:100%;
+  box-sizing:border-box;
+  margin-top:20rpx;
+  .order-title{
+    .border-btm-gray(@lightgray);
+    close{
+      color:@darkgray;
+    }
+  }
+  .content{
+    margin-bottom:0;
+    padding:20rpx;
+    .order-num{
+      color:@darkgray;
+    }
+    .order-status-txt{
+      float:right;
+      margin-top:2rpx;
+      &.close{
+        color:@darkgray;
+      }
+    }
+  }
+  .iconfont{
+    font-size:80rpx;
+    vertical-align:middle;
+    margin-right:20rpx;
+  }
+}
+.item-box{  
+  width:100%;
+  background-color: @white;
+}  
+.items{  
+  width: 100%; 
+  padding:20rpx 0; 
+}  
+.more{
+  margin: 0 20rpx;
+  padding:20rpx;
+  background: #f8f8f8;
+  .icon-rightsj{
+    font-size:40rpx;
+    float:right;
+    margin-top:6rpx;
+    margin-right:0;
+  }
+}
+.inner-image{
+  height:150rpx;
+  float:right;
+  image{
+    width:148rpx;
+    height:148rpx;
+    border:1px #eee solid;
+    box-sizing:border-box;
+    float:left;
+    border-right:none;
+  }
+}
+.order-edit{
+  .border-ard-gray(@lightgray);
+  padding:20rpx 0;
+  overflow:hidden;
+  .icon-me_dd{
+    font-size:110rpx;
+    margin-left:-14rpx;
+    color:@lightgray;
+    float:left;
+  }
+  .font-normal, .edit-button{
+    float:right;
+    margin-right:20rpx;
+  }
+  .edit-button{
+    margin-top:20rpx;
+    width:80%;
+    button{
+      margin:0;
+      float:right;
+      margin-left:20rpx;
+    }
+    .blank-button{
+      .border-ard-gray(@darkgray);
+      color:@darkgray;
+    }
+    .default-button{
+      padding:0 20rpx;
+    }
+    .blank-button-hover{
+      background: transparent;
+      .border-ard-gray(@orange);
+    }
+  }
+}
+.hidden{
+  display: none;
+}

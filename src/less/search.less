@@ -1,0 +1,69 @@
+@import "variables.less";
+
+.container{
+    min-height:calc(100vh);
+    display: block;
+  }
+  .search-layer{
+    width:100%;
+    height:100rpx;
+    padding:20rpx;
+    box-sizing:border-box;
+    .border-btm-gray(@lightgray);
+    .search-input{
+      border-radius: 30rpx;
+      background:@white;
+      padding: 10rpx 20rpx;
+      font-size:@baseSize;
+      height:40rpx;
+      .border-ard-gray;
+      width:74%;
+      float:left;
+      image{
+        vertical-align:middle;
+        width: 36rpx;
+        height:36rpx;
+        margin-right:20rpx; 
+        margin-top:4rpx;
+        float:left;
+      }
+      input{
+        width: 420rpx;
+        height:40rpx;
+        min-height:40rpx;
+        line-height:40rpx;
+        float:left;
+        color:@dark;
+      }
+      .placeholder{
+        color:@darkgray;
+      }
+      .clear-btn{
+        width:30rpx;
+        height:30rpx;
+        float:right;
+        border-radius:50%;
+        margin:5rpx 0;
+        padding:0;
+        .iconfont{
+          color:@gray;
+          font-size:30rpx;
+          line-height:30rpx;
+          float:left;
+        }
+      }
+    }
+    .search-button{
+      float:right;
+      padding:0 5%;
+      text-align:center;
+      font-size:@baseSize;
+      line-height:60rpx;
+      .search-cancel{
+        color:@lightdark;
+      }
+      .search-confirm{
+        color:@orange;
+      }
+    }
+  }

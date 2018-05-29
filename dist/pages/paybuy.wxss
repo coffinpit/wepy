@@ -1,4 +1,8 @@
 @import "./../components/orderlist.wxss";
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
 .container {
   min-height: calc(100vh);
   display: block;
@@ -6,7 +10,7 @@
   padding-bottom: 120rpx;
 }
 .address {
-  color: #fff;
+  color: #ffffff;
   padding: 20rpx;
 }
 .address .address-title {
@@ -24,7 +28,7 @@
   vertical-align: middle;
 }
 .address .iconfont {
-  color: #fff;
+  color: #ffffff;
   font-size: 32rpx;
   width: 10%;
   text-align: right;
@@ -54,7 +58,7 @@
 }
 .item-box {
   width: 100%;
-  background-color: #fff;
+  background-color: #ffffff;
 }
 .items {
   width: 100%;
@@ -62,7 +66,7 @@
 }
 .vip-tip {
   margin: 20rpx 20rpx 0;
-  background: #fff;
+  background: #ffffff;
   padding: 20rpx;
   box-sizing: border-box;
 }
@@ -75,28 +79,28 @@
   font-size: 28rpx;
 }
 .vip-tip.no-active .iconfont {
-  color: #999;
+  color: #999999;
 }
 .order-list {
   margin: 0 20rpx;
-  border-top: 1px #eee solid;
+  border-top: 1px #eeeeee solid;
   padding: 20rpx;
   box-sizing: border-box;
-  background: #fff;
+  background: #ffffff;
 }
 .order-list .order-list-right {
   float: right;
   margin-top: 10rpx;
 }
 .cart-status {
-  background: #fff;
+  background: #ffffff;
   padding: 30rpx 20rpx;
   display: flex;
   margin: 20rpx;
   justify-content: space-between;
 }
 .cart-status .title {
-  color: #333;
+  color: #333333;
   vertical-align: middle;
   line-height: 48rpx;
 }
@@ -105,7 +109,7 @@
 }
 .order-bottom {
   margin-top: 20rpx;
-  background: #fff;
+  background: #ffffff;
   padding-left: 40rpx;
   height: 120rpx;
   line-height: 120rpx;
@@ -127,7 +131,7 @@
   float: right;
   width: 23%;
   background: #fc5e43;
-  color: #fff;
+  color: #ffffff;
   height: 120rpx;
   line-height: 120rpx;
   font-size: 32rpx;
@@ -135,7 +139,7 @@
 }
 .memo {
   margin: 20rpx 20rpx 0;
-  background: #fff;
+  background: #ffffff;
   padding: 20rpx;
   overflow: hidden;
 }
@@ -159,6 +163,6 @@
   float: left;
 }
 .memo .placeholder {
-  color: #999;
+  color: #999999;
   font-size: 28rpx;
 }

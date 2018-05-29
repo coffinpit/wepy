@@ -1,75 +1,15 @@
-<style lang="less">
-  .container{
-    min-height:calc(100vh);
-    display:block;
-    padding-top:20rpx;
-  }
-  .address-container{
-    margin-bottom:20rpx;
-  }
-  .address-layer{
-    font-size:28rpx;
-    color:#333;
-    width:100%;
-    padding:30rpx 20rpx;
-    box-sizing:border-box;
-    background:#fff;
-    border-bottom: 1px #eee solid;
-    .phonenumer{
-      float:right;
-      color:#999;
-    }
-    .address-detail{
-      display:block;
-      margin-top:10rpx;
-    }
-  }
-  .address-edit{
-    background:#fff;
-    .icon-me_dz{
-      font-size:100rpx;
-      color:#eee;
-      margin-left:-20rpx;
-    }
-    .edit-layer, .delete-layer{
-      float: right;
-      padding: 0 40rpx;
-      font-size:28rpx;
-      color:#333;
-      margin-top:30rpx;
-      .iconfont{
-        font-size:36rpx;
-        margin-right:20rpx;
-        color:#333;
-        vertical-align:center;
-      }
-    }
-    .edit-layer{
-      border-right:1px #eee solid;
-    }
-    .actived{
-      text{
-        color:#fc5e43;
-      }
-    }
-  }
-  .default-button{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    line-height:100rpx;
-  }
-</style>
+<style lang="less" src="../less/address.less"></style>
+
 <template>
   <view class="container">
     {{detail}}
     <repeat for="{{address}}" item="item" index="index" key="index">
-      <view class="address-container" @tap="backToOrder({{index}}, {{item.id}})">
-        <view class="address-layer">
+      <view class="address-container">
+        <view class="address-layer" @tap="backToOrder({{index}}, {{item.id}})">
           <text class="title">{{item.name}}</text>
           <text class="phonenumer">{{item.phone}}</text>
           <text class="address-detail tips">{{item.add}}</text>
+          <text class="address-detail tips" wx:if="{{item.postCode}}">邮编：{{item.postCode}}</text>
         </view>
         <view class="address-edit">
           <text class="iconfont icon-me_dz"></text>
@@ -136,13 +76,15 @@
         })
       },
       backToOrder (index, id) {
+        // var page = this.getCurrentPages()
+        // var pre = page[page.length - 2].route
         if (this.prevPage === 'paycart') {
-          wepy.navigateTo({
+          wepy.redirectTo({
             url: './paycart?user=' + JSON.stringify(this.address[index])
           })
         }
         if (this.prevPage === 'paybuy') {
-          wepy.navigateTo({
+          wepy.redirectTo({
             url: './paybuy?user=' + JSON.stringify(this.address[index]) + '&type=' + this.sourceType + '&id=' + this.sourceId + '&count=' + this.count
           })
         }
@@ -188,6 +130,7 @@
             obj.detail = item.address
             obj.id = item.id
             obj.areaId = item.areaId
+            obj.postCode = item.postCode
             obj.areaFullName = item.areaFullName
             obj.areaFullId = item.areaFullId
             _this.address.push(obj)

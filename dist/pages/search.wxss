@@ -1,6 +1,10 @@
 @import "./../components/reachdown.wxss";
 @import "./../components/defect.wxss";
 @import "./../components/goods.wxss";
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
 .container {
   min-height: calc(100vh);
   display: block;
@@ -10,15 +14,15 @@
   height: 100rpx;
   padding: 20rpx;
   box-sizing: border-box;
-  border-bottom: 1px #eee solid;
+  border-bottom: 1px #eeeeee solid;
 }
 .search-layer .search-input {
   border-radius: 30rpx;
-  background: #fff;
+  background: #ffffff;
   padding: 10rpx 20rpx;
   font-size: 28rpx;
   height: 40rpx;
-  border: 1px #ccc solid;
+  border: 1px #cccccc solid;
   width: 74%;
   float: left;
 }
@@ -36,10 +40,10 @@
   min-height: 40rpx;
   line-height: 40rpx;
   float: left;
-  color: #333;
+  color: #333333;
 }
 .search-layer .search-input .placeholder {
-  color: #999;
+  color: #999999;
 }
 .search-layer .search-input .clear-btn {
   width: 30rpx;
@@ -50,7 +54,7 @@
   padding: 0;
 }
 .search-layer .search-input .clear-btn .iconfont {
-  color: #ccc;
+  color: #cccccc;
   font-size: 30rpx;
   line-height: 30rpx;
   float: left;
@@ -63,7 +67,7 @@
   line-height: 60rpx;
 }
 .search-layer .search-button .search-cancel {
-  color: #666;
+  color: #666666;
 }
 .search-layer .search-button .search-confirm {
   color: #fc5e43;

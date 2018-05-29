@@ -1,107 +1,5 @@
-<style lang="less">
-  .container{
-    margin-top:80rpx;
-  }
-  swiper, image{
-    width:100%;
-  }
-  .index-swiper{
-    height:347rpx;
-    border-bottom: 3px #fe5946 solid;
-    image{
-      height:347rpx;
-    }
-  }
-  .wrap {
-    display: block;
-    height: 300rpx;
-    padding: 10rpx;
-    background: #696969;
-  }
-  .item {
-    min-width: 100rpx;
-    min-height: 100rpx;
-    font-size: 22rpx;
-    text-align: center;
-  }
-  .item:nth-of-type(odd) {
-    line-height: 30rpx;
-    background: #afdde3
-  }
-  .item:nth-of-type(2n) {
-    line-height: 50rpx;
-    background: #f397b2
-  }
-  .layout-code {
-    padding: 15rpx;
-    background: #222222;
-    color: #FFFFFF;
-    font-size: 20rpx;
-    font-family: Monaco;
-  }
-  .layout-code__point {
-    display: inline-block;
-    padding: 0 5rpx;
-    background: #444444;
-  }
-  .top_nav-container{
-    width:100%;
-    background:#fff;
-    .top_nav{
-      width:30%;
-      line-height:90rpx;
-      text-align:center;
-      margin: 0 10%;
-      font-size:14px;
-    }
-    .top_nav_active{
-      border-bottom: 2px #fe5946 solid;
-      color: #fe5946;
-    }
-  }
-  .index-promot{
-    position: relative;
-    width:100%;
-    height:250rpx;
-    .index-promot-img{
-      height:100%;
-    }
-    .index-promot-content{
-      position:absolute;
-      left:30%;
-      top:50%;
-      width:68%;
-      transform:translateY(-50%);
-      color:#ffbe89;
-      .index-promot-title{
-        font-size:36rpx;
-        border-bottom:1px #ffbe89 solid;
-        line-height:80rpx;
-        margin-bottom:20rpx;
-      }
-      .index-promot-txt{
-        font-size:28rpx;
-        line-height:36rpx;
-      }
-    }
-  }
-  .goods-title{
-    text-align:center;
-    height:25px;
-    margin-top:40rpx;
-    image{
-      width:140px;
-      height:25px;
-    }
-  }
-  /*
-  ::-webkit-scrollbar{
-    width: 0;
-    height: 0;
-    color: transparent;
-  }
-  */
-</style>
+<style lang="less" src="../less/index.less"></style>
+
 <template>
   <view class="container" wx:if="{{isLoading}}">
     <searchbar :pagefrom.sync="pageTitle"></searchbar>
@@ -116,10 +14,14 @@
       <image class="index-promot-img" src="../image/syvip_bg.png" mode="aspectFill"></image>
       <view class="index-promot-content">
         <view class="index-promot-title">
-          优价会员
+          超级会员
         </view>
-        <view class="index-promot-txt">预计全年可帮您节省￥5690.0</view>
-        <view class="index-promot-txt">会员全场包邮(冷运品类需满两公斤包邮)</view>
+        <view wx:if="{{userLevel === 0}}">
+          <view class="index-promot-txt">预计全年可帮您节省￥5690.0</view>
+        </view>
+        <view wx:elif="{{userLevel === 1}}">
+          <view class="index-promot-txt">您的会员身份可持续至{{vipEnd}}</view>
+        </view>
       </view>
     </view>
     <wxc-flex cross="{{cross}}" class="top_nav-container">
@@ -186,7 +88,9 @@
       totalPageNum: '',
       isNull: true,
       isDown: false,
-      isLoading: false
+      isLoading: false,
+      userLevel: false,
+      vipEnd: ''
     }
 
     methods = {
@@ -333,6 +237,9 @@
       })
     }
     onLoad () {
+      this.userLevel = this.$parent.globalData.userLevel
+      console.log(this.userLevel)
+      this.vipEnd = this.$parent.dateFormat(this.$parent.globalData.vipEnd * 1000, 'Y年m月d日')
       this.$apply()
     }
   }

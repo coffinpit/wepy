@@ -1,0 +1,44 @@
+/* -- base color -- */
+@white: #ffffff;
+@whitegray: #f8f8f8;
+@lightgray: #eeeeee;
+@gray:#cccccc;
+@darkgray: #999999;
+@lightdark: #666666;
+@dark: #333333;
+@orange: #fc5e43;
+@orangeHover: #ff4a2d;
+@orangeHoverFont: #f6edeb;
+@bannerColor:#ffbe89;
+
+/* -- base fontSize -- */
+@titleSize: 36rpx;
+@largeSize:32rpx;
+@baseSize: 28rpx;
+@smallSize:24rpx;
+@miniSize:20rpx;
+
+/* -- base lineHeight -- */
+@largeLine: 48rpx;
+@baseLine: 44rpx;
+@smallLine: 36rpx;
+@miniLine: 32rpx;
+
+/* -- Mixin -- */
+.baseFont(@color, @size, @lineHeight) {
+	color: @color;
+	font-size: @size;
+	line-height: @lineHeight
+}
+.border-ard-gray(@color:@gray){
+	border: 1px @color solid;
+}
+.border-tp-gray(@color:@gray){
+	border-top: 1px @color solid;
+}
+.border-btm-gray(@color:@gray){
+	border-bottom: 1px @color solid;
+}
+.border-rg-gray(@color:@gray){
+	border-right: 1px @color solid;
+}

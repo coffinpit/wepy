@@ -144,6 +144,10 @@
 .icon-me_dz:before {
   content: "\e641";
 }
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
 page {
   background: #f8f8f8;
 }
@@ -156,7 +160,7 @@ page {
 }
 .content {
   padding: 20rpx;
-  background: #fff;
+  background: #ffffff;
   margin-bottom: 10px;
   width: 100%;
   box-sizing: border-box;
@@ -165,8 +169,8 @@ page {
   margin-bottom: 0;
 }
 .default-button {
-  background: #fc5e44;
-  color: #fff;
+  background: #fc5e43;
+  color: #ffffff;
   font-size: 28rpx;
   line-height: 48rpx;
   border-radius: 0;
@@ -177,8 +181,8 @@ page {
   color: #f6edeb;
 }
 .blank-button {
-  border: 1px #fc5e44 solid;
-  color: #fc5e44;
+  border: 1px #fc5e43 solid;
+  color: #fc5e43;
   font-size: 28rpx;
   line-height: 44rpx;
   border-radius: 0;
@@ -187,13 +191,13 @@ page {
   padding: 0 20rpx;
 }
 .blank-button-hover {
-  background: #fc5e44;
-  color: #fff;
+  background: #fc5e43;
+  color: #ffffff;
 }
 .white-button {
-  border: 1px #fc5e44 solid;
-  background: #fff;
-  color: #fc5e44;
+  border: 1px #fc5e43 solid;
+  background: #ffffff;
+  color: #fc5e43;
   font-size: 28rpx;
   line-height: 48rpx;
   border-radius: 0;
@@ -205,59 +209,25 @@ page {
   line-height: 116rpx;
   font-size: 32rpx;
 }
-.goods-promot {
-  position: relative;
-  margin-top: 4px;
-  height: 22px;
-}
-.goods-promot .goods-promot-image {
-  width: 20px;
-  height: 20px;
-  border: 1px #fc5e44 solid;
-  border-radius: 50%;
-  background: #fff;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 99;
-}
-.goods-promot .goods-promot-image image {
-  width: 16px;
-  height: 14px;
-  position: absolute;
-  left: 3px;
-  top: 3px;
-}
-.goods-promot .goods-info {
-  background: #fc5e44;
-  color: #fff;
-  font-size: 24rpx;
-  line-height: 18px;
-  height: 18px;
-  padding-left: 15px;
-  position: absolute;
-  top: 2px;
-  left: 10px;
-  z-index: 1;
-  min-width: 100rpx;
-}
-.goods-promot .goods-end {
-  position: absolute;
-  right: -15px;
-  top: 0;
-}
-.goods-promot .goods-end image {
-  width: 15px;
-  height: 18px;
-}
+/* 预设字体定义 color/font-size/line-height */
 .title {
+  color: #333333;
   font-size: 32rpx;
-  color: #333;
   line-height: 44rpx;
 }
-.section {
+.font-normal {
+  color: #333333;
   font-size: 28rpx;
-  color: #333;
+  line-height: 44rpx;
+}
+.font-small {
+  color: #333333;
+  font-size: 24rpx;
+  line-height: 36rpx;
+}
+.section {
+  color: #333333;
+  font-size: 28rpx;
   line-height: 44rpx;
 }
 .link {
@@ -268,21 +238,67 @@ page {
 }
 .tips {
   font-size: 24rpx;
-  color: #999;
-}
-.font-normal {
-  font-size: 28rpx;
-  color: #333;
-  line-height: 44rpx;
-}
-.font-small {
-  font-size: 24rpx;
-  color: #333;
-  line-height: 36rpx;
+  color: #999999;
 }
 .through {
   text-decoration: line-through;
 }
 button::after {
   border: none;
+}
+/*
+::-webkit-scrollbar{
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+*/
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
+.goods-promot {
+  position: relative;
+  margin-top: 8rpx;
+  height: 44rpx;
+}
+.goods-promot .goods-promot-image {
+  width: 40rpx;
+  height: 40rpx;
+  border: 1px #fc5e43 solid;
+  border-radius: 50%;
+  background: #ffffff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+.goods-promot .goods-promot-image image {
+  width: 32rpx;
+  height: 28rpx;
+  position: absolute;
+  left: 6rpx;
+  top: 6rpx;
+}
+.goods-promot .goods-info {
+  background: #fc5e43;
+  color: #ffffff;
+  font-size: 24rpx;
+  line-height: 36rpx;
+  height: 36rpx;
+  padding-left: 30rpx;
+  position: absolute;
+  top: 4rpx;
+  left: 20rpx;
+  z-index: 1;
+  min-width: 100rpx;
+}
+.goods-promot .goods-end {
+  position: absolute;
+  right: -30rpx;
+  top: 0;
+}
+.goods-promot .goods-end image {
+  width: 30rpx;
+  height: 36rpx;
 }

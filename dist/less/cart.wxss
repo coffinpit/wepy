@@ -1,0 +1,359 @@
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
+view {
+  box-sizing: border-box;
+}
+.container {
+  padding-bottom: 120rpx;
+  display: block;
+  min-height: calc(100vh);
+  width: 100%;
+  overflow: hidden;
+}
+.cart-status {
+  background: #fff;
+  padding: 30rpx 20rpx;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.cart-status .title {
+  color: #333333;
+  vertical-align: middle;
+  line-height: 48rpx;
+}
+.cart-status .default-button {
+  padding: 0 20rpx;
+}
+.cart-list {
+  width: 100%;
+  margin-top: 20rpx;
+}
+.cart-list .content {
+  margin-bottom: 0;
+  position: relative;
+  height: 100rpx;
+  padding: 20rpx;
+}
+.cart-list .content .title {
+  position: absolute;
+  top: 20rpx;
+  left: 0;
+  width: 100%;
+  padding: 10rpx 20rpx;
+  z-index: 5;
+  transition: 0.3s left ease-in;
+  background: #fff;
+}
+.cart-list .content .title.animate {
+  left: 10%;
+}
+.cart-list .content .check-layer {
+  position: absolute;
+  top: 20rpx;
+  left: 0;
+  width: 10%;
+  z-index: 4;
+  text-align: center;
+}
+.cart-list .expire-content {
+  background: #f5f5f5;
+  border-top: 1px #eeeeee solid;
+}
+.cart-list .expire-content .title {
+  background: #f5f5f5;
+  width: 50%;
+}
+.cart-list .expire-content .clear {
+  position: absolute;
+  right: 20rpx;
+  top: 26rpx;
+  width: 50%;
+  text-align: right;
+}
+.cart-list .iconfont {
+  font-size: 80rpx;
+  vertical-align: middle;
+  margin-right: 20rpx;
+}
+.vip-tip {
+  width: 100%;
+  margin: 20rpx 0;
+  background: #ffffff;
+  padding: 10rpx 20rpx;
+}
+.vip-tip .iconfont {
+  font-size: 60rpx;
+  vertical-align: middle;
+  margin-right: 10rpx;
+}
+.vip-tip .title {
+  font-size: 28rpx;
+}
+.vip-tip.no-active .iconfont {
+  color: #999999;
+}
+.check-G {
+  width: 100%;
+}
+.item-box {
+  width: 100%;
+}
+.items {
+  width: 100%;
+}
+.item-list {
+  position: relative;
+  border-top: 1px #eeeeee solid;
+  height: 200rpx;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+.item-list.expire .inner.txt {
+  background: #f5f5f5;
+}
+.item-list.expire .inner-image {
+  background-color: #f5f5f5;
+}
+.item-list.expire .inner-image image {
+  opacity: 0.7;
+}
+.item-list.expire .inner-layer .title,
+.item-list.expire .inner-layer .font-small {
+  color: #999999;
+}
+.item-list:last-child {
+  border-bottom: 1px #eeeeee solid;
+}
+.cart-checkbox {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  border: 1px #cccccc solid;
+  display: inline-block;
+  vertical-align: middle;
+  background: #ffffff;
+  margin-top: 10rpx;
+  position: relative;
+}
+.cart-checkbox .iconfont {
+  opacity: 0;
+  color: #ffffff;
+  font-size: 36rpx;
+  margin-bottom: 4rpx;
+  font-weight: 700;
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: 36rpx;
+}
+.cart-checkbox.checked {
+  background: #fc5e43;
+  border: 1px #fc5e43 solid;
+  transition: 0.3s all ease-in;
+}
+.cart-checkbox.checked .iconfont {
+  opacity: 1 !important;
+}
+.inner {
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+.inner.txt {
+  background-color: #ffffff;
+  width: 100%;
+  z-index: 999;
+  padding: 20rpx;
+  left: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: 0.3s left ease-in;
+}
+.inner.txt.animate {
+  left: 10%;
+}
+.inner.del {
+  width: 10%;
+  height: 100%;
+  line-height: 200rpx;
+  text-align: center;
+  z-index: 4;
+  left: 0;
+  color: #ffffff;
+}
+.inner.del .cart-checkbox {
+  margin-top: 0;
+}
+.inner-left {
+  width: 360rpx;
+  overflow: hidden;
+  white-space: break-all;
+}
+.inner-left .place {
+  min-height: 108rpx;
+}
+.inner-animate-left {
+  transform: translateX(120rpx);
+}
+.inner-layer {
+  width: 460rpx;
+  overflow: hidden;
+  position: absolute;
+  top: 20rpx;
+  left: 30rpx;
+  z-index: 9999;
+}
+.inner-layer .title {
+  min-height: 76rpx;
+  height: 76rpx;
+  line-height: 38rpx;
+  overflow: hidden;
+  display: block;
+  font-size: 28rpx;
+  margin-bottom: 6rpx;
+}
+.inner-layer .tips,
+.inner-layer .title {
+  display: block;
+}
+.inner-layer .tips {
+  float: right;
+}
+.inner-layer .font-small {
+  float: left;
+  display: block;
+  width: 260rpx;
+}
+.inner-image {
+  position: absolute;
+  right: 30rpx;
+  top: 20rpx;
+  height: 150rpx;
+  display: inline-block;
+  z-index: 9999;
+}
+.inner-image image {
+  width: 148rpx;
+  height: 148rpx;
+  border: 1px #eeeeee solid;
+  box-sizing: border-box;
+  float: left;
+  border-right: none;
+}
+.counter {
+  display: inline-block;
+  float: left;
+  width: 50rpx;
+  height: 150rpx;
+  z-index: 999999;
+}
+.counter .counter-btn {
+  display: block;
+  height: 50rpx;
+  line-height: 50rpx;
+  width: 50rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+.counter .number {
+  border-top: none;
+  border-bottom: none;
+  min-height: 50rpx;
+  height: 50rpx;
+  width: 50rpx;
+}
+.counter .temp-input {
+  left: 25rpx;
+  top: 68rpx;
+}
+.cart-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120rpx;
+  background: #ffffff;
+  z-index: 99999999;
+}
+.cart-bottom image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 8rpx;
+  width: 77%;
+}
+.cart-bottom .title {
+  width: 13%;
+  text-align: center;
+  line-height: 120rpx;
+  display: inline-block;
+}
+.cart-bottom .all {
+  position: relative;
+}
+.cart-bottom .all checkbox {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+}
+.cart-bottom .del-cart {
+  float: right;
+  width: 23%;
+  background: #cccccc;
+  color: #ffffff;
+  height: 120rpx;
+  line-height: 120rpx;
+  font-size: 32rpx;
+  text-align: center;
+}
+.cart-bottom .del-cart.active {
+  background: #fc5e43;
+}
+.cart-bottom .cart-info {
+  color: #333333;
+  font-size: 32rpx;
+  line-height: 120rpx;
+  display: inline-block;
+  width: 60%;
+  text-align: right;
+  float: right;
+  padding-right: 2%;
+  overflow: hidden;
+  height: 120rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.blank .blank-button {
+  width: 200rpx;
+  margin: 100rpx auto;
+  line-height: 50rpx;
+  text-align: center;
+}
+.hidden-temp .temp-input {
+  display: none;
+}
+.hidden-temp .minusBtn.able {
+  background: #ffffff;
+  color: #333333;
+}
+.unedit-layer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  background: rgba(204, 204, 204, 0.2);
+  transition: 0.3s opacity ease-in;
+  opacity: 0;
+}
+.unedit-layer.animate {
+  left: 10%;
+  opacity: 1;
+  z-index: 9999999;
+}

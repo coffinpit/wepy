@@ -38,7 +38,7 @@
     </view>
     <view class="content">
       <view class="detail-title">
-        <view class="title">{{detail.title}}</view>
+        <view class="font-normal">{{detail.title}}</view>
         <view class="goods-promot">
           <view class="goods-promot-image">
             <image src="../image/icon-xian.png"/>
@@ -122,7 +122,7 @@
       <view class="popup_close"><text class="title" catchtap="closeCart">关闭</text></view>
       <view class="popup_layer">
         <view class="popup_image">
-          <image src="{{detail.path}}" mode="aspectFit"/>
+          <image src="{{detail.path}}" mode="widthFix"/>
         </view>
         <view class="popup_goods">
           <view class="popup_goods_box">
