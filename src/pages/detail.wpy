@@ -1,10 +1,24 @@
 <style lang="less" src="../less/detail.less"></style>
 <template>
-  <view class="container" style="height: {{overflow? winHeight : 'auto'}}">
+  <view class="container" style="height: {{overflow? winHeight : 'auto'}}" wx:if="{{isLoaded}}">
     <menuList></menuList>
     <view class="detail-info">
       <view class="detail-img">
-        <image src="{{detail.path}}" mode="aspectFit"></image>
+        <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" @change.stop="changeSwiper" @animationfinish="swiperEnd" class="index-swiper">
+        <repeat>
+            <swiper-item>
+              <view class="video-layer {{showVideo ? '' : 'hidden'}}">
+                <view @tap="playVideo">
+                <image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527831070072&di=c17eebe9d6f522ae2ba17b1df2451ae4&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F18%2F05%2F63%2F13K58PICkUA_1024.jpg" mode="aspectFill"></image>
+                </view>
+              </view>
+              <view class="video-layer {{showVideo ? 'hidden': ''}}"><video id="myVideo" src="http://pic.ibaotu.com/00/63/01/12h888piCneY.mp4" controls id="video" @pause="stopVideo" @ended="stopVideo" initial-time="{{initTime}}"></video></view>
+            </swiper-item>
+             <swiper-item>
+              <image src="{{detail.path}}" mode="aspectFill"></image>
+            </swiper-item>
+        </repeat>
+      </swiper>
       </view>
       <view class="detail-dots">
         <view class="detail-dots-gray"></view>
@@ -172,6 +186,15 @@
         title: '',
         goodList: []
       },
+      swiperOpt: {
+        autoplay: false,
+        interval: 3000,
+        duration: 1000,
+        currentTab: 0,
+        indicatorDots: true,
+        indicatorColor: '#cccccc',
+        indicatorActive: '#ff6600'
+      },
       token: '',
       pageId: '',
       collect: false,
@@ -211,7 +234,12 @@
       cartModal: false,
       collectImage: '../image/icon-cart-blank.png',
       markId: '',
-      userLevel: 0
+      userLevel: 0,
+      isLoaded: false,
+      videoContext: '',
+      showVideo: true,
+      initTime: 0,
+      swiperStop: true
     }
     methods = {
       collectTap () {
@@ -235,6 +263,8 @@
         }
         this.overflow = true
         this.cartModal = true
+        this.showVideo = true
+        this.videoContext.pause()
         this.initData(this.initCartResult())
       },
       closeCart () {
@@ -289,6 +319,7 @@
               this.addCartData()
             }
           } else {
+            this.$parent.pageRoot = false
             wepy.navigateTo({
               url: './paybuy?id=' + this.cartResult.id + '&type=' + this.cartResult.type + '&count=' + this.cartNum
             })
@@ -297,9 +328,30 @@
         }
       },
       goRules () {
+        this.$parent.pageRoot = false
         wepy.navigateTo({
           url: './rules'
         })
+      },
+      playVideo () {
+        if (this.swiperStop) {
+          this.showVideo = false
+          this.videoContext.play()
+        }
+      },
+      stopVideo () {
+        this.showVideo = true
+        this.videoContext.pause()
+      },
+      changeSwiper () {
+        this.swiperStop = false
+        this.showVideo = true
+        this.videoContext.pause()
+      },
+      swiperEnd () {
+        this.swiperStop = true
+        this.initTime = 0
+        console.log(this.swiperStop)
       }
     }
     initCartData () {
@@ -323,9 +375,10 @@
       }
       this.$parent.HttpRequest.DetailHttp(data).then((res) => {
         console.log(res)
+        _this.$parent.showSuccess()
         this.detail.goodList = []
         if (res.data.error === 0) {
-          _this.$parent.showSuccess()
+          _this.isLoaded = true
           var data = res.data.data
           if (!data.collectionId) {
             _this.collect = false
@@ -377,6 +430,7 @@
           }
         }
       }).catch(() => {
+        _this.$parent.showSuccess()
         _this.$parent.showFail()
       })
     }
@@ -471,9 +525,7 @@
       }
     }
     onLoad (id) {
-      this.userLevel = this.$parent.globalData.userLevel
       this.pageId = id.id
-      this.initData()
       this.$parent.pageRoot = true
       var _this = this
       wepy.getSystemInfo({
@@ -481,6 +533,14 @@
           _this.winHeight = res.windowHeight + 'px'
         }
       })
+      this.$apply()
+    }
+    onReady () {
+      this.videoContext = wepy.createVideoContext('video')
+    }
+    onShow () {
+      this.userLevel = this.$parent.globalData.userLevel
+      this.initData()
       this.$apply()
     }
   }

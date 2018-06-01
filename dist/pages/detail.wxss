@@ -16,20 +16,25 @@
 }
 .detail-info .detail-img {
   width: 525rpx;
-  height: 525rpx;
+  height: 545rpx;
   background: #ffffff;
   padding: 20px 0;
   box-sizing: border-box;
   position: absolute;
-  left: 10px;
-  top: 10px;
+  left: 20rpx;
+  top: 10rpx;
   z-index: 9;
   overflow: hidden;
   box-shadow: 2px 2px 2px #eee;
 }
-.detail-info .detail-img image {
-  width: 505rpx;
-  height: 505rpx;
+.detail-info .detail-img image,
+.detail-info .detail-img swiper {
+  width: 480rpx;
+  height: 480rpx;
+  margin-left: 10rpx;
+}
+.detail-info .detail-img swiper {
+  overflow: hidden;
 }
 .detail-info .detail-dots {
   position: absolute;
@@ -317,4 +322,25 @@
 }
 .disable {
   background: #999999;
+}
+.video-layer {
+  width: 100%;
+}
+.video-layer image,
+.video-layer video {
+  width: 100%;
+}
+.video-layer video {
+  height: 480rpx;
+}
+.video-layer.hidden {
+  height: 0;
+  overflow: hidden;
+}
+.video-layer.hidden video {
+  width: 0;
+  height: 0;
+}
+cover-view {
+  z-index: 9;
 }

@@ -8,12 +8,43 @@
         <text class="title"><text class="iconfont icon-shoucang"/>联系手机</text><input type="number" placeholder="手机号码" placeholder-class="placeholder" value="{{userPhone}}" bindblur="phoneTap"/>
       </view>
       <view class="address-layer">
-        <text class="title"><text class="iconfont icon-shoucang"/>收货地址</text>
-        <view class="picker">
+        <text class="title"><text class="iconfont icon-shoucang"/>省</text>
+        <!-- <view class="picker">
           <picker mode="multiSelector" bindchange="topArea" bindcolumnchange="childArea" bindcancel="cancel" value="{{multiIndex}}" range="{{multiArray}}">
+            
             <view>{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}</view>
+           
+            <view>{{result[0]}}, {{result[1]}}, {{result[2]}}</view>
           </picker>
-          <text class="iconfont icon-xlsanjiao"/>
+          <text class="iconfont icon-xlsanjiao"></text>
+        </view> -->
+        <view class="picker">
+          <picker bindchange="pickTopArea" value="{{topIndex}}" range="{{topArray}}" disabled="{{topDisable}}">
+            <view class="picker {{result[0] === '请选择省' ? 'placeholder' : ''}}">
+              <!-- {{topArray[topIndex]}} -->
+              {{result[0]}}
+            </view>
+          </picker>
+        </view>
+      </view>
+      <view class="address-layer">
+        <text class="title"><text class="iconfont icon-shoucang"/>市</text>
+        <view class="picker {{result[1] === '请选择市' ? 'placeholder' : ''}}">
+          <picker bindchange="pickCity" value="{{cityIndex}}" range="{{cityArray}}" disabled="{{cityDisable}}">
+            <view class="picker">
+              {{result[1]}}
+            </view>
+          </picker>
+        </view>
+      </view>
+      <view class="address-layer">
+        <text class="title"><text class="iconfont icon-shoucang"/>区</text>
+        <view class="picker {{result[2] === '请选择区' ? 'placeholder' : ''}}">
+          <picker bindchange="pickDistrict" value="{{disIndex}}" range="{{disArray}}" disabled="{{disDisable}}">
+            <view class="picker">
+              {{result[2]}}
+            </view>
+          </picker>
         </view>
       </view>
       <view class="address-layer">

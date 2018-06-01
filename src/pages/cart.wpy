@@ -427,14 +427,14 @@
       this.cartStatus = {}
       this.$parent.HttpRequest.GetCartHttp(data).then((res) => {
         console.log(res)
+        _this.$parent.showSuccess()
         _this.isLoading = false
         if (res.data.error === 0) {
-          _this.$parent.showSuccess()
           var data = res.data.data
           _this.cartStatus.totalprice = data.price
           _this.cartStatus.discount = data.reduction
           _this.cartStatus.memberPrice = data.memberPrice
-          _this.finalprice = data.finalPrice
+          _this.finalprice = data.pay
           _this.freight = data.freight
           data.childOrders.forEach((item) => {
             var obj = {}
@@ -460,6 +460,7 @@
         }
         _this.$apply()
       }).catch(() => {
+        _this.$parent.showSuccess()
         _this.isLoading = false
         _this.$parent.showFail()
       })

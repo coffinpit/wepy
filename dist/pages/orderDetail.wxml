@@ -16,12 +16,10 @@
           支付超时
         </text>
       </view>
-      <view class="orderStatus address" wx:if="{{Object.keys(address).length}}">
+      <view class="orderStatus address" wx:if="{{address && Object.keys(address).length !== 0}}">
         <text class="iconfont icon-ksj_dz"/>
         <text class="font-normal">{{address.name}}</text>
         <text class="font-normal gray">{{address.phone}}</text>
-        <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 2 || status === 5 || status === 6}}">查看物流</button>
-        <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" bindtap="goAddress">修改地址</button>
         <text class="font-normal block">{{address.detail}}</text>
       </view>
       <block wx:for="{{order}}" wx:for-index="index" wx:for-item="item" wx:key="key">
@@ -38,7 +36,7 @@
         <view class="inner-layer" data-index="{{$orderList$index}}" id="{{$orderList$item.sourceId}}">
           <text class="title">{{$orderList$item.title}}</text>
           <text class="font-small link">会员价：￥{{$orderList$item.price}} </text>
-          <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
+          <text class="font-small left {{userLevel ? 'through' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
           <text class="tips">规格：{{$orderList$item.detail}}</text>
         </view>
         <view class="inner-image">
@@ -69,9 +67,12 @@
         <text class="font-normal right">￥{{pay}}</text>
       </view>
       <view class="orderTotal" wx:if="{{!isHidden}}">
-        <text class="font-normal">需付款<text class="link">￥{{finalPrice}}</text> (含运费￥{{freight}})</text>
+        <text class="font-normal" wx:if="{{status === 1 || status === 4}}">需付款<text class="link">￥{{finalPrice}}</text> (含运费￥{{freight}})</text>
+        <text class="font-normal" wx:else>实付款<text class="link">￥{{finalPrice}}</text> (含运费￥{{freight}})</text>
         <view class="edit-button">
+          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" bindtap="goAddress">修改地址</button>
           <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" bindtap="cancel">取消订单</button>
+          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 2 || status === 5 || status === 6}}" bindtap="goLogistic">查看物流</button>
           <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{status === 5 || status === 6}}">售后申请</button>
           <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}" bindtap="goPay">付款</button>
         </view>

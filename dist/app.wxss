@@ -287,6 +287,7 @@ button::after {
   line-height: 36rpx;
   height: 36rpx;
   padding-left: 30rpx;
+  padding-right: 10rpx;
   position: absolute;
   top: 4rpx;
   left: 20rpx;
@@ -295,10 +296,12 @@ button::after {
 }
 .goods-promot .goods-end {
   position: absolute;
-  right: -30rpx;
+  right: -28rpx;
   top: 0;
+  height: 40rpx;
 }
 .goods-promot .goods-end image {
   width: 30rpx;
   height: 36rpx;
+  float: left;
 }

@@ -87,6 +87,7 @@ export default class extends wepy.app {
 
   missToken = false
   getTokenTime = 0
+  httpId = []
 
   constructor () {
     super()
@@ -111,6 +112,8 @@ export default class extends wepy.app {
           } else if (p.data.error && p.data.error === 0) {
             this.missToken = false
             this.getTokenTime = 0
+          } else {
+            this.showSuccess()
           }
         } else {
           this.missToken = false
@@ -123,6 +126,17 @@ export default class extends wepy.app {
         return p
       },
       complete (p) {
+        // 记录request info
+        if (p.statusCode === 200) {
+          if (p.data.httpId) {
+            if (this.httpId.length < 10) {
+              this.httpId.push(p.data.httpId)
+            } else {
+              this.httpId.shift()
+              this.httpId.push(p.data.httpId)
+            }
+          }
+        }
         return p
       }
     })
@@ -186,8 +200,9 @@ export default class extends wepy.app {
         wepy.setStorageSync('token', token)
         wepy.setStorageSync('timeout', timeOut)
         // 设置global的user level 和 hash
-        this.getUserLevel(token)
-        cb && cb(token)
+        this.getUserLevel(token, () => {
+          cb && cb(token)
+        })
       } else {
         fail && fail()
       }
@@ -228,15 +243,16 @@ export default class extends wepy.app {
   }
 
   // 获取 user level 和 hash
-  getUserLevel (token) {
+  getUserLevel (token, cb) {
     var _this = this
     this.HttpRequest.GetUserInfo({token: token}).then((res) => {
-      console.log(res)
       if (res.data.error === 0) {
         _this.globalData.userLevel = res.data.data.level
         _this.globalData.userHash = res.data.data.hash
         _this.globalData.vipEnd = res.data.data.vipEnd
         _this.globalData.reduction = res.data.data.reduction
+        console.log(_this.globalData.userLevel)
+        cb && cb()
       }
     })
   }
@@ -265,7 +281,6 @@ export default class extends wepy.app {
     wepy.hideLoading()
   }
   showFail (error) {
-    wepy.hideLoading()
     wepy.showToast({
       title: error || '加载失败',
       icon: 'none',
@@ -280,7 +295,7 @@ export default class extends wepy.app {
       success: (res) => {
         if (res.confirm) {
           wepy.redirectTo({
-            url: './order?orderType=unpaid'
+            url: './order'
           })
         }
       }

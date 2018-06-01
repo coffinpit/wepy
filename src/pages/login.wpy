@@ -4,7 +4,7 @@
   <view class="login-container">
     <view class="login">
       <view class="app-info">
-        <image class="app-logo" src="../image/login-bg.jpg" mode="widthFix"></image>
+        <image class="app-logo" src="http://p33mnuvro.bkt.clouddn.com/2018/5/hmktt29nt2.jpg" mode="widthFix"></image>
         <text class="app-name">正善小程序</text>
       </view>
       <view class="alert" wx:if="{{!isNull}}">

@@ -82,8 +82,8 @@
       }
       this.$parent.HttpRequest.GetNotice(data).then((res) => {
         console.log(res)
+        _this.$parent.showSuccess()
         if (res.data.error === 0) {
-          _this.$parent.showSuccess()
           _this.systemNotice = []
           _this.orderNotice = []
           var data = res.data.data
@@ -109,6 +109,7 @@
         }
         _this.$apply()
       }).catch(() => {
+        _this.$parent.showSuccess()
         _this.$parent.showFail()
       })
     }
@@ -131,6 +132,7 @@
       this.current = 0
       this.pageNum = 1
       this.initData()
+      this.$apply()
     }
   }
 </script>

@@ -2,10 +2,13 @@
   <view class="container">
     
   <view class="menu-layer {{$menuList$fullMenu ? 'active' : ''}}">
-    <view catchtap="$menuList$showMenu"><text class="iconfont icon-rightsj"/></view>
-    <view bindtap="$menuList$goIndex"><image src="../image/index-default.png"/></view>
-    <view bindtap="$menuList$goCategory"><image src="../image/category-default.png"/></view>
-    <view bindtap="$menuList$goUser"><image src="../image/user-default.png"/></view>
+    <view catchtap="$menuList$showMenu" class="menu-button"><text class="tips">快捷导航</text></view>
+    <view class="menu-content">
+      <view bindtap="$menuList$goIndex"><image src="../image/index-default.png"/></view>
+      <view bindtap="$menuList$goCategory"><image src="../image/category-default.png"/></view>
+      <view bindtap="$menuList$goCate"><image src="../image/cart-default.png"/></view>
+      <view bindtap="$menuList$goUser"><image src="../image/user-default.png"/></view>
+    </view>
   </view>
 
     <view class="order-status">
@@ -27,7 +30,7 @@
         <view class="inner-layer" data-index="{{$orderList$index}}" id="{{$orderList$item.sourceId}}">
           <text class="title">{{$orderList$item.title}}</text>
           <text class="font-small link">会员价：￥{{$orderList$item.price}} </text>
-          <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
+          <text class="font-small left {{userLevel ? 'through' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
           <text class="tips">规格：{{$orderList$item.detail}}</text>
         </view>
         <view class="inner-image">
@@ -43,10 +46,12 @@
             </view>
             <view class="order-edit">
               <text class="iconfont icon-me_dd {{item.status === 3 ? 'hidden' : ''}}"/>
-              <text class="font-normal">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+              <text class="font-normal" wx:if="{{item.status === 1 || item.status === 4}}">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+              <text class="font-normal" wx:else>实付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
               <view class="edit-button {{item.status === 3 ? 'hidden' : ''}}">
                 <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1}}" bindtap="goAddress" data-wpygoaddress-a="{{item.id}}">修改地址</button>
                 <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" bindtap="cancel" data-wpycancel-a="{{item.id}}">取消订单</button>
+                <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}" bindtap="goLogistic" data-wpygologistic-a="{{item.id}}">查看物流</button>
                 <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
                 <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" bindtap="goPay" data-wpygopay-a="{{item.id}}">付款</button>
               </view>

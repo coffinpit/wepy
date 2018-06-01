@@ -104,7 +104,8 @@
       memberPrice: '',
       finalprice: '',
       txtLength: 0,
-      memo: ''
+      memo: '',
+      payment: true
     }
     methods = {
       goAddress () {
@@ -121,59 +122,63 @@
             image: '../image/cancel.png'
           })
         } else {
-          var data = {
-            token: this.token,
-            appType: 'miniApp',
-            sourceType: this.sourceType,
-            sourceId: this.sourceId,
-            buyCount: this.count,
-            address_main: this.user.id,
-            memo_main: encodeURI(this.memo),
-            date_main: 4
-          }
-          this.$parent.HttpRequest.CreateOrderBuy(data).then((res) => {
-            if (res.data.error === 0) {
-              var data = res.data.data
-              var timeStamp = data.timestamp.toString()
-              var nonceStr = data.noncestr
-              var prepayid = 'prepay_id=' + data.prepayid
-              var signData = {
-                'appId': 'wx4fadd384b39658cd',
-                'timeStamp': timeStamp,
-                'nonceStr': nonceStr,
-                'package': prepayid,
-                'signType': 'MD5'
-              }
-              var sign = this.$parent.HttpRequest.getPaySign(signData)
-              wepy.requestPayment({
-                'timeStamp': timeStamp,
-                'nonceStr': nonceStr,
-                'package': prepayid,
-                'signType': 'MD5',
-                'paySign': sign,
-                'success': (res) => {
-                  if (res.errMsg === 'requestPayment:ok') {
-                    // 用户支付成功跳转首页
-                    wepy.switchTab({
-                      url: './index'
-                    })
-                  } else if (res.errMsg === 'requestPayment:cancel') {
-                    // 用户取消支付跳转订单列表
-                    this.$parent.payFail()
-                  }
-                },
-                'fail': (res) => {
-                  this.$parent.payFail()
-                },
-                'complete': (res) => {
-                }
-              })
-            } else {
-              this.$parent.payFail()
+          if (this.payment) {
+            var data = {
+              token: this.token,
+              appType: 'miniApp',
+              sourceType: this.sourceType,
+              sourceId: this.sourceId,
+              buyCount: this.count,
+              address_main: this.user.id,
+              memo_main: encodeURI(this.memo),
+              date_main: 4
             }
-          }).catch(() => {
-            this.$parent.payFail()
-          })
+            this.$parent.HttpRequest.CreateOrderBuy(data).then((res) => {
+              if (res.data.error === 0) {
+                var data = res.data.data
+                var timeStamp = data.timestamp.toString()
+                var nonceStr = data.noncestr
+                var prepayid = 'prepay_id=' + data.prepayid
+                var signData = {
+                  'appId': 'wx4fadd384b39658cd',
+                  'timeStamp': timeStamp,
+                  'nonceStr': nonceStr,
+                  'package': prepayid,
+                  'signType': 'MD5'
+                }
+                var sign = this.$parent.HttpRequest.getPaySign(signData)
+                wepy.requestPayment({
+                  'timeStamp': timeStamp,
+                  'nonceStr': nonceStr,
+                  'package': prepayid,
+                  'signType': 'MD5',
+                  'paySign': sign,
+                  'success': (res) => {
+                    if (res.errMsg === 'requestPayment:ok') {
+                      // 用户支付成功跳转首页
+                      wepy.switchTab({
+                        url: './index'
+                      })
+                    } else if (res.errMsg === 'requestPayment:cancel') {
+                      // 用户取消支付跳转订单列表
+                      this.$parent.payFail()
+                    }
+                  },
+                  'fail': (res) => {
+                    this.$parent.payFail()
+                  },
+                  'complete': (res) => {
+                    this.payment = true
+                  }
+                })
+              } else {
+                this.$parent.payFail()
+              }
+            }).catch(() => {
+              this.$parent.payFail()
+            })
+          }
+          this.payment = false
         }
       },
       inputTap (e) {
@@ -193,8 +198,8 @@
         buyCount: this.count
       }
       this.$parent.HttpRequest.ApplyOrderBuy(data).then((res) => {
+        _this.$parent.showSuccess()
         if (res.data.error === 0) {
-          _this.$parent.showSuccess()
           var data = res.data.data
           _this.reduction = data.reduction
           _this.freight = data.freight
@@ -227,6 +232,7 @@
           })
         }
       }).catch(() => {
+        _this.$parent.showSuccess()
         _this.$parent.showFail()
       })
     }

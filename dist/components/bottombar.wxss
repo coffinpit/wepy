@@ -12,6 +12,7 @@
   display: flex;
   font-size: 28rpx;
   color: #ffffff;
+  z-index: 9999999;
 }
 .bottombar .contact {
   width: 15%;

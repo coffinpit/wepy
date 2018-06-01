@@ -1,6 +1,53 @@
 
-  <view class="container">
+  <view class="container"  wx:if="{{isLoading}}">
     <scroll-view scroll-x class="package">
-      <block wx:for="{{package}}" wx:for-index="index" wx:for-item="item" wx:key="key"><view class="{{current === index ? 'active' : ''}}" bindtap="checkPackage" data-wpycheckpackage-a="{{index}}">{{item}}</view></block>
+      <block wx:for="{{logistic}}" wx:for-index="index" wx:for-item="item" wx:key="key"><view class="{{current === index ? 'active' : ''}}" bindtap="checkPackage" data-wpycheckpackage-a="{{index}}">{{item.name}}</view></block>
     </scroll-view>
+    <view class="lg-container">
+      <block wx:for="{{logistic}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view wx:if="{{current === index}}">
+          <view class="lgtitle">
+            <text class="font-normal left">物流单号：<text selectable="true">{{item.logisticsCode}}</text></text>
+            <text class="tips right">联系电话：{{item.phone}}</text>
+          </view>
+          
+  <block wx:for="{{item.orderDetail}}" wx:for-index="$orderList$index" wx:for-item="$orderList$item" wx:key="$orderList$index">
+    <view class="item-list">
+      <view class="inner txt" bindtap="$orderList$goDetail" data-com-index="{{index}}" data-wpygodetail-a="{{$orderList$item.id}}">
+        <view class="inner-layer" data-index="{{$orderList$index}}" id="{{$orderList$item.sourceId}}">
+          <text class="title">{{$orderList$item.title}}</text>
+          <text class="font-small link">会员价：￥{{$orderList$item.price}} </text>
+          <text class="font-small left {{userLevel ? 'through' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
+          <text class="tips">规格：{{$orderList$item.detail}}</text>
+        </view>
+        <view class="inner-image">
+          <image src="{{$orderList$item.path}}" mode="aspectFill"/>
+        </view>
+      </view>
+    </view>
+  </block>
+
+          <view class="lgtitle"><text class="font-normal">物流追踪</text></view>
+          <view class="lgdetail">
+            <view class="timeline"/>
+            <block wx:for="{{status[current]}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="lgcontent">
+                <view class="left"><text class="tips">{{item.time[0]}}</text><text class="tips">{{item.time[1]}}</text></view>
+                  <view class="middle">
+                    <view class="status active" wx:if="{{index === 0}}">
+                      <text class="iconfont icon-fxkdui"/>
+                    </view>
+                    <view class="status" wx:else>
+                      <text class="iconfont icon-topsj"/>
+                    </view>
+                  </view>
+                  <view class="right">
+                    <text class="font-normal">{{item.text}}</text>
+                  </view>
+              </view>
+            </block>
+          </view>
+        </view>
+      </block>
+    </view>
   </view>

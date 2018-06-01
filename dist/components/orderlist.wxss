@@ -23,7 +23,7 @@
   min-height: 108rpx;
 }
 .inner-layer {
-  width: 460rpx;
+  width: 470rpx;
   overflow: hidden;
   float: left;
 }
@@ -44,9 +44,11 @@
   float: right;
 }
 .inner-layer .font-small {
-  float: left;
   display: block;
-  width: 260rpx;
+  width: 220rpx;
+}
+.inner-layer .font-small.left {
+  float: left;
 }
 .inner-image {
   height: 150rpx;

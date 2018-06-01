@@ -46,7 +46,9 @@ class HttpRequest extends wepy.app{
 			payService: 'r=buying/api-apply-pay',
 			getSignCode: 'r=member/api-apply-sign-in-by-phone',
 			loginByPhone: 'r=member/api-sign-up-or-sign-in',
-			addAddress: 'r=address/api-add-address'
+			addAddress: 'r=address/api-add-address',
+			getLogistic: 'r=order/api-get-logistics-list',
+			getLogisticStatus: 'r=order/api-get-logistics-detail'
 		}
 		this.$$pathHtml = {
 			rules: 'distribution_rules.html',
@@ -873,13 +875,35 @@ class HttpRequest extends wepy.app{
         	})
 		})
 	}
-	GetLogistica (param, cb) {
+	GetLogistic (param, cb) {
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
 				var data = _this.getData(res, param)
 				wepy.request({
-					url: 'http://192.168.8.126/smartWb/store/web/index.php?r=zs-api/get-logistics-trace',
+					url: this.$$base + this.$$path.getLogistic,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
+	GetLogisticStatus (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.getLogisticStatus,
 					data: data,
 					method: 'GET',
 	                header: {'content-type': 'application/json'},

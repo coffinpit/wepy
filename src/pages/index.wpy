@@ -11,7 +11,7 @@
       </repeat>
     </swiper>
     <view class="index-promot" @tap="goApplyVip">
-      <image class="index-promot-img" src="../image/syvip_bg.png" mode="aspectFill"></image>
+      <image class="index-promot-img" src="http://p33mnuvro.bkt.clouddn.com/2018/5/prwrk2v6uq.png" mode="aspectFill"></image>
       <view class="index-promot-content">
         <view class="index-promot-title">
           超级会员
@@ -75,7 +75,7 @@
       pageauto: false,
       swiperOpt: {
         autoplay: true,
-        interval: 2000,
+        interval: 3000,
         duration: 1000,
         currentTab: 0,
         indicatorDots: true,
@@ -116,6 +116,7 @@
       }
     }
     onShow () {
+      this.userLevel = this.$parent.globalData.userLevel
       this.currentPage = 0
       this.isLoading = false
       this.initPage()
@@ -146,12 +147,13 @@
         pageSize: '5'
       }
       parent.HttpRequest.IndexHttp(data, () => {
+        _this.$parent.showSuccess()
         _this.$parent.showFail()
         _this.isNull = true
       }).then((res) => {
         console.log(res)
+        _this.$parent.showSuccess()
         if (res.data.error === 0) {
-          _this.$parent.showSuccess()
           _this.totalPageNum = res.data.data.totalPageNum
           var data = res.data.data.spus
           if (data.length === 0) {
@@ -177,14 +179,16 @@
             cb && cb()
           })
         } else {
+          wepy.hideLoading()
           _this.isNull = true
           if (_this.$parent.missToken) {
             _this.token = this.$parent.getToken(res.data.error)
-            _this.getInitData()
+            _this.initPage()
           }
         }
         _this.$apply()
       }).catch(() => {
+        _this.$parent.showSuccess()
         _this.$parent.showFail()
         _this.isNull = true
       })
@@ -237,8 +241,6 @@
       })
     }
     onLoad () {
-      this.userLevel = this.$parent.globalData.userLevel
-      console.log(this.userLevel)
       this.vipEnd = this.$parent.dateFormat(this.$parent.globalData.vipEnd * 1000, 'Y年m月d日')
       this.$apply()
     }

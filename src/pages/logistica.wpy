@@ -10,10 +10,12 @@
     line-height:90rpx;
     font-size:28rpx;
     color:#333;
-    height:90rpx;
+    height:94rpx;
+    background: #fff;
+    margin-bottom: 20rpx;
     view{
-      width:calc(1/3*100%);
-      padding:0 30rpx;
+      width:190rpx;
+      margin:0 30rpx;
       box-sizing:border-box;
       text-align:center;
       float:left;
@@ -23,33 +25,247 @@
       }
     }
   }
+  .lg-container {
+    background: #fff;
+    padding-bottom: 20rpx;
+    .lgtitle{
+      padding:20rpx;
+      border-bottom: 1px #eee solid;
+      background: #fff;
+      margin-bottom: 20rpx;
+      .right{
+        text-align: right;
+        width:40%;
+      }
+      .left{
+        width:60%;
+      }
+      text{
+        display: inline-block;
+      }
+    }
+  }
+.lgdetail{
+    position: relative;
+    padding:0 20rpx;
+    view{
+      display: inline-block;
+    }
+    .lgcontent{
+      width:100%;
+      padding:20rpx 0;
+    }
+    .timeline{
+      position: absolute;
+      width:1px;
+      top:0;
+      left:204rpx;
+      background: #eee;
+      height:100%;
+      z-index: 1;
+    }
+    .left{
+      width:162rpx;
+      vertical-align: top;
+      padding-top:4rpx;
+      text{
+        display: block;
+      }
+    }
+    .middle{
+      width:71rpx;
+      position: relative;
+      z-index: 99;
+      vertical-align: top;
+      padding-top:4rpx;
+      .status{
+        width:40rpx;
+        height:40rpx;
+        border:1px #eee solid;
+        text-align: center;
+        line-height: 40rpx;
+        border-radius: 50%;
+        background: #fff;
+        &.active{
+          border:1px #fc5e43 solid;
+          background: #fc5e43;
+          .iconfont{
+            color:#fff;
+            font-size: 30rpx;
+          }
+        }
+        .iconfont{
+          font-size:20rpx;
+          color:#ccc;
+          vertical-align: middle;
+        }
+      }
+    }
+    .right{
+      width:467rpx;
+    }
+  }
 </style>
 <template>
-  <view class="container">
+  <view class="container" wx:if="{{isLoading}}">
     <scroll-view scroll-x class="package">
-      <repeat for="{{package}}" item="item" index="index"><view class="{{current === index ? 'active' : ''}}" @tap="checkPackage({{index}})">{{item}}</view></repeat>
+      <repeat for="{{logistic}}" item="item" index="index"><view class="{{current === index ? 'active' : ''}}" @tap="checkPackage({{index}})">{{item.name}}</view></repeat>
     </scroll-view>
+    <view class="lg-container">
+      <repeat for="{{logistic}}" item="item" index="index">
+        <view wx:if="{{current === index}}">
+          <view class="lgtitle">
+            <text class="font-normal left">物流单号：<text selectable="true">{{item.logisticsCode}}</text></text>
+            <text class="tips right">联系电话：{{item.phone}}</text>
+          </view>
+          <orderList :orderList.sync="item.orderDetail" :userLevel.sync="userLevel"></orderList>
+          <view class="lgtitle"><text class="font-normal">物流追踪</text></view>
+          <view class="lgdetail">
+            <view class="timeline"></view>
+            <repeat for="{{status[current]}}" index="index" item="item">
+              <view class="lgcontent">
+                <view class="left"><text class="tips">{{item.time[0]}}</text><text class="tips">{{item.time[1]}}</text></view>
+                  <view class="middle">
+                    <view class="status active" wx:if="{{index === 0}}">
+                      <text class="iconfont icon-fxkdui"></text>
+                    </view>
+                    <view class="status" wx:else>
+                      <text class="iconfont icon-topsj"></text>
+                    </view>
+                  </view>
+                  <view class="right">
+                    <text class="font-normal">{{item.text}}</text>
+                  </view>
+              </view>
+            </repeat>
+          </view>
+        </view>
+      </repeat>
+    </view>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import OrderList from '../components/orderlist'
 
   export default class Logistica extends wepy.page {
     config = {
       navigationBarTitleText: '我的物流'
     }
     data = {
-      package: ['我的包裹1', '我的包裹2', '我的包裹3', '我的包裹4', '我的包裹5', '我的包裹6'],
-      current: 0
+      package: [],
+      current: 0,
+      orderId: '',
+      logistic: [],
+      status: [],
+      isLoading: false
+    }
+    components = {
+      orderList: OrderList
+    }
+    computed = {
+      userLevel () {
+        if (this.$parent.globalData.userLevel === 0) {
+          return false
+        } else if (this.$parent.globalData.userLevel === 1) {
+          return true
+        }
+      }
     }
     methods = {
       checkPackage (index) {
         this.current = index
       }
     }
-    onLoad () {
+    initLogistic () {
+      this.logistic = []
+      this.$parent.showLoading()
+      this.token = this.$parent.getToken()
+      var _this = this
+      var data = {
+        token: this.token,
+        orderId: this.orderId
+      }
+      this.$parent.HttpRequest.GetLogistic(data).then((res) => {
+        console.log(res)
+        _this.$parent.showSuccess()
+        if (res.data.error === 0) {
+          var data = res.data.data
+          data.forEach((item) => {
+            var obj = {}
+            obj.logisticsCode = item.logisticsCode
+            obj.name = item.logistics.name
+            obj.phone = item.logistics.phone
+            obj.orderDetail = _this.initChild(item.buyingRecords)
+            _this.logistic.push(obj)
+            _this.getStatus(item.logistics.id, item.logisticsCode)
+          })
+        } else {
+          if (_this.$parent.missToken) {
+            _this.token = this.$parent.getToken(res.data.error)
+            _this.initLogistic()
+          }
+        }
+        _this.$apply()
+      }).catch(() => {
+        _this.$parent.showSuccess()
+        _this.$parent.showFail()
+      })
+    }
+    initChild (parent) {
+      var child = []
+      parent.forEach((item) => {
+        var obj = {}
+        obj.path = item.cover
+        obj.title = item.productName
+        obj.price = item.memberPrice
+        obj.oldprice = item.price
+        obj.id = item.productId
+        obj.sourceType = item.salesUnitType
+        obj.sourceId = item.salesUnitId
+        obj.detail = item.title + '×' + item.buyingCount
+        obj.count = item.buyingCount
+        obj.checked = false
+        obj.totalCount = item.keepCount
+        child.push(obj)
+      })
+      return child
+    }
+    getStatus (logisticsId, logisticsCode) {
+      this.status = []
+      this.token = this.$parent.getToken()
+      var _this = this
+      var data = {
+        token: this.token,
+        orderId: this.orderId,
+        logisticsId: logisticsId,
+        logisticsCode: logisticsCode
+      }
+      this.$parent.HttpRequest.GetLogisticStatus(data).then((res) => {
+        console.log(res)
+        if (res.data.error === 0) {
+          _this.isLoading = true
+          var data = res.data.data
+          var statusTemp = []
+          data.forEach((item) => {
+            var obj = {}
+            obj.time = item.time.split(' ')
+            obj.text = item.context
+            statusTemp.push(obj)
+          })
+          _this.status.push(statusTemp)
+          console.log(_this.status)
+        }
+        _this.$apply()
+      })
+    }
+    onLoad (id) {
+      this.orderId = id.id
       this.$apply()
+    }
+    onShow () {
+      this.initLogistic()
     }
   }
 </script>

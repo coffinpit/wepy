@@ -21,10 +21,12 @@
             </view>
             <view class="order-edit">
               <text class="iconfont icon-me_dd {{item.status === 3 ? 'hidden' : ''}}"></text>
-              <text class="font-normal">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+              <text class="font-normal" wx:if="{{item.status === 1 || item.status === 4}}">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+              <text class="font-normal" wx:else>实付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
               <view class="edit-button {{item.status === 3 ? 'hidden' : ''}}">
                 <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1}}" @tap="goAddress({{item.id}})">修改地址</button>
                 <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="cancel({{item.id}})">取消订单</button>
+                <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}" @tap="goLogistic({{item.id}})">查看物流</button>
                 <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
                 <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" @tap="goPay({{item.id}})">付款</button>
               </view>
@@ -93,13 +95,14 @@
       pageSize: 5,
       pageNum: 1,
       totalPageNum: 0,
-      isLoading: true
+      isLoading: true,
+      payment: true
     }
     methods = {
       checkPackage (index, type) {
         this.current = index
         this.orderType = type
-        this.initOrder()
+        this.initData()
       },
       goDetail (id) {
         wepy.navigateTo({
@@ -113,7 +116,7 @@
           success: (res) => {
             if (res.confirm) {
               this.cancelOrder(id, () => {
-                this.initOrder()
+                this.initData()
               })
             }
           }
@@ -124,63 +127,76 @@
           url: './address?page=order&id=' + id
         })
       },
-      goPay (id) {
-        this.token = this.$parent.getToken()
-        var data = {
-          token: this.token,
-          orderId: id,
-          appType: 'miniApp'
-        }
-        this.$parent.HttpRequest.PayService(data).then((res) => {
-          console.log(res)
-          if (res.data.error === 0) {
-            var data = res.data.data
-            var timeStamp = data.timestamp.toString()
-            var nonceStr = data.noncestr
-            var prepayid = 'prepay_id=' + data.prepayid
-            var signData = {
-              'appId': 'wx4fadd384b39658cd',
-              'timeStamp': timeStamp,
-              'nonceStr': nonceStr,
-              'package': prepayid,
-              'signType': 'MD5'
-            }
-            var sign = this.$parent.HttpRequest.getPaySign(signData)
-            wepy.requestPayment({
-              'timeStamp': timeStamp,
-              'nonceStr': nonceStr,
-              'package': prepayid,
-              'signType': 'MD5',
-              'paySign': sign,
-              'success': (res) => {
-                if (res.errMsg === 'requestPayment:ok') {
-                  // 用户支付成功跳转首页
-                  wepy.switchTab({
-                    url: './index'
-                  })
-                } else if (res.errMsg === 'requestPayment:cancel') {
-                  // 用户取消支付跳转订单列表
-                  this.$parent.payFail()
-                }
-              },
-              'fail': (res) => {
-                this.$parent.payFail()
-              },
-              'complete': (res) => {
-              }
-            })
-          } else {
-            this.$parent.payFail()
-          }
-        }).catch(() => {
-          this.$parent.payFail()
+      goLogistic (id) {
+        wepy.navigateTo({
+          url: './logistica?id=' + id
         })
+      },
+      goPay (id) {
+        if (this.payment) {
+          this.token = this.$parent.getToken()
+          var data = {
+            token: this.token,
+            orderId: id,
+            appType: 'miniApp'
+          }
+          this.$parent.HttpRequest.PayService(data).then((res) => {
+            console.log(res)
+            if (res.data.error === 0) {
+              var data = res.data.data
+              var timeStamp = data.timestamp.toString()
+              var nonceStr = data.noncestr
+              var prepayid = 'prepay_id=' + data.prepayid
+              var signData = {
+                'appId': 'wx4fadd384b39658cd',
+                'timeStamp': timeStamp,
+                'nonceStr': nonceStr,
+                'package': prepayid,
+                'signType': 'MD5'
+              }
+              var sign = this.$parent.HttpRequest.getPaySign(signData)
+              wepy.requestPayment({
+                'timeStamp': timeStamp,
+                'nonceStr': nonceStr,
+                'package': prepayid,
+                'signType': 'MD5',
+                'paySign': sign,
+                'success': (res) => {
+                  if (res.errMsg === 'requestPayment:ok') {
+                    // 用户支付成功跳转首页
+                    wepy.switchTab({
+                      url: './index'
+                    })
+                  } else if (res.errMsg === 'requestPayment:cancel') {
+                    // 用户取消支付跳转订单列表
+                    this.$parent.payFail()
+                  }
+                },
+                'fail': (res) => {
+                  this.$parent.payFail()
+                },
+                'complete': (res) => {
+                  this.payment = true
+                }
+              })
+            } else {
+              this.$parent.payFail()
+            }
+          }).catch(() => {
+            this.$parent.payFail()
+          })
+        }
+        this.payment = false
       }
+    }
+    initData () {
+      this.pageNum = 1
+      this.orderList = []
+      this.initOrder()
     }
     initOrder () {
       this.$parent.showLoading()
       this.token = this.$parent.getToken()
-      this.orderList = []
       this.isLoading = true
       var _this = this
       var data = {
@@ -192,8 +208,8 @@
       this.$parent.HttpRequest.GetOrderStatus(data).then((res) => {
         console.log(res)
         _this.isLoading = false
+        _this.$parent.showSuccess()
         if (res.data.error === 0) {
-          _this.$parent.showSuccess()
           var data = res.data.data
           _this.totalPageNum = data.totalPageNum
           data.orders.forEach((item) => {
@@ -216,6 +232,7 @@
         }
         _this.$apply()
       }).catch(() => {
+        _this.$parent.showSuccess()
         _this.isLoading = false
         _this.$parent.showFail()
       })
@@ -257,6 +274,14 @@
         }
       })
     }
+    onReachBottom () {
+      // 显示加载状态
+      if (this.pageNum < this.totalPageNum) {
+        // 显示下一页数据
+        this.pageNum ++
+        this.initOrder()
+      }
+    }
     onLoad (param) {
       if (param.orderType) {
         this.orderType = param.orderType
@@ -271,7 +296,7 @@
       this.$apply()
     }
     onShow () {
-      this.initOrder()
+      this.initData()
     }
   }
 </script>

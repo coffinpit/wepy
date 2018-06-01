@@ -1,7 +1,7 @@
 
   <view class="{{userLevel === 1 ? 'vipMain' : ''}}" style="height: {{isShow ? winHeight : 'auto'}}">
     <view class="vip-bg" style="height: {{isLoading ? '' : '494rpx'}}"  wx:if="{{userLevel === 1}}">
-      <image src="../image/vip_bg.png" mode="aspectFit" bindload="imageLoad"/>
+      <image src="http://p33mnuvro.bkt.clouddn.com/2018/5/snuzbxz7o4.png" mode="aspectFit" bindload="imageLoad"/>
       <text class="vip-title">
         <text class="iconfont icon-vip"/>
       </text>

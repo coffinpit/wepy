@@ -69,10 +69,12 @@
 }
 .orderStatus.address .block {
   line-height: 44rpx;
+  width: 586rpx;
 }
 .orderStatus.address .gray {
   display: inline-block;
   margin-left: 20rpx;
+  text-align: right;
 }
 .orderStatus.address .blank-button {
   float: right;

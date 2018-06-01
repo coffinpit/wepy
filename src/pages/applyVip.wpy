@@ -2,7 +2,7 @@
 <template>
   <view class="main" style="height: {{isShow ? winHeight : 'auto'}}" class="{{userLevel === 1 ? 'vipMain' : ''}}">
     <view class="vip-bg" style="height: {{isLoading ? '' : '494rpx'}}" wx:if="{{userLevel === 1}}">
-      <image src="../image/vip_bg.png" mode="aspectFit" @load="imageLoad"></image>
+      <image src="http://p33mnuvro.bkt.clouddn.com/2018/5/snuzbxz7o4.png" mode="aspectFit" @load="imageLoad"></image>
       <text class="vip-title">
         <text class="iconfont icon-vip"></text>
       </text>
@@ -66,7 +66,8 @@
       isLoading: true,
       vipEnd: '',
       vipreduction: '',
-      userLevel: 0
+      userLevel: 0,
+      payment: true
     }
     methods = {
       imageLoad () {
@@ -97,65 +98,69 @@
         this.initData.apply(this)
       },
       confirmTap () {
-        console.log(this.resultList)
         this.token = this.$parent.getToken()
         var _this = this
         if (this.checked) {
-          var data = {
-            token: this.token,
-            appType: 'miniApp',
-            sourceType: this.resultList.type,
-            sourceId: this.resultList.id,
-            buyCount: 1,
-            address_main: '',
-            memo_main: '',
-            date_main: 4
-          }
-          this.$parent.HttpRequest.CreateOrderBuy(data).then((res) => {
-            if (res.data.error === 0) {
-              var data = res.data.data
-              var timeStamp = data.timestamp.toString()
-              var nonceStr = data.noncestr
-              var prepayid = 'prepay_id=' + data.prepayid
-              var signData = {
-                'appId': 'wx4fadd384b39658cd',
-                'timeStamp': timeStamp,
-                'nonceStr': nonceStr,
-                'package': prepayid,
-                'signType': 'MD5'
-              }
-              var sign = this.$parent.HttpRequest.getPaySign(signData)
-              wepy.requestPayment({
-                'timeStamp': timeStamp,
-                'nonceStr': nonceStr,
-                'package': prepayid,
-                'signType': 'MD5',
-                'paySign': sign,
-                'success': (res) => {
-                  console.log('success')
-                  if (res.errMsg === 'requestPayment:ok') {
-                    // 用户支付成功跳转首页
-                    this.$parent.getUserLevel(this.token)
-                    wepy.switchTab({
-                      url: './index'
-                    })
-                  } else if (res.errMsg === 'requestPayment:cancel') {
-                    // 用户取消支付跳转订单列表
-                    this.$parent.payFail()
-                  }
-                },
-                'fail': (res) => {
-                  this.$parent.payFail()
-                },
-                'complete': (res) => {
-                }
-              })
-            } else {
-              if (_this.$parent.missToken) {
-                _this.token = this.$parent.getToken(res.data.error)
-              }
+          if (this.payment) {
+            var data = {
+              token: this.token,
+              appType: 'miniApp',
+              sourceType: this.resultList.type,
+              sourceId: this.resultList.id,
+              buyCount: 1,
+              address_main: '',
+              memo_main: '',
+              date_main: 4
             }
-          })
+            this.$parent.HttpRequest.CreateOrderBuy(data).then((res) => {
+              if (res.data.error === 0) {
+                var data = res.data.data
+                var timeStamp = data.timestamp.toString()
+                var nonceStr = data.noncestr
+                var prepayid = 'prepay_id=' + data.prepayid
+                var signData = {
+                  'appId': 'wx4fadd384b39658cd',
+                  'timeStamp': timeStamp,
+                  'nonceStr': nonceStr,
+                  'package': prepayid,
+                  'signType': 'MD5'
+                }
+                var sign = this.$parent.HttpRequest.getPaySign(signData)
+                wepy.requestPayment({
+                  'timeStamp': timeStamp,
+                  'nonceStr': nonceStr,
+                  'package': prepayid,
+                  'signType': 'MD5',
+                  'paySign': sign,
+                  'success': (res) => {
+                    console.log('success')
+                    if (res.errMsg === 'requestPayment:ok') {
+                      // 用户支付成功跳转首页
+                      this.$parent.getUserLevel(this.token, () => {
+                        wepy.switchTab({
+                          url: './index'
+                        })
+                      })
+                    } else if (res.errMsg === 'requestPayment:cancel') {
+                      // 用户取消支付跳转订单列表
+                      this.$parent.payFail()
+                    }
+                  },
+                  'fail': (res) => {
+                    this.$parent.payFail()
+                  },
+                  'complete': (res) => {
+                    this.payment = true
+                  }
+                })
+              } else {
+                if (_this.$parent.missToken) {
+                  _this.token = this.$parent.getToken(res.data.error)
+                }
+              }
+            })
+          }
+          this.payment = false
         } else {
           wepy.showToast({
             title: '请先阅读《会员服务协议》',
@@ -200,10 +205,6 @@
       })
     }
     onLoad () {
-      this.userLevel = this.$parent.globalData.userLevel
-      console.log(this.$parent.globalData.vipEnd)
-      this.vipEnd = this.$parent.dateFormat(this.$parent.globalData.vipEnd * 1000, 'Y-m-d')
-      this.vipreduction = this.$parent.globalData.reduction
       var _this = this
       wepy.getSystemInfo({
         success: function (res) {
@@ -213,6 +214,9 @@
       this.$apply()
     }
     onShow () {
+      this.userLevel = this.$parent.globalData.userLevel
+      this.vipEnd = this.$parent.dateFormat(this.$parent.globalData.vipEnd * 1000, 'Y-m-d')
+      this.vipreduction = this.$parent.globalData.reduction
       this.getService()
     }
   }

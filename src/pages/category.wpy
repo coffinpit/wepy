@@ -54,7 +54,7 @@
     }
     data = {
       token: '',
-      categoryImg: ['../image/categoryA.jpg', '../image/categoryB.jpg', '../image/categoryC.jpg', '../image/categoryD.jpg'],
+      categoryImg: ['http://p33mnuvro.bkt.clouddn.com/2018/5/9rwxryroks.jpg', 'http://p33mnuvro.bkt.clouddn.com/2018/5/2ls28undsw.jpg', 'http://p33mnuvro.bkt.clouddn.com/2018/5/5xop3ugmoh.jpg', 'http://p33mnuvro.bkt.clouddn.com/2018/5/lp8uqw6s6p.jpg'],
       categoryTab: [],
       childCategory: [{
         name: '',
@@ -121,9 +121,9 @@
         token: this.token
       }
       this.$parent.HttpRequest.GetTopCategory(data).then((res) => {
+        _this.$parent.showSuccess()
         if (res.data.error === 0) {
           _this.isLoading = true
-          _this.$parent.showSuccess()
           var data = res.data.data
           data.forEach((item) => {
             var obj = {}
@@ -143,6 +143,7 @@
         }
         _this.$apply()
       }).catch(() => {
+        _this.$parent.showSuccess()
         _this.isNull = true
         _this.$parent.showFail()
       })
@@ -226,6 +227,7 @@
           _this.isNull = true
           if (_this.$parent.missToken) {
             _this.token = this.$parent.getToken(res.data.error)
+            _this.getSpu(sourceId, cb)
           }
         }
         _this.$apply()

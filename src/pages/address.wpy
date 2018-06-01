@@ -90,14 +90,14 @@
         }
         if (this.prevPage === 'order') {
           this.editOrderAdd(id, () => {
-            wepy.navigateTo({
+            wepy.redirectTo({
               url: './order'
             })
           })
         }
         if (this.prevPage === 'orderdetail') {
           this.editOrderAdd(id, () => {
-            wepy.navigateTo({
+            wepy.redirectTo({
               url: './orderDetail?id=' + this.orderId
             })
           })
@@ -114,8 +114,8 @@
       this.address = []
       this.$parent.HttpRequest.GetAddress(data).then((res) => {
         console.log(res)
+        _this.$parent.showSuccess()
         if (res.data.error === 0) {
-          _this.$parent.showSuccess()
           var data = res.data.data
           if (data.length === 0) {
             _this.isNull = true
@@ -144,6 +144,7 @@
         }
         _this.$apply()
       }).catch(() => {
+        _this.$parent.showSuccess()
         _this.isNull = true
         _this.$parent.showFail()
       })

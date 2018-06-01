@@ -2,20 +2,35 @@
 
 .menu-layer{
     position: fixed;
-    right:20rpx;
+    right:-82rpx;
     bottom:200rpx;
-    background:rgba(215,215,215,0.7);
-    width:80rpx;
-    height:80rpx;
-    border-radius:40rpx;
     text-align:center;
     line-height:70rpx;
-    transition:.5s height ease-in;
-    overflow:hidden;
+    transition:.5s right ease-in;
     z-index:9999999;
-    view{
-      width:80rpx;
-      height:80rpx;
+    .menu-button{
+      width:30rpx;
+      padding:10rpx;
+      display: inline-block;
+      background: @orange;
+      border-radius: 20rpx 0  0 20rpx;
+      line-height: 28rpx;
+      vertical-align: bottom;
+      box-shadow: 8rpx 4rpx 8rpx #ccc;
+      text{
+        color:@white;
+      }
+    }
+    .menu-content{
+      display: inline-block;
+      background: @white;
+      .border-ard-gray(@gray);
+      border-right:0;
+      box-shadow: 8rpx 4rpx 8rpx #ccc;
+      view{
+        width:80rpx;
+        height:80rpx;
+      }
     }
     image{
       width:60rpx;
@@ -23,7 +38,7 @@
       vertical-align:middle;
     }
     &.active{
-      height:340rpx;
+      right:0;
       .iconfont{
         transform:rotateZ(90deg);
       }

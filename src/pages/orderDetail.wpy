@@ -18,12 +18,10 @@
           支付超时
         </text>
       </view>
-      <view class="orderStatus address" wx:if="{{Object.keys(address).length}}">
+      <view class="orderStatus address" wx:if="{{address && Object.keys(address).length !== 0}}">
         <text class="iconfont icon-ksj_dz"></text>
         <text class="font-normal">{{address.name}}</text>
         <text class="font-normal gray">{{address.phone}}</text>
-        <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 2 || status === 5 || status === 6}}">查看物流</button>
-        <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" @tap="goAddress">修改地址</button>
         <text class="font-normal block">{{address.detail}}</text>
       </view>
       <repeat for="{{order}}" item="item" index="index">
@@ -55,9 +53,12 @@
         <text class="font-normal right">￥{{pay}}</text>
       </view>
       <view class="orderTotal" wx:if="{{!isHidden}}">
-        <text class="font-normal">需付款<text class="link">￥{{finalPrice}}</text> (含运费￥{{freight}})</text>
+        <text class="font-normal" wx:if="{{status === 1 || status === 4}}">需付款<text class="link">￥{{finalPrice}}</text> (含运费￥{{freight}})</text>
+        <text class="font-normal" wx:else>实付款<text class="link">￥{{finalPrice}}</text> (含运费￥{{freight}})</text>
         <view class="edit-button">
+          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" @tap="goAddress">修改地址</button>
           <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" @tap="cancel">取消订单</button>
+          <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 2 || status === 5 || status === 6}}" @tap="goLogistic">查看物流</button>
           <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{status === 5 || status === 6}}">售后申请</button>
           <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}" @tap="goPay">付款</button>
         </view>
@@ -92,7 +93,9 @@
       remainTime: '',
       isHidden: false,
       initTxt: '待支付',
-      isStop: false
+      isStop: false,
+      timeInterval: '',
+      payment: true
     }
     computed = {
       isNull () {
@@ -123,69 +126,82 @@
               this.cancelOrder(() => {
                 this.isHidden = true
               })
+              this.clear()
             }
           }
         })
       },
       goAddress () {
-        wepy.navigateTo({
+        wepy.redirectTo({
           url: './address?page=orderdetail&id=' + this.id
+        })
+        this.clear()
+      },
+      goLogistic () {
+        wepy.navigateTo({
+          url: './logistica?id=' + this.id
         })
       },
       goPay () {
-        var data = {
-          token: this.token,
-          orderId: this.id,
-          appType: 'ios'
-        }
-        this.$parent.HttpRequest.PayService(data).then((res) => {
-          console.log(res)
-          if (res.data.error === 0) {
-            var data = res.data.data
-            var timeStamp = data.timestamp.toString()
-            var nonceStr = data.noncestr
-            var prepayid = 'prepay_id=' + data.prepayid
-            var signData = {
-              'appId': 'wx4fadd384b39658cd',
-              'timeStamp': timeStamp,
-              'nonceStr': nonceStr,
-              'package': prepayid,
-              'signType': 'MD5'
-            }
-            var sign = this.$parent.HttpRequest.getPaySign(signData)
-            wepy.requestPayment({
-              'timeStamp': timeStamp,
-              'nonceStr': nonceStr,
-              'package': prepayid,
-              'signType': 'MD5',
-              'paySign': sign,
-              'success': (res) => {
-                if (res.errMsg === 'requestPayment:ok') {
-                  // 用户支付成功跳转首页
-                  wepy.switchTab({
-                    url: './index'
-                  })
-                } else if (res.errMsg === 'requestPayment:cancel') {
-                  // 用户取消支付跳转订单列表
-                  this.$parent.payFail()
-                }
-              },
-              'fail': (res) => {
-                this.$parent.payFail()
-              },
-              'complete': (res) => {
-              }
-            })
-          } else {
-            this.$parent.payFail()
+        if (this.payment) {
+          var data = {
+            token: this.token,
+            orderId: this.id,
+            appType: 'ios'
           }
-        }).catch(() => {
-          this.$parent.payFail()
-        })
+          this.$parent.HttpRequest.PayService(data).then((res) => {
+            console.log(res)
+            if (res.data.error === 0) {
+              var data = res.data.data
+              var timeStamp = data.timestamp.toString()
+              var nonceStr = data.noncestr
+              var prepayid = 'prepay_id=' + data.prepayid
+              var signData = {
+                'appId': 'wx4fadd384b39658cd',
+                'timeStamp': timeStamp,
+                'nonceStr': nonceStr,
+                'package': prepayid,
+                'signType': 'MD5'
+              }
+              var sign = this.$parent.HttpRequest.getPaySign(signData)
+              wepy.requestPayment({
+                'timeStamp': timeStamp,
+                'nonceStr': nonceStr,
+                'package': prepayid,
+                'signType': 'MD5',
+                'paySign': sign,
+                'success': (res) => {
+                  if (res.errMsg === 'requestPayment:ok') {
+                    // 用户支付成功跳转首页
+                    this.clear()
+                    wepy.switchTab({
+                      url: './index'
+                    })
+                  } else if (res.errMsg === 'requestPayment:cancel') {
+                    // 用户取消支付跳转订单列表
+                    this.$parent.payFail()
+                  }
+                },
+                'fail': (res) => {
+                  this.$parent.payFail()
+                },
+                'complete': (res) => {
+                  this.payment = true
+                }
+              })
+            } else {
+              this.$parent.payFail()
+            }
+          }).catch(() => {
+            this.$parent.payFail()
+          })
+        }
+        this.payment = false
       }
     }
     initData () {
       this.token = this.$parent.getToken()
+      this.remainTime = 0
       this.$parent.showLoading()
       this.order = []
       var _this = this
@@ -195,8 +211,8 @@
       }
       this.$parent.HttpRequest.GetOrderDetail(data).then((res) => {
         console.log(res)
+        _this.$parent.showSuccess()
         if (res.data.error === 0) {
-          _this.$parent.showSuccess()
           var data = res.data.data
           _this.statusTxt = _this.orderStatus[data.status]
           _this.status = data.status
@@ -206,21 +222,15 @@
           _this.pay = data.pay
           _this.freight = data.freight
           // _this.initLogistica('shunfeng', data.showId)
-          var time = setInterval(() => {
-            data.payRemainingTime --
-            if (data.payRemainingTime > 0) {
-              _this.remainTime = (data.payRemainingTime - data.payRemainingTime % 60) / 60 + '分' + data.payRemainingTime % 60 + '秒'
-            } else {
-              _this.remainTime = 0
-              _this.initTxt = '交易关闭'
-              clearInterval(time)
-            }
-            _this.$apply()
-          }, 1000)
+          if (data.payRemainingTime) {
+            _this.interval(data.payRemainingTime)
+          }
           if (data.address) {
             _this.address.name = data.address.name
             _this.address.phone = data.address.phone
             _this.address.detail = data.address.fullAreaName + data.address.address
+          } else {
+            _this.address = ''
           }
           _this.finalPrice = data.finalPrice
           data.buyingRecords.forEach((item) => {
@@ -235,8 +245,10 @@
             _this.initData()
           }
         }
+        console.log(Object.keys(_this.address).length)
         _this.$apply()
       }).catch(() => {
+        _this.$parent.showSuccess()
         _this.$parent.showFail()
       })
     }
@@ -297,12 +309,32 @@
         }
       })
     }
+    interval (time) {
+      var _this = this
+      this.timeInterval = setInterval(() => {
+        time--
+        if (time > 0) {
+          _this.remainTime = (time - time % 60) / 60 + '分' + time % 60 + '秒'
+        } else {
+          _this.remainTime = 0
+          _this.initTxt = '交易关闭'
+          _this.clear()
+        }
+        _this.$apply()
+      }, 1000)
+    }
+    clear () {
+      clearInterval(this.timeInterval)
+    }
     onLoad (param) {
       this.id = param.id
       this.$apply()
     }
     onShow () {
       this.initData()
+    }
+    onUnload () {
+      this.clear()
     }
   }
 </script>

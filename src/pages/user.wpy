@@ -181,7 +181,6 @@
     initUserData () {
       this.token = this.$parent.getToken()
       var _this = this
-      this.$parent.showLoading()
       var data = {
         token: this.token
       }
@@ -202,6 +201,8 @@
           }
         }
         _this.$apply()
+      }).catch(() => {
+        _this.$parent.showFail()
       })
     }
     initUserOrder () {
@@ -213,8 +214,8 @@
       }
       this.$parent.HttpRequest.GetUserOrder(data).then((res) => {
         console.log(res)
+        _this.$parent.showSuccess()
         if (res.data.error === 0) {
-          _this.$parent.showSuccess()
           var data = res.data.data
           _this.refunding = data.refunding
           _this.undelivered = data.undelivered
@@ -228,6 +229,7 @@
         }
         _this.$apply()
       }).catch(() => {
+        _this.$parent.showSuccess()
         _this.$parent.showFail()
       })
     }
@@ -247,15 +249,15 @@
           _this.$apply()
         }
       })
+      this.$apply()
+    }
+    onShow () {
       if (this.$parent.globalData.userLevel === 0) {
         this.isVip = false
       } else if (this.$parent.globalData.userLevel === 1) {
         this.isVip = true
       }
       console.log(this.$parent.globalData.userLevel)
-      this.$apply()
-    }
-    onShow () {
       this.initUserData()
       this.initUserOrder()
       this.$apply()

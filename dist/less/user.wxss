@@ -89,11 +89,14 @@
 .user-level .default-button {
   padding: 0 20rpx;
   float: right;
-  margin: 8rpx 0 0;
   font-size: 28rpx;
 }
 .setting-container {
   margin-top: 20rpx;
+}
+.setting-container .default-button {
+  padding: 20rpx 0;
+  margin: 50rpx 20rpx 20rpx;
 }
 .setting-layer {
   border-top: 1px #eeeeee solid;
@@ -160,8 +163,4 @@
 }
 .order-layer {
   padding: 20rpx 0;
-}
-.default-button {
-  padding: 20rpx 0;
-  margin: 50rpx 20rpx 20rpx;
 }
