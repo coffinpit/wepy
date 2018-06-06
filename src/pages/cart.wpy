@@ -427,7 +427,7 @@
       this.cartStatus = {}
       this.$parent.HttpRequest.GetCartHttp(data).then((res) => {
         console.log(res)
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         _this.isLoading = false
         if (res.data.error === 0) {
           var data = res.data.data
@@ -460,7 +460,7 @@
         }
         _this.$apply()
       }).catch(() => {
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         _this.isLoading = false
         _this.$parent.showFail()
       })

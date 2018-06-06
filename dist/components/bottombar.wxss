@@ -8,7 +8,7 @@
   left: 0;
   width: 100%;
   height: 116rpx;
-  background: #111111;
+  background: #f8f8f8;
   display: flex;
   font-size: 28rpx;
   color: #ffffff;
@@ -16,6 +16,7 @@
 }
 .bottombar .contact {
   width: 15%;
+  border-top: 1px #eeeeee solid;
 }
 .bottombar .contact button {
   font-size: 28rpx;
@@ -28,31 +29,31 @@
   color: #ffffff;
 }
 .bottombar .contact .iconfont {
-  color: #ffffff;
+  color: #ec3d3a;
   font-size: 72rpx;
 }
 .bottombar .contact .icon-kefu {
   line-height: 110rpx;
 }
 .bottombar .contact .contact-active .iconfont {
-  color: #fc5e43;
+  color: #b82828;
 }
 .bottombar .goCart {
   width: 15%;
-  border-right: 1px #999999 solid;
+  border-top: 1px #eeeeee solid;
 }
 .bottombar .goCart .goCart-icon {
   position: relative;
 }
 .bottombar .goCart .goCart-icon .icon-ksj_gwc {
-  color: #ffffff;
+  color: #333333;
   font-size: 66rpx;
   margin-top: 18rpx;
   display: inline-block;
 }
 .bottombar .goCart .goCart-icon .goCart-txt {
   font-size: 28rpx;
-  color: #ffffff;
+  color: #333333;
   display: block;
 }
 .bottombar .goCart .goCart-icon .cart-count {
@@ -60,7 +61,7 @@
   top: 14rpx;
   right: 32rpx;
   line-height: 38rpx;
-  background: #fc5e43;
+  background: #ec3d3a;
   color: #ffffff;
   text-align: center;
   border-radius: 40rpx;
@@ -81,7 +82,8 @@
   line-height: 116rpx;
   font-size: 32rpx;
   text-align: center;
+  background: #fc8d43;
 }
 .bottombar .buy {
-  background: #fc5e43;
+  background: #ec3d3a;
 }

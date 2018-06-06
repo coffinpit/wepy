@@ -152,8 +152,8 @@ view {
   line-height: 36rpx;
 }
 .cart-checkbox.checked {
-  background: #fc5e43;
-  border: 1px #fc5e43 solid;
+  background: #ec3d3a;
+  border: 1px #ec3d3a solid;
   transition: 0.3s all ease-in;
 }
 .cart-checkbox.checked .iconfont {
@@ -314,7 +314,7 @@ view {
   text-align: center;
 }
 .cart-bottom .del-cart.active {
-  background: #fc5e43;
+  background: #ec3d3a;
 }
 .cart-bottom .cart-info {
   color: #333333;

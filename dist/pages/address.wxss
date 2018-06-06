@@ -56,7 +56,7 @@
   border-right: 1px #cccccc solid;
 }
 .address-edit .actived text {
-  color: #fc5e43;
+  color: #fc8d43;
 }
 .default-button {
   position: fixed;

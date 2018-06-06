@@ -44,13 +44,13 @@ export default class extends wepy.app {
     window: {
       backgroundTextStyle: 'dark',
       backgroundColor: '#f8f8f8',
-      navigationBarBackgroundColor: '#fc5e43',
+      navigationBarBackgroundColor: '#ec3d3a',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'white'
     },
     tabBar: {
       color: '#282626',
-      selectedColor: '#fc5e44',
+      selectedColor: '#ec3d3a',
       backgroundColor: '#f8f8f8',
       list: [{
         pagePath: 'pages/index',
@@ -112,8 +112,6 @@ export default class extends wepy.app {
           } else if (p.data.error && p.data.error === 0) {
             this.missToken = false
             this.getTokenTime = 0
-          } else {
-            this.showSuccess()
           }
         } else {
           this.missToken = false
@@ -150,7 +148,6 @@ export default class extends wepy.app {
   getLogin (cb) {
     wepy.login({
       success: (res) => {
-        console.log(res.code)
         cb && cb(res.code)
         // 发送code
       },
@@ -164,14 +161,16 @@ export default class extends wepy.app {
     })
   }
 
-  getUserInfo(e, code, cb) {
+  getUserInfo(e, code, refrenceCode, cb) {
     // this.globalData.userInfo = e.detail.userInfo
-    console.log(e, code)
+    console.log(e, code, refrenceCode)
     var data = {
       jscode: code,
       encryptedData: e.detail.encryptedData,
-      iv: e.detail.iv
+      iv: e.detail.iv,
+      referenceId: refrenceCode
     }
+    console.log(data)
     this.HttpRequest.SendCode(data).then((res) => {
       console.log(res)
       if (res.data.error === 0) {
@@ -223,10 +222,14 @@ export default class extends wepy.app {
   }
 
   // 返回当前token
-  getToken (error) {
+  getToken (error, refrence) {
+    var refrenceCode = ''
+    if (refrence) {
+      refrenceCode = refrence
+    }
     if (wepy.getStorageSync('token') === '') {
       wepy.navigateTo({
-        url: './login'
+        url: './login?refrenceCode=' + refrenceCode
       })
     } else {
       if (!this.refreshToken() || error === -1) {
@@ -246,12 +249,13 @@ export default class extends wepy.app {
   getUserLevel (token, cb) {
     var _this = this
     this.HttpRequest.GetUserInfo({token: token}).then((res) => {
+      console.log(res)
       if (res.data.error === 0) {
         _this.globalData.userLevel = res.data.data.level
         _this.globalData.userHash = res.data.data.hash
         _this.globalData.vipEnd = res.data.data.vipEnd
         _this.globalData.reduction = res.data.data.reduction
-        console.log(_this.globalData.userLevel)
+        _this.globalData.memberId = res.data.data.memberId
         cb && cb()
       }
     })
@@ -277,7 +281,7 @@ export default class extends wepy.app {
       icon: 'loading'
     })
   }
-  showSuccess () {
+  hideLoading () {
     wepy.hideLoading()
   }
   showFail (error) {

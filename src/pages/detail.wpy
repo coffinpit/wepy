@@ -12,7 +12,7 @@
                 <image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527831070072&di=c17eebe9d6f522ae2ba17b1df2451ae4&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F18%2F05%2F63%2F13K58PICkUA_1024.jpg" mode="aspectFill"></image>
                 </view>
               </view>
-              <view class="video-layer {{showVideo ? 'hidden': ''}}"><video id="myVideo" src="http://pic.ibaotu.com/00/63/01/12h888piCneY.mp4" controls id="video" @pause="stopVideo" @ended="stopVideo" initial-time="{{initTime}}"></video></view>
+              <view class="video-layer {{showVideo ? 'hidden': ''}}"><video id="myVideo" src="http://pic.ibaotu.com/00/63/01/12h888piCneY.mp4" controls id="video" @pause="stopVideo" @ended="stopVideo" @error="errorVideo"></video></view>
             </swiper-item>
              <swiper-item>
               <image src="{{detail.path}}" mode="aspectFill"></image>
@@ -130,7 +130,7 @@
         <repeat for="{{detail.goodList}}" item="item" index="index">
           <view class="popup_layer">
             <view class="goods-name {{item.num === 0 ? 'none' : ''}}">{{item.name}}</view>
-            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="{{item.num === 0? '#ccc' : '#fc5e43'}}" checked="{{item.checked}}" disabled="{{item.num === 0? true : false}}"></radio></view>
+            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="{{item.num === 0? '#ccc' : '#ec3d3a'}}" checked="{{item.checked}}" disabled="{{item.num === 0? true : false}}"></radio></view>
           </view>
         </repeat>
       </radio-group>
@@ -189,11 +189,11 @@
       swiperOpt: {
         autoplay: false,
         interval: 3000,
-        duration: 1000,
+        duration: 500,
         currentTab: 0,
         indicatorDots: true,
         indicatorColor: '#cccccc',
-        indicatorActive: '#ff6600'
+        indicatorActive: '#fc5e60'
       },
       token: '',
       pageId: '',
@@ -238,8 +238,9 @@
       isLoaded: false,
       videoContext: '',
       showVideo: true,
-      initTime: 0,
-      swiperStop: true
+      swiperStop: true,
+      refrenceCode: '',
+      memberId: ''
     }
     methods = {
       collectTap () {
@@ -347,11 +348,20 @@
         this.swiperStop = false
         this.showVideo = true
         this.videoContext.pause()
+        this.videoContext.seek(0)
       },
       swiperEnd () {
         this.swiperStop = true
-        this.initTime = 0
-        console.log(this.swiperStop)
+      },
+      errorVideo () {
+        wepy.showModal({
+          title: '提示',
+          content: '播放失败，请稍候重试',
+          showCancel: false,
+          success: (res) => {
+            this.showVideo = true
+          }
+        })
       }
     }
     initCartData () {
@@ -366,7 +376,7 @@
       this.cartNum = result.length > 0 ? 1 : 0
     }
     initData (cb) {
-      this.token = this.$parent.getToken()
+      this.token = this.$parent.getToken(0, this.refrenceCode)
       this.$parent.showLoading()
       var _this = this
       var data = {
@@ -375,7 +385,7 @@
       }
       this.$parent.HttpRequest.DetailHttp(data).then((res) => {
         console.log(res)
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         this.detail.goodList = []
         if (res.data.error === 0) {
           _this.isLoaded = true
@@ -430,7 +440,7 @@
           }
         }
       }).catch(() => {
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         _this.$parent.showFail()
       })
     }
@@ -521,11 +531,14 @@
     onShareAppMessage (res) {
       return {
         title: this.detail.title,
-        path: '/pages/detail?id=' + this.pageId
+        path: '/pages/detail?id=' + this.pageId + '&refrenceCode=' + this.memberId
       }
     }
     onLoad (id) {
       this.pageId = id.id
+      if (id.refrenceCode) {
+        this.refrenceCode = id.refrenceCode
+      }
       this.$parent.pageRoot = true
       var _this = this
       wepy.getSystemInfo({
@@ -540,6 +553,7 @@
     }
     onShow () {
       this.userLevel = this.$parent.globalData.userLevel
+      this.memberId = this.$parent.globalData.memberId
       this.initData()
       this.$apply()
     }

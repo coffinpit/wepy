@@ -82,7 +82,7 @@
       }
       this.$parent.HttpRequest.GetNotice(data).then((res) => {
         console.log(res)
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         if (res.data.error === 0) {
           _this.systemNotice = []
           _this.orderNotice = []
@@ -109,7 +109,7 @@
         }
         _this.$apply()
       }).catch(() => {
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         _this.$parent.showFail()
       })
     }

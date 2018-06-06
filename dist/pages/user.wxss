@@ -8,7 +8,7 @@
 }
 .user-logo {
   padding: 20rpx 30rpx 30rpx;
-  background: #fc5e43;
+  background: #ec3d3a;
   width: 100%;
   box-sizing: border-box;
   height: 160rpx;
@@ -76,7 +76,7 @@
   vertical-align: middle;
 }
 .user-level .iconfont.vip {
-  color: #fc5e43;
+  color: #ec3d3a;
 }
 .user-level view {
   width: 580rpx;
@@ -135,7 +135,7 @@
   margin: 16rpx 20rpx 0 0;
   width: 40rpx;
   height: 40rpx;
-  background: #fc5e43;
+  background: #ec3d3a;
   border-radius: 50%;
   font-size: 24rpx;
   color: #ffffff;

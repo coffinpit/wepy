@@ -37,7 +37,7 @@
   line-height: 260rpx;
   text-align: center;
   z-index: 1;
-  background: #fc5e43;
+  background: #ec3d3a;
   transition: 0.3s right ease-in;
 }
 .collect .collect-check .font-normal {

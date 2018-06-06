@@ -26,8 +26,8 @@
   display: inline-block;
 }
 .notice-type view.active {
-  border-bottom: 2px #fc5e43 solid;
-  color: #fc5e43;
+  border-bottom: 2px #ec3d3a solid;
+  color: #ec3d3a;
 }
 .notice {
   padding: 20rpx;
@@ -41,7 +41,7 @@
   font-size: 40rpx;
   line-height: 60rpx;
   border-radius: 50%;
-  background: #fc5e43;
+  background: #ec3d3a;
   margin-right: 20rpx;
   text-align: center;
   color: #ffffff;

@@ -11,7 +11,7 @@
     </view>
     <view class="cart-status" wx:else>
       <text class="font-normal">成为超级会员，本单仅需 <text class="font-normal link font-bold">￥{{memberPrice}}</text></text>
-      <view class="default-button">加入会员</view>
+      <view class="default-button" bindtap="goApplyVip">加入会员</view>
     </view>
     <block wx:for="{{order}}" wx:for-index="index" wx:for-item="item" wx:key="key">
       <view class="cart-list" wx:if="{{!item.isNull}}">

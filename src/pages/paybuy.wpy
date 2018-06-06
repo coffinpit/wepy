@@ -13,7 +13,7 @@
     </view>
     <view class="cart-status" wx:else>
       <text class="font-normal">成为超级会员，本单仅需 <text class="font-normal link font-bold">￥{{memberPrice}}</text></text>
-      <view class="default-button">加入会员</view>
+      <view class="default-button" @tap="goApplyVip">加入会员</view>
     </view>
     <repeat for="{{order}}" item="item" index="index">
       <view class="cart-list" wx:if="{{!item.isNull}}">
@@ -113,6 +113,11 @@
           url: './address?page=paybuy' + '&sourceType=' + this.sourceType + '&sourceId=' + this.sourceId + '&count=' + this.count
         })
       },
+      goApplyVip () {
+        wepy.navigateTo({
+          url: './applyVip'
+        })
+      },
       goPay () {
         this.token = this.$parent.getToken()
         if (!this.user.areaId) {
@@ -198,7 +203,7 @@
         buyCount: this.count
       }
       this.$parent.HttpRequest.ApplyOrderBuy(data).then((res) => {
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         if (res.data.error === 0) {
           var data = res.data.data
           _this.reduction = data.reduction
@@ -232,7 +237,7 @@
           })
         }
       }).catch(() => {
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         _this.$parent.showFail()
       })
     }

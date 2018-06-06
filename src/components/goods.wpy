@@ -40,7 +40,6 @@
       }
     }
     onLoad () {
-      console.log(this.goodsItem)
       this.$apply()
     }
   }

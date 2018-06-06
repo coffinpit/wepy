@@ -21,7 +21,7 @@
       width:40rpx;
       height: 40rpx;
       border-radius: 50%;
-      background: @orange;
+      background: @lightred;
       color:@white;
       font-size:@smallSize;
       text-align: center;
@@ -124,9 +124,23 @@
   .border-btm-gray(@lightgray);
 }
 .orderTotal{
-  padding:20rpx;
+  padding:20rpx 0;
   background: @white;
   text-align: right;
+  overflow: hidden;
+  position: relative;
+  .status-layer{
+    position: absolute;
+    top:50%;
+    right:20rpx;
+    transform:translateY(-50%);
+  }
+  .icon-me_dd{
+    font-size:110rpx;
+    margin-left:-14rpx;
+    color:@lightgray;
+    float:left;
+  }
 }
 .edit-button{
   margin-top:20rpx;
@@ -147,6 +161,7 @@
   }
   .blank-button-hover{
     background: transparent;
-    .border-ard-gray(@orange);
+    color:@lightred;
+    .border-ard-gray(@lightred);
   }
 }

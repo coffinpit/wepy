@@ -169,7 +169,7 @@ page {
   margin-bottom: 0;
 }
 .default-button {
-  background: #fc5e43;
+  background: #ec3d3a;
   color: #ffffff;
   font-size: 28rpx;
   line-height: 48rpx;
@@ -177,12 +177,11 @@ page {
   margin: 0;
 }
 .default-button-hover {
-  background: #ff4a2d;
-  color: #f6edeb;
+  background: #ff2400;
 }
 .blank-button {
-  border: 1px #fc5e43 solid;
-  color: #fc5e43;
+  border: 1px #ec3d3a solid;
+  color: #ec3d3a;
   font-size: 28rpx;
   line-height: 44rpx;
   border-radius: 0;
@@ -191,13 +190,13 @@ page {
   padding: 0 20rpx;
 }
 .blank-button-hover {
-  background: #fc5e43;
+  background: #ff2400;
   color: #ffffff;
 }
 .white-button {
-  border: 1px #fc5e43 solid;
+  border: 1px #ec3d3a solid;
   background: #ffffff;
-  color: #fc5e43;
+  color: #ec3d3a;
   font-size: 28rpx;
   line-height: 48rpx;
   border-radius: 0;
@@ -231,7 +230,7 @@ page {
   line-height: 44rpx;
 }
 .link {
-  color: #fc5e43 !important;
+  color: #ec3d3a !important;
 }
 .font-bold {
   font-weight: 700;
@@ -265,7 +264,7 @@ button::after {
 .goods-promot .goods-promot-image {
   width: 40rpx;
   height: 40rpx;
-  border: 1px #fc5e43 solid;
+  border: 1px #ec3d3a solid;
   border-radius: 50%;
   background: #ffffff;
   position: absolute;
@@ -281,7 +280,7 @@ button::after {
   top: 6rpx;
 }
 .goods-promot .goods-info {
-  background: #fc5e43;
+  background: #ec3d3a;
   color: #ffffff;
   font-size: 24rpx;
   line-height: 36rpx;

@@ -70,5 +70,5 @@
   color: #666666;
 }
 .search-layer .search-button .search-confirm {
-  color: #fc5e43;
+  color: #ec3d3a;
 }

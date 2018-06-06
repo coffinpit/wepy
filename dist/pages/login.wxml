@@ -2,8 +2,9 @@
   <view class="login-container">
     <view class="login">
       <view class="app-info">
-        <image class="app-logo" src="http://p33mnuvro.bkt.clouddn.com/2018/5/hmktt29nt2.jpg" mode="widthFix"/>
-        <text class="app-name">正善小程序</text>
+        <image class="app-logo" src="../image/login_bg.png" mode="widthFix"/>
+        <!-- <text class="app-name">正善小程序</text> -->
+        <image class="logo" src="../image/logo.png"/>
       </view>
       <view class="alert"  wx:if="{{!isNull}}">
         <view class="alert-title">网页由该小程序开发</view>

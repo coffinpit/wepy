@@ -114,7 +114,7 @@
       this.$parent.HttpRequest.GetMarkSpu(data).then((res) => {
         console.log(res)
         _this.isLoading = false
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         if (res.data.error === 0) {
           var data = res.data.data
           _this.totalPageNum = data.totalPageNum
@@ -149,7 +149,7 @@
         }
         _this.$apply()
       }).catch(() => {
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         _this.isLoading = false
         _this.$parent.showFail()
       })

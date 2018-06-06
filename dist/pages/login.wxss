@@ -18,16 +18,20 @@ page {
 .app-info .app-logo {
   display: block;
   width: 100%;
-  margin-bottom: 40rpx;
 }
 .app-info .app-name {
   font-size: 36rpx;
   color: #333333;
 }
+.app-info .logo {
+  width: 200rpx;
+  height: 200rpx;
+  display: block;
+  margin: 0 auto;
+}
 .alert {
-  padding: 40rpx;
+  padding: 0 40rpx;
   text-align: center;
-  border-top: 1px #eeeeee solid;
 }
 .alert .alert-title {
   font-weight: 400;
@@ -47,7 +51,7 @@ page {
   color: #999999;
 }
 .login-btn {
-  background: #fe5946;
+  background: #ec3d3a;
   border-radius: 0;
   color: #ffffff;
   line-height: 90rpx;
@@ -56,8 +60,7 @@ page {
   font-size: 32rpx;
 }
 .login-btn-active {
-  background: #e8412d;
-  color: #f6eceb;
+  background: #ff2400;
 }
 .logged {
   margin-top: 200rpx;

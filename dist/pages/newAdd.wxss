@@ -54,7 +54,7 @@
   color: #999999;
 }
 .icon-shoucang {
-  color: #fc5e43;
+  color: #fc8d43;
   font-size: 28rpx;
   display: inline-block;
   margin-right: 10rpx;

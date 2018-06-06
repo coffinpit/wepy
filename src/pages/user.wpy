@@ -214,7 +214,7 @@
       }
       this.$parent.HttpRequest.GetUserOrder(data).then((res) => {
         console.log(res)
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         if (res.data.error === 0) {
           var data = res.data.data
           _this.refunding = data.refunding
@@ -229,7 +229,7 @@
         }
         _this.$apply()
       }).catch(() => {
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         _this.$parent.showFail()
       })
     }
@@ -252,12 +252,12 @@
       this.$apply()
     }
     onShow () {
-      if (this.$parent.globalData.userLevel === 0) {
-        this.isVip = false
-      } else if (this.$parent.globalData.userLevel === 1) {
-        this.isVip = true
-      }
-      console.log(this.$parent.globalData.userLevel)
+      // if (this.$parent.globalData.userLevel === 0) {
+      //   this.isVip = false
+      // } else if (this.$parent.globalData.userLevel === 1) {
+      //   this.isVip = true
+      // }
+      // console.log(this.$parent.globalData.userLevel)
       this.initUserData()
       this.initUserOrder()
       this.$apply()

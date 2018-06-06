@@ -20,15 +20,19 @@
               </view>
             </view>
             <view class="order-edit">
-              <text class="iconfont icon-me_dd {{item.status === 3 ? 'hidden' : ''}}"></text>
-              <text class="font-normal" wx:if="{{item.status === 1 || item.status === 4}}">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
-              <text class="font-normal" wx:else>实付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
-              <view class="edit-button {{item.status === 3 ? 'hidden' : ''}}">
-                <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1}}" @tap="goAddress({{item.id}})">修改地址</button>
-                <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="cancel({{item.id}})">取消订单</button>
-                <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}" @tap="goLogistic({{item.id}})">查看物流</button>
-                <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
-                <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" @tap="goPay({{item.id}})">付款</button>
+              <text class="iconfont icon-me_dd"></text>
+              <view class="status-layer">
+                <text class="font-normal" wx:if="{{item.status === 1 || item.status === 4}}">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+                <text class="font-normal" wx:else>实付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+                <view class="edit-button">
+                  <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1}}" @tap="goAddress({{item.id}})">修改地址</button>
+                  <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="cancel({{item.id}})">取消订单</button>
+                  <view wx:if="{{item.needAdd}}">
+                    <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}" @tap="goLogistic({{item.id}}, {{item.status}})">查看物流</button>
+                  </view>
+                  <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
+                  <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" @tap="goPay({{item.id}})">付款</button>
+                </view>
               </view>
             </view>
           </view>
@@ -127,9 +131,9 @@
           url: './address?page=order&id=' + id
         })
       },
-      goLogistic (id) {
+      goLogistic (id, status) {
         wepy.navigateTo({
-          url: './logistica?id=' + id
+          url: './logistica?id=' + id + '&status=' + status
         })
       },
       goPay (id) {
@@ -208,7 +212,7 @@
       this.$parent.HttpRequest.GetOrderStatus(data).then((res) => {
         console.log(res)
         _this.isLoading = false
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         if (res.data.error === 0) {
           var data = res.data.data
           _this.totalPageNum = data.totalPageNum
@@ -219,6 +223,7 @@
             obj.pay = item.pay
             obj.freight = item.freight
             obj.status = item.status
+            obj.needAdd = item.isNeedAddress
             obj.statusTxt = _this.orderStatus[item.status]
             obj.count = item.buyingRecords.length
             obj.orderDetail = _this.initChild(item.buyingRecords)
@@ -232,7 +237,7 @@
         }
         _this.$apply()
       }).catch(() => {
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         _this.isLoading = false
         _this.$parent.showFail()
       })

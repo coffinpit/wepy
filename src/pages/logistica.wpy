@@ -1,111 +1,4 @@
-<style lang="less">
-  .container {
-    min-height:calc(100vh);
-    display:block;
-  }
-  .package{
-    width:100%;
-    white-space:nowrap;
-    overflow:hidden;
-    line-height:90rpx;
-    font-size:28rpx;
-    color:#333;
-    height:94rpx;
-    background: #fff;
-    margin-bottom: 20rpx;
-    view{
-      width:190rpx;
-      margin:0 30rpx;
-      box-sizing:border-box;
-      text-align:center;
-      float:left;
-      &.active{
-        border-bottom: 2px #fe5946 solid;
-        color: #fe5946;
-      }
-    }
-  }
-  .lg-container {
-    background: #fff;
-    padding-bottom: 20rpx;
-    .lgtitle{
-      padding:20rpx;
-      border-bottom: 1px #eee solid;
-      background: #fff;
-      margin-bottom: 20rpx;
-      .right{
-        text-align: right;
-        width:40%;
-      }
-      .left{
-        width:60%;
-      }
-      text{
-        display: inline-block;
-      }
-    }
-  }
-.lgdetail{
-    position: relative;
-    padding:0 20rpx;
-    view{
-      display: inline-block;
-    }
-    .lgcontent{
-      width:100%;
-      padding:20rpx 0;
-    }
-    .timeline{
-      position: absolute;
-      width:1px;
-      top:0;
-      left:204rpx;
-      background: #eee;
-      height:100%;
-      z-index: 1;
-    }
-    .left{
-      width:162rpx;
-      vertical-align: top;
-      padding-top:4rpx;
-      text{
-        display: block;
-      }
-    }
-    .middle{
-      width:71rpx;
-      position: relative;
-      z-index: 99;
-      vertical-align: top;
-      padding-top:4rpx;
-      .status{
-        width:40rpx;
-        height:40rpx;
-        border:1px #eee solid;
-        text-align: center;
-        line-height: 40rpx;
-        border-radius: 50%;
-        background: #fff;
-        &.active{
-          border:1px #fc5e43 solid;
-          background: #fc5e43;
-          .iconfont{
-            color:#fff;
-            font-size: 30rpx;
-          }
-        }
-        .iconfont{
-          font-size:20rpx;
-          color:#ccc;
-          vertical-align: middle;
-        }
-      }
-    }
-    .right{
-      width:467rpx;
-    }
-  }
-</style>
+<style lang="less" src="../less/logistica.less"></style>
 <template>
   <view class="container" wx:if="{{isLoading}}">
     <scroll-view scroll-x class="package">
@@ -159,7 +52,8 @@
       orderId: '',
       logistic: [],
       status: [],
-      isLoading: false
+      isLoading: false,
+      orderStatus: ''
     }
     components = {
       orderList: OrderList
@@ -189,7 +83,7 @@
       }
       this.$parent.HttpRequest.GetLogistic(data).then((res) => {
         console.log(res)
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         if (res.data.error === 0) {
           var data = res.data.data
           data.forEach((item) => {
@@ -209,7 +103,7 @@
         }
         _this.$apply()
       }).catch(() => {
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         _this.$parent.showFail()
       })
     }
@@ -262,6 +156,8 @@
     }
     onLoad (id) {
       this.orderId = id.id
+      this.orderStatus = id.status
+      console.log(this.orderStatus)
       this.$apply()
     }
     onShow () {

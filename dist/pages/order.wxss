@@ -27,8 +27,8 @@
   float: left;
 }
 .order-status view.active {
-  border-bottom: 2px #fc5e43 solid;
-  color: #fc5e43;
+  border-bottom: 2px #ec3d3a solid;
+  color: #ec3d3a;
 }
 .cart-list {
   width: 100%;
@@ -95,6 +95,13 @@
   border: 1px #eeeeee solid;
   padding: 20rpx 0;
   overflow: hidden;
+  position: relative;
+}
+.order-edit .status-layer {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
 }
 .order-edit .icon-me_dd {
   font-size: 110rpx;
@@ -106,9 +113,9 @@
 .order-edit .edit-button {
   float: right;
   margin-right: 20rpx;
+  line-height: 60rpx;
 }
 .order-edit .edit-button {
-  margin-top: 20rpx;
   width: 80%;
 }
 .order-edit .edit-button button {
@@ -125,7 +132,8 @@
 }
 .order-edit .edit-button .blank-button-hover {
   background: transparent;
-  border: 1px #fc5e43 solid;
+  color: #ec3d3a;
+  border: 1px #ec3d3a solid;
 }
 .hidden {
   display: none;

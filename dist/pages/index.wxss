@@ -16,7 +16,7 @@ image {
 }
 .index-swiper {
   height: 347rpx;
-  border-bottom: 3px #fc5e43 solid;
+  border-bottom: 3px #ec3d3a solid;
 }
 .index-swiper image {
   height: 347rpx;
@@ -33,8 +33,8 @@ image {
   font-size: 28rpx;
 }
 .top_nav-container .top_nav_active {
-  border-bottom: 2px #fc5e43 solid;
-  color: #fc5e43;
+  border-bottom: 2px #ec3d3a solid;
+  color: #ec3d3a;
 }
 .index-promot {
   position: relative;

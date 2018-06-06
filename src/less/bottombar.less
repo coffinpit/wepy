@@ -6,13 +6,14 @@
     left:0;
     width:100%;
     height:116rpx;
-    background:#111111;
+    background:@whitegray;
     display:flex;
     font-size:28rpx;
     color:@white;
     z-index: 9999999;
     .contact{
       width:15%;
+      .border-tp-gray(@lightgray);
       button{
         font-size:@baseSize;
         color:@white;
@@ -24,7 +25,7 @@
         color:@white;
       }
       .iconfont{
-        color:@white;
+        color:@lightred;
         font-size:72rpx;
       }
       .icon-kefu{
@@ -32,24 +33,24 @@
       }
       .contact-active{
         .iconfont{
-          color:@orange;
+          color:@red;
         }
       }
     }
     .goCart{
       width:15%;
-      .border-rg-gray(@darkgray);
+      .border-tp-gray(@lightgray);
       .goCart-icon{
         position:relative;
         .icon-ksj_gwc{
-          color:@white;
+          color:@dark;
           font-size:66rpx;
           margin-top:18rpx;
           display:inline-block;
         }
         .goCart-txt{
           font-size:@baseSize;
-          color:@white;
+          color:@dark;
           display:block;
         }
         .cart-count{
@@ -57,7 +58,7 @@
           top: 14rpx;
           right:32rpx;
           line-height:38rpx;
-          background:@orange;
+          background:@lightred;
           color:@white;
           text-align:center;
           border-radius:40rpx;
@@ -80,8 +81,9 @@
       line-height:116rpx;
       font-size:@largeSize;
       text-align:center;
+      background: @orange;
     }
     .buy{
-      background:@orange;
+      background:@lightred;
     }
   }

@@ -1,0 +1,108 @@
+@import "variables.less";
+
+.container {
+    min-height:calc(100vh);
+    display:block;
+  }
+  .package{
+    width:100%;
+    white-space:nowrap;
+    overflow:hidden;
+    line-height:90rpx;
+    font-size:28rpx;
+    color:@dark;
+    height:94rpx;
+    background: @white;
+    margin-bottom: 20rpx;
+    view{
+      width:190rpx;
+      margin:0 30rpx;
+      box-sizing:border-box;
+      text-align:center;
+      float:left;
+      &.active{
+        border-bottom: 2px @lightred solid;
+        color: @lightred;
+      }
+    }
+  }
+  .lg-container {
+    background: @white;
+    padding-bottom: 20rpx;
+    .lgtitle{
+      padding:20rpx;
+      border-bottom: 1px @lightgray solid;
+      background: @white;
+      margin-bottom: 20rpx;
+      .right{
+        text-align: right;
+        width:40%;
+      }
+      .left{
+        width:60%;
+      }
+      text{
+        display: inline-block;
+      }
+    }
+  }
+.lgdetail{
+    position: relative;
+    padding:0 20rpx;
+    view{
+      display: inline-block;
+    }
+    .lgcontent{
+      width:100%;
+      padding:20rpx 0;
+    }
+    .timeline{
+      position: absolute;
+      width:1px;
+      top:0;
+      left:204rpx;
+      background: @lightgray;
+      height:100%;
+      z-index: 1;
+    }
+    .left{
+      width:162rpx;
+      vertical-align: top;
+      padding-top:4rpx;
+      text{
+        display: block;
+      }
+    }
+    .middle{
+      width:71rpx;
+      position: relative;
+      z-index: 99;
+      vertical-align: top;
+      padding-top:4rpx;
+      .status{
+        width:40rpx;
+        height:40rpx;
+        border:1px @lightgray solid;
+        text-align: center;
+        line-height: 40rpx;
+        border-radius: 50%;
+        background: @white;
+        &.active{
+          border:1px @lightred solid;
+          background: @lightred;
+          .iconfont{
+            color:@white;
+            font-size: 30rpx;
+          }
+        }
+        .iconfont{
+          font-size:20rpx;
+          color:@gray;
+          vertical-align: middle;
+        }
+      }
+    }
+    .right{
+      width:467rpx;
+    }
+  }

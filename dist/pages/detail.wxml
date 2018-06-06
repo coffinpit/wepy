@@ -21,7 +21,7 @@
                 <image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527831070072&di=c17eebe9d6f522ae2ba17b1df2451ae4&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F18%2F05%2F63%2F13K58PICkUA_1024.jpg" mode="aspectFill"/>
                 </view>
               </view>
-              <view class="video-layer {{showVideo ? 'hidden': ''}}"><video id="video" src="http://pic.ibaotu.com/00/63/01/12h888piCneY.mp4" controls bindpause="stopVideo" bindended="stopVideo" initial-time="{{initTime}}"/></view>
+              <view class="video-layer {{showVideo ? 'hidden': ''}}"><video id="video" src="http://pic.ibaotu.com/00/63/01/12h888piCneY.mp4" controls bindpause="stopVideo" bindended="stopVideo" binderror="errorVideo"/></view>
             </swiper-item>
              <swiper-item>
               <image src="{{detail.path}}" mode="aspectFill"/>
@@ -165,7 +165,7 @@
         <block wx:for="{{detail.goodList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
           <view class="popup_layer">
             <view class="goods-name {{item.num === 0 ? 'none' : ''}}">{{item.name}}</view>
-            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="{{item.num === 0? '#ccc' : '#fc5e43'}}" checked="{{item.checked}}" disabled="{{item.num === 0? true : false}}"/></view>
+            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="{{item.num === 0? '#ccc' : '#ec3d3a'}}" checked="{{item.checked}}" disabled="{{item.num === 0? true : false}}"/></view>
           </view>
         </block>
       </radio-group>

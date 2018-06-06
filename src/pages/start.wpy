@@ -199,7 +199,7 @@
         this.$parent.HttpRequest.LoginByPhone(data).then((res) => {
           console.log(res)
           if (res.data.error === 0) {
-            _this.$parent.showSuccess()
+            _this.$parent.hideLoading()
             var token = res.data.data.token
             var timeOut = res.data.data.timeOut
             wepy.setStorageSync('token', token)
@@ -208,7 +208,7 @@
             _this.$parent.getUserLevel(token)
             _this.goIndex()
           } else {
-            _this.$parent.showSuccess()
+            _this.$parent.hideLoading()
             wepy.showToast({
               title: '登录失败',
               icon: 'none',

@@ -15,7 +15,7 @@
   width: 30rpx;
   padding: 10rpx;
   display: inline-block;
-  background: #fc5e43;
+  background: #ec3d3a;
   border-radius: 20rpx 0  0 20rpx;
   line-height: 28rpx;
   vertical-align: bottom;

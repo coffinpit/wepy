@@ -54,7 +54,7 @@ page {
   background: rgba(0, 0, 0, 0.5);
 }
 .category-tab .category-tab-list.active {
-  background: rgba(252, 94, 67, 0.8);
+  background: rgba(236, 61, 58, 0.8);
 }
 .category-tab .category-tab-list .category-tab-title {
   min-height: 100rpx;
@@ -95,7 +95,7 @@ page {
 }
 .category-tab-item .category-tab-page .catrgory-tab-link.current text {
   display: inline-block;
-  border-bottom: 5rpx #fc5e43 solid;
+  border-bottom: 5rpx #ec3d3a solid;
 }
 .goods-title {
   text-align: center;

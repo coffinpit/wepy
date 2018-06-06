@@ -118,7 +118,7 @@
       }
       this.$parent.HttpRequest.SearchHttp(data).then((res) => {
         console.log(res)
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         if (res.data.error === 0) {
           _this.totalPageNum = res.data.data.totalPageNum
           var data = res.data.data.spus
@@ -151,7 +151,7 @@
         }
         _this.$apply()
       }).catch(() => {
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         _this.$parent.showFail()
       })
     }

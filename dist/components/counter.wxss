@@ -18,7 +18,7 @@
   float: left;
 }
 .counter .temp-input {
-  color: #fc5e43;
+  color: #ec3d3a;
   position: absolute;
   left: 98rpx;
   top: 2rpx;
@@ -30,7 +30,7 @@
   width: 20rpx;
 }
 .counter .number {
-  color: #fc5e43;
+  color: #ec3d3a;
   width: 67rpx;
   height: 70rpx;
   vertical-align: middle;

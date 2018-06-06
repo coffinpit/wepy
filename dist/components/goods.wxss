@@ -58,7 +58,7 @@
   font-size: 28rpx;
 }
 .goods .goods-detail .goods-detail-price .price {
-  color: #fc5e43;
+  color: #ec3d3a;
   font-weight: 500;
 }
 .goods .goods-detail .goods-detail-oldprice {

@@ -20,8 +20,8 @@
     text-align:center;
     float:left;
     &.active{
-      border-bottom: 2px @orange solid;
-      color: @orange;
+      border-bottom: 2px @lightred solid;
+      color: @lightred;
     }
   }
 }
@@ -90,6 +90,13 @@
   .border-ard-gray(@lightgray);
   padding:20rpx 0;
   overflow:hidden;
+  position: relative;
+  .status-layer{
+    position: absolute;
+    top:50%;
+    right:0;
+    transform:translateY(-50%);
+  }
   .icon-me_dd{
     font-size:110rpx;
     margin-left:-14rpx;
@@ -99,9 +106,9 @@
   .font-normal, .edit-button{
     float:right;
     margin-right:20rpx;
+    line-height: 60rpx;
   }
   .edit-button{
-    margin-top:20rpx;
     width:80%;
     button{
       margin:0;
@@ -117,7 +124,8 @@
     }
     .blank-button-hover{
       background: transparent;
-      .border-ard-gray(@orange);
+      color:@lightred;
+      .border-ard-gray(@lightred);
     }
   }
 }

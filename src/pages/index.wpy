@@ -80,7 +80,7 @@
         currentTab: 0,
         indicatorDots: true,
         indicatorColor: '#cccccc',
-        indicatorActive: '#ff6600'
+        indicatorActive: '#ec3d3a'
       },
       goods: [],
       loaded: false,
@@ -117,6 +117,7 @@
     }
     onShow () {
       this.userLevel = this.$parent.globalData.userLevel
+      this.vipEnd = this.$parent.dateFormat(this.$parent.globalData.vipEnd * 1000, 'Y年m月d日')
       this.currentPage = 0
       this.isLoading = false
       this.initPage()
@@ -147,12 +148,12 @@
         pageSize: '5'
       }
       parent.HttpRequest.IndexHttp(data, () => {
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         _this.$parent.showFail()
         _this.isNull = true
       }).then((res) => {
         console.log(res)
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         if (res.data.error === 0) {
           _this.totalPageNum = res.data.data.totalPageNum
           var data = res.data.data.spus
@@ -188,7 +189,7 @@
         }
         _this.$apply()
       }).catch(() => {
-        _this.$parent.showSuccess()
+        _this.$parent.hideLoading()
         _this.$parent.showFail()
         _this.isNull = true
       })
@@ -241,7 +242,6 @@
       })
     }
     onLoad () {
-      this.vipEnd = this.$parent.dateFormat(this.$parent.globalData.vipEnd * 1000, 'Y年m月d日')
       this.$apply()
     }
   }

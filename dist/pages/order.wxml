@@ -45,15 +45,19 @@
               </view>
             </view>
             <view class="order-edit">
-              <text class="iconfont icon-me_dd {{item.status === 3 ? 'hidden' : ''}}"/>
-              <text class="font-normal" wx:if="{{item.status === 1 || item.status === 4}}">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
-              <text class="font-normal" wx:else>实付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
-              <view class="edit-button {{item.status === 3 ? 'hidden' : ''}}">
-                <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1}}" bindtap="goAddress" data-wpygoaddress-a="{{item.id}}">修改地址</button>
-                <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" bindtap="cancel" data-wpycancel-a="{{item.id}}">取消订单</button>
-                <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}" bindtap="goLogistic" data-wpygologistic-a="{{item.id}}">查看物流</button>
-                <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
-                <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" bindtap="goPay" data-wpygopay-a="{{item.id}}">付款</button>
+              <text class="iconfont icon-me_dd"/>
+              <view class="status-layer">
+                <text class="font-normal" wx:if="{{item.status === 1 || item.status === 4}}">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+                <text class="font-normal" wx:else>实付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+                <view class="edit-button">
+                  <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1}}" bindtap="goAddress" data-wpygoaddress-a="{{item.id}}">修改地址</button>
+                  <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" bindtap="cancel" data-wpycancel-a="{{item.id}}">取消订单</button>
+                  <view wx:if="{{item.needAdd}}">
+                    <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}" bindtap="goLogistic" data-wpygologistic-a="{{item.id}}" data-wpygologistic-b="{{item.status}}">查看物流</button>
+                  </view>
+                  <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
+                  <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" bindtap="goPay" data-wpygopay-a="{{item.id}}">付款</button>
+                </view>
               </view>
             </view>
           </view>
