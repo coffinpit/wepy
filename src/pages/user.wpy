@@ -96,7 +96,8 @@
       undelivered: '',
       unpaid: '',
       unreceipted: '',
-      isLogin: false
+      isLogin: false,
+      jscode: ''
     }
     methods = {
       goService () {
@@ -150,10 +151,19 @@
         })
       },
       bindGetUserInfo (e) {
+        console.log(e.detail)
         if (e.detail.userInfo) {
           this.isLogin = false
           this.$parent.globalData.userInfo = e.detail.userInfo
           this.userInfo = e.detail.userInfo
+          var data = {
+            jscode: this.jscode,
+            encryptedData: e.detail.encryptedData,
+            iv: e.detail.iv
+          }
+          this.$parent.HttpRequest.SendUserInfo(data).then((res) => {
+            console.log(res)
+          })
         } else {
           this.isLogin = true
           wepy.showModal({
@@ -234,6 +244,9 @@
       })
     }
     onLoad () {
+      this.$parent.getLogin((code) => {
+        this.jscode = code
+      })
       var _this = this
       wepy.getSetting({
         success: (res) => {

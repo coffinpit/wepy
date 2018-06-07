@@ -6,14 +6,14 @@
 import wepy from 'wepy'
 import 'wepy-async-function'
 
-import { setStore } from 'wepy-redux'
-import configStore from './store'
+// import { setStore } from 'wepy-redux'
+// import configStore from './store'
 
 import HttpRequest from './service/HttpRequest'
 var Md5 = require('./service/md5')
 
-const store = configStore()
-setStore(store)
+// const store = configStore()
+// setStore(store)
 
 export default class extends wepy.app {
   config = {
@@ -148,6 +148,7 @@ export default class extends wepy.app {
   getLogin (cb) {
     wepy.login({
       success: (res) => {
+        console.log(res)
         cb && cb(res.code)
         // 发送code
       },

@@ -8,7 +8,7 @@ class HttpRequest extends wepy.app{
 		this.$$baseHtml = 'https://zstest.zsbutcher.cn/smartShopping/h5/'
 		this.$$path = {
 			time:'r=test',
-			//sendCode: 'https://zstest.zsbutcher.cn/smartWb/store/web/index.php?r=forlulu/encrypte-data',
+			sendUserInfo: 'https://zstest.zsbutcher.cn/smartWb/store/web/index.php?r=forlulu/encrypte-data',
 			sendCode: 'r=wechat/api-auth',
 			userlogin: 'r=member/api-get-token-by-phone',
 			indexList: 'r=recommend/api-get-spus',
@@ -70,7 +70,7 @@ class HttpRequest extends wepy.app{
 			str +=  key + '=' + newParam[key] + '&'
 		}
 		str += 'key=dzpkU5ItaFi4I5Goraehd8amhs5pZh1w'
-		var sign = Md5.hexMD5(str).toUpperCase()
+		var sign = Md5.md5(str).toUpperCase()
 		return sign
 	}
 	getData (res, param) {
@@ -85,7 +85,7 @@ class HttpRequest extends wepy.app{
 			newParam[item] = param[item]
 		})
 		var sign = JSON.stringify(newParam) + '^ZS2018LCJ'
-		newParam.signature = Md5.hexMD5(sign)
+		newParam.signature = Md5.md5(sign).toLowerCase()
 		return newParam
 	}
 	getTime () {
@@ -110,6 +110,28 @@ class HttpRequest extends wepy.app{
         		var data = _this.getData(res, param)
         		wepy.request({
 	            	url: this.$$base + this.$$path.sendCode,
+	            	method: 'POST',
+	            	header: {'content-type': 'application/x-www-form-urlencoded'},
+	            	data: data,
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+	            })
+        	}).catch(() => {
+        		cb && cb()
+        	})
+        })
+	}
+	SendUserInfo (param, cb) {
+		var _this = this
+        return new Promise((resolve, reject) => {
+        	_this.getTime().then((res) => {
+        		var data = _this.getData(res, param)
+        		wepy.request({
+	            	url: this.$$path.sendUserInfo,
 	            	method: 'POST',
 	            	header: {'content-type': 'application/x-www-form-urlencoded'},
 	            	data: data,
@@ -987,25 +1009,5 @@ class HttpRequest extends wepy.app{
 		})
 	}
 }
-// export default function RequestTest (params1, params2) {
-// 	return new Promise((resolve, reject) => {
-// 		wepy.request({
-// 		  url: 'https://www.madcoder.cn/tests/sleep.php?time=1&t=css&c=' + params1 + '&i=' + params2,
-// 		  success: (data) => {
-// 		  	resolve(data)
-// 		  }
-// 	    })
-// 	})
-// }
-
-// export default function UserLogin (param) {
-// 	return new Promise((resolve, reject) => {
-// 		wepy.login({
-// 		  success: (res) =>{
-// 		    resolve(res)
-// 		  }
-// 		})
-// 	})
-// } 
 
 export default HttpRequest

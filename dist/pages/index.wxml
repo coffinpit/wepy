@@ -8,7 +8,7 @@
     </view>
   </view>
 
-    <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" catchchange="changeBanner" class="index-swiper">
+    <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" circular="{{swiperOpt.circular}}" catchchange="changeBanner" class="index-swiper">
       <block wx:for="{{bannerLink}}" wx:for-index="index" wx:for-item="item" wx:key="key">
           <swiper-item>
             <navigator url="./detail?id={{item.detailId}}"><image src="{{item.path}}" mode="aspectFill"/></navigator>
@@ -106,7 +106,7 @@
     
   <view wx:if="{{isDown}}">
     <view class="isDown">
-      <text>—————————— 到底啦 ——————————</text>
+      <text>—————— 商品再好也是有底线的 ——————</text>
     </view>
   </view>
 

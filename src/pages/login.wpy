@@ -42,7 +42,6 @@
     methods = {
       login (e) {
         if (e.detail.encryptedData) {
-          console.log('login' + this.refrenceCode)
           this.$parent.getUserInfo(e, this.jscode, this.refrenceCode, () => {
             this.goIndex()
           })

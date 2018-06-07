@@ -3,7 +3,7 @@
 <template>
   <view class="container" wx:if="{{isLoading}}">
     <searchbar :pagefrom.sync="pageTitle"></searchbar>
-    <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" @change.stop="changeBanner" class="index-swiper">
+    <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" circular="{{swiperOpt.circular}}" @change.stop="changeBanner" class="index-swiper">
       <repeat for="{{bannerLink}}" index="index" item="item" key="key">
           <swiper-item>
             <navigator url="./detail?id={{item.detailId}}"><image src="{{item.path}}" mode="aspectFill"></image></navigator>
@@ -80,7 +80,8 @@
         currentTab: 0,
         indicatorDots: true,
         indicatorColor: '#cccccc',
-        indicatorActive: '#ec3d3a'
+        indicatorActive: '#ec3d3a',
+        circular: true
       },
       goods: [],
       loaded: false,

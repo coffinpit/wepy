@@ -73,7 +73,7 @@
       
   <view wx:if="{{isDown}}">
     <view class="isDown">
-      <text>—————————— 到底啦 ——————————</text>
+      <text>—————— 商品再好也是有底线的 ——————</text>
     </view>
   </view>
 
