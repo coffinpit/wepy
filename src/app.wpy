@@ -177,10 +177,11 @@ export default class extends wepy.app {
       if (res.data.error === 0) {
         var phoneNumber = res.data.data.phone
         wepy.setStorageSync('phone', phoneNumber)
-        var data = {
-          phone: phoneNumber
-        }
-        this.requestToken(data, cb)
+        cb && cb()
+        // var data = {
+        //   phone: phoneNumber
+        // }
+        // this.requestToken(data, cb)
       }
     }).catch(() => {
       wepy.showModal({

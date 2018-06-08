@@ -35,6 +35,8 @@
           return 'icon-me_xx'
         } else if (this.type === '7') {
           return 'icon-dz_sc'
+        } else if (this.type === '8') {
+          return 'icon-ksj_splb'
         }
       },
       typeTxt () {
@@ -52,6 +54,8 @@
           return '暂无任何消息'
         } else if (this.type === '7') {
           return '暂无发票信息'
+        } else if (this.type === '8') {
+          return '该商品已下架'
         }
       }
     }

@@ -1,4 +1,7 @@
 <style lang="less" src="../less/logistica.less"></style>
+<style lang="less">
+  
+</style>
 <template>
   <view class="container" wx:if="{{isLoading}}">
     <scroll-view scroll-x class="package">

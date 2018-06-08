@@ -7,7 +7,7 @@ page {
   background: #ffffff;
 }
 .login-container {
-  height: 100%;
+  height: calc(100vh);
   background: #ffffff;
 }
 .app-info {
@@ -19,19 +19,35 @@ page {
   display: block;
   width: 100%;
 }
-.app-info .app-name {
-  font-size: 36rpx;
-  color: #333333;
-}
-.app-info .logo {
+.logo {
   width: 200rpx;
   height: 200rpx;
   display: block;
   margin: 0 auto;
 }
 .alert {
-  padding: 0 40rpx;
   text-align: center;
+  position: relative;
+  height: 400rpx;
+}
+.alert .alert-layer {
+  position: absolute;
+  width: 100%;
+  height: 400rpx;
+  padding: 0 40rpx;
+  box-sizing: border-box;
+  left: 0;
+  top: 0;
+  transition: 0.5s left ease-in;
+}
+.alert .alert-layer.hidden {
+  left: -100%;
+}
+.alert .alert-layer.show {
+  left: 0;
+}
+.alert .alert-layer.unshow {
+  left: 100%;
 }
 .alert .alert-title {
   font-weight: 400;
@@ -76,4 +92,55 @@ page {
   color: #333333;
   text-align: center;
   margin: 20rpx 0;
+}
+.popup {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+}
+.popup__content {
+  position: fixed;
+  top: 50%;
+  left: 10%;
+  transition: 0.5s all ease-out;
+  transform: translateY(-50%);
+  width: 80%;
+  border-radius: 8rpx;
+  min-height: 500rpx;
+  background: #ffffff;
+  z-index: 9999999;
+}
+.app-name {
+  font-size: 36rpx;
+  color: #333333;
+  display: block;
+  padding: 20rpx 0;
+  text-align: center;
+  border-bottom: 1px #eeeeee solid;
+}
+.login-step {
+  width: 160rpx;
+  margin: 0 auto;
+  position: absolute;
+  bottom: 0rpx;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.login-step text {
+  display: inline-block;
+  text-align: center;
+  width: 60rpx;
+  height: 8rpx;
+  margin: 0 10rpx;
+  background: #ec3d3a;
+}
+.login-step text.active {
+  background: #ec3d3a;
+}
+.login-step text.unactive {
+  background: #cccccc;
 }

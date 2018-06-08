@@ -137,7 +137,8 @@
       orderId: '',
       isSending: true,
       time: 60,
-      isNull: true
+      isNull: true,
+      countTime: ''
     }
     components = {
       loading: Loading
@@ -166,14 +167,14 @@
               console.log(res)
               if (res.data.error === 0) {
                 _this.isSending = false
-                var countTime = setInterval(() => {
+                _this.countTime = setInterval(() => {
                   _this.time = _this.time - 1
                   _this.codeText = this.time + 's'
                   if (_this.time <= 0) {
                     _this.time = 60
                     _this.codeText = '发送验证码'
                     _this.isSending = true
-                    clearInterval(countTime)
+                    clearInterval(_this.countTime)
                   }
                   _this.$apply()
                 }, 1000)
@@ -238,6 +239,9 @@
         this.isNull = false
       }
       this.$apply()
+    }
+    onUnload () {
+      clearInterval(this.countTime)
     }
   }
 </script>

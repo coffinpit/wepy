@@ -9,12 +9,26 @@
         <image class="logo" src="../image/logo.png"></image>
       </view>
       <view class="alert" wx:if="{{!isNull}}">
-        <view class="alert-title">网页由该小程序开发</view>
-        <view class="alert-title">请确认授权以下信息</view>
-        <view class="alert-desc">
-          <view class="alert-text">获得你的公开信息（昵称、头像等）</view>
+        <view class="alert-layer {{hasPhone ? 'hidden' : ''}}">
+          <view class="alert-title">网页由正善小程序开发</view>
+          <view class="alert-title">请确认授权以下信息</view>
+          <view class="alert-desc">
+            <view class="alert-text">获得你的手机号作为登录帐号</view>
+          </view>
+          <button class="login-btn" open-type="getPhoneNumber" hover-class="login-btn-active" @getphonenumber="login">确认登录</button>
         </view>
-        <button class="login-btn" open-type="getPhoneNumber" hover-class="login-btn-active" @getphonenumber="login">确认登录</button>
+        <view class="alert-layer {{hasPhone ? 'show' : 'unshow'}}">
+          <view class="alert-title">网页由正善小程序开发</view>
+          <view class="alert-title">请确认授权以下信息</view>
+          <view class="alert-desc">
+            <view class="alert-text">获得你的公开信息（昵称、头像等）</view>
+          </view>
+          <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" class="login-btn" hover-class="login-btn-active" >绑定微信账号</button>
+        </view>
+        <view class="login-step">
+          <text class="{{hasPhone ? 'unactive' : 'active'}}"></text>
+          <text class="{{hasPhone ? 'active' : 'unactive'}}"></text>
+        </view> 
       </view>
       <view class="loading" wx:else>
         <loading></loading>
@@ -29,28 +43,73 @@
 
   export default class Login extends wepy.page {
     config = {
-      navigationBarTitleText: '欢迎'
+      navigationBarTitleText: '用户登录'
     }
     data = {
       isNull: true,
       jscode: null,
-      refrenceCode: ''
+      refrenceCode: '',
+      overflow: false,
+      hasPhone: false
     }
     components = {
       loading: Loading
     }
     methods = {
+      changeLogin (e) {
+        console.log(e)
+      },
       login (e) {
         if (e.detail.encryptedData) {
           this.$parent.getUserInfo(e, this.jscode, this.refrenceCode, () => {
-            this.goIndex()
+            // wepy.navigateTo({
+            //   url: './getUserInfo'
+            // })
+            this.hasPhone = true
+            this.$apply()
           })
         } else {
           wepy.showModal({
             title: '提示',
-            content: '拒绝授权将无法正常使用小程序全部功能，请重新登录并开启授权'
+            content: '拒绝授权将无法正常使用小程序全部功能，请重新开启授权'
           })
         }
+      },
+      bindGetUserInfo (e) {
+        this.$parent.getLogin((code) => {
+          this.jscode = code
+          wepy.getSetting({
+            success: (res) => {
+              if (res.authSetting['scope.userInfo']) {
+                var data = {
+                  jscode: this.jscode,
+                  encryptedData: e.detail.encryptedData,
+                  iv: e.detail.iv
+                }
+                this.$parent.HttpRequest.SendUserInfo(data).then((res) => {
+                  this.$parent.showLoading()
+                  console.log(res)
+                  if (res.data.error === 0) {
+                    var data = {
+                      phone: wepy.getStorageSync('phone')
+                    }
+                    this.$parent.requestToken(data, () => {
+                      this.$parent.hideLoading()
+                      wepy.switchTab({
+                        url: './index'
+                      })
+                    })
+                  }
+                })
+              } else {
+                wepy.showModal({
+                  title: '提示',
+                  content: '拒绝授权将无法正常使用小程序全部功能，请重新开启授权'
+                })
+              }
+            }
+          })
+        })
       }
     }
     goIndex () {
@@ -94,6 +153,11 @@
       })
     }
     onShow () {
+      if (wepy.getStorageSync('phone')) {
+        this.hasPhone = true
+      } else {
+        this.hasPhone = false
+      }
     }
   }
 </script>

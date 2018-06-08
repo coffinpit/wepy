@@ -7,12 +7,26 @@
         <image class="logo" src="../image/logo.png"/>
       </view>
       <view class="alert"  wx:if="{{!isNull}}">
-        <view class="alert-title">网页由该小程序开发</view>
-        <view class="alert-title">请确认授权以下信息</view>
-        <view class="alert-desc">
-          <view class="alert-text">获得你的公开信息（昵称、头像等）</view>
+        <view class="alert-layer {{hasPhone ? 'hidden' : ''}}">
+          <view class="alert-title">网页由正善小程序开发</view>
+          <view class="alert-title">请确认授权以下信息</view>
+          <view class="alert-desc">
+            <view class="alert-text">获得你的手机号作为登录帐号</view>
+          </view>
+          <button class="login-btn" open-type="getPhoneNumber" hover-class="login-btn-active" bindgetphonenumber="login">确认登录</button>
         </view>
-        <button class="login-btn" open-type="getPhoneNumber" hover-class="login-btn-active" bindgetphonenumber="login">确认登录</button>
+        <view class="alert-layer {{hasPhone ? 'show' : 'unshow'}}">
+          <view class="alert-title">网页由正善小程序开发</view>
+          <view class="alert-title">请确认授权以下信息</view>
+          <view class="alert-desc">
+            <view class="alert-text">获得你的公开信息（昵称、头像等）</view>
+          </view>
+          <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="login-btn" hover-class="login-btn-active">绑定微信账号</button>
+        </view>
+        <view class="login-step">
+          <text class="{{hasPhone ? 'unactive' : 'active'}}"/>
+          <text class="{{hasPhone ? 'active' : 'unactive'}}"/>
+        </view> 
       </view>
       <view class="loading"  wx:else>
         
