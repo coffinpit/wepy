@@ -129,6 +129,9 @@
   margin-top: 10px;
   margin-bottom: 0;
 }
+.content.collcet-layer {
+  padding: 20rpx 30rpx 0;
+}
 .detail-title {
   border-bottom: 1px #eeeeee solid;
   padding: 10rpx 0 20rpx;
@@ -195,14 +198,14 @@
 .detail-collect .un-collect {
   padding: 10rpx 20rpx;
   color: #ffffff;
-  background: #ec3d3a;
+  background: #fc8d43;
   font-size: 24rpx;
 }
 .detail-collect .un-collect.collect {
   background: #ec3d3a;
 }
 .detail-collect .icon-leftsj {
-  color: #ec3d3a;
+  color: #fc8d43;
   vertical-align: middle;
   margin-right: -10rpx;
   font-size: 30rpx;

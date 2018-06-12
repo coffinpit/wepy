@@ -81,6 +81,7 @@
           wepy.getSetting({
             success: (res) => {
               if (res.authSetting['scope.userInfo']) {
+                this.$parent.globalData.userInfo = e.detail.userInfo
                 var data = {
                   jscode: this.jscode,
                   encryptedData: e.detail.encryptedData,
@@ -99,6 +100,8 @@
                         url: './index'
                       })
                     })
+                  } else {
+                    this.$parent.hideLoading()
                   }
                 })
               } else {
@@ -131,6 +134,7 @@
         success: (res) => {
           // res.authSetting['scope.userInfo']
           if (wepy.getStorageSync('token')) {
+            this.$parent.getUser()
             this.isNull = true
             // 已经授权，获取新的token
             var data = {
@@ -140,7 +144,7 @@
               this.goIndex()
             }, () => {
               wepy.showToast({
-                title: '加载失败',
+                title: '请重新授权登录',
                 icon: 'none',
                 image: '../image/cancel.png'
               })

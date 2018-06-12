@@ -273,6 +273,7 @@ export default class extends wepy.app {
     wepy.getUserInfo({
       success: (res) => {
         this.globalData.userInfo = res.userInfo
+        console.log(this.globalData)
         cb && cb()
       }
     })

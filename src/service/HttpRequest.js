@@ -8,7 +8,7 @@ class HttpRequest extends wepy.app{
 		this.$$baseHtml = 'https://zstest.zsbutcher.cn/smartShopping/h5/'
 		this.$$path = {
 			time:'r=test',
-			sendUserInfo: 'https://zstest.zsbutcher.cn/smartWb/store/web/index.php?r=forlulu/encrypte-data',
+			sendUserInfo: 'r=wechat/api-get-unionid',
 			sendCode: 'r=wechat/api-auth',
 			userlogin: 'r=member/api-get-token-by-phone',
 			indexList: 'r=recommend/api-get-spus',
@@ -131,7 +131,7 @@ class HttpRequest extends wepy.app{
         	_this.getTime().then((res) => {
         		var data = _this.getData(res, param)
         		wepy.request({
-	            	url: this.$$path.sendUserInfo,
+	            	url: this.$$base + this.$$path.sendUserInfo,
 	            	method: 'POST',
 	            	header: {'content-type': 'application/x-www-form-urlencoded'},
 	            	data: data,

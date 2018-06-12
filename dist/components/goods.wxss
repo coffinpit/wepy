@@ -6,8 +6,8 @@
   display: flex;
   align-items: stretch;
   width: 100%;
-  padding: 30rpx 0;
-  height: 200rpx;
+  padding: 30rpx 0 20rpx;
+  min-height: 200rpx;
   border-bottom: 1px #eeeeee solid;
 }
 .goods:last-child {
@@ -60,6 +60,7 @@
 .goods .goods-detail .goods-detail-price .price {
   color: #ec3d3a;
   font-weight: 500;
+  display: inline-block;
 }
 .goods .goods-detail .goods-detail-oldprice {
   font-size: 24rpx;

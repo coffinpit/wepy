@@ -1,5 +1,13 @@
 @import "variables.less";
-
+.more{
+  height:0;
+  background: @gray;
+  transition:1s height ease-in;
+  overflow: hidden;
+  &.show{
+    height:100rpx;
+  }
+}
 .container{
     margin-top:80rpx;
   }
@@ -22,6 +30,7 @@
       text-align:center;
       margin: 0 10%;
       font-size:@baseSize;
+      display: inline-block;
     }
     .top_nav_active{
       border-bottom: 2px @lightred solid;

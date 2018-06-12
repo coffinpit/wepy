@@ -44,7 +44,7 @@
         </view>
       </view>
     </view>
-    <view class="content">
+    <view class="content collcet-layer">
       <view class="detail-title">
         <view class="font-normal">{{detail.title}}</view>
         <view class="goods-promot">
@@ -104,7 +104,7 @@
         <view class="section">关于</view>
       </view>
     </view>
-    <bottom @buy.user="cart" @cart.user="cart" :cartVal.sync="addCartCount"></bottom>
+    <bottom @buy.user="cart" @cart.user="cart" :cartVal.sync="addCartCount" :messagePath.sync="currentPath"></bottom>
     <view class="popup" wx:if="{{overflow}}"></view>
     <view class="popup__content {{overflow && cartModal? 'active' : ''}}">
       <view class="popup_close"><text class="title" @tap.stop="closeCart">关闭</text></view>
@@ -240,7 +240,8 @@
       showVideo: true,
       swiperStop: true,
       refrenceCode: '',
-      memberId: ''
+      memberId: '',
+      currentPath: ''
     }
     methods = {
       collectTap () {
@@ -488,14 +489,15 @@
     setMark (cb) {
       var _this = this
       this.token = this.$parent.getToken()
+      this.$parent.showLoading()
       var data = {
         token: this.token,
         markType: 1,
         sourceType: this.detail.type,
         sourceId: this.detail.id
       }
-      console.log(data)
       this.$parent.HttpRequest.SetMarkHttp(data).then((res) => {
+        this.$parent.hideLoading()
         if (res.data.error === 0) {
           _this.markId = res.data.data
           _this.getMarkUser(_this.detail.id, this.detail.type)
@@ -510,12 +512,14 @@
     }
     CancelMark (cb) {
       this.token = this.$parent.getToken()
+      this.$parent.showLoading()
       var _this = this
       var data = {
         markId: this.markId || this.detail.collectId,
         token: this.token
       }
       this.$parent.HttpRequest.CancelMarkHttp(data).then((res) => {
+        this.$parent.hideLoading()
         if (res.data.error === 0) {
           _this.getMarkUser(_this.detail.id, this.detail.type)
           cb && cb()
@@ -536,6 +540,7 @@
     }
     onLoad (id) {
       this.pageId = id.id
+      this.currentPath = '/pages/detail?id=' + this.pageId
       if (id.refrenceCode) {
         this.refrenceCode = id.refrenceCode
       }

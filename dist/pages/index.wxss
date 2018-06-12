@@ -7,6 +7,15 @@
 /* -- base fontSize -- */
 /* -- base lineHeight -- */
 /* -- Mixin -- */
+.more {
+  height: 0;
+  background: #cccccc;
+  transition: 1s height ease-in;
+  overflow: hidden;
+}
+.more.show {
+  height: 100rpx;
+}
 .container {
   margin-top: 80rpx;
 }
@@ -31,6 +40,7 @@ image {
   text-align: center;
   margin: 0 10%;
   font-size: 28rpx;
+  display: inline-block;
 }
 .top_nav-container .top_nav_active {
   border-bottom: 2px #ec3d3a solid;

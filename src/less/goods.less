@@ -4,8 +4,8 @@
     display:flex;
     align-items:stretch;
     width:100%;
-    padding:30rpx 0;
-    height:200rpx;
+    padding:30rpx 0 20rpx;
+    min-height:200rpx;
     .border-btm-gray(@lightgray);
     &:last-child{
       border-bottom:none;
@@ -57,6 +57,7 @@
         .price{
           color:@lightred;
           font-weight:500;
+          display: inline-block;
         }
       }
       .goods-detail-oldprice{

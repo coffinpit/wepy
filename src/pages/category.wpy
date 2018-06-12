@@ -44,7 +44,8 @@
 
   export default class Category extends wepy.page {
     config = {
-      navigationBarTitleText: '商品分类'
+      navigationBarTitleText: '商品分类',
+      enablePullDownRefresh: true
     }
     components = {
       Categoods: Goods,
@@ -221,8 +222,8 @@
             good.id = item.sourceId
             good.descript = item.desc
             _this.goods.push(good)
-            cb && cb()
           })
+          cb && cb()
         } else {
           _this.isNull = true
           if (_this.$parent.missToken) {
@@ -245,12 +246,19 @@
       if (this.$parent.pageRoot) {
         this.$parent.pageRoot = false
       } else {
-        this.currentTab = 0
-        this.currentItem = 0
-        if (this.categoryTab.length !== 0) {
-          this.getSpu(this.categoryTab[0].id)
-        }
+        // this.currentTab = 0
+        // this.currentItem = 0
+        // if (this.categoryTab.length !== 0) {
+        //   this.getSpu(this.categoryTab[0].id)
+        // }
       }
+    }
+    onPullDownRefresh () {
+      this.currentTab = 0
+      this.currentItem = 0
+      this.getSpu(this.categoryTab[0].id, () => {
+        wepy.stopPullDownRefresh()
+      })
     }
   }
 </script>

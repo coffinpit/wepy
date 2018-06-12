@@ -53,7 +53,7 @@
         </view>
       </view>
     </view>
-    <view class="content">
+    <view class="content collcet-layer">
       <view class="detail-title">
         <view class="font-normal">{{detail.title}}</view>
         <view class="goods-promot">
@@ -116,7 +116,7 @@
     
   <view class="bottombar">
     <view class="contact">
-      <button open-type="contact" session-from="weapp" hover-class="contact-active">
+      <button open-type="contact" session-from="" show-message-card="true" send-message-path="{{$bottom$messagePath}}" hover-class="contact-active">
         <text class="iconfont icon-kefu"/>
       </button>
     </view>

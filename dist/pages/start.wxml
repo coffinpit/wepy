@@ -2,16 +2,30 @@
   <view class="login-container">
     <view class="login">
       <view class="app-info">
-        <image class="app-logo" src="../image/login-bg.jpg" mode="widthFix"/>
-        <text class="app-name">正善小程序</text>
+        <image class="app-logo" src="../image/login_bg.png" mode="widthFix"/>
+        <image class="logo" src="../image/logo.png"/>
       </view>
       <view class="alert"  wx:if="{{!isNull}}">
-        <view class="input-title">
-          <input type="number" placeholder="请填写手机号" placeholder-class="placeholder" bindinput="inputPhone" bindblur="blurPhone"/>
-          <view class="default-button code {{isSending ? '' : 'unavailable'}}" bindtap="sendCode">{{codeText}}</view>
+        <view class="alert-layer {{hasPhone ? 'hidden' : ''}}">
+          <view class="input-title">
+            <input type="number" placeholder="请填写手机号" placeholder-class="placeholder" bindinput="inputPhone" bindblur="blurPhone"/>
+            <view class="default-button code {{isSending ? '' : 'unavailable'}}" bindtap="sendCode">{{codeText}}</view>
+          </view>
+          <view class="input-title"><input type="number" placeholder="请填写验证码" placeholder-class="placeholder" bindblur="blurCode"/></view>
+          <button class="login-btn" hover-class="login-btn-active" bindtap="login">确认登录</button>
         </view>
-        <view class="input-title"><input type="number" placeholder="请填写验证码" placeholder-class="placeholder" bindblur="blurCode"/></view>
-        <button class="login-btn" hover-class="login-btn-active" bindtap="login">确认登录</button>
+        <view class="alert-layer {{hasPhone ? 'show' : 'unshow'}}">
+          <view class="alert-title">网页由正善小程序开发</view>
+          <view class="alert-title">请确认授权以下信息</view>
+          <view class="alert-desc">
+            <view class="alert-text">获得你的公开信息（昵称、头像等）</view>
+          </view>
+          <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="login-btn" hover-class="login-btn-active">绑定微信账号</button>
+        </view>
+        <view class="login-step">
+          <text class="{{hasPhone ? 'unactive' : 'active'}}"/>
+          <text class="{{hasPhone ? 'active' : 'unactive'}}"/>
+        </view> 
       </view>
       <view class="loading"  wx:else>
         

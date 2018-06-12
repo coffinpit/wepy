@@ -3,7 +3,7 @@
 <template>
   <view class="bottombar">
     <view class="contact">
-      <button open-type="contact" session-from="weapp" hover-class="contact-active">
+      <button open-type="contact" session-from="" show-message-card="true" send-message-path="{{messagePath}}" hover-class="contact-active">
         <text class="iconfont icon-kefu"></text>
       </button>
     </view>
@@ -26,7 +26,8 @@
 
   export default class Bottombar extends wepy.component {
     props = {
-      cartVal: Number
+      cartVal: Number,
+      messagePath: String
     }
     computed = {
       cartMaxVal () {

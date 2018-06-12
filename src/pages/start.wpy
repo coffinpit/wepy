@@ -1,29 +1,13 @@
+<style lang="less" src="../less/login.less"></style>
 <style lang="less">
-  .login-container {
-    height: 100%;
-    background: #fff;
-  }
-  .app-info {
-    position: relative;
-    text-align: center;
-    padding-bottom:20px;
-  }
-  .app-info .app-logo {
-    display: block;
-    width: 100%;
-    margin-bottom:20px;
-  }
-
   .app-info .app-name {
     font-size: 18px;
     color: #333;
   }
-
   .alert {
     padding: 0 20px;
     text-align: center
   }
-
   .alert .input-title {
     margin:0 auto 20rpx;
     position: relative;
@@ -55,64 +39,35 @@
     font-size:32rpx;
     color:#ccc;
   }
-  .alert-desc {
-    display: block;
-    list-style: disc inside none;
-    margin-top:10px;
-  }
-
-  .alert .alert-text {
-    display: list-item;
-    text-align: -webkit-match-parent;
-    font-size: 14px;
-    color: #999;
-  }
-  
-  .login-btn{
-    background:#fe5946;
-    border-radius: 0;
-    color:#fff;
-    line-height: 45px;
-    text-align: center;
-    margin-top:20px;
-    font-size:16px;
-  }
-  .login-btn-active{
-    background:#e8412d;
-    color:#f6eceb;
-  }
-  .logged {
-    margin-top: 100px;
-  }
-
-  .logged .logged-icon {
-    display: block;
-    width: 64px;
-    height: 64px;
-    margin: 20px auto;
-  }
-
-  .logged .logged-text {
-    font-size: 14px;
-    color: #000;
-    text-align: center;
-    margin: 10px 0;
-  }
 </style>
 <template>
   <view class="login-container">
     <view class="login">
       <view class="app-info">
-        <image class="app-logo" src="../image/login-bg.jpg" mode="widthFix"></image>
-        <text class="app-name">正善小程序</text>
+        <image class="app-logo" src="../image/login_bg.png" mode="widthFix"></image>
+        <image class="logo" src="../image/logo.png"></image>
       </view>
       <view class="alert" wx:if="{{!isNull}}">
-        <view class="input-title">
-          <input type="number" placeholder="请填写手机号" placeholder-class="placeholder" @input="inputPhone" @blur="blurPhone"/>
-          <view class="default-button code {{isSending ? '' : 'unavailable'}}" @tap="sendCode" >{{codeText}}</view>
+        <view class="alert-layer {{hasPhone ? 'hidden' : ''}}">
+          <view class="input-title">
+            <input type="number" placeholder="请填写手机号" placeholder-class="placeholder" @input="inputPhone" @blur="blurPhone"/>
+            <view class="default-button code {{isSending ? '' : 'unavailable'}}" @tap="sendCode" >{{codeText}}</view>
+          </view>
+          <view class="input-title"><input type="number" placeholder="请填写验证码" placeholder-class="placeholder" @blur="blurCode"/></view>
+          <button class="login-btn" hover-class="login-btn-active" @tap="login">确认登录</button>
         </view>
-        <view class="input-title"><input type="number" placeholder="请填写验证码" placeholder-class="placeholder" @blur="blurCode"/></view>
-        <button class="login-btn" hover-class="login-btn-active" @tap="login">确认登录</button>
+        <view class="alert-layer {{hasPhone ? 'show' : 'unshow'}}">
+          <view class="alert-title">网页由正善小程序开发</view>
+          <view class="alert-title">请确认授权以下信息</view>
+          <view class="alert-desc">
+            <view class="alert-text">获得你的公开信息（昵称、头像等）</view>
+          </view>
+          <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" class="login-btn" hover-class="login-btn-active" >绑定微信账号</button>
+        </view>
+        <view class="login-step">
+          <text class="{{hasPhone ? 'unactive' : 'active'}}"></text>
+          <text class="{{hasPhone ? 'active' : 'unactive'}}"></text>
+        </view> 
       </view>
       <view class="loading" wx:else>
         <loading></loading>
@@ -138,7 +93,9 @@
       isSending: true,
       time: 60,
       isNull: true,
-      countTime: ''
+      countTime: '',
+      jscode: '',
+      hasPhone: false
     }
     components = {
       loading: Loading
@@ -207,7 +164,7 @@
             wepy.setStorageSync('phone', _this.phoneNumber)
             wepy.setStorageSync('timeout', timeOut)
             _this.$parent.getUserLevel(token)
-            _this.goIndex()
+            _this.hasPhone = true
           } else {
             _this.$parent.hideLoading()
             wepy.showToast({
@@ -219,6 +176,43 @@
         }).catch(() => {
           _this.$parent.showFail()
         })
+      },
+      bindGetUserInfo (e) {
+        this.$parent.getLogin((code) => {
+          this.jscode = code
+          wepy.getSetting({
+            success: (res) => {
+              if (res.authSetting['scope.userInfo']) {
+                this.$parent.globalData.userInfo = e.detail.userInfo
+                var data = {
+                  jscode: this.jscode,
+                  encryptedData: e.detail.encryptedData,
+                  iv: e.detail.iv
+                }
+                this.$parent.HttpRequest.SendUserInfo(data).then((res) => {
+                  this.$parent.showLoading()
+                  console.log(res)
+                  if (res.data.error === 0) {
+                    var data = {
+                      phone: wepy.getStorageSync('phone')
+                    }
+                    this.$parent.requestToken(data, () => {
+                      this.$parent.hideLoading()
+                      wepy.switchTab({
+                        url: './index'
+                      })
+                    })
+                  }
+                })
+              } else {
+                wepy.showModal({
+                  title: '提示',
+                  content: '拒绝授权将无法正常使用小程序全部功能，请重新开启授权'
+                })
+              }
+            }
+          })
+        })
       }
     }
     goIndex () {
@@ -228,6 +222,7 @@
     }
     onLoad () {
       if (wepy.getStorageSync('token')) {
+        this.$parent.getUser()
         this.isNull = true
         var data = {
           phone: wepy.getStorageSync('phone')

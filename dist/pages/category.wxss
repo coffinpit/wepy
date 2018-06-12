@@ -18,9 +18,6 @@ page {
 .content {
   padding: 0 20rpx;
 }
-.goods {
-  margin: 20rpx 0;
-}
 .category-bg {
   width: 750rpx;
   height: 280rpx;
