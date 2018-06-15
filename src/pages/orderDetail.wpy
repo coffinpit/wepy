@@ -63,7 +63,7 @@
             <view wx:if="{{address && Object.keys(address).length !== 0}}">
               <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 2 || status === 5 || status === 6}}" @tap="goLogistic">查看物流</button>
             </view>
-            <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{status === 5 || status === 6}}">售后申请</button>
+            <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}" wx:if="{{status === 5 || status === 6}}">售后申请</button>
             <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}" @tap="goPay">付款</button>
           </view>
         </view>
@@ -100,7 +100,10 @@
       initTxt: '待支付',
       isStop: false,
       timeInterval: '',
-      payment: true
+      payment: true,
+      nick_name: '',
+      avatar: '',
+      customer_info_str: ''
     }
     computed = {
       isNull () {
@@ -204,7 +207,7 @@
         this.payment = false
       }
     }
-    initData () {
+    initData (cb) {
       this.token = this.$parent.getToken()
       this.remainTime = 0
       this.$parent.showLoading()
@@ -244,6 +247,7 @@
             obj.orderDetail = _this.initChild(item.buyingRecords)
             _this.order.push(obj)
           })
+          cb && cb()
         } else {
           if (_this.$parent.missToken) {
             _this.token = this.$parent.getToken(res.data.error)
@@ -336,7 +340,12 @@
       this.$apply()
     }
     onShow () {
-      this.initData()
+      this.initData(() => {
+        this.nick_name = this.$parent.getUserName()
+        this.avatar = this.$parent.getUserAvatar()
+        var detailStr = '订单号:' + this.orderId
+        this.customer_info_str = this.$parent.getMessage('订单详情页', detailStr)
+      })
     }
     onUnload () {
       this.clear()

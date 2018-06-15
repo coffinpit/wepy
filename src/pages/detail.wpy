@@ -104,7 +104,7 @@
         <view class="section">关于</view>
       </view>
     </view>
-    <bottom @buy.user="cart" @cart.user="cart" :cartVal.sync="addCartCount" :messagePath.sync="currentPath"></bottom>
+    <bottom @buy.user="cart" @cart.user="cart" :cartVal.sync="addCartCount" :messagePath.sync="currentPath" :nick_name.sync="userName" :avatar.sync="userAvatar" :customer_info_str.sync="customer_info" :note_info_str.sync="bussiness_info"></bottom>
     <view class="popup" wx:if="{{overflow}}"></view>
     <view class="popup__content {{overflow && cartModal? 'active' : ''}}">
       <view class="popup_close"><text class="title" @tap.stop="closeCart">关闭</text></view>
@@ -241,7 +241,17 @@
       swiperStop: true,
       refrenceCode: '',
       memberId: '',
-      currentPath: ''
+      currentPath: '',
+      userName: '',
+      userAvatar: '',
+      customer_info: {
+        'description': '',
+        'level': '',
+        'cellphones': [['', '']]
+      },
+      bussiness_info: {
+        'title': ''
+      }
     }
     methods = {
       collectTap () {
@@ -400,6 +410,7 @@
           _this.$parent.resetUserLevel(data.memberHash, this.token)
           _this.detail.path = data.cover
           _this.detail.title = data.title
+          _this.currentPath = data.title
           _this.detail.price = data.memberPrice
           _this.detail.oldprice = data.price
           _this.detail.descript = data.desc
@@ -440,6 +451,7 @@
             _this.initData(cb)
           }
         }
+        _this.$apply()
       }).catch(() => {
         _this.$parent.hideLoading()
         _this.$parent.showFail()
@@ -540,7 +552,6 @@
     }
     onLoad (id) {
       this.pageId = id.id
-      this.currentPath = '/pages/detail?id=' + this.pageId
       if (id.refrenceCode) {
         this.refrenceCode = id.refrenceCode
       }
@@ -559,7 +570,20 @@
     onShow () {
       this.userLevel = this.$parent.globalData.userLevel
       this.memberId = this.$parent.globalData.memberId
-      this.initData()
+      this.initData(() => {
+        this.userName = this.$parent.getUserName()
+        this.userAvatar = this.$parent.getUserAvatar()
+        // if (this.userLevel === 0) {
+        //   this.customer_info.level = 'normal'
+        // } else if (this.userLevel === 1) {
+        //   this.customer_info.level = 'vip'
+        // }
+        // this.customer_info.cellphones[0][1] = wepy.getStorageSync('phone')
+        // this.customer_info.description = '商品详情页' + this.currentPath
+        // this.customer_info = JSON.stringify(this.customer_info)
+        this.customer_info = this.$parent.getMessage('商品详情页', this.currentPath)
+        this.bussiness_info = this.$parent.getBusiness('test')
+      })
       this.$apply()
     }
   }

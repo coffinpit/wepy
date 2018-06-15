@@ -1,6 +1,6 @@
 <style lang="less" src="../less/applyVip.less"></style>
 <template>
-  <view class="main" style="height: {{isShow ? winHeight : 'auto'}}" class="{{userLevel === 1 ? 'vipMain' : ''}}">
+  <view class="main {{userLevel === 1 ? 'vipMain' : ''}}" style="height: {{isShow ? winHeight : 'auto'}}">
     <view class="vip-bg" style="height: {{isLoading ? '' : '494rpx'}}" wx:if="{{userLevel === 1}}">
       <image src="http://p33mnuvro.bkt.clouddn.com/2018/5/snuzbxz7o4.png" mode="aspectFit" @load="imageLoad"></image>
       <text class="vip-title">
@@ -15,7 +15,7 @@
           <button class="vip-pay" hover-class="vip-pay-hover" @tap="buyVip">续购服务</button>
         </view>
         <view class="vip-button-container">
-          <button class="vip-refund" hover-class="vip-refund-hover" open-type="contact" session-from="vip">退卡</button>
+          <button class="vip-refund" hover-class="vip-refund-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}">退卡</button>
         </view>
       </view>
     </view>
@@ -67,7 +67,10 @@
       vipEnd: '',
       vipreduction: '',
       userLevel: 0,
-      payment: true
+      payment: true,
+      nick_name: '',
+      avatar: '',
+      customer_info_str: ''
     }
     methods = {
       imageLoad () {
@@ -218,6 +221,9 @@
       this.vipEnd = this.$parent.dateFormat(this.$parent.globalData.vipEnd * 1000, 'Y-m-d')
       this.vipreduction = this.$parent.globalData.reduction
       this.getService()
+      this.nick_name = this.$parent.getUserName()
+      this.avatar = this.$parent.getUserAvatar()
+      this.customer_info_str = this.$parent.getMessage('VIP申请退卡')
     }
   }
 </script>

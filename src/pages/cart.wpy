@@ -104,7 +104,8 @@
 
   export default class Cart extends wepy.page {
     config = {
-      navigationBarTitleText: '购物车'
+      navigationBarTitleText: '购物车',
+      enablePullDownRefresh: true
     }
     components = {
       counteCold: Counte,
@@ -510,7 +511,6 @@
         sourceId: good.sourceId,
         count: val
       }
-      console.log(data)
       this.$parent.HttpRequest.AddCartHttp(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
@@ -542,6 +542,13 @@
       this.clearList()
       this.initPageData()
       this.$apply()
+    }
+    onPullDownRefresh () {
+      this.isEdit = false
+      this.clearList()
+      this.initPageData(() => {
+        wepy.stopPullDownRefresh()
+      })
     }
   }
 </script>

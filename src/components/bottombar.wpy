@@ -3,7 +3,7 @@
 <template>
   <view class="bottombar">
     <view class="contact">
-      <button open-type="contact" session-from="" show-message-card="true" send-message-path="{{messagePath}}" hover-class="contact-active">
+      <button open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" hover-class="contact-active">
         <text class="iconfont icon-kefu"></text>
       </button>
     </view>
@@ -27,7 +27,11 @@
   export default class Bottombar extends wepy.component {
     props = {
       cartVal: Number,
-      messagePath: String
+      messagePath: String,
+      nick_name: String,
+      avatar: String,
+      customer_info_str: String,
+      note_info_str: String
     }
     computed = {
       cartMaxVal () {

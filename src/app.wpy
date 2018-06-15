@@ -314,6 +314,7 @@ export default class extends wepy.app {
       content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
     })
   }
+  // 时间戳格式化
   dateFormat (timestamp, formats) {
     formats = formats || 'Y-m-d'
     var zero = function (value) {
@@ -339,6 +340,52 @@ export default class extends wepy.app {
         s: second
       })[matches]
     })
+  }
+  // 过滤emoji
+  filteremoji (str) {
+    var ranges = [
+      '\ud83c[\udf00-\udfff]',
+      '\ud83d[\udc00-\ude4f]',
+      '\ud83d[\ude80-\udeff]'
+    ]
+    return str.replace(new RegExp(ranges.join('|'), 'g'), '')
+  }
+  // 客服消息
+  getUserName () {
+    return this.filteremoji(this.globalData.userInfo.nickName)
+  }
+  getUserAvatar () {
+    return this.globalData.userInfo.avatarUrl
+  }
+  getMessage (pageDetail, tags) {
+    var messageObj = {
+      'level': '',
+      'cellphones': '',
+      'tags': '',
+      'custom_fields': {
+        'TextField_13010': 'test'
+      }
+    }
+    if (this.globalData.userLevel === 0) {
+      messageObj.level = 'normal'
+    } else if (this.globalData.userLevel === 1) {
+      messageObj.level = 'vip'
+    }
+    messageObj.cellphones = [['', wepy.getStorageSync('phone')]]
+    // messageObj.description = pageDetail
+    messageObj.tags = pageDetail + ',' + tags
+    // messageObj.custom_fields = {
+    //   'TextField_13010': 'test'
+    // }
+    console.log(JSON.stringify(messageObj))
+    return JSON.stringify(messageObj)
+  }
+  getBusiness (title) {
+    var noteObj = {
+      'title': title
+    }
+    console.log(JSON.stringify(noteObj))
+    return JSON.stringify(noteObj)
   }
   HttpRequest = new HttpRequest()
   Md5 = Md5.hexMD5

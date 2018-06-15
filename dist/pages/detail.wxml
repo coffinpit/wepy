@@ -116,7 +116,7 @@
     
   <view class="bottombar">
     <view class="contact">
-      <button open-type="contact" session-from="" show-message-card="true" send-message-path="{{$bottom$messagePath}}" hover-class="contact-active">
+      <button open-type="contact" session-from="udesk|{{$bottom$nick_name}}|{{$bottom$avatar}}|customer^{{$bottom$customer_info_str}}|note^{{$bottom$note_info_str}}" hover-class="contact-active">
         <text class="iconfont icon-kefu"/>
       </button>
     </view>

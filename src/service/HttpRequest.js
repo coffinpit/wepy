@@ -9,6 +9,7 @@ class HttpRequest extends wepy.app{
 		this.$$path = {
 			time:'r=test',
 			sendUserInfo: 'r=wechat/api-get-unionid',
+			// sendUserInfo: 'https://zstest.zsbutcher.cn/smartWb/store/web/index.php?r=forlulu/encrypte-data',
 			sendCode: 'r=wechat/api-auth',
 			userlogin: 'r=member/api-get-token-by-phone',
 			indexList: 'r=recommend/api-get-spus',

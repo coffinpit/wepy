@@ -96,9 +96,13 @@
                     }
                     this.$parent.requestToken(data, () => {
                       this.$parent.hideLoading()
-                      wepy.switchTab({
-                        url: './index'
-                      })
+                      var pages = this.getCurrentPages()
+                      var prevPage = pages[pages.length - 2]
+                      if (prevPage) {
+                        wepy.navigateBack()
+                      } else {
+                        this.goIndex()
+                      }
                     })
                   } else {
                     this.$parent.hideLoading()

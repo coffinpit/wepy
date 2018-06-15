@@ -30,7 +30,7 @@
                   <view wx:if="{{item.needAdd}}">
                     <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}" @tap="goLogistic({{item.id}}, {{item.status}})">查看物流</button>
                   </view>
-                  <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="weapp" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
+                  <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
                   <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" @tap="goPay({{item.id}})">付款</button>
                 </view>
               </view>
@@ -100,7 +100,11 @@
       pageNum: 1,
       totalPageNum: 0,
       isLoading: true,
-      payment: true
+      payment: true,
+      nick_name: '',
+      avatar: '',
+      customer_info_str: '',
+      orderId: ''
     }
     methods = {
       checkPackage (index, type) {
@@ -193,12 +197,12 @@
         this.payment = false
       }
     }
-    initData () {
+    initData (cb) {
       this.pageNum = 1
       this.orderList = []
-      this.initOrder()
+      this.initOrder(cb)
     }
-    initOrder () {
+    initOrder (cb) {
       this.$parent.showLoading()
       this.token = this.$parent.getToken()
       this.isLoading = true
@@ -229,10 +233,11 @@
             obj.orderDetail = _this.initChild(item.buyingRecords)
             _this.orderList.push(obj)
           })
+          cb && cb()
         } else {
           if (_this.$parent.missToken) {
             _this.token = this.$parent.getToken(res.data.error)
-            _this.initOrder()
+            _this.initOrder(cb)
           }
         }
         _this.$apply()
@@ -301,7 +306,11 @@
       this.$apply()
     }
     onShow () {
-      this.initData()
+      this.initData(() => {
+        this.nick_name = this.$parent.getUserName()
+        this.avatar = this.$parent.getUserAvatar()
+        this.customer_info_str = this.$parent.getMessage('订单列表页', '')
+      })
     }
   }
 </script>
