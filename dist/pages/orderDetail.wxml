@@ -77,7 +77,7 @@
             <view wx:if="{{address && Object.keys(address).length !== 0}}">
               <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 2 || status === 5 || status === 6}}" bindtap="goLogistic">查看物流</button>
             </view>
-            <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}" wx:if="{{status === 5 || status === 6}}">售后申请</button>
+            <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" wx:if="{{status === 5 || status === 6}}">售后申请</button>
             <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}" bindtap="goPay">付款</button>
           </view>
         </view>

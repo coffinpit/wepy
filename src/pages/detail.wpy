@@ -6,14 +6,14 @@
       <view class="detail-img">
         <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" @change.stop="changeSwiper" @animationfinish="swiperEnd" class="index-swiper">
         <repeat>
-            <swiper-item>
+            <!-- <swiper-item>
               <view class="video-layer {{showVideo ? '' : 'hidden'}}">
                 <view @tap="playVideo">
                 <image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527831070072&di=c17eebe9d6f522ae2ba17b1df2451ae4&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F18%2F05%2F63%2F13K58PICkUA_1024.jpg" mode="aspectFill"></image>
                 </view>
               </view>
               <view class="video-layer {{showVideo ? 'hidden': ''}}"><video id="myVideo" src="http://pic.ibaotu.com/00/63/01/12h888piCneY.mp4" controls id="video" @pause="stopVideo" @ended="stopVideo" @error="errorVideo"></video></view>
-            </swiper-item>
+            </swiper-item> -->
              <swiper-item>
               <image src="{{detail.path}}" mode="aspectFill"></image>
             </swiper-item>
@@ -191,7 +191,7 @@
         interval: 3000,
         duration: 500,
         currentTab: 0,
-        indicatorDots: true,
+        indicatorDots: false,
         indicatorColor: '#cccccc',
         indicatorActive: '#fc5e60'
       },
@@ -573,16 +573,8 @@
       this.initData(() => {
         this.userName = this.$parent.getUserName()
         this.userAvatar = this.$parent.getUserAvatar()
-        // if (this.userLevel === 0) {
-        //   this.customer_info.level = 'normal'
-        // } else if (this.userLevel === 1) {
-        //   this.customer_info.level = 'vip'
-        // }
-        // this.customer_info.cellphones[0][1] = wepy.getStorageSync('phone')
-        // this.customer_info.description = '商品详情页' + this.currentPath
-        // this.customer_info = JSON.stringify(this.customer_info)
-        this.customer_info = this.$parent.getMessage('商品详情页', this.currentPath)
-        this.bussiness_info = this.$parent.getBusiness('test')
+        this.customer_info = this.$parent.getMessage()
+        this.bussiness_info = this.$parent.getBusiness('商品详情页', this.currentPath, null)
       })
       this.$apply()
     }

@@ -7,6 +7,7 @@
       <view class="userinfo-nickname">
         <text>{{ userInfo.nickName }}</text>
       </view>
+      <text class="font-normal telephone">{{userPhone}}</text>
       <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" class="blank-button" wx:if="{{isLogin}}">绑定微信账号</button>
     </view>
     <view class="user-level">
@@ -97,7 +98,8 @@
       unpaid: '',
       unreceipted: '',
       isLogin: false,
-      jscode: ''
+      jscode: '',
+      userPhone: ''
     }
     methods = {
       goService () {
@@ -247,6 +249,7 @@
       this.$parent.getLogin((code) => {
         this.jscode = code
       })
+      this.userPhone = wepy.getStorageSync('phone')
       var _this = this
       wepy.getSetting({
         success: (res) => {

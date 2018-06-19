@@ -63,7 +63,7 @@
             <view wx:if="{{address && Object.keys(address).length !== 0}}">
               <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 2 || status === 5 || status === 6}}" @tap="goLogistic">查看物流</button>
             </view>
-            <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}" wx:if="{{status === 5 || status === 6}}">售后申请</button>
+            <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" wx:if="{{status === 5 || status === 6}}">售后申请</button>
             <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}" @tap="goPay">付款</button>
           </view>
         </view>
@@ -103,7 +103,8 @@
       payment: true,
       nick_name: '',
       avatar: '',
-      customer_info_str: ''
+      customer_info_str: '',
+      note_info_str: ''
     }
     computed = {
       isNull () {
@@ -343,8 +344,8 @@
       this.initData(() => {
         this.nick_name = this.$parent.getUserName()
         this.avatar = this.$parent.getUserAvatar()
-        var detailStr = '订单号:' + this.orderId
-        this.customer_info_str = this.$parent.getMessage('订单详情页', detailStr)
+        this.customer_info_str = this.$parent.getMessage()
+        this.note_info_str = this.$parent.getBusiness('订单详情页', null, this.orderId)
       })
     }
     onUnload () {

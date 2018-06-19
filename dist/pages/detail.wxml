@@ -15,14 +15,14 @@
       <view class="detail-img">
         <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" catchchange="changeSwiper" bindanimationfinish="swiperEnd" class="index-swiper">
         <block>
-            <swiper-item>
+            <!-- <swiper-item>
               <view class="video-layer {{showVideo ? '' : 'hidden'}}">
                 <view bindtap="playVideo">
-                <image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527831070072&di=c17eebe9d6f522ae2ba17b1df2451ae4&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F18%2F05%2F63%2F13K58PICkUA_1024.jpg" mode="aspectFill"/>
+                <image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527831070072&di=c17eebe9d6f522ae2ba17b1df2451ae4&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F18%2F05%2F63%2F13K58PICkUA_1024.jpg" mode="aspectFill"></image>
                 </view>
               </view>
-              <view class="video-layer {{showVideo ? 'hidden': ''}}"><video id="video" src="http://pic.ibaotu.com/00/63/01/12h888piCneY.mp4" controls bindpause="stopVideo" bindended="stopVideo" binderror="errorVideo"/></view>
-            </swiper-item>
+              <view class="video-layer {{showVideo ? 'hidden': ''}}"><video id="myVideo" src="http://pic.ibaotu.com/00/63/01/12h888piCneY.mp4" controls id="video" bindpause="stopVideo" bindended="stopVideo" binderror="errorVideo"></video></view>
+            </swiper-item> -->
              <swiper-item>
               <image src="{{detail.path}}" mode="aspectFill"/>
             </swiper-item>

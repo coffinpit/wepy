@@ -55,7 +55,7 @@
                   <view wx:if="{{item.needAdd}}">
                     <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}" bindtap="goLogistic" data-wpygologistic-a="{{item.id}}" data-wpygologistic-b="{{item.status}}">查看物流</button>
                   </view>
-                  <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}" wx:if="{{item.status === 5 || item.status === 6}}">售后申请</button>
+                  <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" wx:if="{{item.status === 5 || item.status === 6}}" bindcontact="getOrderId" data-wpygetorderid-a="{{item.title}}">售后申请</button>
                   <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" bindtap="goPay" data-wpygopay-a="{{item.id}}">付款</button>
                 </view>
               </view>

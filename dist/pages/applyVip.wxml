@@ -14,7 +14,7 @@
           <button class="vip-pay" hover-class="vip-pay-hover" bindtap="buyVip">续购服务</button>
         </view>
         <view class="vip-button-container">
-          <button class="vip-refund" hover-class="vip-refund-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}">退卡</button>
+          <button class="vip-refund" hover-class="vip-refund-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}">退卡</button>
         </view>
       </view>
     </view>

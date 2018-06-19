@@ -127,6 +127,8 @@
     onLoad (param) {
       if (param.refrenceCode) {
         this.refrenceCode = param.refrenceCode
+      } else if (param.scene) {
+        this.refrenceCode = decodeURIComponent(param.scene)
       } else {
         this.refrenceCode = ''
       }

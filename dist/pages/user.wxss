@@ -35,6 +35,11 @@
 .user-logo .userinfo-nickname text {
   display: block;
 }
+.user-logo .telephone {
+  float: right;
+  color: #ffffff;
+  margin-top: 38rpx;
+}
 .user-logo .blank-button {
   float: right;
   border: 1px #ffffff solid;

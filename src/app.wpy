@@ -360,11 +360,7 @@ export default class extends wepy.app {
   getMessage (pageDetail, tags) {
     var messageObj = {
       'level': '',
-      'cellphones': '',
-      'tags': '',
-      'custom_fields': {
-        'TextField_13010': 'test'
-      }
+      'cellphones': ''
     }
     if (this.globalData.userLevel === 0) {
       messageObj.level = 'normal'
@@ -373,16 +369,20 @@ export default class extends wepy.app {
     }
     messageObj.cellphones = [['', wepy.getStorageSync('phone')]]
     // messageObj.description = pageDetail
-    messageObj.tags = pageDetail + ',' + tags
+    // messageObj.tags = pageDetail + ',' + tags
     // messageObj.custom_fields = {
     //   'TextField_13010': 'test'
     // }
     console.log(JSON.stringify(messageObj))
     return JSON.stringify(messageObj)
   }
-  getBusiness (title) {
+  getBusiness (title, content, orderId) {
     var noteObj = {
-      'title': title
+      'title': title,
+      'custom_fields': {
+        'TextField_28227': content,
+        'TextField_28233': orderId
+      }
     }
     console.log(JSON.stringify(noteObj))
     return JSON.stringify(noteObj)

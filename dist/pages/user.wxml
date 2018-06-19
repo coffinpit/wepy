@@ -5,6 +5,7 @@
       <view class="userinfo-nickname">
         <text>{{ userInfo.nickName }}</text>
       </view>
+      <text class="font-normal telephone">{{userPhone}}</text>
       <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="blank-button"  wx:if="{{isLogin}}">绑定微信账号</button>
     </view>
     <view class="user-level">
