@@ -92,7 +92,7 @@
     }
     methods = {
       nameTap (e) {
-        this.userName = e.detail.value
+        this.userName = this.$parent.filteremoji(e.detail.value)
         return this.userName
       },
       phoneTap (e) {
@@ -104,7 +104,7 @@
         return this.postcode
       },
       userAddTap (e) {
-        this.userAdd = e.detail.value
+        this.userAdd = this.$parent.filteremoji(e.detail.value)
       },
       pickTopArea (e) {
         this.topIndex = e.detail.value

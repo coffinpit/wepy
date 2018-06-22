@@ -213,6 +213,10 @@
     .section{
       margin-bottom:5px;
     }
+    .detail-image{
+      width:100%;
+      float: left;
+    }
     .detail-goods{
       display:flex;
       padding:4rpx 0 4rpx 28rpx;
@@ -279,8 +283,12 @@
         display:block;
         margin-top:10rpx;
         &.inline{
-          float:left;
-          margin-top:50rpx;
+          float:right;
+          margin-top:30rpx;
+          text-align: right;
+          text {
+            display: block;
+          }
         }
       }
       .calculate{
@@ -300,12 +308,12 @@
       }
     }
     .goods-name{
-      width:70%;
+      width:65%;
       font-size:@baseSize;
       line-height: 56rpx;
     }
     .goods-num{
-      width:30%;
+      width:35%;
       font-size:@baseSize;
       line-height: 56rpx;
       text-align: right;

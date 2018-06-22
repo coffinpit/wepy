@@ -35,11 +35,13 @@
         <view class="detail-txt-price">
           <text>原价</text>
           <text class="{{userLevel === 0 ? '' : 'through'}}">￥{{detail.oldprice}}</text>
-          <navigator url="./applyVip" class="detail-link">成为会员?</navigator>
+          <navigator url="./applyVip" class="detail-link" wx:if="{{userLevel === 0}}">成为会员?</navigator>
+          <text class="detail-link" wx:elif="{{userLevel === 1}}">优惠￥{{detail.reduction}}</text>
         </view>
         <view class="detail-txt-price express">
-          <text>快递￥{{detail.express}}</text>
-          <text class="tips">成为会员</text><text class="tips">即享包邮</text>
+          <text>快递<text wx:if="{{userLevel === 0}}">￥{{detail.express}}</text></text>
+          <text class="tips" wx:if="{{userLevel === 0}}">成为会员<text class="tips">即享包邮</text></text>
+          <text class="tips" wx:elif="{{userLevel === 1}}">超级会员<text class="tips">畅享包邮</text></text>
           <button class="default-button" hover-class="default-button-active" @tap="goRules">配送规则</button>
         </view>
       </view>
@@ -79,29 +81,13 @@
     </view>
     <view class="content">
       <view class="detail-title">
-         <text class="title">商品详情</text>
+        <text class="title">商品详情</text>
       </view>
       <view class="detail-container">
-         <view class="section">关于商品</view>
-         <repeat for="{{goodsDetail}}" item="item" index="index">
-           <view class="detail-goods">
-              <view class="detail-goods-title">{{item.title}}</view>
-              <view class="detail-goods-content">{{item.detail}}</view>
-           </view>
-         </repeat>
-      </view>
-      <view class="detail-container">
-         <view class="section">关于商品</view>
-         <repeat for="{{transportDetail}}" item="item" index="index">
-           <view class="detail-goods">
-              <view class="detail-goods-title">{{item.title}}</view>
-                <view wx:if="{{!item.isLink}}" class="detail-goods-content">{{item.detail}}</view>
-                <navigate wx:else to="" class="detail-goods-content link">{{item.detail}}</navigate>
-           </view>
-         </repeat>
-      </view>
-      <view class="detail-container">
-        <view class="section">关于</view>
+        <view class="section">关于商品</view>
+        <repeat for="{{detail.imageSrc}}" item="item" index="index">
+          <image src="{{item.src}}" mode="widthFix" class="detail-image" @tap="goImageLink({{item.href}})"></image>
+        </repeat>
       </view>
     </view>
     <bottom @buy.user="cart" @cart.user="cart" :cartVal.sync="addCartCount" :messagePath.sync="currentPath" :nick_name.sync="userName" :avatar.sync="userAvatar" :customer_info_str.sync="customer_info" :note_info_str.sync="bussiness_info"></bottom>
@@ -123,18 +109,18 @@
           </view>
           <text class="title link">价格：￥{{totalCart}}</text>
           <counterCart @plusEdit.user="plusCart" @minusEdit.user="minusCart" @keyEdit.user="keyCart" class="calculate" :num.sync="cartNum" @blurEdit.user="blurCart" :isDisabled.sync="noSales"></counterCart>
-          <text wx:if="{{maxtip}}" class="title link inline">数量已达上限</text>
+          <text wx:if="{{maxtip}}" class="tips link inline"><text>数量已达上限</text><text wx:if="{{cartResult.cartCount > 0}}">(购物车已含{{cartResult.cartCount}})</text></text>
         </view>
       </view>
       <radio-group @change="addCartGoods">
         <repeat for="{{detail.goodList}}" item="item" index="index">
           <view class="popup_layer">
             <view class="goods-name {{item.num === 0 ? 'none' : ''}}">{{item.name}}</view>
-            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="{{item.num === 0? '#ccc' : '#ec3d3a'}}" checked="{{item.checked}}" disabled="{{item.num === 0? true : false}}"></radio></view>
+            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="{{item.num === 0? '#ccc' : '#ec3d3a'}}" checked="{{item.isChecked}}" disabled="{{item.num === 0? true : false}}"></radio></view>
           </view>
         </repeat>
       </radio-group>
-      <button class="default-button size-full {{cartResult.num === 0 ? 'disable' : ''}}" @tap.stop="goCart">{{isAddCart ? '加入购物车' : '立即购买'}}</button>
+      <button class="default-button size-full {{cartResult.num - cartResult.cartCount === 0 ? 'disable' : ''}}" @tap.stop="goCart">{{isAddCart ? '加入购物车' : '立即购买'}}</button>
     </view>
   </view>
 </template>
@@ -163,7 +149,7 @@
         }
       },
       maxtip () {
-        if (this.cartNum >= this.cartResult.num) {
+        if (this.cartNum >= this.cartResult.num - this.cartResult.cartCount) {
           return true
         } else {
           return false
@@ -184,7 +170,8 @@
         oldprice: '',
         express: '38.0',
         title: '',
-        goodList: []
+        goodList: [],
+        imageSrc: []
       },
       swiperOpt: {
         autoplay: false,
@@ -268,16 +255,18 @@
         }
       },
       cart (action) {
-        if (action === 'addCart') {
-          this.isAddCart = true
-        } else if (action === 'addBuy') {
-          this.isAddCart = false
-        }
-        this.overflow = true
-        this.cartModal = true
-        this.showVideo = true
-        this.videoContext.pause()
-        this.initData(this.initCartResult())
+        this.initData(() => {
+          if (action === 'addCart') {
+            this.isAddCart = true
+          } else if (action === 'addBuy') {
+            this.isAddCart = false
+          }
+          this.overflow = true
+          this.cartModal = true
+          this.showVideo = true
+          this.videoContext.pause()
+          this.initCartResult()
+        })
       },
       closeCart () {
         this.overflow = false
@@ -285,10 +274,10 @@
         this.cartNum = this.cartResult.num <= 0 ? 0 : 1
       },
       plusCart () {
-        if (this.cartResult.num > 0) {
+        if (this.cartResult.num - this.cartResult.cartCount > 0) {
           this.cartNum ++
-          if (this.cartNum > this.cartResult.num) {
-            this.cartNum = this.cartResult.num
+          if (this.cartNum > this.cartResult.num - this.cartResult.cartCount) {
+            this.cartNum = this.cartResult.num - this.cartResult.cartCount
           }
         }
       },
@@ -308,8 +297,8 @@
       blurCart (val) {
         if (val <= 0) {
           this.cartNum = 1
-        } else if (this.cartResult.num > 0 && this.cartNum > this.cartResult.num) {
-          this.cartNum = this.cartResult.num
+        } else if (this.cartResult.num > 0 && this.cartNum > this.cartResult.num - this.cartResult.cartCount) {
+          this.cartNum = this.cartResult.num - this.cartResult.cartCount
         } else if (this.cartResult.num <= 0) {
           this.cartNum = 0
         } else {
@@ -323,9 +312,10 @@
         this.cartResult = this.detail.goodList[e.detail.value]
       },
       goCart () {
-        if (this.cartResult.num > 0) {
+        if (this.cartResult.num - this.cartResult.cartCount > 0) {
           if (this.isAddCart) {
-            if (this.cartNum <= this.cartResult.num) {
+            if (this.cartNum <= this.cartResult.num - this.cartResult.cartCount) {
+              console.log(this.addCartCount)
               this.addCartCount += parseInt(this.cartNum)
               // 发送添加购物车请求
               this.addCartData()
@@ -373,6 +363,13 @@
             this.showVideo = true
           }
         })
+      },
+      goImageLink (href) {
+        if (href) {
+          wepy.navigateTo({
+            url: './link?href=' + href
+          })
+        }
       }
     }
     initCartData () {
@@ -384,6 +381,14 @@
         return item.checked
       })
       this.cartResult = result.length > 0 ? result[0] : this.detail.goodList[0]
+      for (var i = 0; i < this.detail.goodList.length; i++) {
+        if (this.cartResult.id === this.detail.goodList[i].id) {
+          this.detail.goodList[i].isChecked = true
+        } else {
+          this.detail.goodList[i].isChecked = false
+        }
+      }
+      console.log(this.detail.goodList)
       this.cartNum = result.length > 0 ? 1 : 0
     }
     initData (cb) {
@@ -413,10 +418,15 @@
           _this.currentPath = data.title
           _this.detail.price = data.memberPrice
           _this.detail.oldprice = data.price
+          _this.detail.reduction = data.reduction
           _this.detail.descript = data.desc
           _this.detail.type = data.sourceType
           _this.detail.id = data.sourceId
           _this.detail.collectId = data.collectionId
+          var tempSrc = JSON.parse(_this.$parent.base64Decode(data.detail))
+          for (var key in tempSrc) {
+            _this.detail.imageSrc.push(tempSrc[key])
+          }
           _this.getMarkUser(data.sourceId, data.sourceType)
           if (data.collectionId) {
             _this.collect = true
@@ -439,12 +449,13 @@
             } else {
               good.checked = false
             }
+            good.cartCount = item.shoppingCartCount
             good.type = item.sourceType
             good.id = item.sourceId
             _this.detail.goodList.push(good)
             _this.$apply()
-            cb && cb()
           })
+          cb && cb()
         } else {
           if (_this.$parent.missToken) {
             _this.token = this.$parent.getToken(res.data.error)
@@ -468,6 +479,7 @@
       }
       this.$parent.HttpRequest.AddCartHttp(data).then((res) => {
         if (res.data.error === 0) {
+          // _this.initData(_this.initCartResult())
         } else {
           if (_this.$parent.missToken) {
             _this.token = this.$parent.getToken(res.data.error)
@@ -575,6 +587,8 @@
         this.userAvatar = this.$parent.getUserAvatar()
         this.customer_info = this.$parent.getMessage()
         this.bussiness_info = this.$parent.getBusiness('商品详情页', this.currentPath, null)
+        this.initCartResult()
+        this.addCartCount = this.cartResult.cartCount
       })
       this.$apply()
     }

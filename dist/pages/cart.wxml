@@ -71,9 +71,9 @@
                     <image src="{{item.cover}}" mode="aspectFill"/>
                     
   <view class="counter">
-    <view catchtap="$counteCold$plusTap" class="counter-btn {{item.disable || $counteCold$disable ? 'disable' : ''}}" data-id="{{item.sourceId}}" data-com-index="{{index}}">  +  </view>
-    <input type="number" bindinput="$counteCold$inputTap" bindblur="$counteCold$blurTap" class="counter-btn number {{item.disable ? 'disable' : ''}}" value="{{item.buyCount}}" focus="{{$counteCold$autoFocus}}" data-id="{{item.sourceId}}" disabled="{{item.disable}}" data-com-index="{{index}}"/> 
-    <view catchtap="$counteCold$minusTap" class="counter-btn minusBtn {{item.disable || !$counteCold$isAble ? '' : 'able'}}" data-id="{{item.sourceId}}" data-com-index="{{index}}">  -  </view>
+    <view catchtap="$counteNormal$plusTap" class="counter-btn {{item.disable || $counteNormal$disable ? 'disable' : ''}}" data-id="{{item.sourceId}}" data-com-index="{{index}}">  +  </view>
+    <input type="number" bindinput="$counteNormal$inputTap" bindblur="$counteNormal$blurTap" class="counter-btn number {{item.disable ? 'disable' : ''}}" value="{{item.buyCount}}" focus="{{$counteNormal$autoFocus}}" data-id="{{item.sourceId}}" disabled="{{item.disable}}" data-com-index="{{index}}"/> 
+    <view catchtap="$counteNormal$minusTap" class="counter-btn minusBtn {{item.disable || !$counteNormal$isAble ? '' : 'able'}}" data-id="{{item.sourceId}}" data-com-index="{{index}}">  -  </view>
   </view>
 
                   </view>

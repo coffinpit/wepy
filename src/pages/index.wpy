@@ -29,14 +29,20 @@
         <view class="top_nav {{currentPage == index? 'top_nav_active' : ''}}" @tap="navTab({{index}})">{{item}}</view>
       </repeat>
     </wxc-flex>
-    <view wx:if="{{currentPage === 0}}" class="content">
+    <repeat for="{{topnavigation}}" index="index" item="item">
+      <view wx:if="{{currentPage === index}}" class="content">
+        <view class="goods-title"><image src="{{categoryImage[index]}}"></image></view>
+        <recGoods :goodsItem.sync="goods" @goodsTap.user="goDetail"></recGoods>
+      </view>
+    </repeat>
+    <!-- <view wx:if="{{currentPage === 0}}" class="content">
         <view class="goods-title"><image src="../image/sptj_img.png"></image></view>
         <recGoods :goodsItem.sync="goods" @goodsTap.user="goDetail"></recGoods>
     </view>
     <view wx:elif="{{currentPage === 1}}" class="content">
         <view class="goods-title"><image src="../image/rmsp_img.png"></image></view>
         <hotGoods :goodsItem.sync="goods" @goodsTap.user="goDetail"></hotGoods>
-    </view>
+    </view> -->
     <defect wx:if="{{isNull}}" type="1"></defect>
     <isDown wx:if="{{isDown}}"></isDown>
   </view>  
@@ -92,7 +98,8 @@
       isDown: false,
       isLoading: false,
       userLevel: false,
-      vipEnd: ''
+      vipEnd: '',
+      categoryImage: ['../image/sptj_img.png', '../image/rmsp_img.png']
     }
 
     methods = {

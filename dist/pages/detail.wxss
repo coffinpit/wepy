@@ -220,6 +220,10 @@
 .detail-container .section {
   margin-bottom: 5px;
 }
+.detail-container .detail-image {
+  width: 100%;
+  float: left;
+}
 .detail-container .detail-goods {
   display: flex;
   padding: 4rpx 0 4rpx 28rpx;
@@ -288,8 +292,12 @@
   margin-top: 10rpx;
 }
 .popup_layer .popup_goods .link.inline {
-  float: left;
-  margin-top: 50rpx;
+  float: right;
+  margin-top: 30rpx;
+  text-align: right;
+}
+.popup_layer .popup_goods .link.inline text {
+  display: block;
 }
 .popup_layer .popup_goods .calculate {
   margin-top: 20rpx;
@@ -307,12 +315,12 @@
   width: 80%;
 }
 .popup_layer .goods-name {
-  width: 70%;
+  width: 65%;
   font-size: 28rpx;
   line-height: 56rpx;
 }
 .popup_layer .goods-num {
-  width: 30%;
+  width: 35%;
   font-size: 28rpx;
   line-height: 56rpx;
   text-align: right;

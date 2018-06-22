@@ -74,7 +74,7 @@ class HttpRequest extends wepy.app{
 		var sign = Md5.md5(str).toUpperCase()
 		return sign
 	}
-	getData (res, param) {
+	formatData (res, param) {
 		var time = res.data.toString()
 		param.requestTime = time
 		for (var key in param) {
@@ -85,7 +85,18 @@ class HttpRequest extends wepy.app{
 		newKey.forEach((item) => {
 			newParam[item] = param[item]
 		})
+		return newParam
+	}
+	getData (res, param) {
+		var newParam = this.formatData(res, param)
 		var sign = JSON.stringify(newParam) + '^ZS2018LCJ'
+		newParam.signature = Md5.md5(sign).toLowerCase()
+		return newParam
+	}
+	getJsonData (res, param) {
+		var newParam = this.formatData(res, param)
+		var sign = JSON.stringify(newParam).replace(/\\/g, '') + '^ZS2018LCJ'
+		console.log(sign)
 		newParam.signature = Md5.md5(sign).toLowerCase()
 		return newParam
 	}
@@ -439,7 +450,7 @@ class HttpRequest extends wepy.app{
 		var _this = this
 		return new Promise((resolve, reject) => {
 			_this.getTime().then((res) => {
-				var data = _this.getData(res, param)
+				var data = _this.getJsonData(res, param)
 				console.log(data)
 				wepy.request({
 					url: this.$$base + this.$$path.deleteCart,

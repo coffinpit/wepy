@@ -65,7 +65,7 @@
                   </view>
                   <view class="inner-image">
                     <image src="{{item.cover}}" mode="aspectFill"></image>
-                    <counteCold :num.sync="item.buyCount" @plusEdit.user="plusCold" @minusEdit.user="minCold" @keyEdit.user="keyCold" :sourceId.sync="item.sourceId" @blurEdit.user="blurCold" :isDisabled.sync="item.disable"></counteCold>
+                    <counteNormal :num.sync="item.buyCount" :sourceId.sync="item.sourceId" @blurEdit.user="blurCold" :isDisabled.sync="item.disable"></counteNormal>
                   </view>
                 </view>
               </view>
@@ -165,15 +165,16 @@
       },
       plusCold (e) {
         if (this.timeout) {
+          this.timeout = false
           var sourceId = e.currentTarget.dataset.id
           this.cartList.forEach((item) => {
             item.coldlist.forEach((val) => {
               if (val.sourceId === sourceId && val.totalCount > this.validateCount) {
-                val.count ++
-                this.timeout = false
+                val.count = val.count + 1
                 if (val.count > val.totalCount) {
                   val.count = val.totalCount
                   this.maxModal('数量已达上限')
+                  this.timeout = true
                 } else {
                   // 发送购物车修改数据
                   this.addCartData(val, 1, () => {
@@ -190,15 +191,16 @@
       },
       minCold (e) {
         if (this.timeout) {
+          this.timeout = false
           var sourceId = e.currentTarget.dataset.id
           this.cartList.forEach((item) => {
             item.coldlist.forEach((val) => {
               if (val.sourceId === sourceId && val.totalCount > this.validateCount) {
-                val.count --
-                this.timeout = false
+                val.count = val.count - 1
                 if (val.count < 1) {
                   val.count = 1
                   this.maxModal('不能再少啦')
+                  this.timeout = true
                 } else {
                   // 发送购物车修改数据
                   this.addCartData(val, -1, () => {

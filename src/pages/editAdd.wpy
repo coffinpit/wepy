@@ -104,7 +104,7 @@
     }
     methods = {
       nameTap (e) {
-        this.userName = e.detail.value
+        this.userName = this.$parent.filteremoji(e.detail.value)
         return this.userName
       },
       phoneTap (e) {
@@ -116,7 +116,7 @@
         return this.postcode
       },
       userAddTap (e) {
-        this.userAdd = e.detail.value
+        this.userAdd = this.$parent.filteremoji(e.detail.value)
       },
       pickTopArea (e) {
         this.topIndex = e.detail.value
@@ -143,6 +143,7 @@
       },
       confirm () {
         this.token = this.$parent.getToken()
+        console.log(this.userName, this.userPhone, this.userAdd, this.pickerValue)
         if (this.userName && this.userPhone && this.userAdd && this.pickerValue) {
           if (this.myreg.test(this.userPhone)) {
             var data = {
@@ -242,12 +243,14 @@
       })
     }
     onLoad (param) {
+      console.log(param)
       if (param) {
         var address = JSON.parse(param.detail)
         this.userName = address.name
         this.userPhone = address.phone
         this.userAdd = address.detail
         this.postcode = address.postCode
+        this.pickerValue = address.areaId
         this.fullarea = address.areaFullId.split(',')
         this.areaFullName = address.areaFullName.split(',')
         this.id = address.id

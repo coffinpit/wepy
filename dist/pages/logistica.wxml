@@ -6,6 +6,14 @@
     <view class="lg-container">
       <block wx:for="{{logistic}}" wx:for-index="index" wx:for-item="item" wx:key="key">
         <view wx:if="{{current === index}}">
+          <view class="lgtitle latest">
+            <text class="iconfont icon-me_dd"/>
+            <view class="latest-detail">
+              <text class="tips">{{status[current][0].time}}</text>
+              <text class="font-normal">{{status[current][0].text}}</text>
+            </view>
+            <image src="../image/dz_bgbl.png" class="bottom-line"/>
+          </view>
           <view class="lgtitle">
             <text class="font-normal left">物流单号：<text selectable="true">{{item.logisticsCode}}</text></text>
             <text class="tips right">联系电话：{{item.phone}}</text>

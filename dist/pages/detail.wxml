@@ -44,11 +44,13 @@
         <view class="detail-txt-price">
           <text>原价</text>
           <text class="{{userLevel === 0 ? '' : 'through'}}">￥{{detail.oldprice}}</text>
-          <navigator url="./applyVip" class="detail-link">成为会员?</navigator>
+          <navigator url="./applyVip" class="detail-link" wx:if="{{userLevel === 0}}">成为会员?</navigator>
+          <text class="detail-link" wx:elif="{{userLevel === 1}}">优惠￥{{detail.reduction}}</text>
         </view>
         <view class="detail-txt-price express">
-          <text>快递￥{{detail.express}}</text>
-          <text class="tips">成为会员</text><text class="tips">即享包邮</text>
+          <text>快递<text wx:if="{{userLevel === 0}}">￥{{detail.express}}</text></text>
+          <text class="tips" wx:if="{{userLevel === 0}}">成为会员<text class="tips">即享包邮</text></text>
+          <text class="tips" wx:elif="{{userLevel === 1}}">超级会员<text class="tips">畅享包邮</text></text>
           <button class="default-button" hover-class="default-button-active" bindtap="goRules">配送规则</button>
         </view>
       </view>
@@ -88,29 +90,13 @@
     </view>
     <view class="content">
       <view class="detail-title">
-         <text class="title">商品详情</text>
+        <text class="title">商品详情</text>
       </view>
       <view class="detail-container">
-         <view class="section">关于商品</view>
-         <block wx:for="{{goodsDetail}}" wx:for-index="index" wx:for-item="item" wx:key="key">
-           <view class="detail-goods">
-              <view class="detail-goods-title">{{item.title}}</view>
-              <view class="detail-goods-content">{{item.detail}}</view>
-           </view>
-         </block>
-      </view>
-      <view class="detail-container">
-         <view class="section">关于商品</view>
-         <block wx:for="{{transportDetail}}" wx:for-index="index" wx:for-item="item" wx:key="key">
-           <view class="detail-goods">
-              <view class="detail-goods-title">{{item.title}}</view>
-                <view wx:if="{{!item.isLink}}" class="detail-goods-content">{{item.detail}}</view>
-                <navigate wx:else to="" class="detail-goods-content link">{{item.detail}}</navigate>
-           </view>
-         </block>
-      </view>
-      <view class="detail-container">
-        <view class="section">关于</view>
+        <view class="section">关于商品</view>
+        <block wx:for="{{detail.imageSrc}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <image src="{{item.src}}" mode="widthFix" class="detail-image" bindtap="goImageLink" data-wpygoimagelink-a="{{item.href}}"/>
+        </block>
       </view>
     </view>
     
@@ -158,17 +144,17 @@
     <view catchtap="$counterCart$minusTap" class="counter-btn minusBtn {{$counterCart$isDisabled || !$counterCart$isAble ? '' : 'able'}}" data-id="{{$counterCart$sourceId}}">  -  </view>
   </view>
 
-          <text wx:if="{{maxtip}}" class="title link inline">数量已达上限</text>
+          <text wx:if="{{maxtip}}" class="tips link inline"><text>数量已达上限</text><text wx:if="{{cartResult.cartCount > 0}}">(购物车已含{{cartResult.cartCount}})</text></text>
         </view>
       </view>
       <radio-group bindchange="addCartGoods">
         <block wx:for="{{detail.goodList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
           <view class="popup_layer">
             <view class="goods-name {{item.num === 0 ? 'none' : ''}}">{{item.name}}</view>
-            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="{{item.num === 0? '#ccc' : '#ec3d3a'}}" checked="{{item.checked}}" disabled="{{item.num === 0? true : false}}"/></view>
+            <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="{{item.num === 0? '#ccc' : '#ec3d3a'}}" checked="{{item.isChecked}}" disabled="{{item.num === 0? true : false}}"/></view>
           </view>
         </block>
       </radio-group>
-      <button class="default-button size-full {{cartResult.num === 0 ? 'disable' : ''}}" catchtap="goCart">{{isAddCart ? '加入购物车' : '立即购买'}}</button>
+      <button class="default-button size-full {{cartResult.num - cartResult.cartCount === 0 ? 'disable' : ''}}" catchtap="goCart">{{isAddCart ? '加入购物车' : '立即购买'}}</button>
     </view>
   </view>

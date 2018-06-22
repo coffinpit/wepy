@@ -75,7 +75,7 @@ image {
 .goods-title {
   text-align: center;
   height: 25px;
-  margin-top: 40rpx;
+  margin-top: 20rpx;
 }
 .goods-title image {
   width: 140px;

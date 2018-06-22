@@ -39,6 +39,38 @@
   background: #ffffff;
   margin-bottom: 20rpx;
 }
+.lg-container .lgtitle.latest {
+  position: relative;
+  margin-bottom: 0;
+  padding-bottom: 32rpx;
+  border-bottom: 0;
+  overflow: hidden;
+}
+.lg-container .lgtitle.latest image {
+  position: absolute;
+  width: 100%;
+  height: 8rpx;
+  left: 0;
+}
+.lg-container .lgtitle.latest image.top-line {
+  top: 0;
+}
+.lg-container .lgtitle.latest image.bottom-line {
+  bottom: 0;
+}
+.lg-container .lgtitle.latest .icon-me_dd {
+  font-size: 80rpx;
+  float: left;
+  color: #ec3d3a;
+  vertical-align: middle;
+}
+.lg-container .lgtitle.latest .latest-detail {
+  float: right;
+  width: 600rpx;
+}
+.lg-container .lgtitle.latest .tips {
+  display: block;
+}
 .lg-container .lgtitle .right {
   text-align: right;
   width: 40%;

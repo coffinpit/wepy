@@ -34,6 +34,38 @@
       border-bottom: 1px @lightgray solid;
       background: @white;
       margin-bottom: 20rpx;
+      &.latest{
+        position: relative;
+        margin-bottom: 0;
+        padding-bottom: 32rpx;
+        border-bottom: 0;
+        overflow: hidden;
+        image{
+          position: absolute;
+          width:100%;
+          height: 8rpx;
+          left:0;
+          &.top-line{
+            top: 0;
+          }
+          &.bottom-line{
+            bottom: 0;
+          }
+        }
+        .icon-me_dd{
+          font-size: 80rpx;
+          float: left;
+          color:@lightred;
+          vertical-align: middle;
+        }
+        .latest-detail{
+          float: right;
+          width: 600rpx;
+        }
+        .tips{
+          display: block;
+        }
+      }
       .right{
         text-align: right;
         width:40%;

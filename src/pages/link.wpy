@@ -1,0 +1,26 @@
+<style lang="less">
+</style>
+<template>
+  <view>
+    <web-view src="{{url}}"></web-view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Link extends wepy.page {
+    config = {
+      navigationBarTitleText: ''
+    }
+    data = {
+      url: ''
+    }
+    methods = {
+    }
+    onLoad (url) {
+      this.url = url.href
+      this.$apply()
+    }
+  }
+</script>
