@@ -5,6 +5,7 @@
 .counter {
   display: flex;
   position: relative;
+  flex-direction: row-reverse;
 }
 .counter .counter-btn {
   border: 1px #eeeeee solid;

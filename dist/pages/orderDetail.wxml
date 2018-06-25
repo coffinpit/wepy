@@ -6,7 +6,7 @@
         <text class="font-normal {{status === 3 ? 'gray' : ''}} {{status === 1 || status === 2 ? 'link' : ''}}">{{status === 1 && !remainTime ? initTxt : statusTxt}}</text>
         <text class="font-normal txt-status remain" wx:if="{{status === 1 && remainTime && !isStop}}">
           <text class="font-normal">仅剩余：{{remainTime}}</text>
-          <text class="font-normal">需付款：￥{{finalPrice}}</text>
+          <text class="font-normal">待付款：￥{{pay}}</text>
         </text>
         <text class="font-normal txt-status" wx:elif="{{ remainTime === 0 && status === 1 && isStop}}">支付取消</text>
         <text class="font-normal txt-status" wx:elif="{{status === 2 && address != false}}">
@@ -69,11 +69,13 @@
       <view class="orderTotal" wx:if="{{!isHidden}}">
         <text class="iconfont icon-me_dd"/>
         <view class="status-layer">
-          <text class="font-normal" wx:if="{{status === 1 || status === 3}}">需付款<text class="link">￥{{pay}}</text> (含运费￥{{freight}})</text>
+          <text class="font-normal" wx:if="{{status === 1}}">待付款<text class="link">￥{{pay}}</text> (含运费￥{{freight}})</text>
+          <text class="font-normal" wx:elif="{{status === 2}}">退款中</text>
+          <text class="font-normal" wx:elif="{{status === 3}}">交易已关闭</text>
           <text class="font-normal" wx:else>实付款<text class="link">￥{{pay}}</text> (含运费￥{{freight}})</text>
           <view class="edit-button">
             <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}" bindtap="goPay">付款</button>
-            <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" bindtap="goAddress">修改地址</button>
+            <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1}}" bindtap="goAddress">修改地址</button>
             <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" bindtap="cancel">取消订单</button>
             <view wx:if="{{address && Object.keys(address).length !== 0}}">
               <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 2 || status === 5 || status === 6}}" bindtap="goLogistic">查看物流</button>

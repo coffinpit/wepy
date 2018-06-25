@@ -22,8 +22,10 @@
             <view class="order-edit">
               <text class="iconfont icon-me_dd"></text>
               <view class="status-layer">
-                <text class="font-normal" wx:if="{{item.status === 1 || item.status === 3}}">待付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
-                <text class="font-normal" wx:else>实付款￥<text class="link">{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+                <text class="font-normal" wx:if="{{item.status === 1}}">待付款<text class="link">￥{{item.pay}}</text> (含运费￥{{item.freight}})</text>
+                <text class="font-normal" wx:elif="{{item.status === 2}}">退款中</text>
+                <text class="font-normal" wx:elif="{{item.status === 3}}">交易已关闭</text>
+                <text class="font-normal" wx:else>实付款<text class="link">￥{{item.pay}}</text> (含运费￥{{item.freight}})</text>
                 <view class="edit-button">
                   <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" @tap="goPay({{item.id}})">付款</button>
                   <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1}}" @tap="goAddress({{item.id}})">修改地址</button>
@@ -177,9 +179,12 @@
                 'success': (res) => {
                   if (res.errMsg === 'requestPayment:ok') {
                     // 用户支付成功跳转首页
-                    wepy.switchTab({
-                      url: './index'
-                    })
+                    // wepy.switchTab({
+                    //   url: './index'
+                    // })
+                    this.current = 2
+                    this.orderType = 'undelivered'
+                    this.initData()
                   } else if (res.errMsg === 'requestPayment:cancel') {
                     // 用户取消支付跳转订单列表
                     this.$parent.payFail()

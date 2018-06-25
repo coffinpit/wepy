@@ -303,7 +303,7 @@ export default class extends wepy.app {
       success: (res) => {
         if (res.confirm) {
           wepy.redirectTo({
-            url: './order'
+            url: './order?orderType=unpaid'
           })
         }
       }

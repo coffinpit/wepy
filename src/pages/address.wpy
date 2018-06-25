@@ -47,7 +47,8 @@
       count: '',
       orderId: '',
       detail: '',
-      getTokenTime: 0
+      getTokenTime: 0,
+      memo: ''
     }
     components = {
       defect: Defect
@@ -80,12 +81,12 @@
         // var pre = page[page.length - 2].route
         if (this.prevPage === 'paycart') {
           wepy.redirectTo({
-            url: './paycart?user=' + JSON.stringify(this.address[index])
+            url: './paycart?user=' + JSON.stringify(this.address[index]) + '&memo=' + this.memo
           })
         }
         if (this.prevPage === 'paybuy') {
           wepy.redirectTo({
-            url: './paybuy?user=' + JSON.stringify(this.address[index]) + '&type=' + this.sourceType + '&id=' + this.sourceId + '&count=' + this.count
+            url: './paybuy?user=' + JSON.stringify(this.address[index]) + '&type=' + this.sourceType + '&id=' + this.sourceId + '&count=' + this.count + '&memo=' + this.memo
           })
         }
         if (this.prevPage === 'order') {
@@ -134,6 +135,9 @@
             obj.areaFullName = item.areaFullName
             obj.areaFullId = item.areaFullId
             _this.address.push(obj)
+            _this.address.sort((add1, add2) => {
+              return add2.id - add1.id
+            })
           })
         } else {
           _this.isNull = true
@@ -187,12 +191,12 @@
       })
     }
     onLoad (data) {
-      console.log(data)
       this.prevPage = data.page
       this.sourceType = data.sourceType
       this.sourceId = data.sourceId
       this.count = data.count
       this.orderId = data.id
+      this.memo = data.memo
       this.$apply()
     }
     onShow () {

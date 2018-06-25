@@ -40,15 +40,9 @@
 .inner-layer .title {
   display: block;
 }
-.inner-layer .tips {
-  float: right;
-}
 .inner-layer .font-small {
-  display: block;
-  width: 220rpx;
-}
-.inner-layer .font-small.left {
   float: left;
+  width: 50%;
 }
 .inner-image {
   height: 150rpx;

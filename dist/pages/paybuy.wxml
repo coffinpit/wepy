@@ -47,7 +47,7 @@
         <text class="tips">{{txtLength}}/100</text>
       </view>
       <view class="memo-right">
-        <textarea placeholder="请输入备注" placeholder-class="placeholder" maxlength="100" bindinput="inputTap"/>
+        <textarea placeholder="请输入备注" placeholder-class="placeholder" maxlength="100" bindinput="inputTap" value="{{memo}}"/>
       </view>
     </view>
     <view class="vip-tip" wx:if="{{userLevel}}">

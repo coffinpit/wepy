@@ -221,13 +221,9 @@ view {
 .inner-layer .title {
   display: block;
 }
-.inner-layer .tips {
-  float: right;
-}
 .inner-layer .font-small {
   float: left;
-  display: block;
-  width: 260rpx;
+  width: 50%;
 }
 .inner-image {
   position: absolute;

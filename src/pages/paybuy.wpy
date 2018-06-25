@@ -33,7 +33,7 @@
         <text class="tips">{{txtLength}}/100</text>
       </view>
       <view class="memo-right">
-        <textarea placeholder="请输入备注" placeholder-class="placeholder" maxlength="100" @input="inputTap"/>
+        <textarea placeholder="请输入备注" placeholder-class="placeholder" maxlength="100" @input="inputTap" value="{{memo}}"/>
       </view>
     </view>
     <view class="vip-tip" wx:if="{{userLevel}}">
@@ -105,12 +105,13 @@
       finalprice: '',
       txtLength: 0,
       memo: '',
-      payment: true
+      payment: true,
+      paramMemo: ''
     }
     methods = {
       goAddress () {
         wepy.redirectTo({
-          url: './address?page=paybuy' + '&sourceType=' + this.sourceType + '&sourceId=' + this.sourceId + '&count=' + this.count
+          url: './address?page=paybuy' + '&sourceType=' + this.sourceType + '&sourceId=' + this.sourceId + '&count=' + this.count + '&memo=' + this.memo
         })
       },
       goApplyVip () {
@@ -161,8 +162,11 @@
                   'success': (res) => {
                     if (res.errMsg === 'requestPayment:ok') {
                       // 用户支付成功跳转首页
-                      wepy.switchTab({
-                        url: './index'
+                      // wepy.switchTab({
+                      //   url: './index'
+                      // })
+                      wepy.redirectTo({
+                        url: './order?orderType=undelivered'
                       })
                     } else if (res.errMsg === 'requestPayment:cancel') {
                       // 用户取消支付跳转订单列表
@@ -222,7 +226,6 @@
           })
           console.log(_this.order)
         } else {
-          wepy.hideLoading()
           wepy.showModal({
             title: '创建订单失败',
             content: '请点击确认返回购物车',
@@ -262,16 +265,20 @@
     onLoad (param) {
       if (param.user) {
         this.user = JSON.parse(param.user)
+        this.paramMemo = param.memo
       }
-      console.log(param)
       this.sourceId = param.id
       this.sourceType = param.type
       this.count = param.count
+      this.applyOrder()
       this.$apply()
     }
     onShow () {
-      this.applyOrder()
       this.$apply()
+    }
+    onReady () {
+      this.memo = this.paramMemo
+      this.txtLength = this.paramMemo.length
     }
   }
 </script>

@@ -29,11 +29,11 @@
     </repeat>
     <view class="memo">
       <view class="memo-left">
-        <text class="title">订单备注:{{memo}}</text>
+        <text class="title">订单备注:</text>
         <text class="tips">{{txtLength}}/100</text>
       </view>
       <view class="memo-right">
-        <textarea placeholder="请输入备注" placeholder-class="placeholder" maxlength="100" @input="inputTap" @confirm="blurTap"/>
+        <textarea placeholder="请输入备注" placeholder-class="placeholder" maxlength="100" @input="inputTap" value="{{memo}}"/>
       </view>
     </view>
     <view class="vip-tip" wx:if="{{userLevel}}">
@@ -103,12 +103,13 @@
       finalprice: '',
       txtLength: 0,
       memo: '',
-      payment: true
+      payment: true,
+      paramMemo: ''
     }
     methods = {
       goAddress () {
         wepy.redirectTo({
-          url: './address?page=paycart'
+          url: './address?page=paycart&memo=' + this.memo
         })
       },
       goApplyVip () {
@@ -155,11 +156,13 @@
                   'signType': 'MD5',
                   'paySign': sign,
                   'success': (res) => {
-                    console.log('success')
                     if (res.errMsg === 'requestPayment:ok') {
                       // 用户支付成功跳转首页
-                      wepy.switchTab({
-                        url: './index'
+                      // wepy.switchTab({
+                      //   url: './index'
+                      // })
+                      wepy.redirectTo({
+                        url: './order?orderType=undelivered'
                       })
                     } else if (res.errMsg === 'requestPayment:cancel') {
                       // 用户取消支付跳转订单列表
@@ -258,12 +261,17 @@
     onLoad (param) {
       if (param.user) {
         this.user = JSON.parse(param.user)
+        this.paramMemo = param.memo
       }
+      this.applyOrder()
       this.$apply()
     }
     onShow () {
-      this.applyOrder()
       this.$apply()
+    }
+    onReady () {
+      this.memo = this.paramMemo
+      this.txtLength = this.paramMemo.length
     }
   }
 </script>
