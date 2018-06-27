@@ -409,7 +409,7 @@
         console.log(res)
         _this.$parent.hideLoading()
         this.detail.goodList = []
-        if (res.data.error === 0) {
+        if (res.data.error === 0 && res.data.data.isAllowSale) {
           _this.isLoaded = true
           var data = res.data.data
           if (!data.collectionId) {
@@ -418,7 +418,10 @@
             _this.collect = true
           }
           // 测试用户身份变化
-          _this.$parent.resetUserLevel(data.memberHash, this.token)
+          _this.$parent.resetUserLevel(data.memberHash, this.token, () => {
+            _this.userLevel = _this.$parent.globalData.userLevel
+            _this.memberId = _this.$parent.globalData.memberId
+          })
           _this.detail.path = data.cover
           _this.detail.title = data.title
           _this.currentPath = data.title
@@ -483,6 +486,17 @@
             _this.$apply()
           })
           cb && cb()
+        } else if (res.data.error === 0 && !res.data.data.isAllowSale) {
+          wepy.showModal({
+            title: '提示',
+            content: '该商品已下架',
+            showCancel: false,
+            success: (res) => {
+              if (res.confirm) {
+                wepy.navigateBack()
+              }
+            }
+          })
         } else {
           if (_this.$parent.missToken) {
             _this.token = this.$parent.getToken(res.data.error)
@@ -608,9 +622,8 @@
       this.videoContext = wepy.createVideoContext('video')
     }
     onShow () {
-      this.userLevel = this.$parent.globalData.userLevel
-      this.memberId = this.$parent.globalData.memberId
       this.methods.closeCart.apply(this)
+      this.userLevel = this.$parent.globalData.userLevel
       this.initData(() => {
         this.userName = this.$parent.getUserName()
         this.userAvatar = this.$parent.getUserAvatar()

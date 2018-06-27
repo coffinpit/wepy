@@ -72,13 +72,13 @@
       orderList: OrderList
     }
     computed = {
-      userLevel () {
-        if (this.$parent.globalData.userLevel === 0) {
-          return false
-        } else if (this.$parent.globalData.userLevel === 1) {
-          return true
-        }
-      },
+      // userLevel () {
+      //   if (this.$parent.globalData.userLevel === 0) {
+      //     return false
+      //   } else if (this.$parent.globalData.userLevel === 1) {
+      //     return true
+      //   }
+      // },
       isNull () {
         if (this.order.length === 0) {
           return true
@@ -104,7 +104,8 @@
       txtLength: 0,
       memo: '',
       payment: true,
-      paramMemo: ''
+      paramMemo: '',
+      userLevel: 0
     }
     methods = {
       goAddress () {
@@ -210,6 +211,10 @@
           _this.memberPrice = data.memberPrice
           _this.pay = data.pay
           _this.finalprice = data.finalPrice
+          // 测试用户身份变化
+          _this.$parent.resetUserLevel(data.memberHash, this.token, () => {
+            _this.userLevel = _this.$parent.globalData.userLevel
+          })
           data.childOrders.forEach((item) => {
             var obj = {}
             obj.title = item.title
@@ -267,6 +272,7 @@
       this.$apply()
     }
     onShow () {
+      this.userLevel = this.$parent.globalData.userLevel
       this.$apply()
     }
     onReady () {

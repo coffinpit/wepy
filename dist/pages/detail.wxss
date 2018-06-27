@@ -103,7 +103,7 @@
   text-align: center;
 }
 .detail-info .detail-txt .detail-txt-price {
-  padding: 16rpx 30rpx 20rpx;
+  padding: 16rpx 10rpx 20rpx;
   text-align: center;
   color: #333333;
   border-bottom: 1px #eeeeee solid;

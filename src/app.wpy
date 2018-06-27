@@ -108,6 +108,21 @@ export default class extends wepy.app {
               this.missToken = false
               this.showFail()
             }
+          } else if (p.data.error && p.data.error === -1 && p.data.msg === 'member locked') {
+            this.hideLoading()
+            wepy.clearStorage()
+            wepy.showModal({
+              title: '提示',
+              content: '当前账号已被锁定',
+              showCancel: false,
+              success: (res) => {
+                if (res.confirm) {
+                  wepy.redirectTo({
+                    url: './login'
+                  })
+                }
+              }
+            })
           } else if (p.data.error && p.data.error === -2) {
             this.showFail(p.data.msg)
           } else if (p.data.error && p.data.error === 0) {
@@ -259,14 +274,15 @@ export default class extends wepy.app {
         _this.globalData.vipEnd = res.data.data.vipEnd
         _this.globalData.reduction = res.data.data.reduction
         _this.globalData.memberId = res.data.data.memberId
+        _this.globalData.reduction = res.data.data.reduction
         cb && cb()
       }
     })
   }
   // 判断当前user hash是否需要重置
-  resetUserLevel (hash, token) {
+  resetUserLevel (hash, token, cb) {
     if (hash !== this.globalData.userHash) {
-      this.getUserLevel(token)
+      this.getUserLevel(token, cb)
     }
   }
   // 存用户global信息
@@ -277,6 +293,17 @@ export default class extends wepy.app {
         console.log(this.globalData)
         cb && cb()
       }
+    })
+  }
+  // 发送用户昵称
+  sendNickname (token, name) {
+    var data = {
+      token: token,
+      nickName: this.base64Encode(name)
+    }
+    console.log(data)
+    this.HttpRequest.SetNickname(data).then((res) => {
+      console.log(res)
     })
   }
   showLoading () {

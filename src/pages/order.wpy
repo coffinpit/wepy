@@ -23,7 +23,7 @@
               <text class="iconfont icon-me_dd"></text>
               <view class="status-layer">
                 <text class="font-normal" wx:if="{{item.status === 1}}">待付款<text class="link">￥{{item.pay}}</text> (含运费￥{{item.freight}})</text>
-                <text class="font-normal" wx:elif="{{item.status === 2}}">退款中</text>
+                <text class="font-normal" wx:elif="{{item.status === 2}}">售后中</text>
                 <text class="font-normal" wx:elif="{{item.status === 3}}">交易已关闭</text>
                 <text class="font-normal" wx:else>实付款<text class="link">￥{{item.pay}}</text> (含运费￥{{item.freight}})</text>
                 <view class="edit-button">
@@ -31,7 +31,7 @@
                   <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1}}" @tap="goAddress({{item.id}})">修改地址</button>
                   <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="cancel({{item.id}})">取消订单</button>
                   <view wx:if="{{item.needAdd}}">
-                    <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 2 || item.status === 5 || item.status === 6}}" @tap="goLogistic({{item.id}}, {{item.status}})">查看物流</button>
+                    <button class="blank-button" hover-class="blank-button-hover" wx:if="{{(item.status === 2 && item.deliverStatus >= 2) || item.status === 5 || item.status === 6}}" @tap="goLogistic({{item.id}}, {{item.status}})">查看物流</button>
                   </view>
                   <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" wx:if="{{item.status === 5 || item.status === 6}}" @contact="getOrderId({{item.title}})">售后申请</button>
                 </view>
@@ -237,6 +237,7 @@
             obj.pay = item.pay
             obj.freight = item.freight
             obj.status = item.status
+            obj.deliverStatus = item.deliverStatus
             obj.needAdd = item.isNeedAddress
             obj.statusTxt = _this.orderStatus[item.status]
             obj.count = item.buyingRecords.length

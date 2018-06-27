@@ -141,9 +141,10 @@
                     if (res.errMsg === 'requestPayment:ok') {
                       // 用户支付成功跳转首页
                       this.$parent.getUserLevel(this.token, () => {
-                        wepy.switchTab({
-                          url: './index'
-                        })
+                        // wepy.switchTab({
+                        //   url: './index'
+                        // })
+                        wepy.navigateBack()
                       })
                     } else if (res.errMsg === 'requestPayment:cancel') {
                       // 用户取消支付跳转订单列表

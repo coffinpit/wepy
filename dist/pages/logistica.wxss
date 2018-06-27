@@ -1,3 +1,4 @@
+@import "./../components/defect.wxss";
 @import "./../components/orderlist.wxss";
 /* -- base color -- */
 /* -- base fontSize -- */

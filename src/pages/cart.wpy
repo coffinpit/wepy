@@ -131,16 +131,17 @@
       isLoading: true,
       validateCount: 0,
       expire: [],
-      timeout: true
+      timeout: true,
+      userLevel: 0
     }
     computed = {
-      userLevel () {
-        if (this.$parent.globalData.userLevel === 0) {
-          return false
-        } else if (this.$parent.globalData.userLevel === 1) {
-          return true
-        }
-      },
+      // userLevel () {
+      //   if (this.$parent.globalData.userLevel === 0) {
+      //     return false
+      //   } else if (this.$parent.globalData.userLevel === 1) {
+      //     return true
+      //   }
+      // },
       isNull () {
         if (this.cartList.length === 0) {
           return true
@@ -439,6 +440,11 @@
           _this.cartStatus.memberPrice = data.memberPrice
           _this.finalprice = data.pay
           _this.freight = data.freight
+          // 测试用户身份变化
+          console.log(data.memberHash)
+          _this.$parent.resetUserLevel(data.memberHash, this.token, () => {
+            _this.userLevel = _this.$parent.globalData.userLevel
+          })
           data.childOrders.forEach((item) => {
             var obj = {}
             obj.title = item.title
@@ -541,6 +547,7 @@
     }
     onShow () {
       this.isEdit = false
+      this.userLevel = this.$parent.globalData.userLevel
       this.clearList()
       this.initPageData()
       this.$apply()

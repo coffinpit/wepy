@@ -138,6 +138,7 @@
             good.title = item.title
             good.price = item.memberPrice
             good.oldprice = item.price
+            good.detail = item.viceTitle
             good.reduction = item.reduction
             good.descript = item.desc
             good.id = item.sourceId

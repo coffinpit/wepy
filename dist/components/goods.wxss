@@ -53,6 +53,11 @@
   min-height: 80rpx;
   height: 80rpx;
   overflow: hidden;
+  display: -webkit-box;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 .goods .goods-detail .goods-detail-price {
   font-size: 28rpx;
@@ -62,7 +67,12 @@
   font-weight: 500;
   display: inline-block;
 }
-.goods .goods-detail .goods-detail-oldprice {
+.goods .goods-detail .goods-detail-oldprice,
+.goods .goods-detail .goods-detail-vicetitle {
   font-size: 24rpx;
   color: #999999;
+  display: inline-block;
+}
+.goods .goods-detail .goods-detail-oldprice {
+  width: 180rpx;
 }

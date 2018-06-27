@@ -47,11 +47,13 @@
       </repeat>
     </view>
   </view>
+  <defect wx:if="{{isNull}}" type="9"></defect>
 </template>
 
 <script>
   import wepy from 'wepy'
   import OrderList from '../components/orderlist'
+  import Defect from '../components/defect'
 
   export default class Logistica extends wepy.page {
     config = {
@@ -64,10 +66,12 @@
       logistic: [],
       status: [],
       isLoading: false,
-      orderStatus: ''
+      orderStatus: '',
+      isNull: false
     }
     components = {
-      orderList: OrderList
+      orderList: OrderList,
+      defect: Defect
     }
     computed = {
       userLevel () {
@@ -94,9 +98,11 @@
       }
       this.$parent.HttpRequest.GetLogistic(data).then((res) => {
         console.log(res)
-        _this.$parent.hideLoading()
         if (res.data.error === 0) {
           var data = res.data.data
+          if (data.length === 0) {
+            this.isNull = true
+          }
           data.forEach((item) => {
             var obj = {}
             obj.logisticsCode = item.logisticsCode
@@ -112,6 +118,7 @@
             _this.initLogistic()
           }
         }
+        _this.$parent.hideLoading()
         _this.$apply()
       }).catch(() => {
         _this.$parent.hideLoading()

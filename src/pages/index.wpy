@@ -17,7 +17,7 @@
           超级会员
         </view>
         <view wx:if="{{userLevel === 0}}">
-          <view class="index-promot-txt">预计全年可帮您节省￥5690.0</view>
+          <view class="index-promot-txt">预计全年可帮您节省{{vipReduction}}</view>
         </view>
         <view wx:elif="{{userLevel === 1}}">
           <view class="index-promot-txt">您的会员身份可持续至{{vipEnd}}</view>
@@ -99,6 +99,7 @@
       isLoading: false,
       userLevel: false,
       vipEnd: '',
+      vipReduction: '',
       categoryImage: ['../image/sptj_img.png', '../image/rmsp_img.png']
     }
 
@@ -125,12 +126,16 @@
       }
     }
     onShow () {
-      this.getUserLevel()
+      this.token = this.$parent.getToken()
+      this.$parent.getUserLevel(this.token, () => {
+        this.getUserLevel()
+      })
       // this.currentPage = 0
       // this.isLoading = false
     }
     getUserLevel () {
       this.userLevel = this.$parent.globalData.userLevel
+      this.vipReduction = this.$parent.globalData.reduction
       this.vipEnd = this.$parent.dateFormat(this.$parent.globalData.vipEnd * 1000, 'Y年m月d日')
     }
     onReachBottom () {
@@ -188,6 +193,7 @@
             good.oldprice = item.price
             good.reduction = item.reduction
             good.id = item.sourceId
+            good.detail = item.viceTitle
             good.descript = item.desc
             _this.goods.push(good)
           })

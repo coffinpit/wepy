@@ -56,7 +56,7 @@
         <text class="iconfont icon-me_dd"></text>
         <view class="status-layer">
           <text class="font-normal" wx:if="{{status === 1}}">待付款<text class="link">￥{{pay}}</text> (含运费￥{{freight}})</text>
-          <text class="font-normal" wx:elif="{{status === 2}}">退款中</text>
+          <text class="font-normal" wx:elif="{{status === 2}}">售后中</text>
           <text class="font-normal" wx:elif="{{status === 3}}">交易已关闭</text>
           <text class="font-normal" wx:else>实付款<text class="link">￥{{pay}}</text> (含运费￥{{freight}})</text>
           <view class="edit-button">
@@ -64,7 +64,7 @@
             <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1}}" @tap="goAddress">修改地址</button>
             <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" @tap="cancel">取消订单</button>
             <view wx:if="{{address && Object.keys(address).length !== 0}}">
-              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 2 || status === 5 || status === 6}}" @tap="goLogistic">查看物流</button>
+              <button class="blank-button" hover-class="blank-button-hover" wx:if="{{(status === 2 && deliverStatus >= 2) || status === 5 || status === 6}}" @tap="goLogistic">查看物流</button>
             </view>
             <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" wx:if="{{status === 5 || status === 6}}">售后申请</button>
           </view>
@@ -95,6 +95,7 @@
       createTime: '',
       memo: '',
       pay: '',
+      deliverStatus: '',
       finalPrice: '',
       freight: '',
       remainTime: '',
@@ -230,6 +231,7 @@
           var data = res.data.data
           _this.statusTxt = _this.orderStatus[data.status]
           _this.status = data.status
+          _this.deliverStatus = data.deliverStatus
           _this.orderId = data.showId
           _this.createTime = _this.$parent.dateFormat(data.createTime * 1000, 'Y-m-d H:i:s')
           _this.memo = data.memo ? decodeURI(data.memo[0].val) : ''

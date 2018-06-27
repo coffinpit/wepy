@@ -22,7 +22,7 @@
           超级会员
         </view>
         <view wx:if="{{userLevel === 0}}">
-          <view class="index-promot-txt">预计全年可帮您节省￥5690.0</view>
+          <view class="index-promot-txt">预计全年可帮您节省{{vipReduction}}</view>
         </view>
         <view wx:elif="{{userLevel === 1}}">
           <view class="index-promot-txt">您的会员身份可持续至{{vipEnd}}</view>
@@ -48,6 +48,7 @@
             会员价:<text class="price">￥{{$recGoods$item.price}} (优惠￥{{$recGoods$item.reduction}})</text>
           </view>
           <view class="goods-detail-oldprice">原价:{{$recGoods$item.oldprice}}</view>
+          <view class="goods-detail-vicetitle">规格:{{$recGoods$item.detail}}</view>
           <view class="goods-promot">
             <view class="goods-promot-image">
               <image src="../image/icon-xian.png"/>

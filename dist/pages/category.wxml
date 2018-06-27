@@ -42,6 +42,7 @@
             会员价:<text class="price">￥{{$Categoods$item.price}} (优惠￥{{$Categoods$item.reduction}})</text>
           </view>
           <view class="goods-detail-oldprice">原价:{{$Categoods$item.oldprice}}</view>
+          <view class="goods-detail-vicetitle">规格:{{$Categoods$item.detail}}</view>
           <view class="goods-promot">
             <view class="goods-promot-image">
               <image src="../image/icon-xian.png"/>

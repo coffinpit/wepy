@@ -25,7 +25,7 @@
         <view class="inner-layer" data-index="{{$orderList$index}}" id="{{$orderList$item.sourceId}}">
           <text class="title">{{$orderList$item.title}}</text>
           <text class="font-small link">会员价：￥{{$orderList$item.price}} </text>
-          <text class="font-small left {{userLevel ? 'through' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
+          <text class="font-small left {{userLevel ? '' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
           <text class="tips">规格：{{$orderList$item.detail}}</text>
         </view>
         <view class="inner-image">
@@ -57,5 +57,13 @@
           </view>
         </view>
       </block>
+    </view>
+  </view>
+  
+  <view wx:if="{{isNull}}">
+    <view class="lost-goods">
+      <image src="../image/lost-goods.png"/>
+      <text class="iconfont {{$defect$typeIcon}}"/>
+      <text class="font-normal">{{$defect$typeTxt}}</text>
     </view>
   </view>

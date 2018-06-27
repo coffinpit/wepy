@@ -56,9 +56,6 @@
       loading: Loading
     }
     methods = {
-      changeLogin (e) {
-        console.log(e)
-      },
       login (e) {
         if (e.detail.encryptedData) {
           this.$parent.getUserInfo(e, this.jscode, this.refrenceCode, () => {
