@@ -9,6 +9,8 @@
   min-height: calc(100vh);
   display: block;
   padding-bottom: 108rpx;
+  width: 100%;
+  overflow: hidden;
 }
 .collect {
   position: relative;

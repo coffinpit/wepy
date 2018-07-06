@@ -50,7 +50,8 @@ class HttpRequest extends wepy.app{
 			addAddress: 'r=address/api-add-address',
 			getLogistic: 'r=order/api-get-logistics-list',
 			getLogisticStatus: 'r=order/api-get-logistics-detail',
-			setNickname: 'r=member/api-upload-nickname'
+			setNickname: 'r=member/api-upload-nickname',
+			getRecommend: 'r=product/api-get-recommend-spus'
 		}
 		this.$$pathHtml = {
 			rules: 'distribution_rules.html',
@@ -344,6 +345,28 @@ class HttpRequest extends wepy.app{
 				var data = _this.getData(res, param)
 				wepy.request({
 					url: this.$$base + this.$$path.getSpu,
+					data: data,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
+	GetRecommend (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.getRecommend,
 					data: data,
 					method: 'GET',
 	                header: {'content-type': 'application/json'},

@@ -65,9 +65,9 @@
 }
 .user-level{
   width:100%;
-  padding:20rpx;
+  padding:20rpx 30rpx;
   box-sizing:border-box;
-  background:@dark;
+  background:@maindark;
   .iconfont{
     color:@darkgray;
     font-size:70rpx;
@@ -80,8 +80,14 @@
       color:@lightred;
     }
   }
+  image{
+    width:35rpx;
+    height:31rpx;
+    margin-right:20rpx;
+    vertical-align: middle;
+  }
   view{
-    width:580rpx;
+    width:635rpx;
     display:inline-block;
   }
   .title{
@@ -117,12 +123,15 @@
   }
   .iconfont{
     font-size:56rpx;
-    color:@dark;
-    margin-right:50rpx;
+    color:#d9d9d9;
+    margin-right:20rpx;
     display:inline-block;
     width:60rpx;
     height:65rpx;
     line-height:65rpx;
+    &.icon-rightsj{
+      color:@dark;
+    }
   }
   text{
     vertical-align:middle;

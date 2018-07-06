@@ -1,0 +1,52 @@
+/* -- base color -- */
+/* -- base fontSize -- */
+/* -- base lineHeight -- */
+/* -- Mixin -- */
+.rec-title {
+  display: block;
+  padding: 20rpx 30rpx;
+  height: 60rpx;
+  background: #ffffff;
+  margin-top: 20rpx;
+  width: 690rpx;
+}
+.rec-title .title {
+  line-height: 58rpx;
+  display: inline-block;
+}
+.recommend {
+  background: #ffffff;
+  box-sizing: border-box;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0 30rpx 20rpx;
+}
+.recommend .recommend-layer {
+  width: 300rpx;
+  box-sizing: border-box;
+  margin-right: 20rpx;
+  display: inline-block;
+}
+.recommend .recommend-layer:last-child {
+  margin-right: 0;
+}
+.recommend .recommend-layer .recommend-container {
+  border: 1px #eeeeee solid;
+  background: #ffffff;
+  padding: 20rpx;
+}
+.recommend .recommend-layer .recommend-container image {
+  width: 240rpx;
+  height: 240rpx;
+}
+.recommend .recommend-layer .recommend-container .item-title {
+  height: 44rpx;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.recommend .recommend-layer .recommend-container .tips {
+  display: block;
+}

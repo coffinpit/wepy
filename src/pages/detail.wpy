@@ -5,19 +5,17 @@
     <view class="detail-info">
       <view class="detail-img">
         <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" @change.stop="changeSwiper" @animationfinish="swiperEnd" class="index-swiper">
-        <repeat>
-            <swiper-item wx:if="{{videoSrc.src}}">
-              <view class="video-layer {{showVideo ? '' : 'hidden'}}">
-                <view @tap="playVideo">
-                <image src="{{videoSrc.src}}" mode="aspectFill"></image>
-                </view>
+          <swiper-item wx:if="{{hasVideo}}">
+            <view class="video-layer {{showVideo ? '' : 'hidden'}}">
+              <view @tap="playVideo">
+              <image src="{{videoSrc[0].src}}" mode="aspectFill"></image>
               </view>
-              <view class="video-layer {{showVideo ? 'hidden': ''}}"><video id="myVideo" src="{{videoSrc.video}}" controls id="video" @pause="stopVideo" @ended="stopVideo" @error="errorVideo"></video></view>
-            </swiper-item>
-             <swiper-item>
-              <image src="{{detail.path}}" mode="aspectFill"></image>
-            </swiper-item>
-        </repeat>
+            </view>
+            <view class="video-layer {{showVideo ? 'hidden': ''}}"><video id="myVideo" src="{{videoSrc[0].video}}" controls id="video" @pause="stopVideo" @ended="stopVideo" @error="errorVideo"></video></view>
+          </swiper-item>
+           <swiper-item>
+            <image src="{{detail.path}}" mode="aspectFill"></image>
+          </swiper-item>
       </swiper>
       </view>
       <view class="detail-dots">
@@ -40,54 +38,51 @@
         </view>
         <view class="detail-txt-price express">
           <text>快递<text wx:if="{{userLevel === 0}}" class="freight">￥{{detail.express}}</text></text>
-          <text class="tips" wx:if="{{userLevel === 0}}">成为会员<text class="tips">即享包邮</text></text>
-          <text class="tips" wx:elif="{{userLevel === 1}}">超级会员<text class="tips">畅享包邮</text></text>
+          <text class="tips" wx:if="{{userLevel === 0}}">成为会员<text class="tips">满300.00包邮</text></text>
+          <text class="tips" wx:elif="{{userLevel === 1}}">超级会员<text class="tips">满300.00包邮</text></text>
           <button class="default-button" hover-class="default-button-active" @tap="goRules">配送规则</button>
         </view>
       </view>
-    </view>
-    <view class="content collcet-layer">
-      <view class="detail-title">
-        <view class="font-normal">{{detail.title}}</view>
-        <view class="goods-promot">
-          <view class="goods-promot-image">
-            <image src="../image/icon-xian.png"></image>
+    </view>    
+    <view style="width:750rpx">
+      <view class="content collcet-layer">
+        <view class="detail-title">
+          <view class="font-normal">{{detail.title}}</view>
+          <view class="goods-promot">
+            <view class="goods-info">
+              {{detail.descript}}
+            </view>
           </view>
-          <view class="goods-info">
-            {{detail.descript}}
-            <view class="goods-end">
-              <image src="../image/probq_bg.png" mode="right"></image>
+        </view>
+        <view class="detail-collect">
+          <view class="detail-collect-icon {{collect? 'collected' : ''}}" @tap="collectTap">
+            <image src="{{collect ? '../image/icon-cart.png' : '../image/icon-cart-blank.png'}}"></image>
+            <text class="collect-txt">{{collectTxt}}</text>
+          </view>
+          <view class="detail-collect-user">
+            <view class="detail-collect-detail">
+              <text class="section">已有{{collectednum}}人收藏了本商品</text>
+            </view>
+            <view class="detail-collect-list"  wx:if="{{collect}}">
+              <text class="iconfont icon-leftsj collect"></text><text class="un-collect collect">收藏成功</text>
+            </view>
+            <view class="detail-collect-list" wx:else>
+              <text class="iconfont icon-leftsj"></text><text class="un-collect">请点击收藏</text>
             </view>
           </view>
         </view>
       </view>
-      <view class="detail-collect">
-        <view class="detail-collect-icon {{collect? 'collected' : ''}}" @tap="collectTap">
-          <image src="{{collect ? '../image/icon-cart.png' : '../image/icon-cart-blank.png'}}"></image>
-          <text class="collect-txt">{{collectTxt}}</text>
+      <recGoods :recommendList.sync="recgoodList" :userLevel.sync="userLevel" @goodsTap.user="goDetail"></recGoods>
+      <view class="content">
+        <view class="detail-title">
+          <text class="title">商品详情</text>
         </view>
-        <view class="detail-collect-user">
-          <view class="detail-collect-detail">
-            <text class="section">已有{{collectednum}}人收藏了本商品</text>
-          </view>
-          <view class="detail-collect-list"  wx:if="{{collect}}">
-            <text class="iconfont icon-leftsj collect"></text><text class="un-collect collect">收藏成功</text>
-          </view>
-          <view class="detail-collect-list" wx:else>
-            <text class="iconfont icon-leftsj"></text><text class="un-collect">请点击收藏</text>
-          </view>
+        <view class="detail-container">
+          <view class="section">关于商品</view>
+          <repeat for="{{detail.imageSrc}}" item="item" index="index">
+            <image src="{{item.src}}" mode="widthFix" class="detail-image" @tap="goImageLink({{item.href}})"></image>
+          </repeat>
         </view>
-      </view>
-    </view>
-    <view class="content">
-      <view class="detail-title">
-        <text class="title">商品详情</text>
-      </view>
-      <view class="detail-container">
-        <view class="section">关于商品</view>
-        <repeat for="{{detail.imageSrc}}" item="item" index="index">
-          <image src="{{item.src}}" mode="widthFix" class="detail-image" @tap="goImageLink({{item.href}})"></image>
-        </repeat>
       </view>
     </view>
     <bottom @buy.user="cart" @cart.user="cart" :cartVal.sync="addCartCount" :messagePath.sync="currentPath" :nick_name.sync="userName" :avatar.sync="userAvatar" :customer_info_str.sync="customer_info" :note_info_str.sync="bussiness_info"></bottom>
@@ -109,20 +104,21 @@
           </view>
           <text class="title link">价格：￥{{totalCart}}</text>
           <counterCart @plusEdit.user="plusCart" @minusEdit.user="minusCart" @keyEdit.user="keyCart" class="calculate" :num.sync="cartNum" @blurEdit.user="blurCart" :isDisabled.sync="noSales"></counterCart>
-          <text wx:if="{{maxtip}}" class="tips link inline"><text>数量已达上限</text><text wx:if="{{cartResult.cartCount > 0}}">(购物车已含{{cartResult.cartCount}})</text></text>
+          <text wx:if="{{maxtip}}" class="tips link inline"><text>数量已达上限</text><text wx:if="{{cartResult.cartCount > 0 && isAddCart}}">(购物车已含{{cartResult.cartCount}})</text></text>
         </view>
       </view>
-      <scroll-view scroll-y="true" style="height: {{skuHeight}}rpx">
+      <scroll-view scroll-y="true" style="height: {{skuHeight}}rpx; min-height: 100rpx">
         <radio-group @change="addCartGoods">
           <repeat for="{{detail.goodList}}" item="item" index="index">
             <view class="popup_layer">
               <view class="goods-name {{item.num === 0 ? 'none' : ''}}">{{item.name}}</view>
-              <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="{{item.num === 0? '#ccc' : '#ec3d3a'}}" checked="{{item.isChecked}}" disabled="{{item.num === 0? true : false}}"></radio></view>
+              <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 || !item.isAllowSale? '不足' : item.num}}<radio value="{{index}}" color="{{item.num === 0? '#ccc' : '#ec3d3a'}}" checked="{{item.isChecked}}" disabled="{{item.num === 0 || !item.isAllowSale? true : false}}"></radio></view>
             </view>
           </repeat>
         </radio-group>
       </scroll-view>
-      <button class="default-button size-full {{cartResult.num - cartResult.cartCount === 0 ? 'disable' : ''}}" @tap.stop="goCart">{{isAddCart ? '加入购物车' : '立即购买'}}</button>
+      <button class="default-button size-full {{cartResult.num - cartResult.cartCount <= 0 || !buttonDisable ? 'disable' : ''}}" @tap.stop="goCart" wx:if="{{isAddCart}}">加入购物车</button>
+      <button class="default-button size-full {{!buttonDisable ? 'disable' : ''}}" @tap.stop="goCart" wx:else>立即购买</button>
     </view>
   </view>
 </template>
@@ -132,6 +128,7 @@
   import Bottom from '../components/bottombar'
   import Count from '../components/counter'
   import Menu from '../components/menu'
+  import RecGoods from '../components/recommend'
 
   export default class Detail extends wepy.page {
     config = {
@@ -141,20 +138,33 @@
       bottom: Bottom,
       counterBuy: Count,
       counterCart: Count,
-      menuList: Menu
+      menuList: Menu,
+      recGoods: RecGoods
     }
     computed = {
       totalCart () {
-        if (Object.keys(this.cartResult).length > 0) {
+        if (this.cartResult && Object.keys(this.cartResult).length > 0) {
           var price = this.cartResult.price.replace(/,/g, '') * this.cartNum
           return price.toFixed(2)
         }
       },
       maxtip () {
-        if (this.cartNum >= this.cartResult.num - this.cartResult.cartCount) {
-          return true
-        } else {
+        if (!this.buttonDisable) {
           return false
+        } else {
+          if (this.isAddCart) {
+            if (this.cartNum >= this.cartResult.num - this.cartResult.cartCount) {
+              return true
+            } else {
+              return false
+            }
+          } else {
+            if (this.cartNum >= this.cartResult.num) {
+              return true
+            } else {
+              return false
+            }
+          }
         }
       },
       noSales () {
@@ -191,30 +201,6 @@
       winHeight: 0,
       collectTxt: '未收藏',
       collectednum: ' ',
-      goodsDetail: [{
-        title: '商品名称',
-        detail: '美国自然牛USDA PRIMA极佳级肉眼牛排'
-      }, {
-        title: '商品名称',
-        detail: '美国自然牛USDA PRIMA极佳级肉眼牛排'
-      }, {
-        title: '商品名称',
-        detail: '美国自然牛USDA PRIMA极佳级肉眼牛排'
-      }, {
-        title: '商品名称',
-        detail: '美国自然牛USDA PRIMA极佳级肉眼牛排'
-      }],
-      transportDetail: [{
-        title: '配送范围',
-        detail: '购满2公斤全国包邮'
-      }, {
-        title: '配送快递',
-        detail: '顺丰冷运'
-      }, {
-        title: '配送方案',
-        detail: '配送规则',
-        isLink: true
-      }],
       isAddCart: true,
       cartNum: 1,
       addCartCount: 0,
@@ -242,9 +228,17 @@
         'title': ''
       },
       skuHeight: '',
-      videoSrc: []
+      videoSrc: [],
+      hasVideo: false,
+      recgoodList: [],
+      buttonDisable: true
     }
     methods = {
+      goDetail (id) {
+        wepy.navigateTo({
+          url: './detail?id=' + id
+        })
+      },
       collectTap () {
         if (!this.collect) {
           this.setMark(() => {
@@ -278,18 +272,29 @@
         this.cartNum = this.cartResult.num <= 0 ? 0 : 1
       },
       plusCart () {
-        if (this.cartResult.num - this.cartResult.cartCount > 0) {
-          this.cartNum ++
-          if (this.cartNum > this.cartResult.num - this.cartResult.cartCount) {
-            this.cartNum = this.cartResult.num - this.cartResult.cartCount
+        if (this.buttonDisable) {
+          if (this.isAddCart) {
+            if (this.cartResult.num - this.cartResult.cartCount > 0) {
+              this.cartNum ++
+              if (this.cartNum > this.cartResult.num - this.cartResult.cartCount) {
+                this.cartNum = this.cartResult.num - this.cartResult.cartCount
+              }
+            }
+          } else {
+            this.cartNum ++
+            if (this.cartNum > this.cartResult.num) {
+              this.cartNum = this.cartResult.num
+            }
           }
         }
       },
       minusCart () {
-        if (this.cartResult.num > 0) {
-          this.cartNum --
-          if (this.cartNum <= 0) {
-            this.cartNum = 1
+        if (this.buttonDisable) {
+          if (this.cartResult.num > 0) {
+            this.cartNum --
+            if (this.cartNum <= 0) {
+              this.cartNum = 1
+            }
           }
         }
         // 发送购物车减少数量
@@ -299,10 +304,12 @@
         return this.cartNum
       },
       blurCart (val) {
-        if (val <= 0) {
+        if (val <= 0 || !this.buttonDisable) {
           this.cartNum = 1
-        } else if (this.cartResult.num > 0 && this.cartNum > this.cartResult.num - this.cartResult.cartCount) {
-          this.cartNum = this.cartResult.num - this.cartResult.cartCount
+        } else if (this.isAddCart && this.cartResult.num > 0 && this.cartNum > this.cartResult.num - this.cartResult.cartCount) {
+          this.cartNum = 1
+        } else if (!this.isAddCart && this.cartResult.num > 0 && this.cartNum > this.cartResult.num) {
+          this.cartNum = this.cartResult.num
         } else if (this.cartResult.num <= 0) {
           this.cartNum = 0
         } else {
@@ -316,22 +323,25 @@
         this.cartResult = this.detail.goodList[e.detail.value]
       },
       goCart () {
-        if (this.cartResult.num - this.cartResult.cartCount > 0) {
+        if (this.buttonDisable) {
           if (this.isAddCart) {
-            this.overflow = false
-            this.cartModal = false
-            if (this.cartNum <= this.cartResult.num - this.cartResult.cartCount) {
-              this.addCartCount += parseInt(this.cartNum)
-              // 发送添加购物车请求
-              this.addCartData(() => {
-                this.cartNum = this.cartResult.num <= 0 ? 0 : 1
-              })
+            if (this.cartResult.num - this.cartResult.cartCount > 0) {
+              this.overflow = false
+              this.cartModal = false
+              if (this.cartNum <= this.cartResult.num - this.cartResult.cartCount) {
+                this.addCartCount += parseInt(this.cartNum)
+                // 发送添加购物车请求
+                this.addCartData(() => {
+                  this.cartNum = this.cartResult.num <= 0 ? 0 : 1
+                })
+              }
             }
           } else {
             this.$parent.pageRoot = false
             wepy.navigateTo({
               url: './paybuy?id=' + this.cartResult.id + '&type=' + this.cartResult.type + '&count=' + this.cartNum
             })
+            this.methods.closeCart.apply(this)
           }
         }
       },
@@ -384,7 +394,7 @@
     initCartResult () {
       this.cartResult = []
       let result = this.detail.goodList.filter((item) => {
-        return item.checked
+        return item.checked && item.isAllowSale
       })
       this.cartResult = result.length > 0 ? result[0] : this.detail.goodList[0]
       for (var i = 0; i < this.detail.goodList.length; i++) {
@@ -394,8 +404,7 @@
           this.detail.goodList[i].isChecked = false
         }
       }
-      console.log(this.detail.goodList)
-      this.cartNum = result.length > 0 ? 1 : 0
+      this.cartNum = 1
     }
     initData (cb) {
       this.token = this.$parent.getToken(0, this.refrenceCode)
@@ -447,10 +456,11 @@
           })
           if (_this.videoSrc.length > 0) {
             _this.swiperOpt.indicatorDots = true
+            _this.hasVideo = true
           } else {
             _this.swiperOpt.indicatorDots = false
+            _this.hasVideo = false
           }
-          console.log(_this.videoSrc)
           _this.getMarkUser(data.sourceId, data.sourceType)
           if (data.collectionId) {
             _this.collect = true
@@ -479,14 +489,22 @@
             good.cartCount = item.shoppingCartCount
             good.type = item.sourceType
             good.id = item.sourceId
+            good.isAllowSale = item.isAllowSale
             _this.detail.goodList.push(good)
-            _this.detail.goodList.sort((good1, good2) => {
-              return good1.price - good2.price
-            })
             _this.$apply()
           })
+          var disableList = _this.detail.goodList.filter((item) => {
+            return !item.isAllowSale
+          })
+          if (disableList.length === data.skus.length) {
+            _this.buttonDisable = false
+          }
+          // SKU按价钱排序
+          _this.detail.goodList.sort((good1, good2) => {
+            return parseInt(good1.price.replace(/,/g, '')) - parseInt(good2.price.replace(/,/g, ''))
+          })
           cb && cb()
-        } else if (res.data.error === 0 && !res.data.data.isAllowSale) {
+        } else if ((res.data.error === 0 && !res.data.data.isAllowSale) || (res.data.error === -1 && res.data.msg === 'miss spu')) {
           wepy.showModal({
             title: '提示',
             content: '该商品已下架',
@@ -507,6 +525,36 @@
       }).catch(() => {
         _this.$parent.hideLoading()
         _this.$parent.showFail()
+      })
+    }
+    getRecommend () {
+      this.token = this.$parent.getToken()
+      this.recgoodList = []
+      var data = {
+        token: this.token,
+        spuId: this.pageId
+      }
+      this.$parent.HttpRequest.GetRecommend(data).then((res) => {
+        if (res.data.error === 0) {
+          var data = res.data.data
+          data.forEach((item) => {
+            var obj = {}
+            obj.cover = item.cover
+            obj.title = item.title
+            obj.price = item.memberPrice
+            obj.oldprice = item.price
+            obj.id = item.sourceId
+            this.recgoodList.push(obj)
+          })
+        } else {
+          if (this.$parent.missToken) {
+            this.token = this.$parent.getToken(res.data.error)
+            this.getRecommend()
+          }
+        }
+        this.$apply()
+      }).catch(() => {
+        this.$parent.showFail()
       })
     }
     addCartData (cb) {
@@ -616,6 +664,7 @@
           _this.winHeight = res.windowHeight + 'px'
         }
       })
+      this.getRecommend()
       this.$apply()
     }
     onReady () {
@@ -630,9 +679,16 @@
         this.customer_info = this.$parent.getMessage()
         this.bussiness_info = this.$parent.getBusiness('商品详情页', this.currentPath, null)
         this.initCartResult()
+        console.log(this.cartResult)
         this.addCartCount = this.cartResult.cartCount
       })
       this.$apply()
+    }
+    onUnload () {
+      var pages = this.getCurrentPages()
+      if (pages[pages.length - 2].data.pageId) {
+        this.pageId = pages[pages.length - 2].data.pageId
+      }
     }
   }
 </script>

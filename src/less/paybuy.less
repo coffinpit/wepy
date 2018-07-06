@@ -71,6 +71,12 @@
     vertical-align:middle;
     margin-right:10rpx;
   }
+  image{
+    width:35rpx;
+    height:31rpx;
+    margin-right:20rpx;
+    vertical-align: middle;
+  }
   .title{
     font-size:@baseSize;
   }
@@ -116,7 +122,7 @@
   bottom:0;
   left:0;
   width:100%;
-  z-index:99999;
+  z-index:9999999;
   box-sizing:border-box;
   image{
     position:absolute;
@@ -154,10 +160,31 @@
     float:right;
     width:480rpx;
     font-size:@baseSize;
-    textarea{
+    position: relative;
+    height: 150rpx;
+    textarea, text{
       width:480rpx;
       height:150rpx;
-      float:left;
+      // float:left;
+      position: absolute;
+      left:0;
+      top:0;
+    }
+    text{
+      z-index: 9;
+    }
+    textarea{
+      top:-12rpx;
+      right: -10rpx;
+      z-index: 99;
+      &.hiddentxt{
+        opacity: 0;
+        display: none;
+        z-index: 1;
+      }
+    }
+    text{
+      word-wrap:break-word;
     }
   }
   .placeholder{

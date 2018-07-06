@@ -2,6 +2,7 @@
 
 <template>
   <view class="container" wx:if="{{isLoading}}">
+    <button class="custom" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}"><image src="../image/custom.png"></image></button>
     <searchbar :pagefrom.sync="pageTitle"></searchbar>
     <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" circular="{{swiperOpt.circular}}" @change.stop="changeBanner" class="index-swiper">
       <repeat for="{{bannerLink}}" index="index" item="item" key="key">
@@ -11,22 +12,26 @@
       </repeat>
     </swiper>
     <view class="index-promot" @tap="goApplyVip">
-      <image class="index-promot-img" src="http://p33mnuvro.bkt.clouddn.com/2018/5/prwrk2v6uq.png" mode="aspectFill"></image>
-      <view class="index-promot-content">
-        <view class="index-promot-title">
-          超级会员
-        </view>
-        <view wx:if="{{userLevel === 0}}">
-          <view class="index-promot-txt">预计全年可帮您节省{{vipReduction}}</view>
-        </view>
-        <view wx:elif="{{userLevel === 1}}">
-          <view class="index-promot-txt">您的会员身份可持续至{{vipEnd}}</view>
+      <!-- <image class="index-promot-img" src="http://p33mnuvro.bkt.clouddn.com/2018/5/prwrk2v6uq.png" mode="aspectFill"></image> -->
+      <view wx:if="{{showPromot}}">
+        <image class="index-promot-img" src="../image/dril_gray.png" mode="aspectFill" wx:if="{{userLevel === 0}}"></image>
+        <image class="index-promot-img" src="../image/dril_golden.png" mode="aspectFill" wx:if="{{userLevel === 1}}"></image>
+        <view class="index-promot-content">
+          <view class="index-promot-title">
+            <image src="../image/supermember.png"></image>
+          </view>
+          <view wx:if="{{userLevel === 0}}">
+            <view class="index-promot-txt">预计全年可帮您节省￥{{vipReduction}}</view>
+          </view>
+          <view wx:elif="{{userLevel === 1}}">
+            <view class="index-promot-txt">您的会员身份可持续至{{vipEnd}}</view>
+          </view>
         </view>
       </view>
     </view>
     <wxc-flex cross="{{cross}}" class="top_nav-container">
       <repeat for="{{topnavigation}}" index="index" item="item">
-        <view class="top_nav {{currentPage == index? 'top_nav_active' : ''}}" @tap="navTab({{index}})">{{item}}</view>
+        <view class="top_nav {{currentPage == index? 'top_nav_active' : ''}}" @tap="navTab({{index}})"><image src="{{item.image}}"></image><text>{{item.title}}</text></view>
       </repeat>
     </wxc-flex>
     <repeat for="{{topnavigation}}" index="index" item="item">
@@ -77,7 +82,13 @@
       token: '',
       pageTitle: 'index',
       bannerLink: [],
-      topnavigation: ['推荐', '热门'],
+      topnavigation: [{
+        title: '推荐',
+        image: '../image/rmd_icon.png'
+      }, {
+        title: '热门',
+        image: '../image/hot_icon.png'
+      }],
       currentPage: 0,
       pageauto: false,
       swiperOpt: {
@@ -97,10 +108,15 @@
       isNull: true,
       isDown: false,
       isLoading: false,
-      userLevel: false,
+      userLevel: 0,
       vipEnd: '',
       vipReduction: '',
-      categoryImage: ['../image/sptj_img.png', '../image/rmsp_img.png']
+      categoryImage: ['../image/sptj_img.png', '../image/rmsp_img.png'],
+      showPromot: true,
+      nick_name: '',
+      avatar: '',
+      customer_info_str: '',
+      note_info_str: ''
     }
 
     methods = {
@@ -112,7 +128,9 @@
         this.currentPage = e.detail.current
       },
       changeBanner (e) {
-        this.swiperOpt.currentTab = e.detail.current
+        if (e.detail.source === 'touch') {
+          this.swiperOpt.currentTab = e.detail.current
+        }
       },
       goDetail (id) {
         wepy.navigateTo({
@@ -129,14 +147,21 @@
       this.token = this.$parent.getToken()
       this.$parent.getUserLevel(this.token, () => {
         this.getUserLevel()
+        this.$apply()
       })
+      this.nick_name = this.$parent.getUserName()
+      this.avatar = this.$parent.getUserAvatar()
+      this.customer_info_str = this.$parent.getMessage()
+      this.note_info_str = this.$parent.getBusiness('首页', null, null)
       // this.currentPage = 0
       // this.isLoading = false
     }
     getUserLevel () {
       this.userLevel = this.$parent.globalData.userLevel
-      this.vipReduction = this.$parent.globalData.reduction
+      this.vipReduction = this.$parent.globalData.expectedReduction
+      console.log(this.vipReduction)
       this.vipEnd = this.$parent.dateFormat(this.$parent.globalData.vipEnd * 1000, 'Y年m月d日')
+      this.showPromot = true
     }
     onReachBottom () {
       // 显示加载状态
@@ -222,7 +247,9 @@
     }
     onPullDownRefresh () {
       this.currentPage = 0
-      this.getUserLevel()
+      this.$parent.getUserLevel(this.token, () => {
+        this.getUserLevel()
+      })
       this.initPage()
     }
     getBanner () {

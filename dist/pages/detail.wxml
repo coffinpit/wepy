@@ -14,19 +14,17 @@
     <view class="detail-info">
       <view class="detail-img">
         <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" catchchange="changeSwiper" bindanimationfinish="swiperEnd" class="index-swiper">
-        <block>
-            <swiper-item wx:if="{{videoSrc.src}}">
-              <view class="video-layer {{showVideo ? '' : 'hidden'}}">
-                <view bindtap="playVideo">
-                <image src="{{videoSrc.src}}" mode="aspectFill"/>
-                </view>
+          <swiper-item wx:if="{{hasVideo}}">
+            <view class="video-layer {{showVideo ? '' : 'hidden'}}">
+              <view bindtap="playVideo">
+              <image src="{{videoSrc[0].src}}" mode="aspectFill"/>
               </view>
-              <view class="video-layer {{showVideo ? 'hidden': ''}}"><video id="video" src="{{videoSrc.video}}" controls bindpause="stopVideo" bindended="stopVideo" binderror="errorVideo"/></view>
-            </swiper-item>
-             <swiper-item>
-              <image src="{{detail.path}}" mode="aspectFill"/>
-            </swiper-item>
-        </block>
+            </view>
+            <view class="video-layer {{showVideo ? 'hidden': ''}}"><video id="video" src="{{videoSrc[0].video}}" controls bindpause="stopVideo" bindended="stopVideo" binderror="errorVideo"/></view>
+          </swiper-item>
+           <swiper-item>
+            <image src="{{detail.path}}" mode="aspectFill"/>
+          </swiper-item>
       </swiper>
       </view>
       <view class="detail-dots">
@@ -49,66 +47,77 @@
         </view>
         <view class="detail-txt-price express">
           <text>快递<text wx:if="{{userLevel === 0}}" class="freight">￥{{detail.express}}</text></text>
-          <text class="tips" wx:if="{{userLevel === 0}}">成为会员<text class="tips">即享包邮</text></text>
-          <text class="tips" wx:elif="{{userLevel === 1}}">超级会员<text class="tips">畅享包邮</text></text>
+          <text class="tips" wx:if="{{userLevel === 0}}">成为会员<text class="tips">满300.00包邮</text></text>
+          <text class="tips" wx:elif="{{userLevel === 1}}">超级会员<text class="tips">满300.00包邮</text></text>
           <button class="default-button" hover-class="default-button-active" bindtap="goRules">配送规则</button>
         </view>
       </view>
-    </view>
-    <view class="content collcet-layer">
-      <view class="detail-title">
-        <view class="font-normal">{{detail.title}}</view>
-        <view class="goods-promot">
-          <view class="goods-promot-image">
-            <image src="../image/icon-xian.png"/>
+    </view>    
+    <view style="width:750rpx">
+      <view class="content collcet-layer">
+        <view class="detail-title">
+          <view class="font-normal">{{detail.title}}</view>
+          <view class="goods-promot">
+            <view class="goods-info">
+              {{detail.descript}}
+            </view>
           </view>
-          <view class="goods-info">
-            {{detail.descript}}
-            <view class="goods-end">
-              <image src="../image/probq_bg.png" mode="right"/>
+        </view>
+        <view class="detail-collect">
+          <view class="detail-collect-icon {{collect? 'collected' : ''}}" bindtap="collectTap">
+            <image src="{{collect ? '../image/icon-cart.png' : '../image/icon-cart-blank.png'}}"/>
+            <text class="collect-txt">{{collectTxt}}</text>
+          </view>
+          <view class="detail-collect-user">
+            <view class="detail-collect-detail">
+              <text class="section">已有{{collectednum}}人收藏了本商品</text>
+            </view>
+            <view class="detail-collect-list" wx:if="{{collect}}">
+              <text class="iconfont icon-leftsj collect"/><text class="un-collect collect">收藏成功</text>
+            </view>
+            <view class="detail-collect-list" wx:else>
+              <text class="iconfont icon-leftsj"/><text class="un-collect">请点击收藏</text>
             </view>
           </view>
         </view>
       </view>
-      <view class="detail-collect">
-        <view class="detail-collect-icon {{collect? 'collected' : ''}}" bindtap="collectTap">
-          <image src="{{collect ? '../image/icon-cart.png' : '../image/icon-cart-blank.png'}}"/>
-          <text class="collect-txt">{{collectTxt}}</text>
-        </view>
-        <view class="detail-collect-user">
-          <view class="detail-collect-detail">
-            <text class="section">已有{{collectednum}}人收藏了本商品</text>
-          </view>
-          <view class="detail-collect-list" wx:if="{{collect}}">
-            <text class="iconfont icon-leftsj collect"/><text class="un-collect collect">收藏成功</text>
-          </view>
-          <view class="detail-collect-list" wx:else>
-            <text class="iconfont icon-leftsj"/><text class="un-collect">请点击收藏</text>
-          </view>
+      
+  <view class="rec-title"><text class="title">相关商品推荐</text></view>
+  <scroll-view scroll-x class="recommend">
+    <block wx:for="{{$recGoods$recommendList}}" wx:for-index="$recGoods$index" wx:for-item="$recGoods$item" wx:key="$recGoods$key"> 
+      <view class="recommend-layer">
+        <view class="recommend-container" bindtap="$recGoods$tap" data-wpytap-a="{{$recGoods$item.id}}">
+          <image src="{{$recGoods$item.cover}}" mode="aspectFill"/>
+          <text class="font-normal item-title">{{$recGoods$item.title}}</text>
+          <text class="font-normal link"><text class="iconfont icon-new_vchao link"/>￥{{$recGoods$item.price}}</text>
+          <text class="tips {{$recGoods$userLevel !== 0 ? 'through' : ''}}">原价:￥{{$recGoods$item.oldprice}}</text>
         </view>
       </view>
-    </view>
-    <view class="content">
-      <view class="detail-title">
-        <text class="title">商品详情</text>
-      </view>
-      <view class="detail-container">
-        <view class="section">关于商品</view>
-        <block wx:for="{{detail.imageSrc}}" wx:for-index="index" wx:for-item="item" wx:key="key">
-          <image src="{{item.src}}" mode="widthFix" class="detail-image" bindtap="goImageLink" data-wpygoimagelink-a="{{item.href}}"/>
-        </block>
+    </block>
+  </scroll-view>
+
+      <view class="content">
+        <view class="detail-title">
+          <text class="title">商品详情</text>
+        </view>
+        <view class="detail-container">
+          <view class="section">关于商品</view>
+          <block wx:for="{{detail.imageSrc}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <image src="{{item.src}}" mode="widthFix" class="detail-image" bindtap="goImageLink" data-wpygoimagelink-a="{{item.href}}"/>
+          </block>
+        </view>
       </view>
     </view>
     
   <view class="bottombar">
     <view class="contact">
       <button open-type="contact" session-from="udesk|{{$bottom$nick_name}}|{{$bottom$avatar}}|customer^{{$bottom$customer_info_str}}|note^{{$bottom$note_info_str}}" hover-class="contact-active">
-        <text class="iconfont icon-kefu"/>
+        <text class="iconfont icon-new_kefu"/>
       </button>
     </view>
     <view class="goCart" bindtap="$bottom$goCart">
       <view class="goCart-icon user">
-        <text class="iconfont icon-ksj_gwc"/>
+        <text class="iconfont icon-new_gouwuche"/>
         <text class="cart-count"  wx:if="{{$bottom$cartVal > 0}}">{{$bottom$cartMaxVal}}<text class="iconfont icon-sljia" wx:if="{{$bottom$cartVal >= 99}}"/></text>
       </view>
     </view>
@@ -144,19 +153,20 @@
     <view catchtap="$counterCart$minusTap" class="counter-btn minusBtn {{$counterCart$isDisabled || !$counterCart$isAble ? '' : 'able'}}" data-id="{{$counterCart$sourceId}}">  -  </view>
   </view>
 
-          <text wx:if="{{maxtip}}" class="tips link inline"><text>数量已达上限</text><text wx:if="{{cartResult.cartCount > 0}}">(购物车已含{{cartResult.cartCount}})</text></text>
+          <text wx:if="{{maxtip}}" class="tips link inline"><text>数量已达上限</text><text wx:if="{{cartResult.cartCount > 0 && isAddCart}}">(购物车已含{{cartResult.cartCount}})</text></text>
         </view>
       </view>
-      <scroll-view scroll-y="true" style="height: {{skuHeight}}rpx">
+      <scroll-view scroll-y="true" style="height: {{skuHeight}}rpx; min-height: 100rpx">
         <radio-group bindchange="addCartGoods">
           <block wx:for="{{detail.goodList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
             <view class="popup_layer">
               <view class="goods-name {{item.num === 0 ? 'none' : ''}}">{{item.name}}</view>
-              <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 ? '不足' : item.num}}<radio value="{{index}}" color="{{item.num === 0? '#ccc' : '#ec3d3a'}}" checked="{{item.isChecked}}" disabled="{{item.num === 0? true : false}}"/></view>
+              <view class="goods-num {{item.num === 0 ? 'none' : ''}}">库存{{item.num === 0 || !item.isAllowSale? '不足' : item.num}}<radio value="{{index}}" color="{{item.num === 0? '#ccc' : '#ec3d3a'}}" checked="{{item.isChecked}}" disabled="{{item.num === 0 || !item.isAllowSale? true : false}}"/></view>
             </view>
           </block>
         </radio-group>
       </scroll-view>
-      <button class="default-button size-full {{cartResult.num - cartResult.cartCount === 0 ? 'disable' : ''}}" catchtap="goCart">{{isAddCart ? '加入购物车' : '立即购买'}}</button>
+      <button class="default-button size-full {{cartResult.num - cartResult.cartCount <= 0 || !buttonDisable ? 'disable' : ''}}" catchtap="goCart" wx:if="{{isAddCart}}">加入购物车</button>
+      <button class="default-button size-full {{!buttonDisable ? 'disable' : ''}}" catchtap="goCart" wx:else>立即购买</button>
     </view>
   </view>

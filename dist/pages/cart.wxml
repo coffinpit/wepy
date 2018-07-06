@@ -1,10 +1,10 @@
 
   <view class="container">
     <view  wx:if="{{!isNull}}">
-      <view class="cart-status" wx:if="{{userLevel}}">
+      <view class="cart-status" wx:if="{{userLevel === 1}}">
         <text class="font-normal">尊敬的超级会员，本单已为您节省 <text class="font-normal link font-bold">￥{{cartStatus.discount}}</text></text>
       </view>
-      <view class="cart-status" wx:else>
+      <view class="cart-status" wx:elif="{{userLevel === 0}}">
         <text class="font-normal">已购￥{{cartStatus.totalprice}}, 会员价<text class="font-normal link font-bold">￥{{cartStatus.memberPrice}}</text></text>
         <view class="default-button" bindtap="goApplyVip">加入会员</view>
       </view>
@@ -12,7 +12,7 @@
         <view class="cart-list">
           <view class="content" wx:if="{{item.showTitle}}">
             <view class="unedit-layer {{isEdit ? 'animate' : ''}}"/>
-            <text class="title {{isEdit ? 'animate' : ''}}"><text class="iconfont icon-ys_ly"/>{{item.title}}</text>
+            <text class="title {{isEdit ? 'animate' : ''}}"><text class="iconfont {{item.iconClass}}"/>{{item.title}}</text>
             <view class="check-layer">
               <view catchtap="coldAll" class="cart-checkbox {{item.coldChecked ? 'checked' : ''}}" data-wpycoldall-a="{{index}}">
                 <text class="iconfont icon-fxkdui"/>
@@ -27,8 +27,10 @@
                   <view class="inner txt {{isEdit ? 'animate' : ''}}"> 
                     <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
                       <text class="title">{{item.title}}</text>
-                      <text class="font-small link">会员价：￥{{item.price}} </text>
-                      <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.oldprice}}</text>
+                      <view class="overflow">
+                        <text class="font-small link"><text class="iconfont icon-new_vchao"/>￥{{item.price}} </text>
+                        <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.oldprice}}</text>
+                      </view>
                       <text class="tips">规格：{{item.detail}}</text>
                     </view>
                     <view class="inner-image">
@@ -91,13 +93,13 @@
         <text catchtap="goOrder" class="del-cart {{isEdit ? '' : 'active'}}">去结算</text>
         <text class="cart-info"><text class="tips">(含运费￥{{freight}})</text> 合计: <text class="link">￥{{finalprice}}</text></text>
       </view>
-      <view class="vip-tip" wx:if="{{userLevel && !isNull}}">
-        <text class="iconfont icon-vip link"/>
-        <text class="title">尊敬的超级会员，生鲜购满2公斤才可包邮哦</text>
+      <view class="vip-tip" wx:if="{{userLevel === 1 && !isNull}}">
+        <image src="../image/dril_golden2.png"/>
+        <text class="title">尊敬的超级会员，购满300.00元才可包邮哦</text>
       </view>
-      <view class="vip-tip no-active" wx:elif="{{!isNull}}">
-        <text class="iconfont icon-vip"/>
-        <text class="title">成为会员，生鲜购满2公斤全场包邮</text>
+      <view class="vip-tip no-active" wx:elif="{{userLevel === 0 && !isNull}}">
+        <image src="../image/dril_gray2.png"/>
+        <text class="title">成为会员，购满300.00元全场包邮</text>
       </view>
     </view>
     <view  wx:elif="{{isNull && !isLoading}}" class="blank">

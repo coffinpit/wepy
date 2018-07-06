@@ -67,9 +67,9 @@
 }
 .user-level {
   width: 100%;
-  padding: 20rpx;
+  padding: 20rpx 30rpx;
   box-sizing: border-box;
-  background: #333333;
+  background: #0f1319;
 }
 .user-level .iconfont {
   color: #999999;
@@ -83,8 +83,14 @@
 .user-level .iconfont.vip {
   color: #ec3d3a;
 }
+.user-level image {
+  width: 35rpx;
+  height: 31rpx;
+  margin-right: 20rpx;
+  vertical-align: middle;
+}
 .user-level view {
-  width: 580rpx;
+  width: 635rpx;
   display: inline-block;
 }
 .user-level .title {
@@ -120,12 +126,15 @@
 }
 .setting-layer .iconfont {
   font-size: 56rpx;
-  color: #333333;
-  margin-right: 50rpx;
+  color: #d9d9d9;
+  margin-right: 20rpx;
   display: inline-block;
   width: 60rpx;
   height: 65rpx;
   line-height: 65rpx;
+}
+.setting-layer .iconfont.icon-rightsj {
+  color: #333333;
 }
 .setting-layer text {
   vertical-align: middle;

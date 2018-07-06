@@ -1,5 +1,6 @@
 
   <view class="container"  wx:if="{{isLoading}}">
+    <button class="custom" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}"><image src="../image/custom.png"/></button>
     
   <view class="searchbar" bindtap="$searchbar$goSearch">
     <view class="searchinput">
@@ -16,22 +17,26 @@
       </block>
     </swiper>
     <view class="index-promot" bindtap="goApplyVip">
-      <image class="index-promot-img" src="http://p33mnuvro.bkt.clouddn.com/2018/5/prwrk2v6uq.png" mode="aspectFill"/>
-      <view class="index-promot-content">
-        <view class="index-promot-title">
-          超级会员
-        </view>
-        <view wx:if="{{userLevel === 0}}">
-          <view class="index-promot-txt">预计全年可帮您节省{{vipReduction}}</view>
-        </view>
-        <view wx:elif="{{userLevel === 1}}">
-          <view class="index-promot-txt">您的会员身份可持续至{{vipEnd}}</view>
+      <!-- <image class="index-promot-img" src="http://p33mnuvro.bkt.clouddn.com/2018/5/prwrk2v6uq.png" mode="aspectFill"></image> -->
+      <view wx:if="{{showPromot}}">
+        <image class="index-promot-img" src="../image/dril_gray.png" mode="aspectFill" wx:if="{{userLevel === 0}}"/>
+        <image class="index-promot-img" src="../image/dril_golden.png" mode="aspectFill" wx:if="{{userLevel === 1}}"/>
+        <view class="index-promot-content">
+          <view class="index-promot-title">
+            <image src="../image/supermember.png"/>
+          </view>
+          <view wx:if="{{userLevel === 0}}">
+            <view class="index-promot-txt">预计全年可帮您节省￥{{vipReduction}}</view>
+          </view>
+          <view wx:elif="{{userLevel === 1}}">
+            <view class="index-promot-txt">您的会员身份可持续至{{vipEnd}}</view>
+          </view>
         </view>
       </view>
     </view>
     <wxc-flex cross="{{cross}}" class="top_nav-container">
       <block wx:for="{{topnavigation}}" wx:for-index="index" wx:for-item="item" wx:key="key">
-        <view class="top_nav {{currentPage == index? 'top_nav_active' : ''}}" bindtap="navTab" data-wpynavtab-a="{{index}}">{{item}}</view>
+        <view class="top_nav {{currentPage == index? 'top_nav_active' : ''}}" bindtap="navTab" data-wpynavtab-a="{{index}}"><image src="{{item.image}}"/><text>{{item.title}}</text></view>
       </block>
     </wxc-flex>
     <block wx:for="{{topnavigation}}" wx:for-index="index" wx:for-item="item" wx:key="key">
@@ -45,19 +50,15 @@
         <view class="goods-detail">
           <view class="goods-detail-title">{{$recGoods$item.title}}</view>
           <view class="goods-detail-price">
-            会员价:<text class="price">￥{{$recGoods$item.price}} (优惠￥{{$recGoods$item.reduction}})</text>
+            <text class="iconfont icon-new_vchao"/><text>￥{{$recGoods$item.price}}</text><text class="price"> (优惠￥{{$recGoods$item.reduction}})</text>
           </view>
+          <view class="overflow">
           <view class="goods-detail-oldprice">原价:{{$recGoods$item.oldprice}}</view>
           <view class="goods-detail-vicetitle">规格:{{$recGoods$item.detail}}</view>
+          </view>
           <view class="goods-promot">
-            <view class="goods-promot-image">
-              <image src="../image/icon-xian.png"/>
-            </view>
             <view class="goods-info">
               {{$recGoods$item.descript}}
-              <view class="goods-end">
-                <image src="../image/probq_bg.png" mode="right"/>
-              </view>
             </view>
           </view>
         </view>

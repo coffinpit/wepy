@@ -80,10 +80,7 @@
           success: (res) => {
             if (res.confirm) {
               this.CancelMark(this.checkResult, () => {
-                this.pageNum = 1
-                this.dataLength = 0
-                this.collectList = []
-                this.initCollect()
+                this.initPageData()
               })
             }
           }
@@ -155,6 +152,12 @@
         _this.$parent.showFail()
       })
     }
+    initPageData () {
+      this.pageNum = 1
+      this.dataLength = 0
+      this.collectList = []
+      this.initCollect()
+    }
     CancelMark (markId, cb) {
       this.token = this.$parent.getToken()
       var _this = this
@@ -190,7 +193,7 @@
     }
     onShow () {
       this.getTokenTime = 0
-      this.initCollect()
+      this.initPageData()
     }
   }
 </script>

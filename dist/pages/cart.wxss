@@ -80,6 +80,10 @@ view {
   vertical-align: middle;
   margin-right: 20rpx;
 }
+.cart-list .icon-new_vchao {
+  font-size: 28rpx;
+  margin-right: 10rpx;
+}
 .vip-tip {
   width: 100%;
   margin: 20rpx 0;
@@ -90,6 +94,12 @@ view {
   font-size: 60rpx;
   vertical-align: middle;
   margin-right: 10rpx;
+}
+.vip-tip image {
+  width: 35rpx;
+  height: 31rpx;
+  margin-right: 20rpx;
+  vertical-align: middle;
 }
 .vip-tip .title {
   font-size: 28rpx;

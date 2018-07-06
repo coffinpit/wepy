@@ -10,12 +10,12 @@
           <text class="font-normal">仅剩余：{{remainTime}}</text>
           <text class="font-normal">待付款：￥{{pay}}</text>
         </text>
-        <text class="font-normal txt-status" wx:elif="{{ remainTime === 0 && status === 1 && isStop}}">支付取消</text>
+        <text class="font-normal txt-status" wx:elif="{{remainTime === 0 && status === 1 && isStop}}">支付超时</text>
         <text class="font-normal txt-status" wx:elif="{{status === 2 && address != false}}">
-          已送达
+          售后中
         </text>
         <text class="font-normal txt-status" wx:elif="{{status === 3}}">
-          支付取消
+          交易关闭
         </text>
       </view>
       <view class="orderStatus address" wx:if="{{address && Object.keys(address).length !== 0}}">
@@ -27,7 +27,7 @@
       <repeat for="{{order}}" item="item" index="index">
         <view class="cart-list" wx:if="{{!item.isNull}}">
           <view class="content order-title">
-            <text class="title"><text class="iconfont icon-ys_ly"></text>{{item.title}}</text>
+            <text class="title"><text class="iconfont {{item.iconClass}}"></text>{{item.title}}</text>
           </view>
           <view class="item-box">
             <view class="items">
@@ -38,7 +38,7 @@
       </repeat>
       <view class="orderInfo">
         <text class="font-normal label">订单编号：</text>
-        <text class="font-normal right" selectable="true">{{orderId}}</text>
+        <text class="font-normal right" selectable="true">{{orderId}}</text><text selectable="false"></text>
       </view>
       <view class="orderInfo">
         <text class="font-normal label">创建时间：</text>
@@ -252,6 +252,11 @@
           data.buyingRecords.forEach((item) => {
             var obj = {}
             obj.title = item.title
+            if (item.title === '冷链配送') {
+              obj.iconClass = 'icon-new_llps'
+            } else if (item.title === '常规配送') {
+              obj.iconClass = 'icon-new_cgps'
+            }
             obj.orderDetail = _this.initChild(item.buyingRecords)
             _this.order.push(obj)
           })
@@ -278,7 +283,7 @@
         obj.price = item.memberPrice
         obj.oldprice = item.price
         obj.id = item.productId
-        obj.sourceType = item.salesUnitType
+        obj.sourceType = item.sourceType
         obj.sourceId = item.salesUnitId
         obj.detail = item.title + '×' + item.buyingCount
         obj.count = item.buyingCount

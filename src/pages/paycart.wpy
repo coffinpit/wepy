@@ -8,17 +8,17 @@
       <text class="iconfont icon-rightsj"></text>
       <text class="user">{{user.name}} {{user.phone}}</text>
     </view>
-    <view class="cart-status" wx:if="{{userLevel}}">
+    <view class="cart-status" wx:if="{{userLevel === 1}}">
       <text class="font-normal">尊敬的<text class="link">超级会员</text>，本单已为您节省 <text class="font-normal link font-bold">￥{{reduction}}</text></text>
     </view>
-    <view class="cart-status" wx:else>
+    <view class="cart-status" wx:elif="{{userLevel === 0}}">
       <text class="font-normal">成为超级会员，本单仅需 <text class="font-normal link font-bold">￥{{memberPrice}}</text></text>
       <view class="default-button" @tap="goApplyVip">加入会员</view>
     </view>
     <repeat for="{{order}}" item="item" index="index">
       <view class="cart-list" wx:if="{{!item.isNull}}">
         <view class="content">
-          <text class="title"><text class="iconfont icon-ys_ly"></text>{{item.title}}</text>
+          <text class="title"><text class="iconfont {{item.iconClass}}"></text>{{item.title}}</text>
         </view>
         <view class="item-box">
           <view class="items">
@@ -33,16 +33,17 @@
         <text class="tips">{{txtLength}}/100</text>
       </view>
       <view class="memo-right">
-        <textarea placeholder="请输入备注" placeholder-class="placeholder" maxlength="100" @input="inputTap" value="{{memo}}"/>
+        <text wx:if="{{showTextarea}}" @tap="showTxt" class="{{hasMemo ? '' : 'placeholder'}}">{{hasMemo ? memo : '请输入备注'}}</text>
+        <textarea placeholder="请输入备注" placeholder-class="placeholder" maxlength="100" @input="inputTap" value="{{memo}}" focus="{{txtauto}}" @blur="blurTap" class="{{showTextarea ? 'hiddentxt' : ''}}"/>
       </view>
     </view>
-    <view class="vip-tip" wx:if="{{userLevel}}">
-      <text class="iconfont icon-vip link"></text>
-      <text class="title">尊敬的<text class="link">超级会员</text>，生鲜购满2公斤才可包邮哦</text>
+    <view class="vip-tip" wx:if="{{userLevel === 1}}">
+      <image src="../image/dril_golden2.png"></image>
+      <text class="title">尊敬的<text class="link">超级会员</text>，购满300.00元才可包邮哦</text>
     </view>
-    <view class="vip-tip no-active" wx:else>
-      <text class="iconfont icon-vip"></text>
-      <text class="title">成为会员，生鲜购满2公斤全场包邮</text>
+    <view class="vip-tip no-active" wx:elif="{{userLevel === 0}}">
+      <image src="../image/dril_gray2.png"></image>
+      <text class="title">成为会员，购满300.00元全场包邮</text>
     </view>
     <view class="order-list">
       <text class="title">运费：</text>
@@ -85,6 +86,13 @@
         } else {
           return false
         }
+      },
+      hasMemo () {
+        if (this.memo === '') {
+          return false
+        } else {
+          return true
+        }
       }
     }
     data = {
@@ -105,9 +113,19 @@
       memo: '',
       payment: true,
       paramMemo: '',
-      userLevel: 0
+      userLevel: 0,
+      showTextarea: true,
+      txtauto: false
     }
     methods = {
+      showTxt () {
+        this.showTextarea = false
+        this.txtauto = true
+      },
+      blurTap () {
+        this.showTextarea = true
+        this.txtauto = false
+      },
       goAddress () {
         wepy.redirectTo({
           url: './address?page=paycart&memo=' + this.memo
@@ -218,6 +236,11 @@
           data.childOrders.forEach((item) => {
             var obj = {}
             obj.title = item.title
+            if (item.title === '冷链配送') {
+              obj.iconClass = 'icon-new_llps'
+            } else if (item.title === '常规配送') {
+              obj.iconClass = 'icon-new_cgps'
+            }
             obj.freight = item.freight
             obj.tempCold = []
             obj.coldlist = this.initChild(item.salesUnits)

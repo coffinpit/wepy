@@ -60,18 +60,22 @@
   -webkit-box-orient: vertical;
 }
 .goods .goods-detail .goods-detail-price {
-  font-size: 28rpx;
+  font-size: 36rpx;
+  color: #ec3d3a;
+  display: inline-block;
+}
+.goods .goods-detail .goods-detail-price .iconfont {
+  font-size: 36rpx;
 }
 .goods .goods-detail .goods-detail-price .price {
-  color: #ec3d3a;
-  font-weight: 500;
-  display: inline-block;
+  font-size: 24rpx;
 }
 .goods .goods-detail .goods-detail-oldprice,
 .goods .goods-detail .goods-detail-vicetitle {
   font-size: 24rpx;
   color: #999999;
-  display: inline-block;
+  line-height: 24rpx;
+  float: left;
 }
 .goods .goods-detail .goods-detail-oldprice {
   width: 180rpx;

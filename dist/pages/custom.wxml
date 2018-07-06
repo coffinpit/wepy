@@ -1,0 +1,16 @@
+
+  <view class="custom-bg">
+    
+  <view class="menu-layer {{$menuList$fullMenu ? 'active' : ''}}">
+    <view catchtap="$menuList$showMenu" class="menu-button"><text class="tips">快捷导航</text></view>
+    <view class="menu-content">
+      <view bindtap="$menuList$goIndex"><image src="../image/index-default.png"/></view>
+      <view bindtap="$menuList$goCategory"><image src="../image/category-default.png"/></view>
+      <view bindtap="$menuList$goCate"><image src="../image/cart-default.png"/></view>
+      <view bindtap="$menuList$goUser"><image src="../image/user-default.png"/></view>
+    </view>
+  </view>
+
+    <image src="http://p33mnuvro.bkt.clouddn.com/vipkefu.png" class="custom-image"/>
+    <button class="custom-button" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}"/>
+  </view>

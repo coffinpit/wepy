@@ -1,0 +1,19 @@
+@import "./../components/menu.wxss";
+.custom-bg {
+  position: relative;
+}
+.custom-bg .custom-image {
+  width: 750rpx;
+  height: 1037rpx;
+}
+.custom-bg .custom-button {
+  position: absolute;
+  width: 300rpx;
+  height: 300rpx;
+  left: 50%;
+  margin-left: -150rpx;
+  bottom: 260rpx;
+  border-radius: 50%;
+  z-index: 999;
+  background: transparent;
+}

@@ -3,10 +3,10 @@
 <template>
   <view class="container">
     <view wx:if="{{!isNull}}">
-      <view class="cart-status" wx:if="{{userLevel}}">
+      <view class="cart-status" wx:if="{{userLevel === 1}}">
         <text class="font-normal">尊敬的超级会员，本单已为您节省 <text class="font-normal link font-bold">￥{{cartStatus.discount}}</text></text>
       </view>
-      <view class="cart-status" wx:else>
+      <view class="cart-status" wx:elif="{{userLevel === 0}}">
         <text class="font-normal">已购￥{{cartStatus.totalprice}}, 会员价<text class="font-normal link font-bold">￥{{cartStatus.memberPrice}}</text></text>
         <view class="default-button" @tap="goApplyVip">加入会员</view>
       </view>
@@ -14,7 +14,7 @@
         <view class="cart-list">
           <view class="content" wx:if="{{item.showTitle}}">
             <view class="unedit-layer {{isEdit ? 'animate' : ''}}"></view>
-            <text class="title {{isEdit ? 'animate' : ''}}"><text class="iconfont icon-ys_ly"></text>{{item.title}}</text>
+            <text class="title {{isEdit ? 'animate' : ''}}"><text class="iconfont {{item.iconClass}}"></text>{{item.title}}</text>
             <view class="check-layer">
               <view @tap.stop="coldAll({{index}})" class="cart-checkbox {{item.coldChecked ? 'checked' : ''}}">
                 <text class="iconfont icon-fxkdui"></text>
@@ -29,8 +29,10 @@
                   <view class="inner txt {{isEdit ? 'animate' : ''}}"> 
                     <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
                       <text class="title">{{item.title}}</text>
-                      <text class="font-small link">会员价：￥{{item.price}} </text>
-                      <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.oldprice}}</text>
+                      <view class="overflow">
+                        <text class="font-small link"><text class="iconfont icon-new_vchao"></text>￥{{item.price}} </text>
+                        <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.oldprice}}</text>
+                      </view>
                       <text class="tips">规格：{{item.detail}}</text>
                     </view>
                     <view class="inner-image">
@@ -81,13 +83,13 @@
         <text @tap.stop="goOrder" class="del-cart {{isEdit ? '' : 'active'}}">去结算</text>
         <text class="cart-info"><text class="tips">(含运费￥{{freight}})</text> 合计: <text class="link">￥{{finalprice}}</text></text>
       </view>
-      <view class="vip-tip" wx:if="{{userLevel && !isNull}}">
-        <text class="iconfont icon-vip link"></text>
-        <text class="title">尊敬的超级会员，生鲜购满2公斤才可包邮哦</text>
+      <view class="vip-tip" wx:if="{{userLevel === 1 && !isNull}}">
+        <image src="../image/dril_golden2.png"></image>
+        <text class="title">尊敬的超级会员，购满300.00元才可包邮哦</text>
       </view>
-      <view class="vip-tip no-active" wx:elif="{{!isNull}}">
-        <text class="iconfont icon-vip"></text>
-        <text class="title">成为会员，生鲜购满2公斤全场包邮</text>
+      <view class="vip-tip no-active" wx:elif="{{userLevel === 0 && !isNull}}">
+        <image src="../image/dril_gray2.png"></image>
+        <text class="title">成为会员，购满300.00元全场包邮</text>
       </view>
     </view>
     <view wx:elif="{{isNull && !isLoading}}" class="blank">
@@ -441,13 +443,17 @@
           _this.finalprice = data.pay
           _this.freight = data.freight
           // 测试用户身份变化
-          console.log(data.memberHash)
           _this.$parent.resetUserLevel(data.memberHash, this.token, () => {
             _this.userLevel = _this.$parent.globalData.userLevel
           })
           data.childOrders.forEach((item) => {
             var obj = {}
             obj.title = item.title
+            if (item.title === '冷链配送') {
+              obj.iconClass = 'icon-new_llps'
+            } else if (item.title === '常规配送') {
+              obj.iconClass = 'icon-new_cgps'
+            }
             obj.freight = item.freight
             obj.coldChecked = false
             obj.tempCold = []
@@ -541,13 +547,12 @@
       })
     }
     onLoad () {
-      console.log(this.$parent.globalData.userLevel)
       // 判断用户memberHash
       this.$apply()
     }
     onShow () {
-      this.isEdit = false
       this.userLevel = this.$parent.globalData.userLevel
+      this.isEdit = false
       this.clearList()
       this.initPageData()
       this.$apply()

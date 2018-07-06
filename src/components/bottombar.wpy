@@ -4,12 +4,12 @@
   <view class="bottombar">
     <view class="contact">
       <button open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" hover-class="contact-active">
-        <text class="iconfont icon-kefu"></text>
+        <text class="iconfont icon-new_kefu"></text>
       </button>
     </view>
     <view class="goCart" @tap="goCart">
       <view class="goCart-icon user">
-        <text class="iconfont icon-ksj_gwc"></text>
+        <text class="iconfont icon-new_gouwuche"></text>
         <text class="cart-count" wx:if="{{cartVal > 0}}">{{cartMaxVal}}<text class="iconfont icon-sljia" wx:if="{{cartVal >= 99}}"></text></text>
       </view>
     </view>

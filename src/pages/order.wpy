@@ -9,7 +9,7 @@
       <repeat for="{{orderList}}" item="item" index="index">
         <view class="cart-list" wx:if="{{!item.isNull}}">
           <view class="content order-title">
-            <text class="font-normal order-num">订单编号：<text selectable="true">{{item.title}}</text></text>
+            <text class="font-normal order-num">订单编号：<text selectable="true">{{item.title}}</text><text selectable="false"></text></text>
             <text class="font-normal order-status-txt {{item.status === 1 || item.status === 2? 'link' : ''}} {{item.status === 3? 'close' : ''}}">{{item.statusTxt}}</text>
           </view>
           <view class="item-box">
@@ -24,7 +24,7 @@
               <view class="status-layer">
                 <text class="font-normal" wx:if="{{item.status === 1}}">待付款<text class="link">￥{{item.pay}}</text> (含运费￥{{item.freight}})</text>
                 <text class="font-normal" wx:elif="{{item.status === 2}}">售后中</text>
-                <text class="font-normal" wx:elif="{{item.status === 3}}">交易已关闭</text>
+                <text class="font-normal" wx:elif="{{item.status === 3}}">交易关闭</text>
                 <text class="font-normal" wx:else>实付款<text class="link">￥{{item.pay}}</text> (含运费￥{{item.freight}})</text>
                 <view class="edit-button">
                   <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" @tap="goPay({{item.id}})">付款</button>
@@ -267,7 +267,7 @@
         obj.price = item.memberPrice
         obj.oldprice = item.price
         obj.id = item.productId
-        obj.sourceType = item.salesUnitType
+        obj.sourceType = item.sourceType
         obj.sourceId = item.salesUnitId
         obj.detail = item.title + '×' + item.buyingCount
         obj.count = item.buyingCount

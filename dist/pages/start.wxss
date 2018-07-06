@@ -40,7 +40,7 @@ page {
   box-sizing: border-box;
   left: 0;
   top: 0;
-  transition: 0.5s left ease-in;
+  transition: 0.5s left ease-out;
 }
 .alert .alert-layer.hidden {
   left: -100%;

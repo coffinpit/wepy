@@ -75,6 +75,12 @@
   vertical-align: middle;
   margin-right: 10rpx;
 }
+.vip-tip image {
+  width: 35rpx;
+  height: 31rpx;
+  margin-right: 20rpx;
+  vertical-align: middle;
+}
 .vip-tip .title {
   font-size: 28rpx;
 }
@@ -117,7 +123,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  z-index: 99999;
+  z-index: 9999999;
   box-sizing: border-box;
 }
 .order-bottom image {
@@ -156,11 +162,32 @@
   float: right;
   width: 480rpx;
   font-size: 28rpx;
+  position: relative;
+  height: 150rpx;
 }
-.memo .memo-right textarea {
+.memo .memo-right textarea,
+.memo .memo-right text {
   width: 480rpx;
   height: 150rpx;
-  float: left;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.memo .memo-right text {
+  z-index: 9;
+}
+.memo .memo-right textarea {
+  top: -12rpx;
+  right: -10rpx;
+  z-index: 99;
+}
+.memo .memo-right textarea.hiddentxt {
+  opacity: 0;
+  display: none;
+  z-index: 1;
+}
+.memo .memo-right text {
+  word-wrap: break-word;
 }
 .memo .placeholder {
   color: #999999;

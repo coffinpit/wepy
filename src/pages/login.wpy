@@ -4,7 +4,7 @@
   <view class="login-container">
     <view class="login">
       <view class="app-info">
-        <image class="app-logo" src="../image/login_bg.png" mode="widthFix"></image>
+        <image class="app-logo" src="http://p33mnuvro.bkt.clouddn.com/uploads/0705/153077871164247816.png" mode="widthFix"></image>
         <!-- <text class="app-name">正善小程序</text> -->
         <image class="logo" src="../image/logo.png"></image>
       </view>
@@ -133,31 +133,36 @@
       this.$parent.getLogin((code) => {
         this.jscode = code
       })
-      wepy.getSetting({
-        success: (res) => {
-          // res.authSetting['scope.userInfo']
-          if (wepy.getStorageSync('token')) {
-            this.$parent.getUser()
-            this.isNull = true
-            // 已经授权，获取新的token
-            var data = {
-              phone: wepy.getStorageSync('phone')
-            }
-            this.$parent.requestToken(data, () => {
-              this.goIndex()
-            }, () => {
-              wepy.showToast({
-                title: '请重新授权登录',
-                icon: 'none',
-                image: '../image/cancel.png'
+      if (wepy.getStorageSync('phone') === '') {
+        wepy.clearStorageSync()
+        this.isNull = false
+      } else {
+        wepy.getSetting({
+          success: (res) => {
+            // res.authSetting['scope.userInfo']
+            if (wepy.getStorageSync('token')) {
+              this.$parent.getUser()
+              this.isNull = true
+              // 已经授权，获取新的token
+              var data = {
+                phone: wepy.getStorageSync('phone')
+              }
+              this.$parent.requestToken(data, () => {
+                this.goIndex()
+              }, () => {
+                wepy.showToast({
+                  title: '请重新授权登录',
+                  icon: 'none',
+                  image: '../image/cancel.png'
+                })
               })
-            })
-          } else {
-            this.isNull = false
+            } else {
+              this.isNull = false
+            }
+            this.$apply()
           }
-          this.$apply()
-        }
-      })
+        })
+      }
     }
     onShow () {
       if (wepy.getStorageSync('phone')) {

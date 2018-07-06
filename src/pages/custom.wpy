@@ -1,0 +1,64 @@
+<style lang="less">
+  .custom-bg{
+    position: relative;
+    .custom-image{
+      width:750rpx;
+      height: 1037rpx;
+    }
+    .custom-button {
+      position: absolute;
+      width:300rpx;
+      height:300rpx;
+      left:50%;
+      margin-left:-150rpx;
+      bottom:260rpx;
+      border-radius: 50%;
+      z-index: 999;
+      background: transparent;
+    }
+  }
+</style>
+<template>
+  <view class="custom-bg">
+    <menuList></menuList>
+    <image src="http://p33mnuvro.bkt.clouddn.com/vipkefu.png" class="custom-image"></image>
+    <button class="custom-button" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}"></button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Menu from '../components/menu'
+
+  export default class Custom extends wepy.page {
+    config = {
+      navigationBarTitleText: '正善客服'
+    }
+    components = {
+      menuList: Menu
+    }
+    data = {
+      nick_name: '',
+      avatar: '',
+      customer_info_str: '',
+      note_info_str: ''
+    }
+    methods = {
+    }
+    onShareAppMessage (res) {
+      return {
+        title: '正善客服',
+        path: '/pages/custom'
+      }
+    }
+    onLoad () {
+      this.$apply()
+    }
+    onShow () {
+      this.nick_name = this.$parent.getUserName()
+      this.avatar = this.$parent.getUserAvatar()
+      this.customer_info_str = this.$parent.getMessage()
+      this.note_info_str = this.$parent.getBusiness('正善客服', null, null)
+    }
+  }
+</script>

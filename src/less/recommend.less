@@ -1,0 +1,51 @@
+@import "variables.less";
+
+.rec-title{
+    display: block;
+    padding: 20rpx 30rpx;
+    height:60rpx;
+    background: @white;
+    margin-top: 20rpx;
+    width:690rpx;
+    .title{
+      line-height: 58rpx;
+      display: inline-block;
+    }
+  }
+  .recommend{
+    width:100%;
+    background: @white;
+    box-sizing: border-box;
+    width:100%;
+    white-space:nowrap;
+    overflow:hidden;
+    padding:0 30rpx 20rpx;
+    .recommend-layer{
+      width:300rpx;
+      box-sizing: border-box;
+      margin-right: 20rpx;
+      display: inline-block;
+      &:last-child{
+        margin-right: 0;
+      }
+      .recommend-container{
+        .border-ard-gray(@lightgray);
+        background: @white;
+        padding: 20rpx;
+        image{
+          width:240rpx;
+          height:240rpx;
+        }
+        .item-title{
+          height: 44rpx;
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space:nowrap;
+        }
+        .tips{
+          display: block;
+        }
+      }
+    }
+  }

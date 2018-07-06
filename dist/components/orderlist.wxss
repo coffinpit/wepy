@@ -40,6 +40,10 @@
 .inner-layer .title {
   display: block;
 }
+.inner-layer .icon-new_vchao {
+  font-size: 28rpx !important;
+  margin-right: 10rpx !important;
+}
 .inner-layer .font-small {
   float: left;
   width: 50%;

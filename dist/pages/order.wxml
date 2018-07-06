@@ -18,7 +18,7 @@
       <block wx:for="{{orderList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
         <view class="cart-list" wx:if="{{!item.isNull}}">
           <view class="content order-title">
-            <text class="font-normal order-num">订单编号：<text selectable="true">{{item.title}}</text></text>
+            <text class="font-normal order-num">订单编号：<text selectable="true">{{item.title}}</text><text selectable="false"/></text>
             <text class="font-normal order-status-txt {{item.status === 1 || item.status === 2? 'link' : ''}} {{item.status === 3? 'close' : ''}}">{{item.statusTxt}}</text>
           </view>
           <view class="item-box">
@@ -26,11 +26,13 @@
               
   <block wx:for="{{item.orderDetail}}" wx:for-index="$orderList$index" wx:for-item="$orderList$item" wx:key="$orderList$index">
     <view class="item-list">
-      <view class="inner txt" bindtap="$orderList$goDetail" data-com-index="{{index}}" data-wpygodetail-a="{{$orderList$item.id}}">
+      <view class="inner txt" bindtap="$orderList$goDetail" data-com-index="{{index}}" data-wpygodetail-a="{{$orderList$item.id}}" data-wpygodetail-b="{{$orderList$item.sourceType}}">
         <view class="inner-layer" data-index="{{$orderList$index}}" id="{{$orderList$item.sourceId}}">
           <text class="title">{{$orderList$item.title}}</text>
-          <text class="font-small link">会员价：￥{{$orderList$item.price}} </text>
-          <text class="font-small left {{userLevel ? '' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
+          <view class="overflow">
+            <text class="font-small link"><text class="iconfont icon-new_vchao"/>￥{{$orderList$item.price}} </text>
+            <text class="font-small left {{userLevel ? '' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
+          </view>
           <text class="tips">规格：{{$orderList$item.detail}}</text>
         </view>
         <view class="inner-image">
@@ -49,7 +51,7 @@
               <view class="status-layer">
                 <text class="font-normal" wx:if="{{item.status === 1}}">待付款<text class="link">￥{{item.pay}}</text> (含运费￥{{item.freight}})</text>
                 <text class="font-normal" wx:elif="{{item.status === 2}}">售后中</text>
-                <text class="font-normal" wx:elif="{{item.status === 3}}">交易已关闭</text>
+                <text class="font-normal" wx:elif="{{item.status === 3}}">交易关闭</text>
                 <text class="font-normal" wx:else>实付款<text class="link">￥{{item.pay}}</text> (含运费￥{{item.freight}})</text>
                 <view class="edit-button">
                   <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" bindtap="goPay" data-wpygopay-a="{{item.id}}">付款</button>

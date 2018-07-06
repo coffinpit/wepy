@@ -32,7 +32,7 @@
   color: #ec3d3a;
   font-size: 72rpx;
 }
-.bottombar .contact .icon-kefu {
+.bottombar .contact .icon-new_kefu {
   line-height: 110rpx;
 }
 .bottombar .contact .contact-active .iconfont {
@@ -45,7 +45,7 @@
 .bottombar .goCart .goCart-icon {
   position: relative;
 }
-.bottombar .goCart .goCart-icon .icon-ksj_gwc {
+.bottombar .goCart .goCart-icon .icon-new_gouwuche {
   color: #333333;
   font-size: 66rpx;
   margin-top: 18rpx;

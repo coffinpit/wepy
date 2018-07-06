@@ -55,7 +55,7 @@
     }
     data = {
       token: '',
-      categoryImg: ['http://p33mnuvro.bkt.clouddn.com/2018/5/9rwxryroks.jpg', 'http://p33mnuvro.bkt.clouddn.com/2018/5/2ls28undsw.jpg', 'http://p33mnuvro.bkt.clouddn.com/2018/5/5xop3ugmoh.jpg', 'http://p33mnuvro.bkt.clouddn.com/2018/5/lp8uqw6s6p.jpg'],
+      categoryImg: ['http://p33mnuvro.bkt.clouddn.com/flimg_niupai.png', 'http://p33mnuvro.bkt.clouddn.com/flimg_niurou.png', 'http://p33mnuvro.bkt.clouddn.com/flimg_haixian.png', 'http://p33mnuvro.bkt.clouddn.com/flimg_jiulei.png'],
       categoryTab: [],
       childCategory: [{
         name: '',
@@ -257,9 +257,11 @@
     onPullDownRefresh () {
       this.currentTab = 0
       this.currentItem = 0
-      this.getSpu(this.categoryTab[0].id, () => {
-        wepy.stopPullDownRefresh()
-      })
+      if (this.categoryTab.length > 0) {
+        this.getSpu(this.categoryTab[0].id, () => {
+          wepy.stopPullDownRefresh()
+        })
+      }
     }
   }
 </script>

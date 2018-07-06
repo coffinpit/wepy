@@ -3,11 +3,13 @@
 <template>
   <repeat for="{{orderList}}" index="index" item="item" key="index">
     <view class="item-list">
-      <view class="inner txt" @tap="goDetail({{item.id}})">
+      <view class="inner txt" @tap="goDetail({{item.id}}, {{item.sourceType}})">
         <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
           <text class="title">{{item.title}}</text>
-          <text class="font-small link">会员价：￥{{item.price}} </text>
-          <text class="font-small left {{userLevel ? '' : ''}}">原价：￥{{item.oldprice}}</text>
+          <view class="overflow">
+            <text class="font-small link"><text class="iconfont icon-new_vchao"></text>￥{{item.price}} </text>
+            <text class="font-small left {{userLevel ? '' : ''}}">原价：￥{{item.oldprice}}</text>
+          </view>
           <text class="tips">规格：{{item.detail}}</text>
         </view>
         <view class="inner-image">
@@ -29,10 +31,12 @@
       }
     }
     methods = {
-      goDetail (id) {
-        wepy.navigateTo({
-          url: './detail?id=' + id
-        })
+      goDetail (id, sourceType) {
+        if (sourceType !== 7) {
+          wepy.navigateTo({
+            url: './detail?id=' + id
+          })
+        }
       }
     }
     onLoad () {

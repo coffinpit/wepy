@@ -8,12 +8,12 @@
           <text class="font-normal">仅剩余：{{remainTime}}</text>
           <text class="font-normal">待付款：￥{{pay}}</text>
         </text>
-        <text class="font-normal txt-status" wx:elif="{{ remainTime === 0 && status === 1 && isStop}}">支付取消</text>
+        <text class="font-normal txt-status" wx:elif="{{remainTime === 0 && status === 1 && isStop}}">支付超时</text>
         <text class="font-normal txt-status" wx:elif="{{status === 2 && address != false}}">
-          已送达
+          售后中
         </text>
         <text class="font-normal txt-status" wx:elif="{{status === 3}}">
-          支付取消
+          交易关闭
         </text>
       </view>
       <view class="orderStatus address" wx:if="{{address && Object.keys(address).length !== 0}}">
@@ -25,18 +25,20 @@
       <block wx:for="{{order}}" wx:for-index="index" wx:for-item="item" wx:key="key">
         <view class="cart-list" wx:if="{{!item.isNull}}">
           <view class="content order-title">
-            <text class="title"><text class="iconfont icon-ys_ly"/>{{item.title}}</text>
+            <text class="title"><text class="iconfont {{item.iconClass}}"/>{{item.title}}</text>
           </view>
           <view class="item-box">
             <view class="items">
               
   <block wx:for="{{item.orderDetail}}" wx:for-index="$orderList$index" wx:for-item="$orderList$item" wx:key="$orderList$index">
     <view class="item-list">
-      <view class="inner txt" bindtap="$orderList$goDetail" data-com-index="{{index}}" data-wpygodetail-a="{{$orderList$item.id}}">
+      <view class="inner txt" bindtap="$orderList$goDetail" data-com-index="{{index}}" data-wpygodetail-a="{{$orderList$item.id}}" data-wpygodetail-b="{{$orderList$item.sourceType}}">
         <view class="inner-layer" data-index="{{$orderList$index}}" id="{{$orderList$item.sourceId}}">
           <text class="title">{{$orderList$item.title}}</text>
-          <text class="font-small link">会员价：￥{{$orderList$item.price}} </text>
-          <text class="font-small left {{userLevel ? '' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
+          <view class="overflow">
+            <text class="font-small link"><text class="iconfont icon-new_vchao"/>￥{{$orderList$item.price}} </text>
+            <text class="font-small left {{userLevel ? '' : ''}}">原价：￥{{$orderList$item.oldprice}}</text>
+          </view>
           <text class="tips">规格：{{$orderList$item.detail}}</text>
         </view>
         <view class="inner-image">
@@ -52,7 +54,7 @@
       </block>
       <view class="orderInfo">
         <text class="font-normal label">订单编号：</text>
-        <text class="font-normal right" selectable="true">{{orderId}}</text>
+        <text class="font-normal right" selectable="true">{{orderId}}</text><text selectable="false"/>
       </view>
       <view class="orderInfo">
         <text class="font-normal label">创建时间：</text>

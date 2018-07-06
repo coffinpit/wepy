@@ -8,19 +8,15 @@
         <view class="goods-detail">
           <view class="goods-detail-title">{{item.title}}</view>
           <view class="goods-detail-price">
-            会员价:<text class="price">￥{{item.price}} (优惠￥{{item.reduction}})</text>
+            <text class="iconfont icon-new_vchao"></text><text>￥{{item.price}}</text><text class="price"> (优惠￥{{item.reduction}})</text>
           </view>
+          <view class="overflow">
           <view class="goods-detail-oldprice">原价:{{item.oldprice}}</view>
           <view class="goods-detail-vicetitle">规格:{{item.detail}}</view>
+          </view>
           <view class="goods-promot">
-            <view class="goods-promot-image">
-              <image src="../image/icon-xian.png"></image>
-            </view>
             <view class="goods-info">
               {{item.descript}}
-              <view class="goods-end">
-                <image src="../image/probq_bg.png" mode="right"></image>
-              </view>
             </view>
           </view>
         </view>

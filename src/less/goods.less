@@ -58,17 +58,21 @@
         -webkit-box-orient: vertical;
       }
       .goods-detail-price{
-        font-size:@baseSize;
+        font-size: 36rpx;
+        color:@lightred;
+        display: inline-block;
+        .iconfont{
+          font-size:36rpx;
+        }
         .price{
-          color:@lightred;
-          font-weight:500;
-          display: inline-block;
+          font-size:@smallSize;
         }
       }
       .goods-detail-oldprice, .goods-detail-vicetitle{
         font-size:@smallSize;
         color:@darkgray;
-        display: inline-block;
+        line-height: @smallSize;
+        float: left;
       }
       .goods-detail-oldprice{
         width: 180rpx;

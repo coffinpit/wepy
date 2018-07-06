@@ -1,0 +1,40 @@
+<style lang="less" src="../less/recommend.less"></style>
+
+<template>
+  <view class="rec-title"><text class="title">相关商品推荐</text></view>
+  <scroll-view scroll-x class="recommend">
+    <repeat for="{{recommendList}}" item="item" index="index"> 
+      <view class="recommend-layer">
+        <view class="recommend-container" @tap="tap({{item.id}})">
+          <image src="{{item.cover}}" mode="aspectFill"></image>
+          <text class="font-normal item-title">{{item.title}}</text>
+          <text class="font-normal link"><text class="iconfont icon-new_vchao link"></text>￥{{item.price}}</text>
+          <text class="tips {{userLevel !== 0 ? 'through' : ''}}">原价:￥{{item.oldprice}}</text>
+        </view>
+      </view>
+    </repeat>
+  </scroll-view>
+</template>
+<script>
+  import wepy from 'wepy'
+  
+  export default class Recommend extends wepy.component {
+    props = {
+      recommendList: Array,
+      userLevel: {
+        type: Number,
+        default: 0
+      }
+    }
+    data = {
+    }
+    methods = {
+      tap (id) {
+        this.$emit('goodsTap', id)
+      }
+    }
+    onLoad () {
+      this.$apply()
+    }
+  }
+</script>
