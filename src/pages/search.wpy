@@ -6,7 +6,7 @@
       <view class="search-input">
         <image src="../image/search.png"></image>
         <form @reset="clearInput">
-        <input type="text" placeholder="搜索商品" placeholder-class="placeholder" value="{{keywords}}" @input="keySearch"/>
+        <input type="text" placeholder="输入关键词搜索商品，如：西冷" placeholder-class="placeholder" value="{{keywords}}" @input="keySearch"/>
         <button class="clear-btn" form-type="reset"><text class="iconfont icon-kf_qxbtn"></text></button>
         </form>
       </view>
@@ -146,14 +146,13 @@
           })
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
             _this.getResult()
           }
         }
         _this.$apply()
       }).catch(() => {
         _this.$parent.hideLoading()
-        _this.$parent.showFail()
+        // _this.$parent.showFail()
       })
     }
     onLoad (parent) {

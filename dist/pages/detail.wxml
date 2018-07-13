@@ -1,6 +1,5 @@
 
-  <view class="container" style="height: {{overflow? winHeight : 'auto'}}"  wx:if="{{isLoaded}}">
-    
+  
   <view class="menu-layer {{$menuList$fullMenu ? 'active' : ''}}">
     <view catchtap="$menuList$showMenu" class="menu-button"><text class="tips">快捷导航</text></view>
     <view class="menu-content">
@@ -11,6 +10,7 @@
     </view>
   </view>
 
+  <view class="container" style="height: {{overflow? winHeight : 'auto'}}"  wx:if="{{isLoaded}}">
     <view class="detail-info">
       <view class="detail-img">
         <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" catchchange="changeSwiper" bindanimationfinish="swiperEnd" class="index-swiper">
@@ -47,8 +47,8 @@
         </view>
         <view class="detail-txt-price express">
           <text>快递<text wx:if="{{userLevel === 0}}" class="freight">￥{{detail.express}}</text></text>
-          <text class="tips" wx:if="{{userLevel === 0}}">成为会员<text class="tips">满300.00包邮</text></text>
-          <text class="tips" wx:elif="{{userLevel === 1}}">超级会员<text class="tips">满300.00包邮</text></text>
+          <text class="tips" wx:if="{{userLevel === 0}}">成为会员<text class="tips">可享包邮</text></text>
+          <text class="tips" wx:elif="{{userLevel === 1}}">超级会员<text class="tips">已享包邮</text></text>
           <button class="default-button" hover-class="default-button-active" bindtap="goRules">配送规则</button>
         </view>
       </view>
@@ -56,7 +56,7 @@
     <view style="width:750rpx">
       <view class="content collcet-layer">
         <view class="detail-title">
-          <view class="font-normal">{{detail.title}}</view>
+          <view class="font-normal">{{detail.title}}{{detail.viceTitle}}</view>
           <view class="goods-promot">
             <view class="goods-info">
               {{detail.descript}}
@@ -121,15 +121,18 @@
         <text class="cart-count"  wx:if="{{$bottom$cartVal > 0}}">{{$bottom$cartMaxVal}}<text class="iconfont icon-sljia" wx:if="{{$bottom$cartVal >= 99}}"/></text>
       </view>
     </view>
-    <view class="cart" bindtap="$bottom$addCart">
-      <text>加入购物车</text>
+    <view  wx:if="{{$bottom$isAllowSale}}" class="available">
+      <view class="cart" bindtap="$bottom$addCart">
+        <text>加入购物车</text>
+      </view>
+      <view class="buy" bindtap="$bottom$buyTap">
+        <text>立即购买</text>
+      </view>
     </view>
-    <view class="buy" bindtap="$bottom$buyTap">
-      <text>立即购买</text>
-    </view>
+    <view wx:else class="unAvailable"><text>该商品已下架</text></view>
   </view>
 
-    <view class="popup" wx:if="{{overflow}}"/>
+    <view class="popup"  wx:if="{{overflow}}"/>
     <view class="popup__content {{overflow && cartModal? 'active' : ''}}">
       <view class="popup_close"><text class="title" catchtap="closeCart">关闭</text></view>
       <view class="popup_layer">

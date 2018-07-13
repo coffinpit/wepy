@@ -25,12 +25,14 @@
                 <text class="font-normal" wx:if="{{item.status === 1}}">待付款<text class="link">￥{{item.pay}}</text> (含运费￥{{item.freight}})</text>
                 <text class="font-normal" wx:elif="{{item.status === 2}}">售后中</text>
                 <text class="font-normal" wx:elif="{{item.status === 3}}">交易关闭</text>
+                <text class="font-normal" wx:elif="{{(item.status === 5 && item.isReceive) || item.status === 6}}">交易完成</text>
                 <text class="font-normal" wx:else>实付款<text class="link">￥{{item.pay}}</text> (含运费￥{{item.freight}})</text>
-                <view class="edit-button">
+                <view class="edit-button" >
                   <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" @tap="goPay({{item.id}})">付款</button>
                   <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1}}" @tap="goAddress({{item.id}})">修改地址</button>
                   <button class="blank-button" hover-class="blank-button-hover" wx:if="{{item.status === 1 || item.status === 4}}" @tap="cancel({{item.id}})">取消订单</button>
                   <view wx:if="{{item.needAdd}}">
+                    <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 5 && !item.isReceive}}" @tap="goReceive({{item.id}}, {{index}})">确认收货</button>
                     <button class="blank-button" hover-class="blank-button-hover" wx:if="{{(item.status === 2 && item.deliverStatus >= 2) || item.status === 5 || item.status === 6}}" @tap="goLogistic({{item.id}}, {{item.status}})">查看物流</button>
                   </view>
                   <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" wx:if="{{item.status === 5 || item.status === 6}}" @contact="getOrderId({{item.title}})">售后申请</button>
@@ -82,7 +84,7 @@
         title: '全部',
         type: 'all'
       }, {
-        title: '待支付',
+        title: '待付款',
         type: 'unpaid'
       }, {
         title: '待发货',
@@ -94,7 +96,7 @@
         title: '售后',
         type: 'refunding'
       }],
-      orderStatus: ['异常', '待支付', '售后中', '已关闭', '待发货', '待收货', '交易完成'],
+      orderStatus: ['异常', '待付款', '售后中', '已关闭', '待发货', '待收货', '交易完成'],
       current: null,
       orderType: 'all',
       orderList: [],
@@ -144,8 +146,28 @@
         })
       },
       getOrderId (id) {
-        console.log(id)
         this.orderId = id
+      },
+      goReceive (id, index) {
+        this.token = this.$parent.getToken()
+        var data = {
+          token: this.token,
+          orderId: id
+        }
+        wepy.showModal({
+          title: '提示',
+          content: '是否确认收货',
+          success: (res) => {
+            if (res.confirm) {
+              this.$parent.HttpRequest.ReceiveOrder(data).then((res) => {
+                if (res.data.error === 0) {
+                  this.orderList[index].isReceive = true
+                }
+                this.$apply()
+              })
+            }
+          }
+        })
       },
       goPay (id) {
         if (this.payment) {
@@ -233,6 +255,7 @@
           data.orders.forEach((item) => {
             var obj = {}
             obj.id = item.id
+            obj.isReceive = false
             obj.title = item.showId
             obj.pay = item.pay
             obj.freight = item.freight
@@ -247,7 +270,6 @@
           cb && cb()
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
             _this.initOrder(cb)
           }
         }
@@ -255,7 +277,7 @@
       }).catch(() => {
         _this.$parent.hideLoading()
         _this.isLoading = false
-        _this.$parent.showFail()
+        // _this.$parent.showFail()
       })
     }
     initChild (parent) {
@@ -290,7 +312,7 @@
           cb && cb()
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
+            // _this.token = this.$parent.getToken(res.data.error)
           }
         }
       })

@@ -9,7 +9,7 @@ import 'wepy-async-function'
 // import { setStore } from 'wepy-redux'
 // import configStore from './store'
 
-import HttpRequest from './service/HttpRequestServer'
+import HttpRequest from './service/HttpRequest'
 var Md5 = require('./service/md5')
 
 // const store = configStore()
@@ -90,6 +90,7 @@ export default class extends wepy.app {
   missToken = false
   getTokenTime = 0
   httpId = []
+  errorHttpId = ''
 
   constructor () {
     super()
@@ -100,16 +101,30 @@ export default class extends wepy.app {
       },
       success (p) {
         if (p.statusCode === 200) {
-          if (p.data.error && p.data.error === -1 && p.data.msg === 'miss token') {
+          if (p.data.error === undefined || p.data.error !== 0) {
+            this.errorHttpId = p.data.httpId
+          }
+          if (p.data.error !== undefined && p.data.error === -1 && p.data.msg === 'miss token') {
             console.log('miss token')
-            this.getTokenTime++
+            this.missToken = true
             if (this.getTokenTime < 3) {
-              this.missToken = true
-            } else {
-              this.missToken = false
-              this.showFail()
+              this.getToken(p.data.error, () => {
+                this.missToken = false
+                this.getTokenTime = 0
+              }, () => {
+                this.missToken = true
+                this.getTokenTime ++
+              })
             }
-          } else if (p.data.error && p.data.error === -1 && p.data.msg === 'member locked') {
+            // this.getTokenTime++
+            // if (this.getTokenTime < 3) {
+            //   this.missToken = true
+            //   this.getToken(p.data.error)
+            // } else {
+            //   this.showFail()
+            //   this.missToken = false
+            // }
+          } else if (p.data.error !== undefined && p.data.error === -1 && p.data.msg === 'member locked') {
             this.hideLoading()
             wepy.clearStorage()
             wepy.showModal({
@@ -124,9 +139,11 @@ export default class extends wepy.app {
                 }
               }
             })
-          } else if (p.data.error && p.data.error === -2) {
-            this.showFail(p.data.msg)
-          } else if (p.data.error && p.data.error === 0) {
+          } else if (p.data.error !== undefined && p.data.error === -1) {
+            this.showFail(null, p.data.httpId)
+          } else if (p.data.error !== undefined && p.data.error === -2) {
+            this.showFail(p.data.msg, p.data.httpId)
+          } else if (p.data.error !== undefined && p.data.error === 0) {
             this.missToken = false
             this.getTokenTime = 0
           }
@@ -179,7 +196,7 @@ export default class extends wepy.app {
     })
   }
 
-  getUserInfo(e, code, refrenceCode, cb) {
+  getUserInfo(e, code, refrenceCode, cb, fail) {
     // this.globalData.userInfo = e.detail.userInfo
     console.log(e, code, refrenceCode)
     var data = {
@@ -188,10 +205,9 @@ export default class extends wepy.app {
       iv: e.detail.iv,
       referenceId: refrenceCode
     }
-    console.log(data)
     this.HttpRequest.SendCode(data).then((res) => {
       console.log(res)
-      if (res.data.error === 0) {
+      if (res.data.error !== undefined && res.data.error === 0) {
         var phoneNumber = res.data.data.phone
         wepy.setStorageSync('phone', phoneNumber)
         cb && cb()
@@ -199,20 +215,26 @@ export default class extends wepy.app {
         //   phone: phoneNumber
         // }
         // this.requestToken(data, cb)
+      } else {
+        fail && fail()
       }
     }).catch(() => {
       wepy.showModal({
         title: '登录失败',
         content: '请检查网络连接',
-        showCancel: false
+        showCancel: false,
+        success: (res) => {
+          if (res.confirm) {
+            fail && fail()
+          }
+        }
       })
     })
   }
   // 已有手机号获取token
   async requestToken (data, cb, fail) {
     await this.HttpRequest.UserLogin(data).then((res) => {
-      console.log(res)
-      if (res.data.error === 0) {
+      if (res.data.error !== undefined && res.data.error === 0) {
         var token = res.data.data.token
         var timeOut = res.data.data.timeOut
         wepy.setStorageSync('token', token)
@@ -220,6 +242,8 @@ export default class extends wepy.app {
         // 设置global的user level 和 hash
         this.getUserLevel(token, () => {
           cb && cb(token)
+        }, () => {
+          fail && fail()
         })
       } else {
         fail && fail()
@@ -241,7 +265,7 @@ export default class extends wepy.app {
   }
 
   // 返回当前token
-  getToken (error, refrence) {
+  getToken (error, refrence, cb, fail) {
     var refrenceCode = ''
     if (refrence) {
       refrenceCode = refrence
@@ -256,7 +280,7 @@ export default class extends wepy.app {
         var data = {
           phone: wepy.getStorageSync('phone')
         }
-        this.requestToken(data)
+        this.requestToken(data, cb, fail)
         return wepy.getStorageSync('token')
       } else {
         return wepy.getStorageSync('token')
@@ -265,10 +289,10 @@ export default class extends wepy.app {
   }
 
   // 获取 user level 和 hash
-  getUserLevel (token, cb) {
+  getUserLevel (token, cb, fail) {
     var _this = this
     this.HttpRequest.GetUserInfo({token: token}).then((res) => {
-      if (res.data.error === 0) {
+      if (res.data.error !== undefined && res.data.error === 0) {
         _this.globalData.userLevel = res.data.data.level
         _this.globalData.userHash = res.data.data.memberHash
         _this.globalData.vipEnd = res.data.data.vipEnd
@@ -276,12 +300,15 @@ export default class extends wepy.app {
         _this.globalData.memberId = res.data.data.memberId
         _this.globalData.expectedReduction = res.data.data.expectedReduction
         cb && cb()
+      } else {
+        fail && fail()
       }
+    }).catch(() => {
+      fail && fail()
     })
   }
   // 判断当前user hash是否需要重置
   resetUserLevel (hash, token, cb) {
-    console.log(hash, this.globalData.userHash)
     if (hash !== this.globalData.userHash) {
       this.getUserLevel(token, cb)
     }
@@ -315,11 +342,17 @@ export default class extends wepy.app {
   hideLoading () {
     wepy.hideLoading()
   }
-  showFail (error) {
-    wepy.showToast({
-      title: error || '加载失败',
-      icon: 'none',
-      image: '../image/cancel.png'
+  showFail (error, content) {
+    // wepy.showToast({
+    //   title: error || '加载失败',
+    //   icon: 'none',
+    //   image: '../image/cancel.png'
+    // })/
+    var contentTxt = content || '5b4813d15ee41'
+    wepy.showModal({
+      title: error || '系统开小差了',
+      content: '请截图联系客服 ' + contentTxt,
+      showCancel: false
     })
   }
   payFail () {
@@ -380,10 +413,33 @@ export default class extends wepy.app {
   }
   // 客服消息
   getUserName () {
-    return this.filteremoji(this.globalData.userInfo.nickName)
+    console.log(this.globalData)
+    wepy.getSetting({
+      success: (res) => {
+        if (res.authSetting['scope.userInfo']) {
+          if (!this.globalData.userInfo) {
+            this.getUser()
+          }
+          return this.filteremoji(this.globalData.userInfo.nickName)
+        } else {
+          return ''
+        }
+      }
+    })
   }
   getUserAvatar () {
-    return this.globalData.userInfo.avatarUrl
+    wepy.getSetting({
+      success: (res) => {
+        if (res.authSetting['scope.userInfo']) {
+          if (!this.globalData.userInfo) {
+            this.getUser()
+          }
+          return this.globalData.userInfo.avatarUrl
+        } else {
+          return ''
+        }
+      }
+    })
   }
   getMessage (pageDetail, tags) {
     var messageObj = {
@@ -404,11 +460,16 @@ export default class extends wepy.app {
     return JSON.stringify(messageObj)
   }
   getBusiness (title, content, orderId) {
+    var phone = ''
+    if (wepy.getStorageSync('phone') !== '') {
+      phone = wepy.getStorageSync('phone')
+    }
     var noteObj = {
       'title': title,
       'custom_fields': {
         'TextField_28227': content,
-        'TextField_28233': orderId
+        'TextField_28233': orderId,
+        'TextField_29513': phone
       }
     }
     return JSON.stringify(noteObj)

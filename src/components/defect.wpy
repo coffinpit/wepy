@@ -43,7 +43,7 @@
       },
       typeTxt () {
         if (this.type === '1') {
-          return '商品都在拼命的跑过来'
+          return '哎呦，被抢空了'
         } else if (this.type === '2') {
           return '购物车空空如也'
         } else if (this.type === '3') {

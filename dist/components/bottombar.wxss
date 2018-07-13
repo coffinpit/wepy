@@ -77,13 +77,22 @@
   float: right;
 }
 .bottombar .cart,
-.bottombar .buy {
-  width: 35%;
+.bottombar .buy,
+.bottombar .unAvailable {
+  width: 50%;
   line-height: 116rpx;
   font-size: 32rpx;
   text-align: center;
   background: #fc8d43;
+  display: inline-block;
 }
 .bottombar .buy {
   background: #ec3d3a;
+}
+.bottombar .available {
+  width: 70%;
+}
+.bottombar .unAvailable {
+  width: 70%;
+  background: #cccccc;
 }

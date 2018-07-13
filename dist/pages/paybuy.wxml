@@ -54,11 +54,11 @@
     </view>
     <view class="vip-tip" wx:if="{{userLevel === 1}}">
       <image src="../image/dril_golden2.png"/>
-      <text class="title">尊敬的<text class="link">超级会员</text>，购满300.00元才可包邮哦</text>
+      <text class="title">尊敬的<text class="link">超级会员</text>，您目前享有包邮特权</text>
     </view>
     <view class="vip-tip no-active" wx:elif="{{userLevel === 0}}">
       <image src="../image/dril_gray2.png"/>
-      <text class="title">成为会员，购满300.00元全场包邮</text>
+      <text class="title">成为会员，可享全场包邮</text>
     </view>
     <view class="order-list">
       <text class="title">运费：</text>

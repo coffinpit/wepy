@@ -3,9 +3,9 @@
   <view class="main {{userLevel === 1 ? 'vipMain' : ''}}" style="height: {{isShow ? winHeight : 'auto'}}">
     <view class="vip-bg" style="height: {{isLoading ? '' : '494rpx'}}" wx:if="{{userLevel === 1}}">
       <image src="http://p33mnuvro.bkt.clouddn.com/2018/5/snuzbxz7o4.png" mode="aspectFit" @load="imageLoad"></image>
-      <text class="vip-title">
-        <text class="iconfont icon-vip"></text>
-      </text>
+      <view class="vip-title">
+        <image src="../image/dril_golden.png"></image>
+      </view>
       <text class="vip-detail">
         <text class="title">{{vipEnd}}到期</text>
         <text class="title">已为您节省￥{{vipreduction}}</text>
@@ -19,11 +19,14 @@
         </view>
       </view>
     </view>
-    <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_01.jpg" mode="widthFix"></image>
+    <!-- <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_01.jpg" mode="widthFix"></image>
     <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_02.jpg" mode="widthFix"></image>
-    <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_03.jpg" mode="widthFix" @tap.stop="goRules"></image>
+    <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_03.jpg" mode="widthFix"></image>
     <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_04.jpg" mode="widthFix"></image>
-    <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_06.jpg" mode="widthFix"></image>
+    <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_06.jpg" mode="widthFix"></image> -->
+    <repeat for="{{imageList}}" item="item">
+      <image src="{{item}} + Math.random() / 9999" mode="widthFix"></image>
+    </repeat>
     <button class="default-button" @tap="buyVip" wx:if="{{userLevel === 0}}">申请会员</button>
     <view class="popup" wx:if="{{isShow}}"></view>
     <view class="popup-content {{isShow ? 'show' : ''}}">
@@ -53,7 +56,7 @@
 
   export default class ApplyVip extends wepy.page {
     config = {
-      navigationBarTitleText: '申请会员'
+      navigationBarTitleText: '会员中心'
     }
     data = {
       token: '',
@@ -71,7 +74,8 @@
       nick_name: '',
       avatar: '',
       customer_info_str: '',
-      note_info_str: ''
+      note_info_str: '',
+      imageList: ['http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_01.jpg?', 'http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_02.jpg?', 'http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_03.jpg?', 'http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_04.jpg?', 'http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_06.jpg?']
     }
     methods = {
       imageLoad () {
@@ -92,7 +96,6 @@
       },
       radioChange (e) {
         this.checked = !this.checked
-        console.log(e.detail)
       },
       chooseType (index) {
         this.current = index
@@ -160,7 +163,7 @@
                 })
               } else {
                 if (_this.$parent.missToken) {
-                  _this.token = this.$parent.getToken(res.data.error)
+                  // _this.token = this.$parent.getToken(res.data.error)
                 }
               }
             })
@@ -202,7 +205,6 @@
           })
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
             _this.getService()
           }
         }

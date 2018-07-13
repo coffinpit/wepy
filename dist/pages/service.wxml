@@ -1,4 +1,4 @@
 
-  <view>
+  <view class="web-container">
     <web-view src="{{url}}"/>
   </view>

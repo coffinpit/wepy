@@ -13,12 +13,15 @@
         <text class="cart-count" wx:if="{{cartVal > 0}}">{{cartMaxVal}}<text class="iconfont icon-sljia" wx:if="{{cartVal >= 99}}"></text></text>
       </view>
     </view>
-    <view class="cart" @tap="addCart">
-      <text>加入购物车</text>
+    <view wx:if="{{isAllowSale}}" class="available">
+      <view class="cart" @tap="addCart">
+        <text>加入购物车</text>
+      </view>
+      <view class="buy" @tap="buyTap">
+        <text>立即购买</text>
+      </view>
     </view>
-    <view class="buy" @tap="buyTap">
-      <text>立即购买</text>
-    </view>
+    <view wx:else class="unAvailable"><text>该商品已下架</text></view>
   </view>
 </template>
 <script>
@@ -31,7 +34,11 @@
       nick_name: String,
       avatar: String,
       customer_info_str: String,
-      note_info_str: String
+      note_info_str: String,
+      isAllowSale: {
+        type: Boolean,
+        default: true
+      }
     }
     computed = {
       cartMaxVal () {

@@ -6,12 +6,16 @@
     color:#ccc;
     line-height:36rpx;
     padding:20rpx 0;
+    overflow: hidden;
+    text{
+      white-space:nowrap;
+    }
   }
 </style>
 <template>
   <view>
     <view class="isDown">
-      <text>—————— 商品再好也是有底线的 ——————</text>
+      <text>————————— 已加载完毕 —————————</text>
     </view>
   </view>
 </template>

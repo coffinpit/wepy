@@ -74,12 +74,14 @@
           <text class="font-normal" wx:if="{{status === 1}}">待付款<text class="link">￥{{pay}}</text> (含运费￥{{freight}})</text>
           <text class="font-normal" wx:elif="{{status === 2}}">售后中</text>
           <text class="font-normal" wx:elif="{{status === 3}}">交易已关闭</text>
+          <text class="font-normal" wx:elif="{{(status === 5 && isReceive) || status === 6}}">交易完成</text>
           <text class="font-normal" wx:else>实付款<text class="link">￥{{pay}}</text> (含运费￥{{freight}})</text>
           <view class="edit-button">
             <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}" bindtap="goPay">付款</button>
             <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1}}" bindtap="goAddress">修改地址</button>
             <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" bindtap="cancel">取消订单</button>
             <view wx:if="{{address && Object.keys(address).length !== 0}}">
+              <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 5 && !isReceive}}" bindtap="goReceive">确认收货</button>
               <button class="blank-button" hover-class="blank-button-hover" wx:if="{{(status === 2 && deliverStatus >= 2) || status === 5 || status === 6}}" bindtap="goLogistic">查看物流</button>
             </view>
             <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" wx:if="{{status === 5 || status === 6}}">售后申请</button>

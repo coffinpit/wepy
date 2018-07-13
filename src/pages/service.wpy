@@ -1,7 +1,7 @@
 <style lang="less">
 </style>
 <template>
-  <view>
+  <view class="web-container">
     <web-view src="{{url}}"></web-view>
   </view>
 </template>

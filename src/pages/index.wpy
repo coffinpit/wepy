@@ -159,7 +159,6 @@
     getUserLevel () {
       this.userLevel = this.$parent.globalData.userLevel
       this.vipReduction = this.$parent.globalData.expectedReduction
-      console.log(this.vipReduction)
       this.vipEnd = this.$parent.dateFormat(this.$parent.globalData.vipEnd * 1000, 'Y年m月d日')
       this.showPromot = true
     }
@@ -189,7 +188,7 @@
       }
       parent.HttpRequest.IndexHttp(data, () => {
         _this.$parent.hideLoading()
-        _this.$parent.showFail()
+        // _this.$parent.showFail()
         _this.isNull = true
       }).then((res) => {
         if (_this.pageNum === 1) {
@@ -227,14 +226,13 @@
           wepy.hideLoading()
           _this.isNull = true
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
             _this.initPage()
           }
         }
         _this.$apply()
       }).catch(() => {
         _this.$parent.hideLoading()
-        _this.$parent.showFail()
+        // _this.$parent.showFail()
         _this.isNull = true
       })
     }
@@ -247,6 +245,7 @@
     }
     onPullDownRefresh () {
       this.currentPage = 0
+      this.getBanner()
       this.$parent.getUserLevel(this.token, () => {
         this.getUserLevel()
       })
@@ -285,13 +284,18 @@
           })
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken()
             _this.getBanner()
           }
         }
         _this.isLoading = true
         _this.$apply()
       })
+    }
+    onShareAppMessage (res) {
+      return {
+        title: '正善牛肉',
+        path: '/pages/login'
+      }
     }
     onLoad () {
       this.initPage()

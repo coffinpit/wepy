@@ -4,7 +4,7 @@
   <view class="searchbar" @tap="goSearch">
     <view class="searchinput">
       <image src="../image/search.png"></image>
-      <text>搜索商品</text>
+      <text>输入关键词搜索商品，如：西冷</text>
     </view>
   </view>
 </template>

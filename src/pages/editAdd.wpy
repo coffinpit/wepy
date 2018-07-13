@@ -161,7 +161,7 @@
                 wepy.navigateBack()
               } else {
                 if (this.$parent.missToken) {
-                  this.token = this.$parent.getToken(res.data.error)
+                  // this.token = this.$parent.getToken(res.data.error)
                 }
               }
             })

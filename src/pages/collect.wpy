@@ -141,7 +141,6 @@
           })
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
             _this.initCollect()
           }
         }
@@ -149,7 +148,7 @@
       }).catch(() => {
         _this.$parent.hideLoading()
         _this.isLoading = false
-        _this.$parent.showFail()
+        // _this.$parent.showFail()
       })
     }
     initPageData () {
@@ -170,7 +169,7 @@
           cb && cb()
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
+            // _this.token = this.$parent.getToken(res.data.error)
           }
         }
         _this.$apply()

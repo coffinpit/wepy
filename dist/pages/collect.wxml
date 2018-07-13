@@ -40,7 +40,7 @@
       
   <view wx:if="{{isDown}}">
     <view class="isDown">
-      <text>—————— 商品再好也是有底线的 ——————</text>
+      <text>————————— 已加载完毕 —————————</text>
     </view>
   </view>
 

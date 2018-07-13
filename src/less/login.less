@@ -3,11 +3,20 @@
 page{
   background: @white;
 }
+.contact-phone{
+  position: absolute;
+  bottom: 0;
+  left:0;
+  height: 80rpx;
+  width:100%;
+  text-align: center;
+}
 .login-container {
   height: calc(100vh);
   background: @white;
   width:100%;
   overflow: hidden;
+  position: relative;
 }
 .app-info {
   position: relative;
@@ -110,7 +119,7 @@ page{
   width:160rpx;
   margin:0 auto;
   position: absolute;
-  bottom:0rpx;
+  bottom:50rpx;
   left:50%;
   transform:translateX(-50%);
   text{
@@ -126,5 +135,19 @@ page{
     &.unactive{
       background: @gray;
     }
+  }
+}
+.login-error{
+  text-align: center;
+  padding: 0 40rpx;
+  .font-normal{
+    display: block;
+  }
+  .tips{
+    font-size: @baseSize
+  }
+  .blank-button{
+    line-height:88rpx !important;
+    margin-top:20rpx;
   }
 }

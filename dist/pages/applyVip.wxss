@@ -110,11 +110,16 @@ image {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 100rpx;
+  top: 80rpx;
+  width: 160rpx;
 }
 .vip-bg .vip-title .icon-vip {
   color: #fdd798;
   font-size: 120rpx;
+}
+.vip-bg .vip-title image {
+  width: 160rpx;
+  height: 120rpx;
 }
 .vip-bg .vip-detail {
   position: absolute;
@@ -159,10 +164,10 @@ image {
   font-size: 28rpx;
 }
 .vip-pay {
-  background: #fd6d55;
+  background: #ec3d3a;
 }
 .vip-pay-hover {
-  background: #fe5946;
+  background: #ff2400;
 }
 .vip-refund {
   background: #303030;

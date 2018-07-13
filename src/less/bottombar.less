@@ -75,15 +75,23 @@
         }
       }
     }
-    .cart, .buy{
-      width:35%;
+    .cart, .buy, .unAvailable{
+      width:50%;
       text-align:center;
       line-height:116rpx;
       font-size:@largeSize;
       text-align:center;
       background: @orange;
+      display: inline-block;
     }
     .buy{
       background:@lightred;
+    }
+    .available{
+      width: 70%;
+    }
+    .unAvailable{
+      width: 70%;
+      background: @gray;
     }
   }

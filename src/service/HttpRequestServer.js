@@ -40,6 +40,7 @@ class HttpRequest extends wepy.app{
 			getMarkSpu: 'r=mark/api-get-mark-spu',
 			getOrderStatus: 'r=order/api-get-orders',
 			getOrderDetail: 'r=order/api-get-detail',
+			receiveOrder: 'r=order/api-receipted',
 			cancelOrder: 'r=order/api-cancel',
 			orderEditAdd: 'r=order/api-change-address',
 			getNotice: 'r=notice/api-get-notice',
@@ -610,6 +611,28 @@ class HttpRequest extends wepy.app{
 				var data = _this.getData(res, param)
 				wepy.request({
 					url: this.$$base + this.$$path.cancelOrder,
+					method: 'GET',
+	                header: {'content-type': 'application/json'},
+	                data: data,
+					success: (data) => {
+					  resolve(data)
+					},
+					fail: (error) => {
+					  reject(error)
+					}
+				})
+			}).catch(() => {
+        		cb && cb()
+        	})
+		})
+	}
+	ReceiveOrder (param, cb) {
+		var _this = this
+		return new Promise((resolve, reject) => {
+			_this.getTime().then((res) => {
+				var data = _this.getData(res, param)
+				wepy.request({
+					url: this.$$base + this.$$path.receiveOrder,
 					method: 'GET',
 	                header: {'content-type': 'application/json'},
 	                data: data,

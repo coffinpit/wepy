@@ -1,7 +1,7 @@
 <style lang="less" src="../less/detail.less"></style>
 <template>
+  <menuList></menuList>
   <view class="container" style="height: {{overflow? winHeight : 'auto'}}" wx:if="{{isLoaded}}">
-    <menuList></menuList>
     <view class="detail-info">
       <view class="detail-img">
         <swiper current="{{swiperOpt.currentTab}}" indicator-dots="{{swiperOpt.indicatorDots}}" indicator-color="{{swiperOpt.indicatorColor}}" indicator-active-color="{{swiperOpt.indicatorActive}}" autoplay="{{swiperOpt.autoplay}}" interval="{{swiperOpt.interval}}" duration="{{swiperOpt.duration}}" @change.stop="changeSwiper" @animationfinish="swiperEnd" class="index-swiper">
@@ -38,8 +38,8 @@
         </view>
         <view class="detail-txt-price express">
           <text>快递<text wx:if="{{userLevel === 0}}" class="freight">￥{{detail.express}}</text></text>
-          <text class="tips" wx:if="{{userLevel === 0}}">成为会员<text class="tips">满300.00包邮</text></text>
-          <text class="tips" wx:elif="{{userLevel === 1}}">超级会员<text class="tips">满300.00包邮</text></text>
+          <text class="tips" wx:if="{{userLevel === 0}}">成为会员<text class="tips">可享包邮</text></text>
+          <text class="tips" wx:elif="{{userLevel === 1}}">超级会员<text class="tips">已享包邮</text></text>
           <button class="default-button" hover-class="default-button-active" @tap="goRules">配送规则</button>
         </view>
       </view>
@@ -47,7 +47,7 @@
     <view style="width:750rpx">
       <view class="content collcet-layer">
         <view class="detail-title">
-          <view class="font-normal">{{detail.title}}</view>
+          <view class="font-normal">{{detail.title}}{{detail.viceTitle}}</view>
           <view class="goods-promot">
             <view class="goods-info">
               {{detail.descript}}
@@ -85,7 +85,7 @@
         </view>
       </view>
     </view>
-    <bottom @buy.user="cart" @cart.user="cart" :cartVal.sync="addCartCount" :messagePath.sync="currentPath" :nick_name.sync="userName" :avatar.sync="userAvatar" :customer_info_str.sync="customer_info" :note_info_str.sync="bussiness_info"></bottom>
+    <bottom @buy.user="cart" @cart.user="cart" :cartVal.sync="addCartCount" :messagePath.sync="currentPath" :nick_name.sync="userName" :avatar.sync="userAvatar" :customer_info_str.sync="customer_info" :note_info_str.sync="bussiness_info" :isAllowSale.sync="isAllowSale"></bottom>
     <view class="popup" wx:if="{{overflow}}"></view>
     <view class="popup__content {{overflow && cartModal? 'active' : ''}}">
       <view class="popup_close"><text class="title" @tap.stop="closeCart">关闭</text></view>
@@ -231,7 +231,8 @@
       videoSrc: [],
       hasVideo: false,
       recgoodList: [],
-      buttonDisable: true
+      buttonDisable: true,
+      isAllowSale: true
     }
     methods = {
       goDetail (id) {
@@ -408,6 +409,7 @@
     }
     initData (cb) {
       this.token = this.$parent.getToken(0, this.refrenceCode)
+      console.log(this.token)
       this.$parent.showLoading()
       var _this = this
       var data = {
@@ -415,16 +417,21 @@
         spuId: this.pageId
       }
       this.$parent.HttpRequest.DetailHttp(data).then((res) => {
-        console.log(res)
         _this.$parent.hideLoading()
+        console.log(res)
         this.detail.goodList = []
-        if (res.data.error === 0 && res.data.data.isAllowSale) {
+        if (res.data.error === 0) {
           _this.isLoaded = true
           var data = res.data.data
           if (!data.collectionId) {
             _this.collect = false
           } else {
             _this.collect = true
+          }
+          if (!res.data.data.isAllowSale) {
+            this.isAllowSale = false
+          } else {
+            this.isAllowSale = true
           }
           // 测试用户身份变化
           _this.$parent.resetUserLevel(data.memberHash, this.token, () => {
@@ -433,6 +440,7 @@
           })
           _this.detail.path = data.cover
           _this.detail.title = data.title
+          _this.detail.viceTitle = data.viceTitle
           _this.currentPath = data.title
           _this.detail.price = data.memberPrice
           _this.detail.oldprice = data.price
@@ -504,7 +512,7 @@
             return parseInt(good1.price.replace(/,/g, '')) - parseInt(good2.price.replace(/,/g, ''))
           })
           cb && cb()
-        } else if ((res.data.error === 0 && !res.data.data.isAllowSale) || (res.data.error === -1 && res.data.msg === 'miss spu')) {
+        } else if (res.data.error === -1 && res.data.msg === 'miss spu') {
           wepy.showModal({
             title: '提示',
             content: '该商品已下架',
@@ -517,14 +525,15 @@
           })
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
-            _this.initData(cb)
+            _this.initData(() => {
+              _this.userLevel = _this.$parent.globalData.userLevel
+            })
           }
         }
         _this.$apply()
-      }).catch(() => {
+      }).catch((error) => {
+        console.log('error:' + error)
         _this.$parent.hideLoading()
-        _this.$parent.showFail()
       })
     }
     getRecommend () {
@@ -548,13 +557,11 @@
           })
         } else {
           if (this.$parent.missToken) {
-            this.token = this.$parent.getToken(res.data.error)
             this.getRecommend()
           }
         }
         this.$apply()
       }).catch(() => {
-        this.$parent.showFail()
       })
     }
     addCartData (cb) {
@@ -572,7 +579,7 @@
           // _this.initData(_this.initCartResult())
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
+            // _this.token = this.$parent.getToken(res.data.error)
           }
         }
       })
@@ -588,13 +595,12 @@
         sourceId: id
       }
       this.$parent.HttpRequest.GetMarkUser(data).then((res) => {
-        console.log(res)
         if (res.data.error === 0) {
           var data = res.data.data
           _this.collectednum = data.length
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
+            // _this.token = this.$parent.getToken(res.data.error)
           }
         }
         _this.$apply()
@@ -611,6 +617,7 @@
         sourceId: this.detail.id
       }
       this.$parent.HttpRequest.SetMarkHttp(data).then((res) => {
+        console.log(res)
         this.$parent.hideLoading()
         if (res.data.error === 0) {
           _this.markId = res.data.data
@@ -618,7 +625,7 @@
           cb && cb()
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
+            // _this.token = this.$parent.getToken(res.data.error)
           }
         }
         _this.$apply()
@@ -639,7 +646,7 @@
           cb && cb()
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
+            // _this.token = this.$parent.getToken(res.data.error)
           }
         }
         _this.$apply()
@@ -653,7 +660,11 @@
       }
     }
     onLoad (id) {
-      this.pageId = id.id
+      if (id.scene) {
+        this.pageId = decodeURIComponent(id.scene)
+      } else {
+        this.pageId = id.id
+      }
       if (id.refrenceCode) {
         this.refrenceCode = id.refrenceCode
       }
@@ -671,6 +682,7 @@
       this.videoContext = wepy.createVideoContext('video')
     }
     onShow () {
+      this.token = this.$parent.getToken()
       this.methods.closeCart.apply(this)
       this.userLevel = this.$parent.globalData.userLevel
       this.initData(() => {
@@ -679,14 +691,13 @@
         this.customer_info = this.$parent.getMessage()
         this.bussiness_info = this.$parent.getBusiness('商品详情页', this.currentPath, null)
         this.initCartResult()
-        console.log(this.cartResult)
         this.addCartCount = this.cartResult.cartCount
       })
       this.$apply()
     }
     onUnload () {
       var pages = this.getCurrentPages()
-      if (pages[pages.length - 2].data.pageId) {
+      if (pages[pages.length - 2] && pages[pages.length - 2].data.pageId) {
         this.pageId = pages[pages.length - 2].data.pageId
       }
     }

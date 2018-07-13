@@ -58,12 +58,14 @@
           <text class="font-normal" wx:if="{{status === 1}}">待付款<text class="link">￥{{pay}}</text> (含运费￥{{freight}})</text>
           <text class="font-normal" wx:elif="{{status === 2}}">售后中</text>
           <text class="font-normal" wx:elif="{{status === 3}}">交易已关闭</text>
+          <text class="font-normal" wx:elif="{{(status === 5 && isReceive) || status === 6}}">交易完成</text>
           <text class="font-normal" wx:else>实付款<text class="link">￥{{pay}}</text> (含运费￥{{freight}})</text>
           <view class="edit-button">
             <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 1}}" @tap="goPay">付款</button>
             <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1}}" @tap="goAddress">修改地址</button>
             <button class="blank-button" hover-class="blank-button-hover" wx:if="{{status === 1 || status === 4}}" @tap="cancel">取消订单</button>
             <view wx:if="{{address && Object.keys(address).length !== 0}}">
+              <button class="default-button" hover-class="default-button-hover" wx:if="{{status === 5 && !isReceive}}" @tap="goReceive">确认收货</button>
               <button class="blank-button" hover-class="blank-button-hover" wx:if="{{(status === 2 && deliverStatus >= 2) || status === 5 || status === 6}}" @tap="goLogistic">查看物流</button>
             </view>
             <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" wx:if="{{status === 5 || status === 6}}">售后申请</button>
@@ -86,7 +88,7 @@
     data = {
       token: '',
       id: '',
-      orderStatus: ['异常', '待支付', '售后中', '订单关闭', '待发货', '待收货', '交易完成'],
+      orderStatus: ['异常', '待付款', '售后中', '订单关闭', '待发货', '待收货', '交易完成'],
       statusTxt: '',
       status: '',
       address: {},
@@ -100,14 +102,15 @@
       freight: '',
       remainTime: '',
       isHidden: false,
-      initTxt: '待支付',
+      initTxt: '待付款',
       isStop: false,
       timeInterval: '',
       payment: true,
       nick_name: '',
       avatar: '',
       customer_info_str: '',
-      note_info_str: ''
+      note_info_str: '',
+      isReceive: false
     }
     computed = {
       isNull () {
@@ -154,8 +157,30 @@
           url: './logistica?id=' + this.id
         })
       },
+      goReceive () {
+        this.token = this.$parent.getToken()
+        var data = {
+          token: this.token,
+          orderId: this.id
+        }
+        wepy.showModal({
+          title: '提示',
+          content: '是否确认收货',
+          success: (res) => {
+            if (res.confirm) {
+              this.$parent.HttpRequest.ReceiveOrder(data).then((res) => {
+                if (res.data.error === 0) {
+                  this.isReceive = true
+                }
+                this.$apply()
+              })
+            }
+          }
+        })
+      },
       goPay () {
         if (this.payment) {
+          this.token = this.$parent.getToken()
           var data = {
             token: this.token,
             orderId: this.id,
@@ -234,7 +259,7 @@
           _this.deliverStatus = data.deliverStatus
           _this.orderId = data.showId
           _this.createTime = _this.$parent.dateFormat(data.createTime * 1000, 'Y-m-d H:i:s')
-          _this.memo = data.memo ? decodeURI(data.memo[0].val) : ''
+          _this.memo = data.memo ? data.memo[0].val : ''
           _this.pay = data.pay
           _this.freight = data.freight
           // _this.initLogistica('shunfeng', data.showId)
@@ -263,15 +288,13 @@
           cb && cb()
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
             _this.initData()
           }
         }
-        console.log(Object.keys(_this.address).length)
         _this.$apply()
       }).catch(() => {
         _this.$parent.hideLoading()
-        _this.$parent.showFail()
+        // _this.$parent.showFail()
       })
     }
     initChild (parent) {
@@ -300,7 +323,6 @@
         token: this.token,
         orderId: this.id
       }
-      console.log(data)
       this.$parent.HttpRequest.CancelOrder(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
@@ -326,7 +348,7 @@
         if (res.data.error === 0) {
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
+            // _this.token = this.$parent.getToken(res.data.error)
           }
         }
       })

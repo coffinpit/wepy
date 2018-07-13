@@ -23,7 +23,7 @@
     <view class="setting-container">
       <view class="setting-layer" wx:if="{{isVip}}" bindtap="goService">
         <text class="iconfont icon-new_myfw"/>
-        <text>我的服务</text>
+        <text>会员中心</text>
         <!--
         <text class="iconfont icon-rightsj"></text>
         <text class="notice">2</text>
@@ -54,6 +54,11 @@
       </view>
     </view>
     <view class="setting-container">
+      <view class="setting-layer" bindtap="goCustom">
+        <text class="iconfont icon-new_mykf"/>
+        <text>联系客服</text>
+        <text class="iconfont icon-rightsj"/>
+      </view>
       <view class="setting-layer" bindtap="goCollect">
         <text class="iconfont icon-new_mysc"/>
         <text>我的收藏</text>
@@ -67,11 +72,6 @@
       <view class="setting-layer" bindtap="goSystem">
         <text class="iconfont icon-new_myxx"/>
         <text>消息通知</text>
-        <text class="iconfont icon-rightsj"/>
-      </view>
-      <view class="setting-layer" bindtap="goCustom">
-        <text class="iconfont icon-new_mykf"/>
-        <text>联系客服</text>
         <text class="iconfont icon-rightsj"/>
       </view>
       <!--

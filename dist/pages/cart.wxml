@@ -64,10 +64,11 @@
                 <view class="inner txt">
                   <view class="inner-layer" data-index="{{index}}" id="{{item.sourceId}}">
                     <text class="title">{{item.title}}</text>
-                    <text class="font-small link">会员价：￥{{item.memberPrice}} </text>
+                    <view class="overflow">
+                      <text class="font-small link"><text class="iconfont icon-new_vchao"/>￥{{item.memberPrice}} </text>
+                      <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.price}}</text>
+                    </view>
                     <text class="tips" wx:if="{{item.disable}}">库存不足</text>
-                    <text class="font-small {{userLevel ? 'through' : ''}}">原价：￥{{item.price}}</text>
-                    <text class="tips">{{item.viceTitle + '×' + item.buyCount}}</text>
                   </view>
                   <view class="inner-image">
                     <image src="{{item.cover}}" mode="aspectFill"/>
@@ -95,11 +96,11 @@
       </view>
       <view class="vip-tip" wx:if="{{userLevel === 1 && !isNull}}">
         <image src="../image/dril_golden2.png"/>
-        <text class="title">尊敬的超级会员，购满300.00元才可包邮哦</text>
+        <text class="title">尊敬的超级会员，您目前享有包邮特权</text>
       </view>
       <view class="vip-tip no-active" wx:elif="{{userLevel === 0 && !isNull}}">
         <image src="../image/dril_gray2.png"/>
-        <text class="title">成为会员，购满300.00元全场包邮</text>
+        <text class="title">成为会员，可享全场包邮</text>
       </view>
     </view>
     <view  wx:elif="{{isNull && !isLoading}}" class="blank">

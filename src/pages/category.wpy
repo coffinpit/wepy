@@ -138,7 +138,6 @@
         } else {
           _this.isNull = true
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
             _this.getTopCate()
           }
         }
@@ -146,7 +145,7 @@
       }).catch(() => {
         _this.$parent.hideLoading()
         _this.isNull = true
-        _this.$parent.showFail()
+        // _this.$parent.showFail()
       })
     }
     getChildCate (sourceId) {
@@ -173,7 +172,7 @@
         } else {
           _this.isNull = true
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
+            // _this.token = this.$parent.getToken(res.data.error)
           }
         }
         _this.$apply()
@@ -228,7 +227,6 @@
         } else {
           _this.isNull = true
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
             _this.getSpu(sourceId, cb)
           }
         }

@@ -103,14 +103,13 @@
           })
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
             _this.initData()
           }
         }
         _this.$apply()
       }).catch(() => {
         _this.$parent.hideLoading()
-        _this.$parent.showFail()
+        // _this.$parent.showFail()
       })
     }
     onReachBottom () {

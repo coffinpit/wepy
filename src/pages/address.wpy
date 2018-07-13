@@ -142,7 +142,6 @@
         } else {
           _this.isNull = true
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
             _this.initAdd()
           }
         }
@@ -150,7 +149,7 @@
       }).catch(() => {
         _this.$parent.hideLoading()
         _this.isNull = true
-        _this.$parent.showFail()
+        // _this.$parent.showFail()
       })
     }
     deleteAdd (id) {
@@ -165,7 +164,7 @@
           _this.initAdd()
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
+            // _this.token = this.$parent.getToken(res.data.error)
           }
         }
         _this.$apply()
@@ -185,7 +184,7 @@
           cb && cb()
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
+            // _this.token = this.$parent.getToken(res.data.error)
           }
         }
       })

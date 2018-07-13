@@ -6,11 +6,20 @@
 page {
   background: #ffffff;
 }
+.contact-phone {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 80rpx;
+  width: 100%;
+  text-align: center;
+}
 .login-container {
   height: calc(100vh);
   background: #ffffff;
   width: 100%;
   overflow: hidden;
+  position: relative;
 }
 .app-info {
   position: relative;
@@ -107,7 +116,7 @@ page {
   width: 160rpx;
   margin: 0 auto;
   position: absolute;
-  bottom: 0rpx;
+  bottom: 50rpx;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -124,4 +133,18 @@ page {
 }
 .login-step text.unactive {
   background: #cccccc;
+}
+.login-error {
+  text-align: center;
+  padding: 0 40rpx;
+}
+.login-error .font-normal {
+  display: block;
+}
+.login-error .tips {
+  font-size: 28rpx;
+}
+.login-error .blank-button {
+  line-height: 88rpx !important;
+  margin-top: 20rpx;
 }

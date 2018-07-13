@@ -6,30 +6,31 @@
         <!-- <text class="app-name">正善小程序</text> -->
         <image class="logo" src="../image/logo.png"/>
       </view>
-      <view class="alert"  wx:if="{{!isNull}}">
-        <view class="alert-layer {{hasPhone ? 'hidden' : ''}}">
-          <view class="alert-title">网页由正善小程序开发</view>
-          <view class="alert-title">请确认授权以下信息</view>
-          <view class="alert-desc">
-            <view class="alert-text">获得你的手机号作为登录帐号</view>
+      <view  wx:if="{{!isError}}">
+        <view class="alert" wx:if="{{!isNull}}">
+          <view class="alert-layer {{hasPhone ? 'hidden' : ''}}">
+            <view class="alert-title">网页由正善小程序开发</view>
+            <view class="alert-title">请确认授权以下信息</view>
+            <view class="alert-desc">
+              <view class="alert-text">获得你的手机号作为登录帐号</view>
+            </view>
+            <button class="login-btn" open-type="getPhoneNumber" hover-class="login-btn-active" bindgetphonenumber="login">确认登录</button>
           </view>
-          <button class="login-btn" open-type="getPhoneNumber" hover-class="login-btn-active" bindgetphonenumber="login">确认登录</button>
-        </view>
-        <view class="alert-layer {{hasPhone ? 'show' : 'unshow'}}">
-          <view class="alert-title">网页由正善小程序开发</view>
-          <view class="alert-title">请确认授权以下信息</view>
-          <view class="alert-desc">
-            <view class="alert-text">获得你的公开信息（昵称、头像等）</view>
+          <view class="alert-layer {{hasPhone ? 'show' : 'unshow'}}">
+            <view class="alert-title">网页由正善小程序开发</view>
+            <view class="alert-title">请确认授权以下信息</view>
+            <view class="alert-desc">
+              <view class="alert-text">获得你的公开信息（昵称、头像等）</view>
+            </view>
+            <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="login-btn" hover-class="login-btn-active">绑定微信账号</button>
           </view>
-          <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="login-btn" hover-class="login-btn-active">绑定微信账号</button>
+          <view class="login-step">
+            <text class="{{hasPhone ? 'unactive' : 'active'}}"/>
+            <text class="{{hasPhone ? 'active' : 'unactive'}}"/>
+          </view> 
         </view>
-        <view class="login-step">
-          <text class="{{hasPhone ? 'unactive' : 'active'}}"/>
-          <text class="{{hasPhone ? 'active' : 'unactive'}}"/>
-        </view> 
-      </view>
-      <view class="loading"  wx:else>
-        
+        <view class="loading" wx:else>
+          
   <view id="loading-center">
     <view id="loading-center-absolute">
       <view class="object" id="object_one"/>
@@ -38,6 +39,16 @@
     </view>
   </view>
 
+        </view>
       </view>
+      <view class="login-error"  wx:else>
+        <text class="font-normal">服务器出错，请联系客服</text>
+        <view wx:if="{{httpId !== ''}}">
+          <text class="tips">请复制错误信息码：</text><text class="tips" selectable="true">{{httpId}}</text><text selectable="false"/>
+        </view>
+        <button class="blank-button" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}">在线客服</button>
+        <button class="login-btn" hover-class="login-btn-active" bindtap="loginAgain">重新登陆</button>
+      </view>
+      <view class="contact-phone" bindtap="callPhone"><text class="title">客服热线：021 - 65870021</text></view>
     </view>
   </view>

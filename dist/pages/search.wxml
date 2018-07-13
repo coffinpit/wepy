@@ -4,7 +4,7 @@
       <view class="search-input">
         <image src="../image/search.png"/>
         <form bindreset="clearInput">
-        <input type="text" placeholder="搜索商品" placeholder-class="placeholder" value="{{keywords}}" bindinput="keySearch"/>
+        <input type="text" placeholder="输入关键词搜索商品，如：西冷" placeholder-class="placeholder" value="{{keywords}}" bindinput="keySearch"/>
         <button class="clear-btn" form-type="reset"><text class="iconfont icon-kf_qxbtn"/></button>
         </form>
       </view>
@@ -50,7 +50,7 @@
     
   <view wx:if="{{isDown}}">
     <view class="isDown">
-      <text>—————— 商品再好也是有底线的 ——————</text>
+      <text>————————— 已加载完毕 —————————</text>
     </view>
   </view>
 

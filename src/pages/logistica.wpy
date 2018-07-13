@@ -105,16 +105,16 @@
           }
           data.forEach((item) => {
             var obj = {}
-            obj.logisticsCode = item.logisticsCode
+            obj.logisticsCode = item.logisticsCode.replace(/(^\s+)|(\s+$)/g, '')
+            console.log(item.logisticsCode)
             obj.name = item.logistics.name
             obj.phone = item.logistics.phone
             obj.orderDetail = _this.initChild(item.buyingRecords)
             _this.logistic.push(obj)
-            _this.getStatus(item.logistics.id, item.logisticsCode)
+            _this.getStatus(item.logistics.id, obj.logisticsCode)
           })
         } else {
           if (_this.$parent.missToken) {
-            _this.token = this.$parent.getToken(res.data.error)
             _this.initLogistic()
           }
         }
@@ -122,7 +122,7 @@
         _this.$apply()
       }).catch(() => {
         _this.$parent.hideLoading()
-        _this.$parent.showFail()
+        // _this.$parent.showFail()
       })
     }
     initChild (parent) {
@@ -154,6 +154,7 @@
         logisticsId: logisticsId,
         logisticsCode: logisticsCode
       }
+      console.log(data)
       this.$parent.HttpRequest.GetLogisticStatus(data).then((res) => {
         console.log(res)
         if (res.data.error === 0) {
@@ -167,7 +168,8 @@
             statusTemp.push(obj)
           })
           _this.status.push(statusTemp)
-          console.log(_this.status)
+        } else {
+          _this.isNull = true
         }
         _this.$apply()
       })
@@ -175,7 +177,6 @@
     onLoad (id) {
       this.orderId = id.id
       this.orderStatus = id.status
-      console.log(this.orderStatus)
       this.$apply()
     }
     onShow () {
