@@ -1,17 +1,17 @@
 
   <view class="container">
     <view class="user-logo">
-      <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
+      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"/>
       <view class="userinfo-nickname">
-        <text>{{ userInfo.nickName }}</text>
+        <text>{{userInfo.nickName}}</text>
       </view>
       <text class="font-normal telephone">{{userPhone}}</text>
-      <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="blank-button"  wx:if="{{isLogin}}">绑定微信账号</button>
+      <!-- <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" class="blank-button" wx:if="{{isLogin}}">绑定微信账号</button> -->
     </view>
     <view class="user-level">
       <!-- <text class="iconfont icon-vip {{!isVip ? '' : 'vip'}}"></text> -->
       <image src="../image/dril_gray2.png"  wx:if="{{!isVip}}"/>
-      <image src="../image/dril_golden2.png" wx:else/>
+      <image src="../image/dril_golden2.png"  wx:else/>
       <view wx:if="{{!isVip}}">
         <text class="title">成为 <text class="link">超级会员</text> 获取超值优惠</text>
         <button class="default-button" bindtap="goApplyVip">会员申请</button>

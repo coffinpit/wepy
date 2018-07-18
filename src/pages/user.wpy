@@ -3,12 +3,12 @@
 <template>
   <view class="container">
     <view class="user-logo">
-      <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
+      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"/>
       <view class="userinfo-nickname">
-        <text>{{ userInfo.nickName }}</text>
+        <text>{{userInfo.nickName}}</text>
       </view>
       <text class="font-normal telephone">{{userPhone}}</text>
-      <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" class="blank-button" wx:if="{{isLogin}}">绑定微信账号</button>
+      <!-- <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" class="blank-button" wx:if="{{isLogin}}">绑定微信账号</button> -->
     </view>
     <view class="user-level">
       <!-- <text class="iconfont icon-vip {{!isVip ? '' : 'vip'}}"></text> -->
@@ -283,7 +283,6 @@
       // } else if (this.$parent.globalData.userLevel === 1) {
       //   this.isVip = true
       // }
-      // console.log(this.$parent.globalData.userLevel)
       this.initUserData()
       this.initUserOrder()
       this.$apply()

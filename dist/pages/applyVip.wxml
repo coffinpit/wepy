@@ -24,7 +24,7 @@
     <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_04.jpg" mode="widthFix"></image>
     <image src="http://p33mnuvro.bkt.clouddn.com/image/webimg/vip_06.jpg" mode="widthFix"></image> -->
     <block wx:for="{{imageList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
-      <image src="{{item}} + Math.random() / 9999" mode="widthFix"/>
+      <image src="{{item}}" mode="widthFix"/>
     </block>
     <button class="default-button" bindtap="buyVip"  wx:if="{{userLevel === 0}}">申请会员</button>
     <view class="popup" wx:if="{{isShow}}"/>

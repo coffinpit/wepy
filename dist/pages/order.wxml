@@ -12,7 +12,7 @@
   </view>
 
     <view class="order-status">
-      <block wx:for="{{package}}" wx:for-index="index" wx:for-item="item" wx:key="key"><view class="{{current === index ? 'active' : ''}}" bindtap="checkPackage" data-wpycheckpackage-a="{{index}}" data-wpycheckpackage-b="{{item.type}}">{{item.title}}</view></block>
+      <block wx:for="{{package}}" wx:for-index="index" wx:for-item="item" wx:key="key"><view class="{{current === index ? 'active' : ''}}" catchtap="checkPackage" data-wpycheckpackage-a="{{index}}" data-wpycheckpackage-b="{{item.type}}">{{item.title}}</view></block>
     </view>
     <view  wx:if="{{!isNull}}">
       <block wx:for="{{orderList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
@@ -53,6 +53,7 @@
                 <text class="font-normal" wx:elif="{{item.status === 2}}">售后中</text>
                 <text class="font-normal" wx:elif="{{item.status === 3}}">交易关闭</text>
                 <text class="font-normal" wx:elif="{{(item.status === 5 && item.isReceive) || item.status === 6}}">交易完成</text>
+                <text class="font-normal" wx:elif="{{item.status <= 0}}">交易异常</text>
                 <text class="font-normal" wx:else>实付款<text class="link">￥{{item.pay}}</text> (含运费￥{{item.freight}})</text>
                 <view class="edit-button">
                   <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" bindtap="goPay" data-wpygopay-a="{{item.id}}">付款</button>
@@ -62,7 +63,7 @@
                     <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 5 && !item.isReceive}}" bindtap="goReceive" data-wpygoreceive-a="{{item.id}}" data-wpygoreceive-b="{{index}}">确认收货</button>
                     <button class="blank-button" hover-class="blank-button-hover" wx:if="{{(item.status === 2 && item.deliverStatus >= 2) || item.status === 5 || item.status === 6}}" bindtap="goLogistic" data-wpygologistic-a="{{item.id}}" data-wpygologistic-b="{{item.status}}">查看物流</button>
                   </view>
-                  <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" wx:if="{{item.status === 5 || item.status === 6}}" bindcontact="getOrderId" data-wpygetorderid-a="{{item.title}}">售后申请</button>
+                  <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" wx:if="{{item.status === 5 || item.status === 6 || item.status <= 0}}" bindcontact="getOrderId" data-wpygetorderid-a="{{item.title}}">售后申请</button>
                 </view>
               </view>
             </view>

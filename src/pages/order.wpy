@@ -3,7 +3,7 @@
   <view class="container">
     <menuList></menuList>
     <view class="order-status">
-      <repeat for="{{package}}" item="item" index="index"><view class="{{current === index ? 'active' : ''}}" @tap="checkPackage({{index}}, {{item.type}})">{{item.title}}</view></repeat>
+      <repeat for="{{package}}" item="item" index="index"><view class="{{current === index ? 'active' : ''}}" @tap.stop="checkPackage({{index}}, {{item.type}})">{{item.title}}</view></repeat>
     </view>
     <view wx:if="{{!isNull}}">
       <repeat for="{{orderList}}" item="item" index="index">
@@ -26,6 +26,7 @@
                 <text class="font-normal" wx:elif="{{item.status === 2}}">售后中</text>
                 <text class="font-normal" wx:elif="{{item.status === 3}}">交易关闭</text>
                 <text class="font-normal" wx:elif="{{(item.status === 5 && item.isReceive) || item.status === 6}}">交易完成</text>
+                <text class="font-normal" wx:elif="{{item.status <= 0}}">交易异常</text>
                 <text class="font-normal" wx:else>实付款<text class="link">￥{{item.pay}}</text> (含运费￥{{item.freight}})</text>
                 <view class="edit-button" >
                   <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 1}}" @tap="goPay({{item.id}})">付款</button>
@@ -35,7 +36,7 @@
                     <button class="default-button" hover-class="default-button-hover" wx:if="{{item.status === 5 && !item.isReceive}}" @tap="goReceive({{item.id}}, {{index}})">确认收货</button>
                     <button class="blank-button" hover-class="blank-button-hover" wx:if="{{(item.status === 2 && item.deliverStatus >= 2) || item.status === 5 || item.status === 6}}" @tap="goLogistic({{item.id}}, {{item.status}})">查看物流</button>
                   </view>
-                  <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" wx:if="{{item.status === 5 || item.status === 6}}" @contact="getOrderId({{item.title}})">售后申请</button>
+                  <button class="blank-button" hover-class="blank-button-hover" open-type="contact" session-from="udesk|{{nick_name}}|{{avatar}}|customer^{{customer_info_str}}|note^{{note_info_str}}" wx:if="{{item.status === 5 || item.status === 6 || item.status <= 0}}" @contact="getOrderId({{item.title}})">售后申请</button>
                 </view>
               </view>
             </view>
@@ -200,13 +201,12 @@
                 'paySign': sign,
                 'success': (res) => {
                   if (res.errMsg === 'requestPayment:ok') {
-                    // 用户支付成功跳转首页
-                    // wepy.switchTab({
-                    //   url: './index'
-                    // })
-                    this.current = 2
-                    this.orderType = 'undelivered'
-                    this.initData()
+                    wepy.redirectTo({
+                      url: './order?orderType=undelivered'
+                    })
+                    // this.current = 2
+                    // this.orderType = 'undelivered'
+                    // this.initData()
                   } else if (res.errMsg === 'requestPayment:cancel') {
                     // 用户取消支付跳转订单列表
                     this.$parent.payFail()
@@ -246,6 +246,9 @@
         status: this.orderType
       }
       this.$parent.HttpRequest.GetOrderStatus(data).then((res) => {
+        if (this.pageNum === 1) {
+          this.orderList = []
+        }
         console.log(res)
         _this.isLoading = false
         _this.$parent.hideLoading()
@@ -265,12 +268,25 @@
             obj.statusTxt = _this.orderStatus[item.status]
             obj.count = item.buyingRecords.length
             obj.orderDetail = _this.initChild(item.buyingRecords)
-            _this.orderList.push(obj)
+            if (_this.orderList.length === 0) {
+              _this.orderList.push(obj)
+            } else {
+              var hasTwo = false
+              for (var i = 0; i < _this.orderList.length; i++) {
+                if (_this.orderList[i].id === item.id) {
+                  hasTwo = true
+                }
+              }
+              if (!hasTwo) {
+                _this.orderList.push(obj)
+              }
+            }
+            // _this.orderList.push(obj)
           })
           cb && cb()
         } else {
           if (_this.$parent.missToken) {
-            _this.initOrder(cb)
+            _this.initData(cb)
           }
         }
         _this.$apply()
@@ -338,7 +354,7 @@
       }
       this.$apply()
     }
-    onShow () {
+    onReady () {
       this.initData(() => {
         this.nick_name = this.$parent.getUserName()
         this.avatar = this.$parent.getUserAvatar()

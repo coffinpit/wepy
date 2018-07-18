@@ -501,9 +501,11 @@
             _this.detail.goodList.push(good)
             _this.$apply()
           })
+          // 过滤下架或库存不足的SKU
           var disableList = _this.detail.goodList.filter((item) => {
-            return !item.isAllowSale
+            return !item.isAllowSale || item.num <= 0
           })
+          // 判断是否所有SKU都下架
           if (disableList.length === data.skus.length) {
             _this.buttonDisable = false
           }
